@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'app/authentication/Login.dart';
+import 'package:instagram_app/views/Login.dart';
 
 void main() {
   runApp(const MyApp());
