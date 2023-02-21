@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_app/views/input_phone_number.dart';
 import 'package:pinput/pinput.dart';
 
 import '../assets/images_assets.dart';
@@ -11,6 +13,7 @@ class InputOTP extends StatefulWidget {
 }
 
 class _InputOTPState extends State<InputOTP> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -36,7 +39,7 @@ class _InputOTPState extends State<InputOTP> {
         color: Color.fromRGBO(234, 239, 243, 1),
       ),
     );
-
+    var code = "";
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -45,7 +48,7 @@ class _InputOTPState extends State<InputOTP> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_rounded,
             color: Colors.black,
           ),
@@ -69,29 +72,27 @@ class _InputOTPState extends State<InputOTP> {
                 "Nhập mã OTP",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "Chúng tôi đã gửi tới bạn mã OTP",
                 style: TextStyle(
                   fontSize: 16,
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Pinput(
                 length: 6,
-                // defaultPinTheme: defaultPinTheme,
-                // focusedPinTheme: focusedPinTheme,
-                // submittedPinTheme: submittedPinTheme,
-
                 showCursor: true,
-                onCompleted: (pin) => print(pin),
+                onChanged: (value) {
+                  code = value;
+                },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               SizedBox(
@@ -99,10 +100,25 @@ class _InputOTPState extends State<InputOTP> {
                 height: 45,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.green.shade600,
+                        primary: Colors.blue,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        // Create a PhoneAuthCredential with the code
+                        PhoneAuthCredential credential =
+                            PhoneAuthProvider.credential(
+                                verificationId: InputPhoneNumber.verify,
+                                smsCode: code);
+
+                        // Sign the user in (or link) with the credential
+                        await auth.signInWithCredential(credential);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, 'home', (route) => false);
+                      } catch (e) {
+                        print('nhập sai otp');
+                      }
+                    },
                     child: Text("Xác nhận OTP")),
               ),
               Row(
@@ -112,7 +128,7 @@ class _InputOTPState extends State<InputOTP> {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           'phone',
-                              (route) => false,
+                          (route) => false,
                         );
                       },
                       child: Text(

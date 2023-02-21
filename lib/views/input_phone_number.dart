@@ -4,7 +4,7 @@ import 'package:instagram_app/assets/assets.dart';
 
 class InputPhoneNumber extends StatefulWidget {
   const InputPhoneNumber({Key? key}) : super(key: key);
-
+  static String verify ="";
   @override
   State<InputPhoneNumber> createState() => _InputPhoneNumberState();
 }
@@ -110,6 +110,7 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                       verificationCompleted: (PhoneAuthCredential credential) {},
                       verificationFailed: (FirebaseAuthException e) {},
                       codeSent: (String verificationId, int? resendToken) {
+                        InputPhoneNumber.verify = verificationId;
                         Navigator.pushNamed(context, 'otp');
                       },
                       codeAutoRetrievalTimeout: (String verificationId) {},

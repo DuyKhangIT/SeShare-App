@@ -4,6 +4,7 @@ import 'package:instagram_app/responsive/mobile_screen.dart';
 import 'package:instagram_app/responsive/responsive_layout.dart';
 import 'package:instagram_app/responsive/web_screen.dart';
 import 'package:instagram_app/util/global.dart';
+import 'package:instagram_app/views/home.dart';
 import 'package:instagram_app/views/input_otp.dart';
 import 'package:instagram_app/views/input_phone_number.dart';
 import 'package:instagram_app/views/login.dart';
@@ -27,6 +28,8 @@ class MyApp extends StatelessWidget {
       routes: {
         'phone': (context) => const InputPhoneNumber(),
         'otp': (context) => const InputOTP(),
+        'home': (context) => const Home(),
+
       },
       title: 'Instagram',
       theme: ThemeData.dark()
