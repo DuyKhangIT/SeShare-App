@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../assets/images_assets.dart';
+
 class LoginScreen extends StatelessWidget {
-const   LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -11,85 +13,66 @@ const   LoginScreen({Key? key}) : super(key: key);
           child: Column(
             children: [
               const SizedBox(height: 50),
-              const Text(
-                'Đăng nhập vào Instagram',
-                style: TextStyle(
-                    fontSize: 28,
-                    fontFamily: 'Nunito Sans',
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
+              Image.asset(
+                ImageAssets.imgLogo,
+                width: 200,
+                height: 200,
+                color: Colors.black,
               ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  'Quản lý tài khoản, kiểm tra thông báo, bình luận trên các video,...',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: '',
-                      color: Colors.black.withOpacity(0.3),
-                      fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,
+              Container(
+                  width: 85,
+                  height: 85,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 2,
+                    ),
+                  ),
+                  child: ClipOval(child: Icon(Icons.person))),
+              SizedBox(height: 13),
+              Text(
+                'user',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Nunito Sans',
+                  fontStyle: FontStyle.italic,
+                  color: Colors.black,
                 ),
               ),
 
               /// phone number
               InkWell(
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => const InputPhoneNumber()),
-                  // );
+                  Navigator.pushNamed(context, 'phone');
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 40,
+                  height: 44,
                   margin: const EdgeInsets.only(top: 20),
                   padding: const EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: Colors.black.withOpacity(0.2),
-                        width: 1,
-                      )),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
-                      Icon(
-                        Icons.person_outline,
-                        color: Colors.black,
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Số điện thoại',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Nunito Sans',
+                        color: Colors.white,
                       ),
-                      SizedBox(width: 20),
-                      Text(
-                        'Số điện thoại',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Nunito Sans',
-                          fontStyle: FontStyle.italic,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
 
               /// facebook
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                margin: EdgeInsets.only(top: 15),
-                padding: EdgeInsets.only(left: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                      color: Colors.black.withOpacity(0.2),
-                      width: 1,
-                    )),
+              Padding(
+                padding: EdgeInsets.only(top: 20),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(
                       Icons.facebook,
@@ -98,39 +81,6 @@ const   LoginScreen({Key? key}) : super(key: key);
                     SizedBox(width: 20),
                     Text(
                       'Tiếp tục với Facebook',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Nunito Sans',
-                          fontStyle: FontStyle.italic,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-
-              /// google
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 40,
-                margin: EdgeInsets.only(top: 15),
-                padding: EdgeInsets.only(left: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                      color: Colors.black.withOpacity(0.2),
-                      width: 1,
-                    )),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Icon(
-                      Icons.email,
-                      color: Colors.black,
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Tiếp tục với Google',
                       style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Nunito Sans',

@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:instagram_app/responsive/mobile_screen.dart';
 import 'package:instagram_app/responsive/responsive_layout.dart';
 import 'package:instagram_app/responsive/web_screen.dart';
@@ -9,7 +11,10 @@ import 'package:instagram_app/views/input_otp.dart';
 import 'package:instagram_app/views/input_phone_number.dart';
 import 'package:instagram_app/views/login.dart';
 
+import 'config/theme_service.dart';
+
 Future<void> main() async {
+  await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -22,18 +27,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
+    return GetMaterialApp(
+      theme: ThemeService().lightTheme,
+      darkTheme: ThemeService().darkTheme,
+      themeMode: ThemeService().getThemeMode(),
       debugShowCheckedModeBanner: false,
-      initialRoute: 'phone',
+
+      initialRoute: 'login',
       routes: {
+        'login': (context) => const LoginScreen(),
         'phone': (context) => const InputPhoneNumber(),
         'otp': (context) => const InputOTP(),
         'home': (context) => const Home(),
 
       },
       title: 'Instagram',
-      theme: ThemeData.dark()
-          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
       // home: const ResponsiveLayout(
       //     mobileScreenLayout: MobileScreenLayout(),
       //     webScreenLayout: WebScreenLayout()),

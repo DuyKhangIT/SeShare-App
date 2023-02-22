@@ -4,6 +4,7 @@ import 'package:instagram_app/views/input_phone_number.dart';
 import 'package:pinput/pinput.dart';
 
 import '../assets/images_assets.dart';
+import '../config/theme_service.dart';
 
 class InputOTP extends StatefulWidget {
   const InputOTP({Key? key}) : super(key: key);
@@ -62,11 +63,17 @@ class _InputOTPState extends State<InputOTP> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
+              (ThemeService().changeTheme == true)
+                  ?Image.asset(
                 ImageAssets.imgLogo,
                 width: 200,
                 height: 200,
                 color: Colors.white,
+              ):Image.asset(
+                ImageAssets.imgLogo,
+                width: 200,
+                height: 200,
+                color: Colors.black,
               ),
               const Text(
                 "Nhập mã OTP",

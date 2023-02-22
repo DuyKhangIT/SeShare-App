@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/config/theme_service.dart';
 
 class InputPhoneNumber extends StatefulWidget {
   const InputPhoneNumber({Key? key}) : super(key: key);
@@ -28,11 +29,17 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
+            (ThemeService().changeTheme == true)
+            ?Image.asset(
               ImageAssets.imgLogo,
               width: 200,
               height: 200,
               color: Colors.white,
+            ):Image.asset(
+              ImageAssets.imgLogo,
+              width: 200,
+              height: 200,
+              color: Colors.black,
             ),
             const Text(
               "Phone Verification",
