@@ -39,6 +39,7 @@ dependencies:
   firebase_auth: ^4.2.8
   shared_preferences: ^2.0.17
   get_storage: ^2.0.3
+  awesome_snackbar_content: ^0.1.1
 
 dev_dependencies:
   flutter_test:
@@ -88,5 +89,6 @@ flutter:
         - asset: assets/fonts/NunitoSans-SemiBold.ttf
         - asset: assets/fonts/NunitoSans-Regular.ttf
           weight: 400
+
 
 

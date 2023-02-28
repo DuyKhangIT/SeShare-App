@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../assets/images_assets.dart';
+import '../util/global.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,35 +12,34 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              Image.asset(
-                ImageAssets.imgLogo,
-                width: 200,
-                height: 200,
-                color: Colors.black,
+              const Text(
+                'Images',
+                style: TextStyle(
+                  fontSize: 49,
+                  fontFamily: 'Nunito Sans',
+                ),
               ),
               Container(
                   width: 85,
                   height: 85,
+                  margin: EdgeInsets.only(top: 52),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: Colors.black,
-                      width: 2,
+                      width: 1,
                     ),
                   ),
-                  child: ClipOval(child: Icon(Icons.person))),
-              SizedBox(height: 13),
-              Text(
-                'user',
+                  child: const ClipOval(child: Icon(Icons.person))),
+              const SizedBox(height: 13),
+              const Text(
+                'Khang',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontFamily: 'Nunito Sans',
-                  fontStyle: FontStyle.italic,
-                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-
-              /// phone number
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, 'phone');
@@ -50,73 +48,31 @@ class LoginScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   height: 44,
                   margin: const EdgeInsets.only(top: 20),
-                  padding: const EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
+                    color: Global.blueColor,
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Center(
                     child: Text(
                       'Số điện thoại',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontFamily: 'Nunito Sans',
-                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ),
               ),
-
-              /// facebook
-              Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.facebook,
-                      color: Colors.blue,
-                    ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Tiếp tục với Facebook',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Nunito Sans',
-                          fontStyle: FontStyle.italic,
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Bạn không có tài khoản?',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Nunito Sans',
-                            fontStyle: FontStyle.italic,
-                            color: Colors.black),
-                      ),
-                      SizedBox(width: 5),
-                      Text(
-                        'Đăng ký',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Nunito Sans',
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
+              const Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: Text(
+                  'Đổi tài khoản',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Nunito Sans',
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.italic),
                 ),
               ),
             ],

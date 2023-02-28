@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../util/global.dart';
+
 class ThemeService {
   final lightTheme = ThemeData.light().copyWith(
       primaryColor: Colors.blueGrey.shade300,
-      appBarTheme: const AppBarTheme(),
-      dividerColor: Colors.black12);
+      appBarTheme: const AppBarTheme(
+        color: Colors.white
+      ),
+      dividerColor: Global.mobileBackgroundColor);
   final darkTheme = ThemeData.dark().copyWith(
-      primaryColor: Colors.blue,
+      primaryColor: Colors.black,
       appBarTheme: const AppBarTheme(),
       dividerColor: Colors.white54);
 

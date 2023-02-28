@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeService().darkTheme,
       themeMode: ThemeService().getThemeMode(),
       debugShowCheckedModeBanner: false,
-
       initialRoute: 'login',
       routes: {
         'login': (context) => const LoginScreen(),

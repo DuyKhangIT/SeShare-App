@@ -16,7 +16,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        title: Text(
+          'Images',
+          style: Theme.of(context).textTheme.headline6?.copyWith(
+              color: Theme.of(context).textTheme.headline6?.color,
+              fontSize: 22),
+        ),
         actions: [
           IconButton(
             icon: const Icon(
@@ -26,6 +31,13 @@ class _HomeState extends State<Home> {
             onPressed: () {
               ThemeService().changeTheme();
             },
+          ),
+          IconButton(
+            icon: const Icon(
+              CupertinoIcons.heart,
+              color: Colors.black,
+            ),
+            onPressed: () {},
           ),
         ],
       ),
