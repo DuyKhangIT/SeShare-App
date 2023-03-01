@@ -8,4 +8,6 @@ class Global {
   static const blueColor = Color.fromRGBO(0, 149, 246, 1);
   static const primaryColor = Colors.white;
   static const secondaryColor = Colors.grey;
+
+ static String phoneNumber = "";
 }

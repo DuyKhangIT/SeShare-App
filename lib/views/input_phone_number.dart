@@ -1,8 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_app/assets/assets.dart';
-import 'package:instagram_app/config/theme_service.dart';
 
 import '../util/global.dart';
 
@@ -16,6 +14,7 @@ class InputPhoneNumber extends StatefulWidget {
 class _InputPhoneNumberState extends State<InputPhoneNumber> {
   TextEditingController countryCode = TextEditingController();
   var phone = "";
+  final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   void initState() {
     // TODO: implement initState
@@ -26,6 +25,20 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
+      ),
       body: Container(
         margin: const EdgeInsets.only(left: 25, right: 25),
         alignment: Alignment.center,
@@ -39,7 +52,9 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                 fontFamily: 'Nunito Sans',
               ),
             ),
-            const SizedBox(height: 30,),
+            const SizedBox(
+              height: 30,
+            ),
             const Text(
               "Bạn cần nhập số điện thoại để chúng tôi có thể gửi mã otp cho bạn!",
               style: TextStyle(
@@ -80,6 +95,7 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                       child: TextField(
                     onChanged: (value) {
                       phone = value;
+                      Global.phoneNumber = phone;
                     },
                     keyboardType: TextInputType.phone,
                     decoration: const InputDecoration(
@@ -102,7 +118,6 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                   onPressed: () async {
                     if (phone.isEmpty) {
                       final snackBar = SnackBar(
-                        /// need to set following properties for best effect of awesome_snackbar_content
                         elevation: 0,
                         behavior: SnackBarBehavior.fixed,
                         backgroundColor: Colors.transparent,
@@ -116,19 +131,19 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                         ..hideCurrentSnackBar()
                         ..showSnackBar(snackBar);
                     } else {
-                      await FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: '${countryCode.text + phone}',
+                      await auth.verifyPhoneNumber(
+                        phoneNumber: countryCode.text + phone,
+                        timeout: const Duration(seconds: 60),
                         verificationCompleted:
                             (PhoneAuthCredential credential) {},
                         verificationFailed: (FirebaseAuthException e) {
                           final snackBar = SnackBar(
-                            /// need to set following properties for best effect of awesome_snackbar_content
                             elevation: 0,
                             behavior: SnackBarBehavior.fixed,
                             backgroundColor: Colors.transparent,
                             content: AwesomeSnackbarContent(
                               title: 'Lỗi!',
-                              message: 'Số điện thoại không tồn tại!',
+                              message: 'Gửi mã otp không thành công!',
                               contentType: ContentType.failure,
                             ),
                           );
@@ -140,20 +155,33 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                           InputPhoneNumber.verify = verificationId;
                           Navigator.pushNamed(context, 'otp');
                         },
-                        codeAutoRetrievalTimeout: (String verificationId) {},
+                        codeAutoRetrievalTimeout: (String verificationId) {
+                          final snackBar = SnackBar(
+                            elevation: 0,
+                            behavior: SnackBarBehavior.fixed,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: 'Cảnh báo!',
+                              message: 'OTP đã hết hạn!',
+                              contentType: ContentType.help,
+                            ),
+                          );
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(snackBar);
+                        },
                       );
                     }
                   },
                   child: const Text(
-                    'Gửi mã',
+                    "Gữi mã",
                     style: TextStyle(
                       fontSize: 14,
                       fontFamily: 'Nunito Sans',
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
                     ),
                   ),
-                ))
+                )),
           ],
         ),
       ),

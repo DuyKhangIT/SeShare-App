@@ -59,6 +59,7 @@ class LoginScreen extends StatelessWidget {
                         fontSize: 14,
                         fontFamily: 'Nunito Sans',
                         fontWeight: FontWeight.w600,
+                        color: Colors.white
                       ),
                     ),
                   ),

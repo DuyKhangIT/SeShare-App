@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_app/util/global.dart';
 import 'package:instagram_app/views/input_phone_number.dart';
 import 'package:pinput/pinput.dart';
 
@@ -16,6 +17,14 @@ class InputOTP extends StatefulWidget {
 
 class _InputOTPState extends State<InputOTP> {
   final FirebaseAuth auth = FirebaseAuth.instance;
+  TextEditingController countryCode = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    countryCode.text = "+84";
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -117,10 +126,10 @@ class _InputOTPState extends State<InputOTP> {
                           behavior: SnackBarBehavior.fixed,
                           backgroundColor: Colors.transparent,
                           content: AwesomeSnackbarContent(
-                            title: 'Lỗi!',
+                            title: 'Cánh báo!',
                             message:
                                 'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
-                            contentType: ContentType.failure,
+                            contentType: ContentType.help,
                           ),
                         );
                         ScaffoldMessenger.of(context)
@@ -156,23 +165,50 @@ class _InputOTPState extends State<InputOTP> {
                         }
                       }
                     },
-                    child: Text("Xác nhận OTP")),
+                    child: const Text("Xác nhận OTP")),
               ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          'phone',
-                          (route) => false,
-                        );
+              const SizedBox(
+                height: 30,
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: () async {
+                    await FirebaseAuth.instance.verifyPhoneNumber(
+                      phoneNumber: countryCode.text + Global.phoneNumber,
+                      timeout: const Duration(seconds: 60),
+                      verificationCompleted:
+                          (PhoneAuthCredential credential) {},
+                      verificationFailed: (FirebaseAuthException e) {},
+                      codeSent: (String verificationId, int? resendToken) {
+                        InputPhoneNumber.verify = verificationId;
                       },
-                      child: Text(
-                        "Gửi lại mã",
-                        style: TextStyle(color: Colors.white),
-                      ))
-                ],
+                      codeAutoRetrievalTimeout: (String verificationId) {
+                        final snackBar = SnackBar(
+                          elevation: 0,
+                          behavior: SnackBarBehavior.fixed,
+                          backgroundColor: Colors.transparent,
+                          content: AwesomeSnackbarContent(
+                            title: 'Cảnh báo!',
+                            message: 'OTP đã hết hạn!',
+                            contentType: ContentType.help,
+                          ),
+                        );
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(snackBar);
+                      },
+                      forceResendingToken: null,
+                    );
+                  },
+                  child: const Text(
+                    "Gữi lại mã",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Nunito Sans',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
               )
             ],
           ),
