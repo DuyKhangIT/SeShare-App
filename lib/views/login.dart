@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../controllers/checkLogIned.dart';
 import '../util/global.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -32,9 +35,11 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: const ClipOval(child: Icon(Icons.person))),
               const SizedBox(height: 13),
-              const Text(
-                'Khang',
-                style: TextStyle(
+              Text(
+                (auth.currentUser!.uid.isEmpty)
+                    ? "User"
+                    : auth.currentUser!.uid.toString(),
+                style: const TextStyle(
                   fontSize: 14,
                   fontFamily: 'Nunito Sans',
                   fontWeight: FontWeight.w600,
@@ -42,7 +47,7 @@ class LoginScreen extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, 'phone');
+                  CheckLogIned().checkAlreadyLoggedIn();
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -54,13 +59,12 @@ class LoginScreen extends StatelessWidget {
                   ),
                   child: const Center(
                     child: Text(
-                      'Số điện thoại',
+                      'Đăng Nhập',
                       style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Nunito Sans',
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white
-                      ),
+                          fontSize: 14,
+                          fontFamily: 'Nunito Sans',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
                     ),
                   ),
                 ),

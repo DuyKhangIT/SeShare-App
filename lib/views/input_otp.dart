@@ -5,8 +5,11 @@ import 'package:get/get.dart';
 
 import 'package:instagram_app/views/input_phone_number.dart';
 import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../config/share_preferences.dart';
 import '../controllers/handle_otp.dart';
 import '../util/global.dart';
+import 'home.dart';
 
 class InputOTP extends StatefulWidget {
   const InputOTP({Key? key}) : super(key: key);
@@ -19,12 +22,11 @@ class _InputOTPState extends State<InputOTP> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   TextEditingController countryCode = TextEditingController();
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     countryCode.text = "+84";
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -149,8 +151,9 @@ class _InputOTPState extends State<InputOTP> {
                                   smsCode: code);
                           // Sign the user in (or link) with the credential
                           await auth.signInWithCredential(credential);
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, 'home', (route) => false);
+                          ConfigSharedPreferences()
+                              .setStringValue(SharedData.USER_ID.toString(), auth.currentUser!.uid);
+                          Get.to(() => const Home());
                         } catch (e) {
                           final snackBar = SnackBar(
                             elevation: 0,

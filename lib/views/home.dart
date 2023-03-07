@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/config/theme_service.dart';
+
+import '../config/share_preferences.dart';
+import 'login.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -30,6 +34,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -40,30 +45,50 @@ class _HomeState extends State<Home> {
               fontSize: 22),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(
-              moonIcon,
-              color: Colors.black,
-            ),
-            onPressed: () {
+          GestureDetector(
+            onTap: (){
               ThemeService().changeTheme();
             },
-          ),
-          Container(
-            width: 20,
-            height: 20,
-            margin: const EdgeInsets.only(right: 20),
-            child: ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black,
-                BlendMode.srcIn,
+            child: Container(
+              width: 20,
+              height: 20,
+              margin: const EdgeInsets.only(right: 20),
+              child: ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                  BlendMode.srcIn,
+                ),
+                child: const Icon(
+                  moonIcon,
+                ),
               ),
-              child: Image.asset(IconsAssets.icMessage),
+            ),
+          ),
+          GestureDetector(
+            onTap: (){
+              auth.signOut();
+              ConfigSharedPreferences().setStringValue(
+                  SharedData.USER_ID.toString(), "");
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'login', (route) => false);
+            },
+            child: Container(
+              width: 20,
+              height: 20,
+              margin: const EdgeInsets.only(right: 20),
+              child: ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                  BlendMode.srcIn,
+                ),
+                child: Image.asset(IconsAssets.icMessage),
+              ),
             ),
           )
-
         ],
         elevation: 0,
       ),
@@ -121,10 +146,11 @@ class _HomeState extends State<Home> {
 }
 
 class HomeScreen extends StatelessWidget {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('Home Screen'),
+      child: Text(auth.currentUser!.uid),
     );
   }
 }
