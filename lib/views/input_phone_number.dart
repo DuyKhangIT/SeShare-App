@@ -174,7 +174,7 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                     }
                   },
                   child: const Text(
-                    "Gữi mã",
+                    "Gửi mã",
                     style: TextStyle(
                       fontSize: 14,
                       fontFamily: 'Nunito Sans',

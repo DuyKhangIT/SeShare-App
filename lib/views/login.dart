@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
               Container(
                   width: 85,
                   height: 85,
-                  margin: EdgeInsets.only(top: 52),
+                  margin: const EdgeInsets.only(top: 52),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(

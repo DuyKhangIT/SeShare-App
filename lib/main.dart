@@ -2,10 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:instagram_app/responsive/mobile_screen.dart';
-import 'package:instagram_app/responsive/responsive_layout.dart';
-import 'package:instagram_app/responsive/web_screen.dart';
-import 'package:instagram_app/util/global.dart';
 import 'package:instagram_app/views/home.dart';
 import 'package:instagram_app/views/input_otp.dart';
 import 'package:instagram_app/views/input_phone_number.dart';
@@ -26,7 +22,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return GetMaterialApp(
       theme: ThemeService().lightTheme,
       darkTheme: ThemeService().darkTheme,
@@ -38,7 +33,6 @@ class MyApp extends StatelessWidget {
         'phone': (context) => const InputPhoneNumber(),
         'otp': (context) => const InputOTP(),
         'home': (context) => const Home(),
-
       },
       title: 'Instagram',
       // home: const ResponsiveLayout(

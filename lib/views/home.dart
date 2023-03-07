@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/config/theme_service.dart';
 
 class Home extends StatefulWidget {
@@ -48,13 +49,21 @@ class _HomeState extends State<Home> {
               ThemeService().changeTheme();
             },
           ),
-          IconButton(
-            icon: const Icon(
-              CupertinoIcons.heart,
-              color: Colors.black,
+          Container(
+            width: 20,
+            height: 20,
+            margin: const EdgeInsets.only(right: 20),
+            child: ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+                BlendMode.srcIn,
+              ),
+              child: Image.asset(IconsAssets.icMessage),
             ),
-            onPressed: () {},
-          ),
+          )
+
         ],
         elevation: 0,
       ),

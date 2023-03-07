@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class Global {
   static const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
   static const webBackgroundColor = Color.fromRGBO(18, 18, 18, 1);
@@ -9,5 +8,16 @@ class Global {
   static const primaryColor = Colors.white;
   static const secondaryColor = Colors.grey;
 
- static String phoneNumber = "";
+  static String phoneNumber = "";
+
+  /// block auto click or many time click
+  static int mTimeClick = 0;
+  static bool isAvailableToClick() {
+    debugPrint("clicked ${DateTime.now().millisecondsSinceEpoch - mTimeClick}");
+    if (DateTime.now().millisecondsSinceEpoch - mTimeClick > 1000) {
+      mTimeClick = DateTime.now().millisecondsSinceEpoch;
+      return true;
+    }
+    return false;
+  }
 }
