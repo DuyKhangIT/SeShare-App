@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:instagram_app/views/home/home.dart';
 
 import '../../../widget/button_next.dart';
+import '../login/login.dart';
 
 class ConfirmRegister extends StatefulWidget {
   const ConfirmRegister({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class _ConfirmRegisterState extends State<ConfirmRegister> {
                 padding: const EdgeInsets.symmetric(vertical: 80),
                 child: ButtonNext(
                   onTap: () {
-                    Get.to(() => const Home());
+                    Get.to(() => const Login());
                   },
                   textInside: 'tiếp tục'.toUpperCase(),
                 ))

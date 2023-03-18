@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeService().darkTheme,
       themeMode: ThemeService().getThemeMode(),
       debugShowCheckedModeBanner: false,
-      initialRoute: 'startUp',
+      initialRoute: 'password',
       routes: {
         'startUp': (context) => const StartUpScreen(),
         /// login
