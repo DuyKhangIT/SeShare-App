@@ -3,13 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:instagram_app/views/input_phone_number.dart';
+import 'package:instagram_app/views/onboarding/register/input_phone_number.dart';
+import 'package:instagram_app/widget/button_next.dart';
 import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../config/share_preferences.dart';
-import '../controllers/handle_otp.dart';
-import '../util/global.dart';
-import 'home.dart';
+import '../../../config/share_preferences.dart';
+import '../../../controllers/handle_otp.dart';
+import '../../../util/global.dart';
+import '../../home/home.dart';
 
 class InputOTP extends StatefulWidget {
   const InputOTP({Key? key}) : super(key: key);
@@ -57,6 +58,13 @@ class _InputOTPState extends State<InputOTP> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        title: Text(
+          'Đăng ký',
+          style: Theme.of(context).textTheme.headline6?.copyWith(
+              color: Theme.of(context).textTheme.headline6?.color,
+              fontSize: 20),
+        ),
+        centerTitle: true ,
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
@@ -77,10 +85,11 @@ class _InputOTPState extends State<InputOTP> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Images',
+                'SeShare',
                 style: TextStyle(
                   fontSize: 49,
                   fontFamily: 'Nunito Sans',
+                  fontStyle: FontStyle.italic
                 ),
               ),
               const SizedBox(height: 30),
@@ -98,7 +107,7 @@ class _InputOTPState extends State<InputOTP> {
                 "Chúng tôi đã gửi tới bạn mã OTP",
                 style: TextStyle(
                   fontFamily: 'Nunito Sans',
-                  fontSize: 16,
+                  fontSize: 12,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -117,65 +126,53 @@ class _InputOTPState extends State<InputOTP> {
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 45,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () async {
-                      if (code.isEmpty) {
-                        final snackBar = SnackBar(
-                          /// need to set following properties for best effect of awesome_snackbar_content
-                          elevation: 0,
-                          behavior: SnackBarBehavior.fixed,
-                          backgroundColor: Colors.transparent,
-                          content: AwesomeSnackbarContent(
-                            title: 'Cánh báo!',
-                            message:
-                                'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
-                            contentType: ContentType.help,
-                          ),
-                        );
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(snackBar);
-                      } else {
-                        try {
-                          // Create a PhoneAuthCredential with the code
-                          PhoneAuthCredential credential =
-                              PhoneAuthProvider.credential(
-                                  verificationId: InputPhoneNumber.verify,
-                                  smsCode: code);
-                          // Sign the user in (or link) with the credential
-                          await auth.signInWithCredential(credential);
-                          ConfigSharedPreferences()
-                              .setStringValue(SharedData.USER_ID.toString(), auth.currentUser!.uid);
-                          Get.to(() => const Home());
-                        } catch (e) {
-                          final snackBar = SnackBar(
-                            elevation: 0,
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor: Colors.transparent,
-                            content: AwesomeSnackbarContent(
-                              title: 'Lỗi!',
-                              message: 'Bạn nhập sai mã otp! Vui lòng nhập lại',
-                              contentType: ContentType.failure,
-                            ),
-                          );
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(snackBar);
-                        }
-                      }
-                    },
-                    child: const Text("Xác nhận OTP")),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
+              /// button next
+              ButtonNext(onTap: () async{
+                if (code.isEmpty) {
+                  final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.fixed,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Cánh báo!',
+                      message:
+                      'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
+                      contentType: ContentType.help,
+                    ),
+                  );
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+                } else {
+                  try {
+                    // Create a PhoneAuthCredential with the code
+                    PhoneAuthCredential credential =
+                    PhoneAuthProvider.credential(
+                        verificationId: InputPhoneNumber.verify,
+                        smsCode: code);
+                    // Sign the user in (or link) with the credential
+                    await auth.signInWithCredential(credential);
+                    ConfigSharedPreferences()
+                        .setStringValue(SharedData.USER_ID.toString(), auth.currentUser!.uid);
+                    Get.to(() => const Home());
+                  } catch (e) {
+                    final snackBar = SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.fixed,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'Lỗi!',
+                        message: 'Bạn nhập sai mã otp! Vui lòng nhập lại',
+                        contentType: ContentType.failure,
+                      ),
+                    );
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                  }
+                }
+              },textInside: "Xác nhận OTP",),
               Center(
                 child: Obx(() {
                   // Truy xuất HandleOtp bằng Get.find()

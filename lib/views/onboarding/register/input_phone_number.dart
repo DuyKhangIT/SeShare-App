@@ -1,8 +1,9 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_app/widget/button_next.dart';
 
-import '../util/global.dart';
+import '../../../util/global.dart';
 
 class InputPhoneNumber extends StatefulWidget {
   const InputPhoneNumber({Key? key}) : super(key: key);
@@ -27,6 +28,13 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        title: Text(
+          'Đăng ký',
+          style: Theme.of(context).textTheme.headline6?.copyWith(
+              color: Theme.of(context).textTheme.headline6?.color,
+              fontSize: 20),
+        ),
+        centerTitle: true ,
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
@@ -46,10 +54,11 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Images',
+              'SeShare',
               style: TextStyle(
                 fontSize: 49,
                 fontFamily: 'Nunito Sans',
+                fontStyle: FontStyle.italic
               ),
             ),
             const SizedBox(
@@ -106,82 +115,68 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                 ],
               ),
             ),
-            Container(
-                margin: const EdgeInsets.only(top: 20),
-                width: double.infinity,
-                height: 45,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Global.blueColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  onPressed: () async {
-                    if (phone.isEmpty) {
+            const SizedBox(height: 20),
+            /// Button Next
+            ButtonNext(
+              onTap: () async {
+                if (phone.isEmpty) {
+                  final snackBar = SnackBar(
+                    elevation: 0,
+                    behavior: SnackBarBehavior.fixed,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Lỗi!',
+                      message: 'Bạn chưa nhập số điện thoại!',
+                      contentType: ContentType.failure,
+                    ),
+                  );
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+                } else {
+                  await auth.verifyPhoneNumber(
+                    phoneNumber: countryCode.text + phone,
+                    timeout: const Duration(seconds: 60),
+                    verificationCompleted: (PhoneAuthCredential credential) {},
+                    verificationFailed: (FirebaseAuthException e) {
                       final snackBar = SnackBar(
                         elevation: 0,
                         behavior: SnackBarBehavior.fixed,
                         backgroundColor: Colors.transparent,
                         content: AwesomeSnackbarContent(
                           title: 'Lỗi!',
-                          message: 'Bạn chưa nhập số điện thoại!',
+                          message: 'Gửi mã otp không thành công!',
                           contentType: ContentType.failure,
                         ),
                       );
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
                         ..showSnackBar(snackBar);
-                    } else {
-                      await auth.verifyPhoneNumber(
-                        phoneNumber: countryCode.text + phone,
-                        timeout: const Duration(seconds: 60),
-                        verificationCompleted:
-                            (PhoneAuthCredential credential) {},
-                        verificationFailed: (FirebaseAuthException e) {
-                          final snackBar = SnackBar(
-                            elevation: 0,
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor: Colors.transparent,
-                            content: AwesomeSnackbarContent(
-                              title: 'Lỗi!',
-                              message: 'Gửi mã otp không thành công!',
-                              contentType: ContentType.failure,
-                            ),
-                          );
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(snackBar);
-                        },
-                        codeSent: (String verificationId, int? resendToken) {
-                          InputPhoneNumber.verify = verificationId;
-                          Navigator.pushNamed(context, 'otp');
-                        },
-                        codeAutoRetrievalTimeout: (String verificationId) {
-                          final snackBar = SnackBar(
-                            elevation: 0,
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor: Colors.transparent,
-                            content: AwesomeSnackbarContent(
-                              title: 'Cảnh báo!',
-                              message: 'OTP đã hết hạn!',
-                              contentType: ContentType.help,
-                            ),
-                          );
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(snackBar);
-                        },
+                    },
+                    codeSent: (String verificationId, int? resendToken) {
+                      InputPhoneNumber.verify = verificationId;
+                      Navigator.pushNamed(context, 'otp');
+                    },
+                    codeAutoRetrievalTimeout: (String verificationId) {
+                      final snackBar = SnackBar(
+                        elevation: 0,
+                        behavior: SnackBarBehavior.fixed,
+                        backgroundColor: Colors.transparent,
+                        content: AwesomeSnackbarContent(
+                          title: 'Cảnh báo!',
+                          message: 'OTP đã hết hạn!',
+                          contentType: ContentType.help,
+                        ),
                       );
-                    }
-                  },
-                  child: const Text(
-                    "Gửi mã",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Nunito Sans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                )),
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(snackBar);
+                    },
+                  );
+                }
+              },
+              textInside: "Gửi mã",
+            ),
           ],
         ),
       ),
