@@ -4,100 +4,81 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:instagram_app/views/onboarding/forgot_password/input_phone_number_for_forgot_password.dart';
-import 'package:instagram_app/views/onboarding/register/input_phone_number.dart';
+import 'package:instagram_app/views/onboarding/forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_view.dart';
+import 'package:instagram_app/views/onboarding/login/login_controller.dart';
+import 'package:instagram_app/views/onboarding/register/input_phone_number_register/input_phone_number_view.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../assets/icons_assets.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController phoneLoginController = TextEditingController();
-  String phoneLogin = "";
-  TextEditingController passwordLoginController = TextEditingController();
-  String passwordLogin = "";
-  void clearTextPhoneLogin() {
-    setState(() {
-      phoneLoginController.clear();
-      phoneLogin = "";
-    });
-  }
-
-  void clearTextPasswordLogin() {
-    setState(() {
-      passwordLoginController.clear();
-      passwordLogin = "";
-    });
-  }
-
+  LoginController loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 150),
+    return GetBuilder<LoginController>(
+        builder: (controller) => SafeArea(
+                child: Scaffold(
+              body: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    /// logo
+                    const Text(
+                      'SeShare',
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontFamily: 'Nunito Sans',
+                          fontStyle: FontStyle.italic),
+                    ),
 
-            /// logo
-            const Align(
-              alignment: Alignment.center,
-              child: Text(
-                'SeShare',
-                style: TextStyle(
-                    fontSize: 40,
-                    fontFamily: 'Nunito Sans',
-                    fontStyle: FontStyle.italic),
+                    formLogin(loginController),
+                    const SizedBox(height: 40),
+                    ButtonNext(onTap: () {}, textInside: "Đăng nhập"),
+                    const SizedBox(height: 50),
+
+                    /// divider
+                    customDivider(),
+                    const SizedBox(height: 50),
+
+                    /// register
+                    RichText(
+                        text: TextSpan(children: [
+                      const TextSpan(
+                          text: 'Bạn không có tải khoản?',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Nunito Sans',
+                              color: Colors.black)),
+                      const TextSpan(text: " "),
+                      TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Get.to(() => const InputPhoneNumber());
+                            },
+                          text: 'Đăng ký.',
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Nunito Sans',
+                              fontStyle: FontStyle.italic,
+                              color: Colors.blue))
+                    ]))
+                  ],
+                ),
               ),
-            ),
-
-            formLogin(),
-            const SizedBox(height: 40),
-            ButtonNext(onTap: () {}, textInside: "Đăng nhập"),
-            const SizedBox(height: 50),
-
-            /// divider
-            customDivider(),
-            const SizedBox(height: 50),
-
-            /// register
-            RichText(
-                text: TextSpan(children: [
-              const TextSpan(
-                  text: 'Bạn không có tải khoản?',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Nunito Sans',
-                      color: Colors.black)),
-              const TextSpan(text: " "),
-              TextSpan(
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      Get.to(() => const InputPhoneNumber());
-                    },
-                  text: 'Đăng ký.',
-                  style: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Nunito Sans',
-                      fontStyle: FontStyle.italic,
-                      color: Colors.blue))
-            ]))
-          ],
-        ),
-      ),
-    ));
+            )));
   }
 
-  Widget formLogin() {
+  Widget formLogin(LoginController loginController) {
+    loginController = Get.put(LoginController());
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(vertical: 20),
@@ -114,8 +95,8 @@ class _LoginState extends State<Login> {
             margin: const EdgeInsets.symmetric(vertical: 15),
             padding: const EdgeInsets.only(left: 16, right: 10),
             child: TextField(
-              controller: phoneLoginController,
-              keyboardType: TextInputType.number,
+              controller: loginController.phoneLoginController,
+              keyboardType: TextInputType.phone,
               autofocus: true,
               cursorColor: Colors.grey,
               inputFormatters: [
@@ -134,12 +115,12 @@ class _LoginState extends State<Login> {
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 counterText: '',
-                suffixIcon: (phoneLoginController.text.isEmpty)
+                suffixIcon: (loginController.phoneLoginController.text.isEmpty)
                     ? const SizedBox()
-                    : phoneLoginController.text.length < 10
+                    : loginController.phoneLoginController.text.length < 10
                         ? GestureDetector(
                             onTap: () {
-                              clearTextPhoneLogin();
+                              loginController.clearTextPhoneLogin();
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12),
@@ -155,7 +136,7 @@ class _LoginState extends State<Login> {
               ),
               onChanged: (value) {
                 setState(() {
-                  phoneLogin = value;
+                  loginController.phoneLogin.value = value;
                 });
               },
               style: const TextStyle(
@@ -178,7 +159,7 @@ class _LoginState extends State<Login> {
             ),
             padding: const EdgeInsets.only(left: 16, right: 10),
             child: TextField(
-              controller: passwordLoginController,
+              controller: loginController.passwordLoginController,
               keyboardType: TextInputType.text,
               autofocus: true,
               cursorColor: Colors.grey,
@@ -195,11 +176,12 @@ class _LoginState extends State<Login> {
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   counterText: '',
-                  suffixIcon: (passwordLoginController.text.isEmpty)
+                  suffixIcon: (loginController
+                          .passwordLoginController.text.isEmpty)
                       ? const SizedBox()
                       : GestureDetector(
                           onTap: () {
-                            clearTextPasswordLogin();
+                            loginController.clearTextPasswordLogin();
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
@@ -210,7 +192,7 @@ class _LoginState extends State<Login> {
                         )),
               onChanged: (value) {
                 setState(() {
-                  passwordLogin = value;
+                  loginController.passwordLogin.value = value;
                 });
               },
               style: const TextStyle(

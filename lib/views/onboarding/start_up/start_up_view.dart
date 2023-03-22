@@ -2,49 +2,54 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:instagram_app/views/onboarding/register/input_phone_number.dart';
+import 'package:instagram_app/views/onboarding/start_up/start_up_controller.dart';
 import 'package:instagram_app/widget/button_next.dart';
-import '../../config/share_preferences.dart';
-import '../../controllers/checkLogIned.dart';
-import '../../util/global.dart';
-import 'login/login.dart';
+import '../login/login_view.dart';
 
-class StartUpScreen extends StatelessWidget {
+class StartUpScreen extends StatefulWidget {
   const StartUpScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StartUpScreen> createState() => _StartUpScreenState();
+}
+
+class _StartUpScreenState extends State<StartUpScreen> {
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              /// logo
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'SeShare',
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontFamily: 'Nunito Sans',
-                      fontStyle: FontStyle.italic),
+    return GetBuilder<StartUpController>(
+      builder: (controller) => SafeArea(
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                /// logo
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'SeShare',
+                    style: TextStyle(
+                        fontSize: 40,
+                        fontFamily: 'Nunito Sans',
+                        fontStyle: FontStyle.italic),
+                  ),
                 ),
-              ),
-              (auth.currentUser == null)
-                  ? welcomeTittle()
-                  : imgAndUserName(auth),
-            ],
+                welcomeTittle()
+                // (auth.currentUser == null)
+                //     ? welcomeTittle()
+                //     : imgAndUserName(auth),
+              ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-          child: ButtonNext(
-            onTap: () {
-              Get.to(() => const Login());
-            },
-            textInside: "Bắt đầu",
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+            child: ButtonNext(
+              onTap: () {
+                Get.to(() => Login());
+              },
+              textInside: "Bắt đầu",
+            ),
           ),
         ),
       ),
@@ -52,8 +57,7 @@ class StartUpScreen extends StatelessWidget {
   }
 
   /// image and user name
-  Widget imgAndUserName(FirebaseAuth auth) {
-    auth = FirebaseAuth.instance;
+  Widget imgAndUserName() {
     return SizedBox(
       height: 500,
       child: Column(
@@ -73,9 +77,7 @@ class StartUpScreen extends StatelessWidget {
               child: const ClipOval(child: Icon(Icons.person))),
           const SizedBox(height: 13),
           Text(
-            (auth.currentUser == null)
-                ? "User"
-                : auth.currentUser!.uid.toString(),
+           "user",
             style: const TextStyle(
               fontSize: 14,
               fontFamily: 'Nunito Sans',

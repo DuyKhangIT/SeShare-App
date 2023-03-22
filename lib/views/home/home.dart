@@ -5,7 +5,7 @@ import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/config/theme_service.dart';
 
 import '../../config/share_preferences.dart';
-import '../onboarding/start_up.dart';
+import '../onboarding/start_up/start_up_view.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Global {
+
+  static String verifyFireBase = "";
+
   static const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
   static const webBackgroundColor = Color.fromRGBO(18, 18, 18, 1);
   static const mobileSearchColor = Color.fromRGBO(38, 38, 38, 1);
