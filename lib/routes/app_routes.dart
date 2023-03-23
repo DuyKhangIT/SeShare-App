@@ -1,28 +1,40 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
-import 'package:instagram_app/views/onboarding/forgot_password/input_otp_forgot_password/input_otp_forgot_password_binding.dart';
-import 'package:instagram_app/views/onboarding/forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_binding.dart';
-import 'package:instagram_app/views/onboarding/login/login_binding.dart';
-import 'package:instagram_app/views/onboarding/register/confirm_register/confirm_register_binding.dart';
-import 'package:instagram_app/views/onboarding/register/input_otp_register/input_otp_binding.dart';
-import 'package:instagram_app/views/onboarding/register/input_password_register/input_password_binding.dart';
-import 'package:instagram_app/views/onboarding/register/input_phone_number_register/input_phone_number_binding.dart';
-import 'package:instagram_app/views/onboarding/register/upload_avatar_register/upload_avatar_binding.dart';
-import 'package:instagram_app/views/onboarding/start_up/star_up_binding.dart';
+import 'package:instagram_app/page/main/post_screen/post_binding.dart';
+import 'package:instagram_app/page/main/post_screen/post_view.dart';
 
-import '../views/home/home.dart';
-import '../views/onboarding/forgot_password/input_otp_forgot_password/input_otp_forgot_password_view.dart';
-import '../views/onboarding/forgot_password/input_password_forgot_password/input_password_forgot_password_binding.dart';
-import '../views/onboarding/forgot_password/input_password_forgot_password/input_password_forgot_password_view.dart';
-import '../views/onboarding/forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_view.dart';
-import '../views/onboarding/login/login_view.dart';
-import '../views/onboarding/register/confirm_register/confirm_register_view.dart';
-import '../views/onboarding/register/input_full_name_register/input_full_name_binding.dart';
-import '../views/onboarding/register/input_full_name_register/input_full_name_view.dart';
-import '../views/onboarding/register/input_otp_register/input_otp_view.dart';
-import '../views/onboarding/register/input_password_register/input_password_view.dart';
-import '../views/onboarding/register/input_phone_number_register/input_phone_number_view.dart';
-import '../views/onboarding/register/upload_avatar_register/upload_avatar_view.dart';
-import '../views/onboarding/start_up/start_up_view.dart';
+import '../page/main/home_screen/home_view.dart';
+import '../page/main/home_screen/home_binding.dart';
+import '../page/main/notification_screen/notification_binding.dart';
+import '../page/main/notification_screen/notification_view.dart';
+import '../page/main/profile_screen/profile_binding.dart';
+import '../page/main/profile_screen/profile_screen_view.dart';
+import '../page/main/search_screen/search_binding.dart';
+import '../page/main/search_screen/search_screen_view.dart';
+import '../page/navigation_bar/navigation_bar_view.dart';
+import '../page/navigation_bar/navigation_bar_binding.dart';
+import '../page/onboarding/forgot_password/input_otp_forgot_password/input_otp_forgot_password_binding.dart';
+import '../page/onboarding/forgot_password/input_otp_forgot_password/input_otp_forgot_password_view.dart';
+import '../page/onboarding/forgot_password/input_password_forgot_password/input_password_forgot_password_binding.dart';
+import '../page/onboarding/forgot_password/input_password_forgot_password/input_password_forgot_password_view.dart';
+import '../page/onboarding/forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_binding.dart';
+import '../page/onboarding/forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_view.dart';
+import '../page/onboarding/login/login_binding.dart';
+import '../page/onboarding/login/login_view.dart';
+import '../page/onboarding/register/confirm_register/confirm_register_binding.dart';
+import '../page/onboarding/register/confirm_register/confirm_register_view.dart';
+import '../page/onboarding/register/input_full_name_register/input_full_name_binding.dart';
+import '../page/onboarding/register/input_full_name_register/input_full_name_view.dart';
+import '../page/onboarding/register/input_otp_register/input_otp_binding.dart';
+import '../page/onboarding/register/input_otp_register/input_otp_view.dart';
+import '../page/onboarding/register/input_password_register/input_password_binding.dart';
+import '../page/onboarding/register/input_password_register/input_password_view.dart';
+import '../page/onboarding/register/input_phone_number_register/input_phone_number_binding.dart';
+import '../page/onboarding/register/input_phone_number_register/input_phone_number_view.dart';
+import '../page/onboarding/register/upload_avatar_register/upload_avatar_binding.dart';
+import '../page/onboarding/register/upload_avatar_register/upload_avatar_view.dart';
+import '../page/onboarding/start_up/star_up_binding.dart';
+import '../page/onboarding/start_up/start_up_view.dart';
+
 
 class AppRoutes {
   static const String startUpScreen = "/seShare_startUp_screen";
@@ -51,8 +63,12 @@ class AppRoutes {
 
   /// home
   static const String homeScreen = "/seShare_home_screen";
+  static const String notificationScreen = "/seShare_Notification_screen";
+  static const String profileScreen = "/seShare_profile_screen";
+  static const String searchScreen = "/seShare_search_screen";
+  static const String postScreen = "/seShare_post_screen";
 
-  static const String appNavigationScreen = '/app_navigation_screen';
+  static const String appNavigationScreen = '/seShare_navigation_screen';
 
   static List<GetPage> pages = [
     GetPage(
@@ -102,11 +118,41 @@ class AppRoutes {
         name: confirmRegisterScreen,
         page: () => ConfirmRegister(),
         binding: ConfirmRegisterBinding()),
-
+    /// navigation bar
+    GetPage(
+      name: appNavigationScreen,
+      page: () => NavigationBar(),
+      binding: NavigationBarBinding(),
+    ),
     /// home
     GetPage(
       name: homeScreen,
       page: () => Home(),
+      binding: HomeBinding(),
+    ),
+    /// notification
+    GetPage(
+      name: notificationScreen,
+      page: () => NotificationScreen(),
+      binding: NotificationBinding(),
+    ),
+    /// profile
+    GetPage(
+      name: profileScreen,
+      page: () => ProfileScreen(),
+      binding: ProfileBinding(),
+    ),
+    /// search
+    GetPage(
+      name: searchScreen,
+      page: () => SearchScreen(),
+      binding: SearchBinding(),
+    ),
+    /// post
+    GetPage(
+      name: postScreen,
+      page: () => PostScreen(),
+      binding: PostBinding(),
     ),
   ];
 }

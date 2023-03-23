@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeService().darkTheme,
       themeMode: ThemeService().getThemeMode(),
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.startUpScreen,
+      initialRoute: AppRoutes.appNavigationScreen,
       getPages: AppRoutes.pages,
       // home: const ResponsiveLayout(
       //     mobileScreenLayout: MobileScreenLayout(),

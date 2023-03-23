@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:instagram_app/views/home/home.dart';
 
 import '../config/share_preferences.dart';
-import '../views/onboarding/login/login_view.dart';
+import '../page/main/home_screen/home_view.dart';
+import '../page/onboarding/login/login_view.dart';
 
 class CheckLogIned extends GetxController{
   void checkAlreadyLoggedIn() async {
