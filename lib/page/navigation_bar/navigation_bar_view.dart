@@ -10,16 +10,16 @@ import '../main/profile_screen/profile_screen_view.dart';
 import '../main/search_screen/search_screen_view.dart';
 import 'navigation_bar_controller.dart';
 
-class NavigationBar extends StatefulWidget {
-  const NavigationBar({Key? key}) : super(key: key);
+class NavigationBarView extends StatefulWidget {
+  const NavigationBarView({Key? key}) : super(key: key);
 
   @override
-  State<NavigationBar> createState() => _NavigationBarState();
+  State<NavigationBarView> createState() => _NavigationBarViewState();
 }
 
 const moonIcon = CupertinoIcons.moon_stars;
 
-class _NavigationBarState extends State<NavigationBar> {
+class _NavigationBarViewState extends State<NavigationBarView> {
   int currentIndex = 0;
 
   List page = [

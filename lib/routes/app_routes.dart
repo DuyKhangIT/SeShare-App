@@ -121,7 +121,7 @@ class AppRoutes {
     /// navigation bar
     GetPage(
       name: appNavigationScreen,
-      page: () => NavigationBar(),
+      page: () => NavigationBarView(),
       binding: NavigationBarBinding(),
     ),
     /// home

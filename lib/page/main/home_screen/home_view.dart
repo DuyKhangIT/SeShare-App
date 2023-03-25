@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/models/story_data.dart';
 
 import '../../../assets/icons_assets.dart';
 import '../../../config/theme_service.dart';
@@ -86,9 +87,14 @@ class _HomeState extends State<Home> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 98,
-                      color: Colors.red,
-                      child: girdViewStory(),
+                      height: 120,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black.withOpacity(0.2),
+                        ),
+                        color: Colors.transparent,
+                      ),
+                      child: listViewStory(homeController),
                     ),
                   ],
                 ),
@@ -96,33 +102,56 @@ class _HomeState extends State<Home> {
             ));
   }
 
-  /// grid view
-  Widget girdViewStory(){
-    return GridView.builder(
-        scrollDirection: Axis.horizontal,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1),
-        itemCount: 6, //Call API
-        itemBuilder: (context, index) {
-          return contentGridViewStory();
-        });
+  /// list view
+  Widget listViewStory(HomeController homeController) {
+    homeController = Get.put(HomeController());
+    return Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 3, //Call API
+          itemBuilder: (context, index) {
+            return contentListViewStory();
+          }),
+    );
   }
-  /// content grid view
-  Widget contentGridViewStory(){
-    return  Container(
-        width: 60,
-        height: 60,
-        margin: EdgeInsets.fromLTRB(10,5,10,5),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.6),
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: Colors.white,
-            width: 1.0,
+
+  /// content list view
+  Widget contentListViewStory() {
+    return Container(
+      width: 80,
+      margin: const EdgeInsets.only(right: 20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              width: 80,
+              height: 80,
+              margin: const EdgeInsets.only(top: 8, bottom: 5),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.redAccent,
+                  width: 3.0,
+                ),
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  ImageAssets.imgTest,
+                  fit: BoxFit.cover,
+                ),
+              )),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text("Duy Khang",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(fontSize: 14, fontFamily: 'Nunito Sans')),
           ),
-        ),
-        child: ClipOval(
-          child: Center(child: Text("avatar")),
-        ));
+        ],
+      ),
+    );
   }
 }

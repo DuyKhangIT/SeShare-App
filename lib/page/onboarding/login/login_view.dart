@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:instagram_app/models/user_request.dart';
+import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 import 'package:instagram_app/util/module.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
@@ -21,6 +23,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   LoginController loginController = Get.put(LoginController());
+
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LoginController>(
@@ -43,7 +47,14 @@ class _LoginState extends State<Login> {
 
                     formLogin(loginController),
                     const SizedBox(height: 40),
-                    ButtonNext(onTap: () {}, textInside: "Đăng nhập"),
+                    ButtonNext(onTap: () async {
+                      //Get.to(() => const NavigationBarView());
+                      UserRequest? userRequest =new UserRequest(loginController.phoneLoginController.text, loginController.passwordLoginController.text);
+                      // userRequest?.mPhone = loginController.phoneLoginController.text;
+                      // userRequest?.mPassword = loginController.passwordLoginController.text;
+                      print(userRequest);
+                      await loginController.authenticate(userRequest);
+                    }, textInside: "Đăng nhập"),
                     const SizedBox(height: 50),
 
                     /// divider
@@ -117,7 +128,7 @@ class _LoginState extends State<Login> {
                 counterText: '',
                 suffixIcon: (loginController.phoneLoginController.text.isEmpty)
                     ? const SizedBox()
-                    : removeZeroAtFirstDigitPhoneNumber(loginController.phoneLoginController.text).length >= 11
+                    : removeZeroAtFirstDigitPhoneNumber(loginController.phoneLoginController.text).length < 9
                         ? GestureDetector(
                             onTap: () {
                               loginController.clearTextPhoneLogin();

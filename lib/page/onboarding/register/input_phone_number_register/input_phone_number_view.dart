@@ -127,7 +127,7 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                               ? const SizedBox()
                               : removeZeroAtFirstDigitPhoneNumber(inputPhoneNumberController
                               .phoneRegisterController.text).length <
-                                      10
+                                      9
                                   ? GestureDetector(
                                       onTap: () {
                                         inputPhoneNumberController
@@ -153,6 +153,7 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                                 value;
                             Global.phoneNumber =
                                 inputPhoneNumberController.phoneRegister.value;
+                            print(inputPhoneNumberController.phoneRegister.value);
                           });
                         },
                       ),

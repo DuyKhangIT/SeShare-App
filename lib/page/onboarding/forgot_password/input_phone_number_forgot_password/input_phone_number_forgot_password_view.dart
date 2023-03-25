@@ -130,8 +130,8 @@ class _InputPhoneNumberForgotPasswordState
                                               .isEmpty)
                                           ? const SizedBox()
                                           : removeZeroAtFirstDigitPhoneNumber(controller.phoneForgotPasswordController
-                                          .text).length <=
-                                                  8
+                                          .text).length <
+                                                  9
                                               ? GestureDetector(
                                                   onTap: () {
                                                     controller

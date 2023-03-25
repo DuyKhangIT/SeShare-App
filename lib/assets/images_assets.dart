@@ -1,3 +1,3 @@
 class ImageAssets {
-  static const String imgLogo = 'assets/images/ic_logo.png';
+  static const String imgTest = 'assets/images/ig_test.png';
 }

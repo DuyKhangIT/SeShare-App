@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/onboarding/start_up/start_up_controller.dart';
 import 'package:instagram_app/widget/button_next.dart';
+import 'package:lottie/lottie.dart';
 import '../login/login_view.dart';
 
 class StartUpScreen extends StatefulWidget {
@@ -13,7 +14,21 @@ class StartUpScreen extends StatefulWidget {
   State<StartUpScreen> createState() => _StartUpScreenState();
 }
 
-class _StartUpScreenState extends State<StartUpScreen> {
+class _StartUpScreenState extends State<StartUpScreen>
+    with TickerProviderStateMixin {
+  late final AnimationController animationController;
+  @override
+  void initState() {
+    animationController = AnimationController(vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<StartUpController>(
@@ -35,20 +50,34 @@ class _StartUpScreenState extends State<StartUpScreen> {
                         fontStyle: FontStyle.italic),
                   ),
                 ),
-                welcomeTittle()
-                // (auth.currentUser == null)
-                //     ? welcomeTittle()
-                //     : imgAndUserName(auth),
+                welcomeTittle(),
+                Lottie.asset(IconsAssets.icSplash,
+                    controller: animationController,
+                  onLoaded: (composition) {
+                    // Configure the AnimationController with the duration of the
+                    // Lottie file and start the animation.
+                    animationController
+                      ..duration = composition.duration
+                      ..forward();
+
+                    // ..forward().then((value) =>
+                    //       Get.to(() => Login())
+                    //   );
+                  },
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child:
+                  //CircularProgressIndicator(),
+                  ButtonNext(
+                    onTap: () {
+                      Get.to(() => Login());
+                    },
+                    textInside: "Bắt đầu",
+                  ),
+                ),
               ],
-            ),
-          ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-            child: ButtonNext(
-              onTap: () {
-                Get.to(() => Login());
-              },
-              textInside: "Bắt đầu",
             ),
           ),
         ),
@@ -56,43 +85,10 @@ class _StartUpScreenState extends State<StartUpScreen> {
     );
   }
 
-  /// image and user name
-  Widget imgAndUserName() {
-    return SizedBox(
-      height: 500,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-              width: 85,
-              height: 85,
-              margin: const EdgeInsets.only(top: 52),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1,
-                ),
-              ),
-              child: const ClipOval(child: Icon(Icons.person))),
-          const SizedBox(height: 13),
-          Text(
-           "user",
-            style: const TextStyle(
-              fontSize: 14,
-              fontFamily: 'Nunito Sans',
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   /// Welcome tittle
   Widget welcomeTittle() {
     return Padding(
-      padding: const EdgeInsets.only(top: 100),
+      padding: const EdgeInsets.only(top: 100,bottom: 40),
       child: Align(
         alignment: Alignment.topLeft,
         child: Column(

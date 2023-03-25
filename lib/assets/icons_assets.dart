@@ -4,5 +4,6 @@ class IconsAssets {
   static const String icMessage = 'assets/icons/ic_message.png';
   static const String icUpload = 'assets/icons/ic_upload.png';
   static const String icPost = 'assets/icons/ic_post.png';
+  static const String icSplash = 'assets/icons/ic_splash.json';
 
 }
