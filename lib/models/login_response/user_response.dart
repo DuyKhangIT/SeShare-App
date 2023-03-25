@@ -5,9 +5,9 @@ class UserResponse {
   String? mAge = "";
   String? mGender = "";
   String? mAvatarPath = "";
-  List<String>? mPhoto = null;
-  List<String>? mFriends = null;
-  List<String>? mStatus = null;
+  List<String>? mPhoto;
+  List<String>? mFriends;
+  List<String>? mStatus;
   int? mV = 0;
   String? mUpdatedAt = "";
   UserResponse(this.mId, this.mPhone, this.mPassword, this.mGender, this.mAge,
@@ -16,26 +16,28 @@ class UserResponse {
   factory UserResponse.fromJson(Map<String, dynamic> json) {
     List<String> photoResponse = [];
     if (json['photos'] != null) {
-      List<String> arrData = json['photos'];
+      List<dynamic> arrData = json['photos'];
       for (var i = 0; i < arrData.length; i++) {
-        photoResponse
-            .add(json[arrData[i]]);
+        String photoUrl = arrData[i];
+        photoResponse.add(photoUrl);
       }
     }
     List<String> friendResponse = [];
     if (json['friends'] != null) {
-      List<String> arrData = json['friends'];
+      List<dynamic> arrData = json['friends'];
       for (var i = 0; i < arrData.length; i++) {
+        String friend = arrData[i];
         friendResponse
-            .add(json[arrData[i]]);
+            .add(friend);
       }
     }
     List<String> statusResponse = [];
     if (json['status'] != null) {
-      List<String> arrData = json['status'];
+      List<dynamic> arrData = json['status'];
       for (var i = 0; i < arrData.length; i++) {
+        String status = arrData[i];
         statusResponse
-            .add(json[arrData[i]]);
+            .add(status);
       }
     }
     return UserResponse(

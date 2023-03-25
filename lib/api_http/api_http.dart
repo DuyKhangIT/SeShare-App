@@ -50,17 +50,17 @@ class HttpHelper {
       // check for any errors
       if (response.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(response.body);
-        if (response.statusCode == 500) {
-          try {
-            String error = body['error'];
-            throw APIException(error, response.statusCode, null);
-          } catch (e) {
-            throw APIException(body['message'], response.statusCode, null);
-          }
-        } else {
-          throw APIException(
-              body['message'], response.statusCode, body['statusText']);
-        }
+        // if (response.statusCode == 500) {
+        //   try {
+        //     String error = body['error'];
+        //     throw APIException(error, response.statusCode, null);
+        //   } catch (e) {
+        //     throw APIException(body['message'], response.statusCode, null);
+        //   }
+        // } else {
+        //   throw APIException(
+        //       body['message'], response.statusCode, body['statusText']);
+        // }
       }
       return response;
     } on http.ClientException {
