@@ -46,6 +46,8 @@ dependencies:
   lottie: ^2.3.0
   #http:
   http: ^0.13.5
+  #percent_indicator:
+  percent_indicator: ^4.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:instagram_app/page/main/home_screen/story_page/story_page_binding.dart';
+import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/post_screen/post_binding.dart';
 import 'package:instagram_app/page/main/post_screen/post_view.dart';
 
@@ -67,6 +69,7 @@ class AppRoutes {
   static const String profileScreen = "/seShare_profile_screen";
   static const String searchScreen = "/seShare_search_screen";
   static const String postScreen = "/seShare_post_screen";
+  static const String storyScreen = "/seShare_story_screen";
 
   static const String appNavigationScreen = '/seShare_navigation_screen';
 
@@ -153,6 +156,12 @@ class AppRoutes {
       name: postScreen,
       page: () => PostScreen(),
       binding: PostBinding(),
+    ),
+    /// story
+    GetPage(
+      name: storyScreen,
+      page: () => StoryPage(),
+      binding: StoryBinding(),
     ),
   ];
 }

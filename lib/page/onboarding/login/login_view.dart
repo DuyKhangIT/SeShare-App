@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:instagram_app/models/user_request.dart';
-import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 import 'package:instagram_app/util/module.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../assets/icons_assets.dart';
+import '../../navigation_bar/navigation_bar_view.dart';
 import '../forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_view.dart';
 import '../register/input_phone_number_register/input_phone_number_view.dart';
 import 'login_controller.dart';
@@ -24,71 +22,83 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   LoginController loginController = Get.put(LoginController());
 
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LoginController>(
         builder: (controller) => SafeArea(
                 child: Scaffold(
-              body: Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    /// logo
-                    const Text(
-                      'SeShare',
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontFamily: 'Nunito Sans',
-                          fontStyle: FontStyle.italic),
-                    ),
-
-                    formLogin(loginController),
-                    const SizedBox(height: 40),
-                    ButtonNext(onTap: () async {
-                      //Get.to(() => const NavigationBarView());
-                      UserRequest? userRequest =new UserRequest(loginController.phoneLoginController.text, loginController.passwordLoginController.text);
-                      // userRequest?.mPhone = loginController.phoneLoginController.text;
-                      // userRequest?.mPassword = loginController.passwordLoginController.text;
-                      print(userRequest);
-                      await loginController.authenticate(userRequest);
-                    }, textInside: "Đăng nhập"),
-                    const SizedBox(height: 50),
-
-                    /// divider
-                    customDivider(),
-                    const SizedBox(height: 50),
-
-                    /// register
-                    RichText(
-                        text: TextSpan(children: [
-                      const TextSpan(
-                          text: 'Bạn không có tải khoản?',
+              body: Stack(
+                children: [
+                  Obx(() => loginController.isLoading.value == true
+                      ? const Center(child: CircularProgressIndicator())
+                      : Container()),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        /// logo
+                        const Text(
+                          'SeShare',
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 40,
                               fontFamily: 'Nunito Sans',
-                              color: Colors.black)),
-                      const TextSpan(text: " "),
-                      TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Get.to(() => const InputPhoneNumber());
+                              fontStyle: FontStyle.italic),
+                        ),
+
+                        formLogin(loginController),
+                        const SizedBox(height: 40),
+                        ButtonNext(
+                            onTap: () {
+                              if (loginController.phoneLogin.isNotEmpty &&
+                                  loginController.passwordLogin.isNotEmpty) {
+                                UserRequest? userRequest = UserRequest(
+                                    removeZeroAtFirstDigitPhoneNumber(
+                                        loginController.phoneLogin),
+                                    removeZeroAtFirstDigitPhoneNumber(
+                                        loginController.passwordLogin));
+                                loginController.authenticate(userRequest);
+                              }
                             },
-                          text: 'Đăng ký.',
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Nunito Sans',
-                              fontStyle: FontStyle.italic,
-                              color: Colors.blue))
-                    ]))
-                  ],
-                ),
+                            textInside: "Đăng nhập"),
+                        const SizedBox(height: 50),
+
+                        /// divider
+                        customDivider(),
+                        const SizedBox(height: 50),
+
+                        /// register
+                        RichText(
+                            text: TextSpan(children: [
+                          const TextSpan(
+                              text: 'Bạn không có tải khoản?',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Nunito Sans',
+                                  color: Colors.black)),
+                          const TextSpan(text: " "),
+                          TextSpan(
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Get.to(() => const InputPhoneNumber());
+                                },
+                              text: 'Đăng ký.',
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Nunito Sans',
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.blue))
+                        ]))
+                      ],
+                    ),
+                  ),
+                ],
               ),
             )));
   }
 
+  /// form login
   Widget formLogin(LoginController loginController) {
     loginController = Get.put(LoginController());
     return Container(
@@ -128,7 +138,10 @@ class _LoginState extends State<Login> {
                 counterText: '',
                 suffixIcon: (loginController.phoneLoginController.text.isEmpty)
                     ? const SizedBox()
-                    : removeZeroAtFirstDigitPhoneNumber(loginController.phoneLoginController.text).length < 9
+                    : removeZeroAtFirstDigitPhoneNumber(
+                                    loginController.phoneLoginController.text)
+                                .length <
+                            9
                         ? GestureDetector(
                             onTap: () {
                               loginController.clearTextPhoneLogin();
@@ -147,7 +160,8 @@ class _LoginState extends State<Login> {
               ),
               onChanged: (value) {
                 setState(() {
-                  loginController.phoneLogin.value = value;
+                  loginController.phoneLogin = value;
+                  loginController.update();
                 });
               },
               style: const TextStyle(
@@ -170,6 +184,7 @@ class _LoginState extends State<Login> {
             ),
             padding: const EdgeInsets.only(left: 16, right: 10),
             child: TextField(
+              obscureText: !loginController.isShowPassword.value,
               controller: loginController.passwordLoginController,
               keyboardType: TextInputType.text,
               cursorColor: Colors.grey,
@@ -191,18 +206,23 @@ class _LoginState extends State<Login> {
                       ? const SizedBox()
                       : GestureDetector(
                           onTap: () {
-                            loginController.clearTextPasswordLogin();
+                            loginController.isShowPassword.value =
+                                !loginController.isShowPassword.value;
+                            loginController.update();
                           },
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Image.asset(
-                              IconsAssets.icClearText,
-                            ),
-                          ),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Obx(() => loginController
+                                          .isShowPassword.value ==
+                                      true
+                                  ? Icon(Icons.visibility, color: Colors.black)
+                                  : Icon(Icons.visibility_off,
+                                      color: Colors.black))),
                         )),
               onChanged: (value) {
                 setState(() {
-                  loginController.passwordLogin.value = value;
+                  loginController.passwordLogin = value;
+                  loginController.update();
                 });
               },
               style: const TextStyle(

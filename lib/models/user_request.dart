@@ -1,6 +1,6 @@
 class UserRequest {
-  String? mPhone;
-  String? mPassword;
+  String mPhone;
+  String mPassword;
 
   UserRequest(this.mPhone, this.mPassword);
 

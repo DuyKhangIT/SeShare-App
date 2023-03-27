@@ -48,41 +48,81 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                   selectedFontSize: 0,
                   unselectedFontSize: 0,
                   type: BottomNavigationBarType.fixed,
-                  selectedItemColor:
-                      Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                  unselectedItemColor:
-                      Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white54
-                          : Colors.black.withOpacity(0.4),
                   showUnselectedLabels: false,
                   showSelectedLabels: false,
                   elevation: 0,
                   items: [
-                    const BottomNavigationBarItem(
-                      icon: Icon(Icons.home_outlined, size: 25.0),
-                      label: '',
-                    ),
-                    const BottomNavigationBarItem(
-                      icon: Icon(Icons.search, size: 25.0),
-                      label: '',
-                    ),
                     BottomNavigationBarItem(
-                      icon: Image.asset(IconsAssets.icPost,
-                          width: 25,
-                          height: 25,
+                      activeIcon: Image.asset(IconsAssets.icHomeActive,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black),
+                      icon: Image.asset(IconsAssets.icHome,
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
                               : Colors.black),
                       label: '',
                     ),
-                    const BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.heart, size: 25.0),
+                    BottomNavigationBarItem(
+                      activeIcon: Image.asset(IconsAssets.icSearchActive,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black),
+                      icon: Image.asset(IconsAssets.icSearch,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black),
                       label: '',
                     ),
-                    const BottomNavigationBarItem(
-                      icon: Icon(Icons.person_outline_outlined, size: 25.0),
+                    BottomNavigationBarItem(
+                      icon: Image.asset(IconsAssets.icPost,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black),
+                      label: '',
+                    ),
+                    BottomNavigationBarItem(
+                      activeIcon: Image.asset(IconsAssets.icNotificationActive,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black),
+                      icon: Image.asset(IconsAssets.icNotification,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black.withOpacity(0.8)),
+                      label: '',
+                    ),
+                    BottomNavigationBarItem(
+                      activeIcon: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.blue,
+                              width: 2.0,
+                            ),
+                          ),
+                          child: ClipOval(
+                            child: Image.asset(
+                              ImageAssets.imgTet,
+                              fit: BoxFit.cover,
+                            ),
+                          )),
+                      icon: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: const BoxDecoration(
+                            color: Colors.transparent,
+                            shape: BoxShape.circle,
+                          ),
+                          child: ClipOval(
+                            child: Image.asset(
+                              ImageAssets.imgTet,
+                              fit: BoxFit.cover,
+                            ),
+                          )),
                       label: '',
                     ),
                   ],

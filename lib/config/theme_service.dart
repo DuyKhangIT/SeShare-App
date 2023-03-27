@@ -6,15 +6,17 @@ import '../util/global.dart';
 
 class ThemeService {
   final lightTheme = ThemeData.light().copyWith(
-      primaryColor: Colors.blueGrey.shade300,
+      primaryColor: Colors.white,
       appBarTheme: const AppBarTheme(
-        color: Colors.white
+          color: Colors.transparent
       ),
-      dividerColor: Global.mobileBackgroundColor);
+      dividerColor: Colors.black);
   final darkTheme = ThemeData.dark().copyWith(
       primaryColor: Colors.black,
-      appBarTheme: const AppBarTheme(),
-      dividerColor: Colors.white54);
+      appBarTheme: const AppBarTheme(
+        color: Colors.transparent
+      ),
+      dividerColor: Colors.black);
 
   final _getStorage = GetStorage();
   final _darkThemeKey = 'isDarkTheme';

@@ -1,17 +1,15 @@
 class UserResponse {
-  String? mId = "";
-  String? mPhone = "";
-  String? mPassword = "";
+  String mId = "";
+  String mPhone = "";
+  String mPassword = "";
   String? mAge = "";
   String? mGender = "";
   String? mAvatarPath = "";
   List<String>? mPhoto;
   List<String>? mFriends;
-  List<String>? mStatus;
-  int? mV = 0;
   String? mUpdatedAt = "";
   UserResponse(this.mId, this.mPhone, this.mPassword, this.mGender, this.mAge,
-      this.mAvatarPath,this.mPhoto,this.mFriends,this.mStatus,this.mV,this.mUpdatedAt);
+      this.mAvatarPath,this.mPhoto,this.mFriends,this.mUpdatedAt);
   UserResponse.buildDefault();
   factory UserResponse.fromJson(Map<String, dynamic> json) {
     List<String> photoResponse = [];
@@ -31,15 +29,6 @@ class UserResponse {
             .add(friend);
       }
     }
-    List<String> statusResponse = [];
-    if (json['status'] != null) {
-      List<dynamic> arrData = json['status'];
-      for (var i = 0; i < arrData.length; i++) {
-        String status = arrData[i];
-        statusResponse
-            .add(status);
-      }
-    }
     return UserResponse(
       json['_id'],
       json['phone'],
@@ -49,8 +38,6 @@ class UserResponse {
       json['avatar_path'],
       photoResponse,
       friendResponse,
-      statusResponse,
-      json['__v'],
       json['updatedAt'],
     );
   }
