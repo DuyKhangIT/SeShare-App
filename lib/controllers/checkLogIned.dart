@@ -7,7 +7,7 @@ import '../page/onboarding/login/login_view.dart';
 class CheckLogIned extends GetxController{
   void checkAlreadyLoggedIn() async {
     String? userId = await ConfigSharedPreferences().getStringValue(
-        SharedData.USER_ID.toString(),
+        SharedData.TOKEN.toString(),
         defaultValue: "");
     if (userId.isEmpty || userId == "") {
       Get.to(() =>  Login());

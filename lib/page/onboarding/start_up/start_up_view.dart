@@ -34,52 +34,51 @@ class _StartUpScreenState extends State<StartUpScreen>
     return GetBuilder<StartUpController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  /// logo
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'SeShare',
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontFamily: 'Nunito Sans',
-                          fontStyle: FontStyle.italic),
-                    ),
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                /// logo
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'SeShare',
+                    style: TextStyle(
+                        fontSize: 40,
+                        fontFamily: 'Nunito Sans',
+                        fontStyle: FontStyle.italic),
                   ),
-                  welcomeTittle(),
-                  Lottie.asset(IconsAssets.icSplash,
-                      controller: animationController,
-                    onLoaded: (composition) {
-                      // Configure the AnimationController with the duration of the
-                      // Lottie file and start the animation.
-                      animationController
-                        ..duration = composition.duration
-                        ..forward();
+                ),
+                welcomeTittle(),
+                Lottie.asset(AnimationAssets.icSplash,
+                    controller: animationController,
+                  repeat: true,
+                  reverse: true,
+                  onLoaded: (composition) {
+                    // Configure the AnimationController with the duration of the
+                    // Lottie file and start the animation.
+                    animationController
+                      ..duration = composition.duration
+                      ..forward();
 
-                      // ..forward().then((value) =>
-                      //       Get.to(() => Login())
-                      //   );
-                    },
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40),
-                    child:
-                    //CircularProgressIndicator(),
-                    ButtonNext(
-                      onTap: () {
-                        Get.to(() => Login());
-                      },
-                      textInside: "Bắt đầu",
-                    ),
-                  ),
-                ],
-              ),
+                    // ..forward().then((value) =>
+                    //       Get.to(() => Login())
+                    //   );
+                  },
+                ),
+              ],
+            ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+            child:
+            //CircularProgressIndicator(),
+            ButtonNext(
+              onTap: () {
+                Get.to(() => Login());
+              },
+              textInside: "Bắt đầu",
             ),
           ),
         ),
@@ -90,7 +89,7 @@ class _StartUpScreenState extends State<StartUpScreen>
   /// Welcome tittle
   Widget welcomeTittle() {
     return Padding(
-      padding: const EdgeInsets.only(top: 100,bottom: 40),
+      padding: const EdgeInsets.only(top: 60,bottom: 30),
       child: Align(
         alignment: Alignment.topLeft,
         child: Column(

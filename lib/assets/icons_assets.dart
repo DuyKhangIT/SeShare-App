@@ -1,7 +1,7 @@
 class IconsAssets {
   static const String icClearText = 'assets/icons/ic_clear.png';
   static const String icChecked = 'assets/icons/ic_checked.png';
-  static const String icMessage = 'assets/icons/ic_message.png';
+  static const String icChat = 'assets/icons/ic_chat.png';
   static const String icUpload = 'assets/icons/ic_upload.png';
   static const String icPost = 'assets/icons/ic_post.png';
   static const String icDot = 'assets/icons/ic_dot.png';
@@ -18,6 +18,9 @@ class IconsAssets {
   static const String icNotificationActive = 'assets/icons/ic_notification_active.png';
   static const String icProfile = 'assets/icons/ic_profile.png';
   static const String icProfileActive = 'assets/icons/ic_profile_active.png';
-  static const String icSplash = 'assets/icons/ic_splash.json';
+  static const String icGridView = 'assets/icons/ic_gridview.png';
+  static const String icProfilePerson = 'assets/icons/ic_profile_person.png';
+  static const String icMenuSetting = 'assets/icons/ic_menu.png';
+
 
 }

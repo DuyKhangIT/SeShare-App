@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/widget/avatar_circle.dart';
 
+import '../../../config/theme_service.dart';
 import 'notification_controller.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -12,12 +15,162 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  NotificationController notificationController = Get.put(NotificationController());
+  NotificationController notificationController =
+      Get.put(NotificationController());
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<NotificationController>(builder: (controller)=> Scaffold(
-      body: Center(child: Text("Notification screen")),
-    ));
+    return GetBuilder<NotificationController>(
+        builder: (controller) => Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              'Thông báo',
+              style: Theme.of(context).textTheme.headline6?.copyWith(
+                  color: Theme.of(context).textTheme.headline6?.color,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold),
+            ),
+            elevation: 0,
+          ),
+              body: ListView.builder(
+                  itemCount: 3,
+                  itemBuilder: (context, index) =>
+                      contentNotificationWithAddFriend()),
+            ));
+  }
+
+  Widget contentNotification() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            margin: const EdgeInsets.only(right: 15),
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                ImageAssets.imgTet,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const Text(
+            "Ken đã thích bài của bạn.",
+            style: TextStyle(
+                fontFamily: 'Nunito Sans',
+                fontSize: 14,
+                fontWeight: FontWeight.w400),
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                width: 35,
+                height: 35,
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                child: Image.asset(
+                  ImageAssets.imgTet,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget contentNotificationWithAddFriend() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            margin: const EdgeInsets.only(right: 15),
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+            child: ClipOval(
+              child: Image.asset(
+                ImageAssets.imgTet,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const Text(
+            //"Vũ đã bắt đầu theo dõi bạn."
+            "An đã theo dõi lại bạn"
+            ,
+            style: TextStyle(
+                fontFamily: 'Nunito Sans',
+                fontSize: 14,
+                fontWeight: FontWeight.w400),
+          ),
+          /// other user accept follow of you
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                width: 90,
+                height: 28,
+                alignment: Alignment.center,
+                decoration:  BoxDecoration(
+                  color: Colors.white,
+                    border: Border.all(color: Colors.black.withOpacity(0.2)),
+                  borderRadius: BorderRadius.circular(5)
+                ),
+                child: const Text(
+                  "Nhắn tin",
+                    style: TextStyle(
+                        fontFamily: 'Nunito Sans',
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold)
+                )
+              ),
+            ),
+          ),
+          /// have a user follow you
+          // Expanded(
+          //   child: Align(
+          //     alignment: Alignment.centerRight,
+          //     child: Container(
+          //         width: 90,
+          //         height: 28,
+          //         alignment: Alignment.center,
+          //         decoration:  BoxDecoration(
+          //             color: Colors.blue,
+          //             border: Border.all(color: Colors.blue.withOpacity(0.4)),
+          //             borderRadius: BorderRadius.circular(5)
+          //         ),
+          //         child: const Text(
+          //             "Theo dõi",
+          //             style: TextStyle(
+          //                 color: Colors.white,
+          //                 fontFamily: 'Nunito Sans',
+          //                 fontSize: 13,
+          //                 fontWeight: FontWeight.bold)
+          //         )
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
+    );
   }
 }
-

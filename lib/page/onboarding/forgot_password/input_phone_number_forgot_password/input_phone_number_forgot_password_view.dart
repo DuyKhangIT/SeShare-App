@@ -170,65 +170,66 @@ class _InputPhoneNumberForgotPasswordState
                     /// Button Next
                     ButtonNext(
                       onTap: () async {
-                        if (controller.phoneForgotPassword.value.isEmpty) {
-                          final snackBar = SnackBar(
-                            elevation: 0,
-                            behavior: SnackBarBehavior.fixed,
-                            backgroundColor: Colors.transparent,
-                            content: AwesomeSnackbarContent(
-                              title: 'Lỗi!',
-                              message: 'Bạn chưa nhập số điện thoại!',
-                              contentType: ContentType.failure,
-                            ),
-                          );
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(snackBar);
-                        } else {
-                          await controller.auth.verifyPhoneNumber(
-                            phoneNumber: controller.countryCode +
-                                controller.phoneForgotPassword.value,
-                            timeout: const Duration(seconds: 60),
-                            verificationCompleted:
-                                (PhoneAuthCredential credential) {},
-                            verificationFailed: (FirebaseAuthException e) {
-                              final snackBar = SnackBar(
-                                elevation: 0,
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor: Colors.transparent,
-                                content: AwesomeSnackbarContent(
-                                  title: 'Lỗi!',
-                                  message: 'Gửi mã otp không thành công!',
-                                  contentType: ContentType.failure,
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            },
-                            codeSent:
-                                (String verificationId, int? resendToken) {
-                              InputPhoneNumberForgotPassword.verify =
-                                  verificationId;
-                              Get.to(() => const InputOTPForgotPassword());
-                            },
-                            codeAutoRetrievalTimeout: (String verificationId) {
-                              final snackBar = SnackBar(
-                                elevation: 0,
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor: Colors.transparent,
-                                content: AwesomeSnackbarContent(
-                                  title: 'Cảnh báo!',
-                                  message: 'OTP đã hết hạn!',
-                                  contentType: ContentType.help,
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            },
-                          );
-                        }
+                        Get.to(() => const InputOTPForgotPassword());
+                        // if (controller.phoneForgotPassword.value.isEmpty) {
+                        //   final snackBar = SnackBar(
+                        //     elevation: 0,
+                        //     behavior: SnackBarBehavior.fixed,
+                        //     backgroundColor: Colors.transparent,
+                        //     content: AwesomeSnackbarContent(
+                        //       title: 'Lỗi!',
+                        //       message: 'Bạn chưa nhập số điện thoại!',
+                        //       contentType: ContentType.failure,
+                        //     ),
+                        //   );
+                        //   ScaffoldMessenger.of(context)
+                        //     ..hideCurrentSnackBar()
+                        //     ..showSnackBar(snackBar);
+                        // } else {
+                        //   await controller.auth.verifyPhoneNumber(
+                        //     phoneNumber: controller.countryCode +
+                        //         controller.phoneForgotPassword.value,
+                        //     timeout: const Duration(seconds: 60),
+                        //     verificationCompleted:
+                        //         (PhoneAuthCredential credential) {},
+                        //     verificationFailed: (FirebaseAuthException e) {
+                        //       final snackBar = SnackBar(
+                        //         elevation: 0,
+                        //         behavior: SnackBarBehavior.fixed,
+                        //         backgroundColor: Colors.transparent,
+                        //         content: AwesomeSnackbarContent(
+                        //           title: 'Lỗi!',
+                        //           message: 'Gửi mã otp không thành công!',
+                        //           contentType: ContentType.failure,
+                        //         ),
+                        //       );
+                        //       ScaffoldMessenger.of(context)
+                        //         ..hideCurrentSnackBar()
+                        //         ..showSnackBar(snackBar);
+                        //     },
+                        //     codeSent:
+                        //         (String verificationId, int? resendToken) {
+                        //       InputPhoneNumberForgotPassword.verify =
+                        //           verificationId;
+                        //       Get.to(() => const InputOTPForgotPassword());
+                        //     },
+                        //     codeAutoRetrievalTimeout: (String verificationId) {
+                        //       final snackBar = SnackBar(
+                        //         elevation: 0,
+                        //         behavior: SnackBarBehavior.fixed,
+                        //         backgroundColor: Colors.transparent,
+                        //         content: AwesomeSnackbarContent(
+                        //           title: 'Cảnh báo!',
+                        //           message: 'OTP đã hết hạn!',
+                        //           contentType: ContentType.help,
+                        //         ),
+                        //       );
+                        //       ScaffoldMessenger.of(context)
+                        //         ..hideCurrentSnackBar()
+                        //         ..showSnackBar(snackBar);
+                        //     },
+                        //   );
+                        // }
                       },
                       textInside: "Gửi mã",
                     ),

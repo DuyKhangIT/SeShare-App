@@ -28,14 +28,14 @@ class _HomeState extends State<Home> {
         builder: (controller) => SafeArea(
               child: Scaffold(
                 appBar: AppBar(
-                  automaticallyImplyLeading: false,
                   title: Text(
-                    'SeShare',
+                    'Trang chủ',
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                         color: Theme.of(context).textTheme.headline6?.color,
                         fontSize: 22,
-                        fontStyle: FontStyle.italic),
+                        fontWeight: FontWeight.bold),
                   ),
+                  centerTitle: true,
                   actions: [
                     GestureDetector(
                       onTap: () {
@@ -72,24 +72,38 @@ class _HomeState extends State<Home> {
                               : Colors.black,
                           BlendMode.srcIn,
                         ),
-                        child: Image.asset(IconsAssets.icShare),
+                        child: Image.asset(IconsAssets.icChat),
                       ),
                     )
                   ],
                   elevation: 0,
                 ),
                 body: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 110,
+                      height: 130,
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.black.withOpacity(0.1),
                         ),
                         color: Colors.transparent,
                       ),
-                      child: Expanded(child: listViewStory(homeController)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding:  EdgeInsets.only(left: 20),
+                            child: Text("Stories", style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Nunito Sans')),
+                          ),
+                          Expanded(child: listViewStory(homeController)),
+                        ],
+                      ),
                     ),
                     Expanded(child: listViewPost())
                   ],
@@ -115,8 +129,9 @@ class _HomeState extends State<Home> {
   /// list view story
   Widget listViewPost() {
     return ListView.builder(
+        padding: const EdgeInsets.only(bottom: 100),
         scrollDirection: Axis.vertical,
-        itemCount: 4, //Call API
+        itemCount: 2, //Call API
         itemBuilder: (context, index) {
           return contentListViewPost();
         });
@@ -151,7 +166,13 @@ class _HomeState extends State<Home> {
   /// content list view post
   Widget contentListViewPost() {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.grey.withOpacity(0.4)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -220,110 +241,94 @@ class _HomeState extends State<Home> {
             ),
           ),
           const SizedBox(height: 16),
-          Image.asset(ImageAssets.imgTet),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(36),
+                  child: Image.asset(ImageAssets.imgTet))),
 
-          /// icon like + cmt + share + save
+          /// icon like + cmt
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: 120,
+                Container(
+                  constraints: BoxConstraints(maxWidth: 200),
+                  padding: EdgeInsets.symmetric(horizontal: 14),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       /// ic like
-                      ColorFiltered(
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                          BlendMode.srcIn,
+                      Container(
+                        constraints: const BoxConstraints(maxWidth: 80),
+                        child: Row(
+                          children: [
+                            ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                BlendMode.srcIn,
+                              ),
+                              child: Image.asset(IconsAssets.icLike),
+                            ),
+                            const SizedBox(width: 10),
+                            Container(
+                              constraints: const BoxConstraints(maxWidth: 45),
+                              child: Text("10.000",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      ?.copyWith(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .headline6
+                                              ?.color,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold)),
+                            ),
+                          ],
                         ),
-                        child: Image.asset(IconsAssets.icLike),
                       ),
 
                       /// ic cmt
-                      ColorFiltered(
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                          BlendMode.srcIn,
+                      Container(
+                        constraints: BoxConstraints(maxWidth: 80),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                BlendMode.srcIn,
+                              ),
+                              child: Image.asset(IconsAssets.icComment),
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                              constraints: BoxConstraints(maxWidth: 45),
+                              child: Text(
+                                "10.000",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    ?.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            ?.color,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
                         ),
-                        child: Image.asset(IconsAssets.icComment),
-                      ),
-
-                      /// ic share
-                      ColorFiltered(
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                          BlendMode.srcIn,
-                        ),
-                        child: Image.asset(IconsAssets.icShare),
                       ),
                     ],
                   ),
-                ),
-
-                /// ic save
-                ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
-                    BlendMode.srcIn,
-                  ),
-                  child: Image.asset(IconsAssets.icSave),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, bottom: 6),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  width: 20,
-                  height: 20,
-                  margin: const EdgeInsets.only(right: 5),
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      ImageAssets.imgTet,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-
-                /// member like
-                RichText(
-                  overflow: TextOverflow.ellipsis,
-                  text: TextSpan(
-                      style: TextStyle(
-                          color: Theme.of(context).textTheme.headline6?.color,
-                          fontFamily: 'NunitoSans'),
-                      children: const [
-                        TextSpan(text: "Có ", style: TextStyle(fontSize: 13)),
-                        TextSpan(
-                            text: "Trà My ",
-                            style: TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.w700)),
-                        TextSpan(text: "và ", style: TextStyle(fontSize: 14)),
-                        TextSpan(
-                            text: "44,666 ",
-                            style: TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.w700)),
-                        TextSpan(
-                            text: "người khác", style: TextStyle(fontSize: 13))
-                      ]),
                 ),
               ],
             ),
@@ -332,7 +337,7 @@ class _HomeState extends State<Home> {
           /// descriptions of post
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(left: 18),
+            margin: const EdgeInsets.only(left: 25),
             child: RichText(
               overflow: TextOverflow.ellipsis,
               text: TextSpan(
@@ -348,32 +353,6 @@ class _HomeState extends State<Home> {
                         text: "Hôm nay thật là vui!!",
                         style: TextStyle(fontSize: 14)),
                   ]),
-            ),
-          ),
-
-          /// comment
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(top: 5, left: 18),
-              child: RichText(
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.headline6?.color,
-                        fontFamily: 'NunitoSans'),
-                    children: const [
-                      TextSpan(
-                          text: "Xem tất cả ", style: TextStyle(fontSize: 14)),
-                      TextSpan(
-                          text: "20",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold)),
-                      TextSpan(
-                          text: " bình luận", style: TextStyle(fontSize: 14)),
-                    ]),
-              ),
             ),
           ),
         ],

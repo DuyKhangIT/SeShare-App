@@ -121,54 +121,55 @@ class _InputOTPForgotPasswordState extends State<InputOTPForgotPassword> {
                       /// button next
                       ButtonNext(
                         onTap: () async {
-                          if (otpForgotPasswordController.otp.value.isEmpty) {
-                            final snackBar = SnackBar(
-                              /// need to set following properties for best effect of awesome_snackbar_content
-                              elevation: 0,
-                              behavior: SnackBarBehavior.fixed,
-                              backgroundColor: Colors.transparent,
-                              content: AwesomeSnackbarContent(
-                                title: 'Cánh báo!',
-                                message:
-                                    'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
-                                contentType: ContentType.help,
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(snackBar);
-                          } else {
-                            try {
-                              // Create a PhoneAuthCredential with the code
-                              PhoneAuthCredential credential =
-                                  PhoneAuthProvider.credential(
-                                      verificationId: Global.verifyFireBase,
-                                      smsCode: otpForgotPasswordController
-                                          .otp.value);
-                              // Sign the user in (or link) with the credential
-                              await otpForgotPasswordController.auth
-                                  .signInWithCredential(credential);
-                              // ConfigSharedPreferences().setStringValue(
-                              //     SharedData.USER_ID.toString(),
-                              //     auth.currentUser!.uid);
-                              Get.to(() => const InputPasswordForgotPassword());
-                            } catch (e) {
-                              final snackBar = SnackBar(
-                                elevation: 0,
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor: Colors.transparent,
-                                content: AwesomeSnackbarContent(
-                                  title: 'Lỗi!',
-                                  message:
-                                      'Bạn nhập sai mã otp! Vui lòng nhập lại',
-                                  contentType: ContentType.failure,
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            }
-                          }
+                          Get.to(() => const InputPasswordForgotPassword());
+                          // if (otpForgotPasswordController.otp.value.isEmpty) {
+                          //   final snackBar = SnackBar(
+                          //     /// need to set following properties for best effect of awesome_snackbar_content
+                          //     elevation: 0,
+                          //     behavior: SnackBarBehavior.fixed,
+                          //     backgroundColor: Colors.transparent,
+                          //     content: AwesomeSnackbarContent(
+                          //       title: 'Cánh báo!',
+                          //       message:
+                          //           'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
+                          //       contentType: ContentType.help,
+                          //     ),
+                          //   );
+                          //   ScaffoldMessenger.of(context)
+                          //     ..hideCurrentSnackBar()
+                          //     ..showSnackBar(snackBar);
+                          // } else {
+                          //   try {
+                          //     // Create a PhoneAuthCredential with the code
+                          //     PhoneAuthCredential credential =
+                          //         PhoneAuthProvider.credential(
+                          //             verificationId: Global.verifyFireBase,
+                          //             smsCode: otpForgotPasswordController
+                          //                 .otp.value);
+                          //     // Sign the user in (or link) with the credential
+                          //     await otpForgotPasswordController.auth
+                          //         .signInWithCredential(credential);
+                          //     // ConfigSharedPreferences().setStringValue(
+                          //     //     SharedData.USER_ID.toString(),
+                          //     //     auth.currentUser!.uid);
+                          //     Get.to(() => const InputPasswordForgotPassword());
+                          //   } catch (e) {
+                          //     final snackBar = SnackBar(
+                          //       elevation: 0,
+                          //       behavior: SnackBarBehavior.fixed,
+                          //       backgroundColor: Colors.transparent,
+                          //       content: AwesomeSnackbarContent(
+                          //         title: 'Lỗi!',
+                          //         message:
+                          //             'Bạn nhập sai mã otp! Vui lòng nhập lại',
+                          //         contentType: ContentType.failure,
+                          //       ),
+                          //     );
+                          //     ScaffoldMessenger.of(context)
+                          //       ..hideCurrentSnackBar()
+                          //       ..showSnackBar(snackBar);
+                          //   }
+                          // }
                         },
                         textInside: "Xác nhận OTP",
                       ),
