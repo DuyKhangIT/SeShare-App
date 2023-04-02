@@ -21,6 +21,8 @@ class IconsAssets {
   static const String icGridView = 'assets/icons/ic_gridview.png';
   static const String icProfilePerson = 'assets/icons/ic_profile_person.png';
   static const String icMenuSetting = 'assets/icons/ic_menu.png';
+  static const String icLogo = 'assets/icons/ic_logo.png';
+  static const String icChatActive = 'assets/icons/ic_chat_active.png';
 
 
 }

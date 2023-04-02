@@ -22,6 +22,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return GetBuilder<NotificationController>(
         builder: (controller) => Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back,color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             centerTitle: true,
             title: Text(
               'Thông báo',

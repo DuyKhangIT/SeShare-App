@@ -7,7 +7,7 @@ import 'package:instagram_app/page/main/home_screen/story_page/story_page_contro
 import '../../../models/story_data.dart';
 
 class HomeController extends GetxController {
-
+  bool isLike = false;
   final List<Story> stories = [
     Story(
       url:

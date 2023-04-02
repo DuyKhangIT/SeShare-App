@@ -27,9 +27,8 @@ class SearchScreen extends StatelessWidget {
                   ),
                   elevation: 0,
                 ),
-                body: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                body: Padding(
+                  padding: EdgeInsets.only(bottom: 75),
                   child: Column(
                     children: [
                       _searchBox(searchController, context),

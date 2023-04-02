@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/page/main/chat_sreen/chat_list/chat_list_view.dart';
 import 'package:instagram_app/page/main/post_screen/post_view.dart';
 
 import '../main/home_screen/home_view.dart';
@@ -24,7 +25,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
 
   List page = [
     const Home(),
-    const NotificationScreen(),
+    const ChatListScreen(),
     const PostScreen(),
     const SearchScreen(),
     const ProfileScreen(),
@@ -57,7 +58,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                       color: Theme.of(context).brightness == Brightness.dark
                           ? Colors.white
                           : Colors.black,
-                      height: (60),
+                      height: (70),
                       child: BottomNavigationBar(
                         type: BottomNavigationBarType.fixed,
                         currentIndex: currentIndex,
@@ -78,11 +79,11 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                             label: '',
                           ),
                           BottomNavigationBarItem(
-                            activeIcon: Image.asset(IconsAssets.icNotificationActive,
+                            activeIcon: Image.asset(IconsAssets.icChatActive,
                                 color: Theme.of(context).brightness == Brightness.dark
                                     ? Colors.white
                                     : Colors.black),
-                            icon: Image.asset(IconsAssets.icNotification,
+                            icon: Image.asset(IconsAssets.icChat,
                                 color: Theme.of(context).brightness == Brightness.dark
                                     ? Colors.white
                                     : Colors.black.withOpacity(0.8)),
@@ -144,28 +145,15 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                 ),
                 Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
-                        margin: const EdgeInsets.only(bottom: (30)),
-                        width: (60),
-                        height: (60),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.topRight,
-                                colors: [
-                                  Colors.blueAccent.withOpacity(0.9),
-                                  Colors.blue,
-                                  Colors.purple.withOpacity(0.9),
-                                ]
-                            )
-                        ),
-                        child: IconButton(
-                            onPressed: () {
-                              _onItemTapped(2);
-                            },
-                            icon: Image.asset(IconsAssets.icPost,
-                                color: Colors.white),))),
+                    child: SizedBox(
+                      width: 128,
+                      height: 128,
+                      child: IconButton(
+                          onPressed: () {
+                            _onItemTapped(2);
+                          },
+                          icon: Image.asset(IconsAssets.icLogo)),
+                    )),
               ],
             ),
           ),

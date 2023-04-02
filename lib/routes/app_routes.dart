@@ -1,9 +1,11 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:instagram_app/page/main/chat_sreen/chat_list/chat_list_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_binding.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/post_screen/post_binding.dart';
 import 'package:instagram_app/page/main/post_screen/post_view.dart';
 
+import '../page/main/chat_sreen/chat_list/chat_list_binding.dart';
 import '../page/main/home_screen/home_view.dart';
 import '../page/main/home_screen/home_binding.dart';
 import '../page/main/notification_screen/notification_binding.dart';
@@ -70,6 +72,7 @@ class AppRoutes {
   static const String searchScreen = "/seShare_search_screen";
   static const String postScreen = "/seShare_post_screen";
   static const String storyScreen = "/seShare_story_screen";
+  static const String chatListScreen = "/seShare_chat_list_screen";
 
   static const String appNavigationScreen = '/seShare_navigation_screen';
 
@@ -162,6 +165,12 @@ class AppRoutes {
       name: storyScreen,
       page: () => StoryPage(),
       binding: StoryBinding(),
+    ),
+    /// chat list
+    GetPage(
+      name: chatListScreen,
+      page: () => ChatListScreen(),
+      binding: ChatListBinding(),
     ),
   ];
 }
