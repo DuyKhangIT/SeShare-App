@@ -99,17 +99,17 @@ class _HomeState extends State<Home> {
                       //////////// list story  ////////////////
                       SliverToBoxAdapter(
                         child: SizedBox(
-                          height:
-                              100, // set height of the container to hold the stories
+                          height: 100, // set height of the container to hold the stories
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount:
-                                10, // replace with actual API call to get number of stories
+                            itemCount: 10,
                             itemBuilder: (context, index) {
                               if (index == 0) {
                                 return contentListViewStoryFirstIndex();
                               } else {
-                                return contentListViewStory();
+                                return GestureDetector(onTap:(){
+                                  Get.to(() => StoryPage());
+                                },child: contentListViewStory());
                               }
                             },
                           ),
@@ -122,7 +122,6 @@ class _HomeState extends State<Home> {
                             return contentListViewPost();
                           },
                           childCount: homeController.currentMax,
-                          // replace with actual API call to get number of posts
                         ),
                       ),
                       const SliverToBoxAdapter(
@@ -214,25 +213,22 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ///avatar
-                    Container(
-                      width: 45,
-                      height: 45,
-                      margin: const EdgeInsets.only(right: 10),
-                      decoration: const BoxDecoration(
-                        color: Colors.transparent,
-                        shape: BoxShape.circle,
-                      ),
-                      child: ClipOval(
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
                         child: Image.asset(
                           ImageAssets.imgTet,
                           fit: BoxFit.cover,
+                          width: 45,
+                          height: 45,
                         ),
                       ),
                     ),
 
                     /// user name and location
                     Container(
-                      constraints: BoxConstraints(maxWidth: 230),
+                      constraints: const BoxConstraints(maxWidth: 230),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,

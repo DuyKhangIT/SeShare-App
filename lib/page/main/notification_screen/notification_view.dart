@@ -53,15 +53,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            margin: const EdgeInsets.only(right: 15),
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              shape: BoxShape.circle,
-            ),
-            child: ClipOval(
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
               child: Image.asset(
                 ImageAssets.imgTet,
                 fit: BoxFit.cover,
@@ -78,15 +73,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
           Expanded(
             child: Align(
               alignment: Alignment.centerRight,
-              child: Container(
-                width: 35,
-                height: 35,
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
                   ImageAssets.imgTet,
                   fit: BoxFit.cover,
+                  width: 35,
+                  height: 35,
                 ),
               ),
             ),
@@ -104,15 +97,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            margin: const EdgeInsets.only(right: 15),
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              shape: BoxShape.circle,
-            ),
-            child: ClipOval(
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
               child: Image.asset(
                 ImageAssets.imgTet,
                 fit: BoxFit.cover,

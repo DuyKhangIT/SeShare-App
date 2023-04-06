@@ -68,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.only(bottom: 20, top: 10),
+                            margin: const EdgeInsets.only(bottom: 30, top: 10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -150,9 +150,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ],
                       ),
                     ),
+
                     /// menu setting
                     Padding(
-                      padding: const EdgeInsets.only(top: 20,right: 20),
+                      padding: const EdgeInsets.only(top: 20, right: 20),
                       child: Align(
                           alignment: Alignment.topRight,
                           child: Image.asset(
@@ -166,63 +167,28 @@ class _ProfileScreenState extends State<ProfileScreen>
             ));
   }
 
-  /// list view story
-  Widget listViewStory() {
-    ProfileController profileController = Get.put(ProfileController());
-    return Padding(
-      padding: const EdgeInsets.only(left: 20),
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 4, //Call API
-          itemBuilder: (context, index) {
-            return contentListViewStory();
-          }),
-    );
-  }
-
-  /// content list view story
-  Widget contentListViewStory() {
-    return Container(
-      width: 70,
-      height: 70,
-      margin: const EdgeInsets.only(right: 20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AvatarStory(
-              onTap: () {
-                //Get.to(() => const StoryPage());
-              },
-              image: ImageAssets.imgTet),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text("Bạn bè",
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
-          ),
-        ],
-      ),
-    );
-  }
-
   /// tab profile
   Widget tabProfile() {
     ProfileController profileController = Get.put(ProfileController());
     return Column(
+      mainAxisSize: MainAxisSize.max,
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(top: 20),
           alignment: Alignment.center,
           child: DefaultTabController(
               length: 3,
               child: TabBar(
                 controller: _tabController,
                 isScrollable: true,
-                labelPadding: const EdgeInsets.symmetric(horizontal: (50)),
-                labelColor: Colors.green,
-                unselectedLabelColor: Colors.black,
+                labelPadding: const EdgeInsets.symmetric(horizontal: (20)),
+                labelColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+                unselectedLabelColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
                 labelStyle: const TextStyle(
                   fontSize: (13),
                   fontWeight: FontWeight.w700,
@@ -239,32 +205,56 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 tabs: [
                   Tab(
-                      child: ColorFiltered(
+                      child: Column(
+                    children: [
+                      ColorFiltered(
                           colorFilter: ColorFilter.mode(
                             Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black,
                             BlendMode.srcIn,
                           ),
-                          child: Image.asset(IconsAssets.icGridView))),
+                          child: Image.asset(IconsAssets.icGridView)),
+                      const SizedBox(height: 5),
+                      const Text("Ảnh của bạn",
+                          style: TextStyle(
+                              fontSize: 12, fontFamily: 'Nunito Sans'))
+                    ],
+                  )),
                   Tab(
-                      child: ColorFiltered(
+                      child: Column(
+                    children: [
+                      ColorFiltered(
                           colorFilter: ColorFilter.mode(
                             Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black,
                             BlendMode.srcIn,
                           ),
-                          child: Image.asset(IconsAssets.icProfilePerson))),
+                          child: Image.asset(IconsAssets.icProfilePerson)),
+                      const SizedBox(height: 5),
+                      const Text("Ảnh bạn được gắn thẻ",
+                          style: TextStyle(
+                              fontSize: 12, fontFamily: 'Nunito Sans'))
+                    ],
+                  )),
                   Tab(
-                      child: ColorFiltered(
+                      child: Column(
+                    children: [
+                      ColorFiltered(
                           colorFilter: ColorFilter.mode(
                             Theme.of(context).brightness == Brightness.dark
                                 ? Colors.white
                                 : Colors.black,
                             BlendMode.srcIn,
                           ),
-                          child: Image.asset(IconsAssets.icShare))),
+                          child: Image.asset(IconsAssets.icShare)),
+                      const SizedBox(height: 5),
+                      const Text("Story của bạn",
+                          style: TextStyle(
+                              fontSize: 12, fontFamily: 'Nunito Sans'))
+                    ],
+                  )),
                 ],
               )),
         ),
@@ -303,12 +293,12 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-        body: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3),
-            itemCount: 12,
-            itemBuilder: (context, index) => contentGridView()));
+    return GridView.builder(
+        padding: const EdgeInsets.only(bottom: 75),
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+        itemCount: 12,
+        itemBuilder: (context, index) => contentGridView());
   }
 
   /// content gridview
@@ -337,12 +327,12 @@ class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-        body: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3),
-            itemCount: 2,
-            itemBuilder: (context, index) => contentGridView()));
+    return GridView.builder(
+        padding: const EdgeInsets.only(bottom: 75),
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+        itemCount: 2,
+        itemBuilder: (context, index) => contentGridView());
   }
 
   /// content gridview
@@ -371,20 +361,20 @@ class _Tab3 extends State<Tab3> with AutomaticKeepAliveClientMixin<Tab3> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-        body: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3),
-            itemCount: 5,
-            itemBuilder: (context, index) => contentGridView()));
+    return GridView.builder(
+        padding: const EdgeInsets.only(bottom: 75),
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+        itemCount: 5,
+        itemBuilder: (context, index) => contentGridView());
   }
 
   /// content gridview
   Widget contentGridView() {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(60),
+        borderRadius: BorderRadius.circular(30),
         child: Image.asset(ImageAssets.imgTest, fit: BoxFit.cover),
       ),
     );
