@@ -58,7 +58,8 @@ class _LoginState extends State<Login> {
                                         loginController.phoneLogin),
                                     removeZeroAtFirstDigitPhoneNumber(
                                         loginController.passwordLogin));
-                                loginController.authenticate(userRequest);
+                               loginController.authenticate(userRequest);
+                                //Get.to(() => NavigationBarView());
                               }
                             },
                             textInside: "Đăng nhập"),

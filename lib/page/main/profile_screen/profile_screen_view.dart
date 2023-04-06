@@ -272,12 +272,13 @@ class _ProfileScreenState extends State<ProfileScreen>
           child: TabBarView(
             controller: _tabController,
             children: [
-              // girdview
+              // girdview of person
               Tab1(tabController: profileController),
 
               /// tag person
               Tab2(tabController: profileController),
 
+              /// story
               Tab3(tabController: profileController),
             ],
           ),
@@ -381,8 +382,9 @@ class _Tab3 extends State<Tab3> with AutomaticKeepAliveClientMixin<Tab3> {
   /// content gridview
   Widget contentGridView() {
     return Padding(
-      padding: const EdgeInsets.all(1),
-      child: ClipRect(
+      padding: const EdgeInsets.all(10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(60),
         child: Image.asset(ImageAssets.imgTest, fit: BoxFit.cover),
       ),
     );

@@ -145,14 +145,44 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                 ),
                 Align(
                     alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      width: 128,
-                      height: 128,
-                      child: IconButton(
-                          onPressed: () {
-                            _onItemTapped(2);
-                          },
-                          icon: Image.asset(IconsAssets.icLogo)),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 38),
+                      alignment: Alignment.center,
+                      width: 60,
+                      height: 55,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Color(0xFF8c52ff), Color(0xFF5ce1e6)],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 10,
+                            offset: Offset(0, 3), // Độ dịch chuyển theo trục x và y của đổ bóng
+                          ),
+                        ]
+                      ),
+                      child: InkWell(
+                        onTap: (){},
+                        child: Text(
+                          "S",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      )
+
+                      // IconButton(
+                      //     onPressed: () {
+                      //       _onItemTapped(2);
+                      //     },
+                      //     icon: Image.asset(IconsAssets.icLogo)),
                     )),
               ],
             ),
