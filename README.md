@@ -1,4 +1,4 @@
-# instagram_app
+# SeShare_app
 
 A new Flutter project.
 
