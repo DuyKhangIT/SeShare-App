@@ -16,7 +16,11 @@ class SearchScreen extends StatelessWidget {
     return GetBuilder<SearchController>(
         builder: (controller) => SafeArea(
               child: Scaffold(
+                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black54
+                  : Colors.white,
                 appBar: AppBar(
+                  automaticallyImplyLeading: false,
                   centerTitle: true,
                   title: Text(
                     'Tìm kiếm',
@@ -28,7 +32,7 @@ class SearchScreen extends StatelessWidget {
                   elevation: 0,
                 ),
                 body: Padding(
-                  padding: EdgeInsets.only(bottom: 75),
+                  padding: const EdgeInsets.only(bottom: 75),
                   child: Column(
                     children: [
                       _searchBox(searchController, context),
@@ -55,13 +59,13 @@ class SearchScreen extends StatelessWidget {
   /// search box
   Widget _searchBox(SearchController controller, BuildContext context) {
     return Container(
-      height: 40,
-      margin: const EdgeInsets.symmetric(vertical: 24,horizontal: 20),
+      height: 45,
+      margin: const EdgeInsets.fromLTRB(20,10,20,30),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(36),
           color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.white.withOpacity(0.8)
-              : Colors.grey.withOpacity(0.3),
+              ? Colors.white
+              : Colors.blueGrey.withOpacity(0.2),
       ),
       child: TextField(
         controller: controller.searchController,
@@ -79,14 +83,14 @@ class SearchScreen extends StatelessWidget {
         },
         decoration: InputDecoration(
             isDense: true,
-            contentPadding: const EdgeInsets.only(top: 11, bottom: 10),
+            contentPadding: const EdgeInsets.only(top: 14),
             prefixIcon: const Icon(
               Icons.search,
               color: Colors.black,
             ),
             suffixIcon: (controller.searchController.text.isNotEmpty)
                 ? Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(12),
                     child: GestureDetector(
                       child: Image.asset(
                         IconsAssets.icClearText,

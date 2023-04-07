@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../api_http/handle_api.dart';
+import '../../../config/share_preferences.dart';
 import '../../../models/login_response/authentication_response.dart';
 import '../../../models/user_request.dart';
+import '../../main/home_screen/home_view.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
+import 'login_view.dart';
 
 class LoginController extends GetxController {
   UserRequest? userRequest;
@@ -37,9 +40,11 @@ class LoginController extends GetxController {
     }
     if (body == null) return AuthenticationResponse.buildDefault();
     //get data from api here
-    print(body);
     authenticationResponse = AuthenticationResponse.fromJson(body);
     isLoading.value = false;
+    ConfigSharedPreferences().setStringValue(
+        SharedData.TOKEN.toString(),
+        authenticationResponse.mToken!);
     Get.to(() => const NavigationBarView());
     return authenticationResponse;
   }

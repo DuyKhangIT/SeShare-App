@@ -5,6 +5,7 @@ import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/onboarding/start_up/start_up_controller.dart';
 import 'package:instagram_app/widget/button_next.dart';
 import 'package:lottie/lottie.dart';
+import '../../navigation_bar/navigation_bar_view.dart';
 import '../login/login_view.dart';
 
 class StartUpScreen extends StatefulWidget {
@@ -31,6 +32,7 @@ class _StartUpScreenState extends State<StartUpScreen>
 
   @override
   Widget build(BuildContext context) {
+    StartUpController startUpController = Get.put(StartUpController());
     return GetBuilder<StartUpController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
@@ -51,8 +53,9 @@ class _StartUpScreenState extends State<StartUpScreen>
                   ),
                 ),
                 welcomeTittle(),
-                Lottie.asset(AnimationAssets.icSplash,
-                    controller: animationController,
+                Lottie.asset(
+                  AnimationAssets.icSplash,
+                  controller: animationController,
                   repeat: true,
                   reverse: true,
                   onLoaded: (composition) {
@@ -61,25 +64,25 @@ class _StartUpScreenState extends State<StartUpScreen>
                     animationController
                       ..duration = composition.duration
                       ..forward();
-
-                    // ..forward().then((value) =>
-                    //       Get.to(() => Login())
-                    //   );
                   },
                 ),
               ],
             ),
           ),
           bottomNavigationBar: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 30),
-            child:
-            //CircularProgressIndicator(),
-            ButtonNext(
-              onTap: () {
-                Get.to(() => Login());
-              },
-              textInside: "Bắt đầu",
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            child: Obx(() => startUpController.isNewUser.value == true
+                ? ButtonNext(
+                    onTap: () {
+                      Get.to(() => Login());
+                    },
+                    textInside: "Bắt đầu",
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    width: 80,
+                    height: 80,
+                    child: const CircularProgressIndicator())),
           ),
         ),
       ),
@@ -89,7 +92,7 @@ class _StartUpScreenState extends State<StartUpScreen>
   /// Welcome tittle
   Widget welcomeTittle() {
     return Padding(
-      padding: const EdgeInsets.only(top: 60,bottom: 30),
+      padding: const EdgeInsets.only(top: 60, bottom: 30),
       child: Align(
         alignment: Alignment.topLeft,
         child: Column(

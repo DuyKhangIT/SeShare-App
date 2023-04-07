@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
+import 'package:instagram_app/page/onboarding/login/login_view.dart';
 import 'package:instagram_app/widget/avatar_circle.dart';
+
+import '../../../config/share_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -36,14 +39,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                 body: Stack(
                   children: [
                     /// ảnh bìa
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 180,
-                      decoration: const BoxDecoration(
-                        color: Colors.pink,
-                      ),
-                      child: Image.asset(ImageAssets.imgTet, fit: BoxFit.cover),
-                    ),
+                    Image.asset(ImageAssets.imgTet, fit: BoxFit.cover,width: MediaQuery.of(context).size.width,height: 180,),
+                    /// name and status // tab
                     Padding(
                       padding: const EdgeInsets.only(top: 130),
                       child: Column(
@@ -152,14 +149,25 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ),
 
                     /// menu setting
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, right: 20),
-                      child: Align(
-                          alignment: Alignment.topRight,
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          ConfigSharedPreferences().setStringValue(
+                              SharedData.TOKEN.toString(),
+                              "");
+                          Get.to(() => Login());
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          margin: const EdgeInsets.only(top: 20, right: 20),
                           child: Image.asset(
                             IconsAssets.icDot,
                             color: Colors.white,
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

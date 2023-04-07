@@ -7,6 +7,7 @@ import 'package:instagram_app/util/module.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../assets/icons_assets.dart';
+import '../../../config/share_preferences.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
 import '../forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_view.dart';
 import '../register/input_phone_number_register/input_phone_number_view.dart';
@@ -59,7 +60,6 @@ class _LoginState extends State<Login> {
                                     removeZeroAtFirstDigitPhoneNumber(
                                         loginController.passwordLogin));
                                loginController.authenticate(userRequest);
-                                //Get.to(() => NavigationBarView());
                               }
                             },
                             textInside: "Đăng nhập"),

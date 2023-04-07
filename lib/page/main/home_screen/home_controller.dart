@@ -9,8 +9,9 @@ import '../../../models/story_data.dart';
 
 class HomeController extends GetxController {
   bool isLike = false;
-  int currentMax = 2;
+  int currentMax = 10;
   final scrollController = ScrollController();
+  double previousOffset = 0.0;
   final List<Story> stories = [
     Story(
       url:

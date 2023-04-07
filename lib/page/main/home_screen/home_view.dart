@@ -32,12 +32,14 @@ class _HomeState extends State<Home> {
                 child: Container(
                   color: Theme.of(context).brightness == Brightness.dark
                       ? Colors.black54
-                      : Colors.grey.withOpacity(0.2),
+                      : Colors.blueGrey.withOpacity(0.3),
                   child: CustomScrollView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.manual,
+                    controller: homeController.scrollController,
                     slivers: [
                       SliverAppBar(
+                        backgroundColor: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black54
+                            : Colors.white,
                         automaticallyImplyLeading: false,
                         title: Text(
                           'Trang chủ',
@@ -78,9 +80,6 @@ class _HomeState extends State<Home> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // homeController.auth.signOut();
-                              // ConfigSharedPreferences().setStringValue(
-                              //     SharedData.USER_ID.toString(), "");
                               Get.to(() => NotificationScreen());
                             },
                             child: ColorFiltered(
@@ -92,13 +91,16 @@ class _HomeState extends State<Home> {
                               ),
                               child: Image.asset(IconsAssets.icNotification),
                             ),
-                          )
+                          ),
                         ],
                         elevation: 0,
                       ),
                       //////////// list story  ////////////////
                       SliverToBoxAdapter(
-                        child: SizedBox(
+                        child: Container(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black54
+                              : Colors.white,
                           height: 100, // set height of the container to hold the stories
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
@@ -174,7 +176,9 @@ class _HomeState extends State<Home> {
             margin: const EdgeInsets.only(top: 8, bottom: 5),
             decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(20)),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.black)
+            ),
             child: Image.asset(IconsAssets.icPost),
           ),
           const Padding(
