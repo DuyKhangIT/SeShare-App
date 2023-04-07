@@ -23,6 +23,7 @@ class IconsAssets {
   static const String icMenuSetting = 'assets/icons/ic_menu.png';
   static const String icLogo = 'assets/icons/ic_logo.png';
   static const String icChatActive = 'assets/icons/ic_chat_active.png';
+  static const String icPen = 'assets/icons/ic_pen.png';
 
 
 }

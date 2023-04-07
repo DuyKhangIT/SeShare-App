@@ -8,6 +8,8 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../../assets/icons_assets.dart';
+import '../../../../models/register_response/check_phone_number_request.dart';
+import '../../../../models/register_response/check_phone_number_response.dart';
 import '../../../../util/global.dart';
 import '../../../../util/module.dart';
 import '../input_otp_register/input_otp_view.dart';
@@ -125,8 +127,10 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                           suffixIcon: (inputPhoneNumberController
                                   .phoneRegisterController.text.isEmpty)
                               ? const SizedBox()
-                              : removeZeroAtFirstDigitPhoneNumber(inputPhoneNumberController
-                              .phoneRegisterController.text).length <
+                              : removeZeroAtFirstDigitPhoneNumber(
+                                              inputPhoneNumberController
+                                                  .phoneRegisterController.text)
+                                          .length <
                                       9
                                   ? GestureDetector(
                                       onTap: () {
@@ -153,7 +157,8 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                                 value;
                             Global.phoneNumber =
                                 inputPhoneNumberController.phoneRegister.value;
-                            print(inputPhoneNumberController.phoneRegister.value);
+                            print(
+                                inputPhoneNumberController.phoneRegister.value);
                           });
                         },
                       ),
@@ -166,66 +171,27 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
               /// Button Next
               ButtonNext(
                 onTap: () async {
-                  Get.to(() => const InputOTP());
-
-                  // if (inputPhoneNumberController.phoneRegister.value.isEmpty) {
-                  //   final snackBar = SnackBar(
-                  //     elevation: 0,
-                  //     behavior: SnackBarBehavior.fixed,
-                  //     backgroundColor: Colors.transparent,
-                  //     content: AwesomeSnackbarContent(
-                  //       title: 'Lỗi!',
-                  //       message: 'Bạn chưa nhập số điện thoại!',
-                  //       contentType: ContentType.failure,
-                  //     ),
-                  //   );
-                  //   ScaffoldMessenger.of(context)
-                  //     ..hideCurrentSnackBar()
-                  //     ..showSnackBar(snackBar);
-                  // } else {
-                  //   await inputPhoneNumberController.auth.verifyPhoneNumber(
-                  //     phoneNumber: inputPhoneNumberController
-                  //             .countryCode +
-                  //         inputPhoneNumberController.phoneRegister.value,
-                  //     timeout: const Duration(seconds: 60),
-                  //     verificationCompleted:
-                  //         (PhoneAuthCredential credential) {},
-                  //     verificationFailed: (FirebaseAuthException e) {
-                  //       final snackBar = SnackBar(
-                  //         elevation: 0,
-                  //         behavior: SnackBarBehavior.fixed,
-                  //         backgroundColor: Colors.transparent,
-                  //         content: AwesomeSnackbarContent(
-                  //           title: 'Lỗi!',
-                  //           message: 'Gửi mã otp không thành công!',
-                  //           contentType: ContentType.failure,
-                  //         ),
-                  //       );
-                  //       ScaffoldMessenger.of(context)
-                  //         ..hideCurrentSnackBar()
-                  //         ..showSnackBar(snackBar);
-                  //     },
-                  //     codeSent: (String verificationId, int? resendToken) {
-                  //       Global.verifyFireBase = verificationId;
-                  //       Get.to(() => const InputOTP());
-                  //     },
-                  //     codeAutoRetrievalTimeout: (String verificationId) {
-                  //       final snackBar = SnackBar(
-                  //         elevation: 0,
-                  //         behavior: SnackBarBehavior.fixed,
-                  //         backgroundColor: Colors.transparent,
-                  //         content: AwesomeSnackbarContent(
-                  //           title: 'Cảnh báo!',
-                  //           message: 'OTP đã hết hạn!',
-                  //           contentType: ContentType.help,
-                  //         ),
-                  //       );
-                  //       ScaffoldMessenger.of(context)
-                  //         ..hideCurrentSnackBar()
-                  //         ..showSnackBar(snackBar);
-                  //     },
-                  //   );
-                  // }
+                  if (inputPhoneNumberController.phoneRegister.value.isEmpty) {
+                    final snackBar = SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.fixed,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'Lỗi!',
+                        message: 'Bạn chưa nhập số điện thoại!',
+                        contentType: ContentType.failure,
+                      ),
+                    );
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                  } else {
+                    CheckPhoneNumberRequest? checkPhoneNumberRequest =
+                        CheckPhoneNumberRequest(
+                            inputPhoneNumberController.phoneRegister.value);
+                    inputPhoneNumberController
+                        .checkPhoneExistingForRegister(checkPhoneNumberRequest);
+                  }
                 },
                 textInside: "Gửi mã",
               ),

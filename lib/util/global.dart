@@ -11,7 +11,14 @@ class Global {
   static const primaryColor = Colors.white;
   static const secondaryColor = Colors.grey;
 
+  /// new phone number from register
   static String phoneNumber = "";
+  /// new password from register
+  static String registerNewPassword = "";
+  /// new full name from register
+  static String registerNewFullName = "";
+  /// new avatar from register
+  static String registerNewAvatar = "";
 
   /// block auto click or many time click
   static int mTimeClick = 0;

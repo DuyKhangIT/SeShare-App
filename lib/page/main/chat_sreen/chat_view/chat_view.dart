@@ -56,7 +56,7 @@ class _ChatViewState extends State<ChatView> {
             children: [
               InkWell(
                 onTap: () {
-                  Get.to(() => NavigationBarView());
+                  Navigator.pop(context);
                 },
                 child: SizedBox(
                     width: 20,
