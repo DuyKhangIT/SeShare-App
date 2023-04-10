@@ -1,8 +1,10 @@
+import 'dart:io';
+
 class ConfirmRegisterRequest {
   String mPhone;
   String mPassword;
   String mFullName;
-  String? mAvatar;
+  File? mAvatar;
 
   ConfirmRegisterRequest(this.mPhone, this.mPassword,this.mFullName,this.mAvatar);
 

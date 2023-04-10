@@ -188,11 +188,10 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                     CheckPhoneNumberRequest? checkPhoneNumberRequest =
                         CheckPhoneNumberRequest(
                             removeZeroAtFirstDigitPhoneNumber(inputPhoneNumberController.phoneRegister.value));
-                    // inputPhoneNumberController
-                    //     .checkPhoneExistingForRegister(checkPhoneNumberRequest);
-                    /// save phone number to Global
+                    inputPhoneNumberController
+                        .checkPhoneExistingForRegister(checkPhoneNumberRequest);
+                    // save phone number to Global
                     Global.phoneNumber = removeZeroAtFirstDigitPhoneNumber(inputPhoneNumberController.phoneRegister.value);
-                    Get.to(() => const InputOTP());
                   }
                 },
                 textInside: "Gửi mã",

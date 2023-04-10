@@ -1,15 +1,14 @@
 class UserResponse {
-  String mId = "";
-  String mPhone = "";
-  String mPassword = "";
-  String? mAge = "";
-  String? mGender = "";
-  String? mAvatarPath = "";
-  List<String>? mPhoto;
-  List<String>? mFriends;
-  String? mUpdatedAt = "";
-  UserResponse(this.mId, this.mPhone, this.mPassword, this.mGender, this.mAge,
-      this.mAvatarPath,this.mPhoto,this.mFriends,this.mUpdatedAt);
+  String id = "";
+  String phone = "";
+  String password = "";
+  String? gender = "";
+  String? avatarPath = "";
+  List<String>? photo;
+  List<String>? friend;
+  String? updatedAt = "";
+  UserResponse(this.id, this.phone, this.password, this.gender,
+      this.avatarPath,this.photo,this.friend,this.updatedAt);
   UserResponse.buildDefault();
   factory UserResponse.fromJson(Map<String, dynamic> json) {
     List<String> photoResponse = [];
@@ -33,7 +32,6 @@ class UserResponse {
       json['_id'],
       json['phone'],
       json['password'],
-      json['age'],
       json['gender'],
       json['avatar_path'],
       photoResponse,

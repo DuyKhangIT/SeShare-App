@@ -62,7 +62,7 @@ class _InputPasswordState extends State<InputPassword> {
 
                 /// description
                 const Text(
-                    'Bạn cần nhập mật khẩu khi tạo tài khoản mới để chúng tôi có thể bảo mật thông tin của bạn được tốt nhất',
+                    'Mật khẩu của bạn có ít nhất 6 kí tự và nhiều nhất 12 kí tự',
                     style: TextStyle(
                       fontSize: 12,
                       fontFamily: 'Nunito Sans',
@@ -81,51 +81,84 @@ class _InputPasswordState extends State<InputPassword> {
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   padding: const EdgeInsets.only(left: 16, right: 10),
                   child: TextField(
+                    obscureText: !inputPasswordController.isShowPassword.value,
                     controller: inputPasswordController.passwordController,
                     keyboardType: TextInputType.text,
                     autofocus: true,
                     cursorColor: Colors.grey,
                     inputFormatters: [
-                      LengthLimitingTextInputFormatter(7),
+                      LengthLimitingTextInputFormatter(12),
                     ],
                     decoration: InputDecoration(
-                      isDense: true,
-                      hintText: 'Mật khẩu của bạn',
-                      hintStyle: const TextStyle(
-                        fontFamily: 'NunitoSans',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      counterText: '',
-                      suffixIcon: (inputPasswordController
-                              .passwordController.text.isEmpty)
-                          ? const SizedBox()
-                          : inputPasswordController
-                                      .passwordController.text.length <
-                                  7
-                              ? GestureDetector(
-                                  onTap: () {
-                                    inputPasswordController
-                                        .clearTextInputPassword();
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12),
-                                    child: Image.asset(
-                                      IconsAssets.icClearText,
-                                    ),
+                        isDense: true,
+                        hintText: 'Mật khẩu của bạn',
+                        hintStyle: const TextStyle(
+                          fontFamily: 'NunitoSans',
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        counterText: '',
+                        suffixIcon: (inputPasswordController
+                                .passwordController.text.isEmpty)
+                            ? const SizedBox()
+                            : inputPasswordController
+                                        .passwordController.text.length >=
+                                    6
+                                ? SizedBox(
+                                  width: 70,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          inputPasswordController
+                                              .isShowPassword.value =
+                                          !inputPasswordController
+                                              .isShowPassword.value;
+                                          inputPasswordController.update();
+                                        },
+                                        child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12),
+                                            child: Obx(() => inputPasswordController
+                                                .isShowPassword.value ==
+                                                true
+                                                ? Icon(Icons.visibility,
+                                                color: Colors.black)
+                                                : Icon(Icons.visibility_off,
+                                                color: Colors.black))),
+                                      ),
+                                      Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0,12,0,12),
+                                          child: Image.asset(IconsAssets.icChecked),
+                                        ),
+                                    ],
                                   ),
                                 )
-                              : Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 12),
-                                  child: Image.asset(IconsAssets.icChecked),
-                                ),
-                    ),
+                                : GestureDetector(
+                                    onTap: () {
+                                      inputPasswordController
+                                              .isShowPassword.value =
+                                          !inputPasswordController
+                                              .isShowPassword.value;
+                                      inputPasswordController.update();
+                                    },
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12),
+                                        child: Obx(() => inputPasswordController
+                                                    .isShowPassword.value ==
+                                                true
+                                            ? Icon(Icons.visibility,
+                                                color: Colors.black)
+                                            : Icon(Icons.visibility_off,
+                                                color: Colors.black))),
+                                  )),
                     onChanged: (value) {
                       setState(() {
                         inputPasswordController.password.value = value;
@@ -144,7 +177,8 @@ class _InputPasswordState extends State<InputPassword> {
                 /// button
                 ButtonNext(
                   onTap: () {
-                    Global.registerNewPassword = inputPasswordController.password.value;
+                    Global.registerNewPassword =
+                        inputPasswordController.password.value;
                     Get.to(() => const InputFullName());
                   },
                   textInside: "Tiếp tục",

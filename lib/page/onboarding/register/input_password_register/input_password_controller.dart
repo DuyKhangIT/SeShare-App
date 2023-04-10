@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class InputPasswordController extends GetxController{
   TextEditingController passwordController = TextEditingController();
   RxString password = RxString("");
+  RxBool isShowPassword = false.obs;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   void clearTextInputPassword() {
@@ -19,6 +20,8 @@ class InputPasswordController extends GetxController{
 
   @override
   void onClose() {
+    passwordController.text =  "";
+    password.value = "";
   super.onClose();
   }
 

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/util/global.dart';
 import '../../../api_http/handle_api.dart';
@@ -24,6 +26,11 @@ class LoginController extends GetxController {
   /// handle api login
   Future<AuthenticationResponse> authenticate(UserRequest request) async {
     isLoading.value = true;
+    if (isLoading.value) {
+      Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
+    } else {
+      Get.back(); // Đóng hộp thoại loading nếu isLoading = false
+    }
     AuthenticationResponse authenticationResponse;
     Map<String, dynamic>? body;
     //is this for string quere only
@@ -36,17 +43,37 @@ class LoginController extends GetxController {
           body: const JsonEncoder().convert(request.toBodyRequest()));
     } catch (error) {
       debugPrint("Fail to login $error");
-      isLoading.value = false;
       rethrow;
     }
     if (body == null) return AuthenticationResponse.buildDefault();
     //get data from api here
     authenticationResponse = AuthenticationResponse.fromJson(body);
+    if(authenticationResponse.status == false){
+      isLoading.value = false;
+      if (isLoading.value) {
+        Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
+      } else {
+        Get.back(); // Đóng hộp thoại loading nếu isLoading = false
+      }
+      final snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Cảnh báo!',
+          message: "Số điện thoại hoặc mật khẩu không chính xác",
+          contentType: ContentType.warning,
+        ),
+      );
+      ScaffoldMessenger.of(Get.context!)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+    }
     isLoading.value = false;
     ConfigSharedPreferences().setStringValue(
         SharedData.TOKEN.toString(),
-        authenticationResponse.mToken!);
-    Global.mToken = authenticationResponse.mToken!;
+        authenticationResponse.token!);
+    Global.mToken = authenticationResponse.token!;
     Get.to(() => const NavigationBarView());
     return authenticationResponse;
   }

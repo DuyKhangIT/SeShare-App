@@ -6,6 +6,7 @@ import 'package:instagram_app/page/onboarding/login/login_view.dart';
 import 'package:instagram_app/widget/avatar_circle.dart';
 
 import '../../../config/share_preferences.dart';
+import '../../../util/global.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -69,16 +70,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: const [
+                              children:  const[
                                 Text("Duy Khang",
-                                    style: TextStyle(
+                                    style:  TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                         fontFamily: 'Nunito Sans')),
-                                SizedBox(
+                                  SizedBox(
                                   height: 5,
                                 ),
-                                Text("Một người sáng tạo, đầy hoài bảo",
+                                 Text("Một người sáng tạo, đầy hoài bảo",
                                     maxLines: 2,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,

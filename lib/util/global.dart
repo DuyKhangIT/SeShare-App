@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -23,6 +25,7 @@ class Global {
   static String registerNewFullName = "";
   /// new avatar from register
   static String registerNewAvatar = "";
+
 
   /// block auto click or many time click
   static int mTimeClick = 0;

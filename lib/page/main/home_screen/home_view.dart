@@ -237,22 +237,22 @@ class _HomeState extends State<Home> {
 
                     /// user name and location
                     Container(
-                      constraints: const BoxConstraints(maxWidth: 230),
+                      constraints: const BoxConstraints(maxWidth: 220),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children:  [
-                          Text("Duy Khang",
+                          const Text("Duy Khang",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
                                   fontFamily: 'Nunito Sans')),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(Global.currentLocation,
                               maxLines: 2,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14, fontFamily: 'Nunito Sans')),
                         ],
                       ),
@@ -273,7 +273,27 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-
+          (Global.checkIn != null && Global.checkIn.isNotEmpty)
+          ? Padding(
+            padding: const EdgeInsets.fromLTRB(20,0,20,10),
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Image.asset(IconsAssets.icLocationPost,width: 30,height: 30,),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width/1.4,
+                  height: 40,
+                  child: Text("Địa điểm bạn nhắc tới: ${Global.checkIn}",
+                      maxLines: 2,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          fontFamily: 'Nunito Sans')),
+                ),
+              ],
+            ),
+          ) : Container(),
           /// image post
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -471,7 +491,7 @@ class _HomeState extends State<Home> {
                             fontSize: 14, fontWeight: FontWeight.bold)),
                     TextSpan(
                         text:
-                            "Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!!Hôm nay thật là vui!!!Hôm nay thật là vui!!!Hôm nay thật là vui!!!Hôm nay thật là vui!!!Hôm nay thật là vui!!",
+                            "Đi Vũng Tàu xả stress",
                         style: TextStyle(fontSize: 14)),
                   ]),
             ),

@@ -121,7 +121,7 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                           padding: const EdgeInsets.symmetric(vertical: 80),
                           child: ButtonNext(
                             onTap: () {
-                              Get.to(() => Login());
+                              confirmRegisterController.confirmRegister();
                             },
                             textInside: 'tiếp tục'.toUpperCase(),
                           ))

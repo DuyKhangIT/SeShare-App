@@ -1,14 +1,14 @@
 import 'package:instagram_app/models/login/user_response.dart';
 
 class AuthenticationResponse {
-  bool mStatus = false;
-  UserResponse? mUserResponse;
-  String? mToken = "";
+  bool status = false;
+  UserResponse? userResponse;
+  String? token = "";
 
   AuthenticationResponse(
-    this.mStatus,
-    this.mUserResponse,
-    this.mToken,
+    this.status,
+    this.userResponse,
+    this.token,
   );
   AuthenticationResponse.buildDefault();
   factory AuthenticationResponse.fromJson(Map<String, dynamic> json) {

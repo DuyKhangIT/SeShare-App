@@ -29,74 +29,67 @@ class _LoginState extends State<Login> {
     return GetBuilder<LoginController>(
         builder: (controller) => SafeArea(
                 child: Scaffold(
-              body: Stack(
-                children: [
-                  Obx(() => loginController.isLoading.value == true
-                      ? const Center(child: CircularProgressIndicator())
-                      : Container()),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        /// logo
-                        const Text(
-                          'SeShare',
-                          style: TextStyle(
-                              fontSize: 40,
-                              fontFamily: 'Nunito Sans',
-                              fontStyle: FontStyle.italic),
-                        ),
-
-                        formLogin(loginController),
-                        const SizedBox(height: 40),
-                        ButtonNext(
-                            onTap: () {
-                              if (loginController.phoneLogin.isNotEmpty &&
-                                  loginController.passwordLogin.isNotEmpty) {
-                                UserRequest? userRequest = UserRequest(
-                                    removeZeroAtFirstDigitPhoneNumber(
-                                        loginController.phoneLogin),
-                                    removeZeroAtFirstDigitPhoneNumber(
-                                        loginController.passwordLogin));
-                               loginController.authenticate(userRequest);
-                               Global.isAvailableToClick();
-                              }
-                            },
-                            textInside: "Đăng nhập"),
-                        const SizedBox(height: 50),
-
-                        /// divider
-                        customDivider(),
-                        const SizedBox(height: 50),
-
-                        /// register
-                        RichText(
-                            text: TextSpan(children: [
-                          const TextSpan(
-                              text: 'Bạn không có tải khoản?',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Nunito Sans',
-                                  color: Colors.black)),
-                          const TextSpan(text: " "),
-                          TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Get.to(() => const InputPhoneNumber());
-                                },
-                              text: 'Đăng ký.',
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Nunito Sans',
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.blue))
-                        ]))
-                      ],
+              body: Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    /// logo
+                    const Text(
+                      'SeShare',
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontFamily: 'Nunito Sans',
+                          fontStyle: FontStyle.italic),
                     ),
-                  ),
-                ],
+
+                    formLogin(loginController),
+                    const SizedBox(height: 40),
+                    ButtonNext(
+                        onTap: () {
+                          if (loginController.phoneLogin.isNotEmpty &&
+                              loginController.passwordLogin.isNotEmpty) {
+                            UserRequest? userRequest = UserRequest(
+                                removeZeroAtFirstDigitPhoneNumber(
+                                    loginController.phoneLogin),
+                                removeZeroAtFirstDigitPhoneNumber(
+                                    loginController.passwordLogin));
+                           loginController.authenticate(userRequest);
+                           Global.isAvailableToClick();
+                          }
+                        },
+                        textInside: "Đăng nhập"),
+                    const SizedBox(height: 50),
+
+                    /// divider
+                    customDivider(),
+                    const SizedBox(height: 50),
+
+                    /// register
+                    RichText(
+                        text: TextSpan(children: [
+                      const TextSpan(
+                          text: 'Bạn không có tải khoản?',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Nunito Sans',
+                              color: Colors.black)),
+                      const TextSpan(text: " "),
+                      TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Get.to(() => const InputPhoneNumber());
+                            },
+                          text: 'Đăng ký.',
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Nunito Sans',
+                              fontStyle: FontStyle.italic,
+                              color: Colors.blue))
+                    ]))
+                  ],
+                ),
               ),
             )));
   }
