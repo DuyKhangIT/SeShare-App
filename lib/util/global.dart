@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Global {
 
@@ -10,7 +11,10 @@ class Global {
   static const blueColor = Color.fromRGBO(0, 149, 246, 1);
   static const primaryColor = Colors.white;
   static const secondaryColor = Colors.grey;
-
+  static String checkIn = "";
+  static LatLng? latLng;
+  static String currentLocation = "";
+  static String mToken = "";
   /// new phone number from register
   static String phoneNumber = "";
   /// new password from register

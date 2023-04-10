@@ -137,10 +137,10 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                         child: Container(
                             margin: const EdgeInsets.only(bottom: 38),
                             alignment: Alignment.center,
-                            width: 55,
-                            height: 55,
+                            width: 60,
+                            height: 60,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(18),
                                 gradient: const LinearGradient(
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,

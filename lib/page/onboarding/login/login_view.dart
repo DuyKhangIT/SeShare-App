@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:instagram_app/models/user_request.dart';
+import 'package:instagram_app/models/login/user_request.dart';
 import 'package:instagram_app/util/module.dart';
 import 'package:instagram_app/widget/button_next.dart';
 

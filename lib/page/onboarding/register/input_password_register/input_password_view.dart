@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../../assets/icons_assets.dart';
+import '../../../../util/global.dart';
 import '../../../../widget/button_next.dart';
 import '../input_full_name_register/input_full_name_view.dart';
 import 'input_password_controller.dart';
@@ -143,6 +144,7 @@ class _InputPasswordState extends State<InputPassword> {
                 /// button
                 ButtonNext(
                   onTap: () {
+                    Global.registerNewPassword = inputPasswordController.password.value;
                     Get.to(() => const InputFullName());
                   },
                   textInside: "Tiếp tục",

@@ -7,6 +7,7 @@ import 'package:instagram_app/util/module.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../../assets/icons_assets.dart';
+import '../../../../models/register_response/check_existing_phone_number/check_phone_number_request.dart';
 import '../../../../util/global.dart';
 import '../input_otp_forgot_password/input_otp_forgot_password_view.dart';
 import 'input_phone_number_forgot_password_controller.dart';
@@ -185,49 +186,12 @@ class _InputPhoneNumberForgotPasswordState
                             ..hideCurrentSnackBar()
                             ..showSnackBar(snackBar);
                         } else {
-                          await controller.auth.verifyPhoneNumber(
-                            phoneNumber: controller.countryCode +
-                                controller.phoneForgotPassword.value,
-                            timeout: const Duration(seconds: 60),
-                            verificationCompleted:
-                                (PhoneAuthCredential credential) {},
-                            verificationFailed: (FirebaseAuthException e) {
-                              final snackBar = SnackBar(
-                                elevation: 0,
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor: Colors.transparent,
-                                content: AwesomeSnackbarContent(
-                                  title: 'Lỗi!',
-                                  message: 'Gửi mã otp không thành công!',
-                                  contentType: ContentType.failure,
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            },
-                            codeSent:
-                                (String verificationId, int? resendToken) {
-                              InputPhoneNumberForgotPassword.verify =
-                                  verificationId;
-                              Get.to(() => const InputOTPForgotPassword());
-                            },
-                            codeAutoRetrievalTimeout: (String verificationId) {
-                              final snackBar = SnackBar(
-                                elevation: 0,
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor: Colors.transparent,
-                                content: AwesomeSnackbarContent(
-                                  title: 'Cảnh báo!',
-                                  message: 'OTP đã hết hạn!',
-                                  contentType: ContentType.help,
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            },
-                          );
+                          CheckPhoneNumberRequest? checkPhoneNumberRequest =
+                          CheckPhoneNumberRequest(
+                              removeZeroAtFirstDigitPhoneNumber(controller.phoneForgotPassword.value));
+                          // controller
+                          //     .checkPhoneExistingForRegister(checkPhoneNumberRequest);
+                          Get.to(() => const InputOTPForgotPassword());
                         }
                       },
                       textInside: "Gửi mã",

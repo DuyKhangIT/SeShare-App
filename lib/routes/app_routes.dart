@@ -4,6 +4,8 @@ import 'package:instagram_app/page/main/chat_sreen/chat_view/chat_binding.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_view/chat_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_binding.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
+import 'package:instagram_app/page/main/post_screen/changed_address/changed_address_binding.dart';
+import 'package:instagram_app/page/main/post_screen/changed_address/changed_address_view.dart';
 import 'package:instagram_app/page/main/post_screen/post_binding.dart';
 import 'package:instagram_app/page/main/post_screen/post_view.dart';
 
@@ -79,6 +81,8 @@ class AppRoutes {
   /// Chat
   static const String chatListScreen = "/seShare_chat_list_screen";
   static const String chatScreen = "/seShare_chat_screen";
+
+  static const String changedAddressScreen = "/seShare_changedAddress_screen";
 
   static const String appNavigationScreen = '/seShare_navigation_screen';
 
@@ -183,6 +187,12 @@ class AppRoutes {
       name: chatScreen,
       page: () => ChatView(),
       binding: ChatBinding(),
+    ),
+
+    GetPage(
+      name: changedAddressScreen,
+      page: () => ChangedAddressView(),
+      binding: ChangedAddressBinding(),
     ),
   ];
 }

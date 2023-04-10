@@ -24,6 +24,11 @@ class IconsAssets {
   static const String icLogo = 'assets/icons/ic_logo.png';
   static const String icChatActive = 'assets/icons/ic_chat_active.png';
   static const String icPen = 'assets/icons/ic_pen.png';
+  static const String icAddImage = 'assets/icons/ic_add_image.png';
+  static const String icLocationPost = 'assets/icons/ic_location_post.png';
+  static const String icArtist = 'assets/icons/ic_artist_post.png';
+  static const String icGPS = 'assets/icons/ic_gps.png';
+  static const String icMapMarker = 'assets/icons/ic_map_marker.png';
 
 
 }

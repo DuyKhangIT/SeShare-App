@@ -1,4 +1,4 @@
-import 'package:instagram_app/models/login_response/user_response.dart';
+import 'package:instagram_app/models/login/user_response.dart';
 
 class AuthenticationResponse {
   bool mStatus = false;

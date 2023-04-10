@@ -9,6 +9,7 @@ import 'package:instagram_app/widget/avatar_circle.dart';
 
 import '../../../assets/icons_assets.dart';
 import '../../../config/theme_service.dart';
+import '../../../util/global.dart';
 import '../../onboarding/login/login_view.dart';
 import 'home_controller.dart';
 
@@ -109,9 +110,7 @@ class _HomeState extends State<Home> {
                               if (index == 0) {
                                 return contentListViewStoryFirstIndex();
                               } else {
-                                return GestureDetector(onTap:(){
-                                  Get.to(() => StoryPage());
-                                },child: contentListViewStory());
+                                return contentListViewStory();
                               }
                             },
                           ),
@@ -138,25 +137,30 @@ class _HomeState extends State<Home> {
 
   /// content list view story
   Widget contentListViewStory() {
-    return Container(
-      width: 80,
-      margin: const EdgeInsets.only(right: 5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AvatarStory(
-            image: ImageAssets.imgTet,
-            onTap: () {},
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text("Duy Khang",
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
-          ),
-        ],
+    return GestureDetector(
+      onTap: (){
+        Get.to(() => StoryPage());
+      },
+      child: Container(
+        width: 80,
+        margin: const EdgeInsets.only(right: 5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AvatarStory(
+              image: ImageAssets.imgTet,
+              onTap: () {},
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Text("Duy Khang",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -197,13 +201,13 @@ class _HomeState extends State<Home> {
   Widget contentListViewPost() {
     HomeController homeController = Get.put(HomeController());
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Theme.of(context).brightness == Brightness.dark
               ? Colors.black
-              : Colors.white.withOpacity(0.7)),
+              : Colors.white),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -221,11 +225,12 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.only(right: 10),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14),
-                        child: Image.asset(
+                        child:
+                        Image.asset(
                           ImageAssets.imgTet,
                           fit: BoxFit.cover,
-                          width: 45,
-                          height: 45,
+                          width: 50,
+                          height: 50,
                         ),
                       ),
                     ),
@@ -236,7 +241,7 @@ class _HomeState extends State<Home> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children:  [
                           Text("Duy Khang",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -245,9 +250,8 @@ class _HomeState extends State<Home> {
                                   fontSize: 14,
                                   fontFamily: 'Nunito Sans')),
                           SizedBox(height: 4),
-                          Text("Tp.Hồ Chí Minh",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                          Text(Global.currentLocation,
+                              maxLines: 2,
                               style: TextStyle(
                                   fontSize: 14, fontFamily: 'Nunito Sans')),
                         ],
@@ -396,39 +400,53 @@ class _HomeState extends State<Home> {
                     ),
 
                     /// ic cmt
-                    Container(
-                      constraints: BoxConstraints(maxWidth: 105),
-                      padding: const EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ColorFiltered(
-                            colorFilter: ColorFilter.mode(
-                              Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                              BlendMode.srcIn,
+                    GestureDetector(
+                      onTap: (){
+                        showModalBottomSheet<dynamic>(
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(12))),
+                            context: context,
+                            builder: (context) {
+                              return dialogCmt();
+                            });
+                      },
+                      child: Container(
+                        constraints: BoxConstraints(maxWidth: 105),
+                        padding: const EdgeInsets.all(5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ColorFiltered(
+                              colorFilter: ColorFilter.mode(
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                BlendMode.srcIn,
+                              ),
+                              child: Image.asset(IconsAssets.icComment),
                             ),
-                            child: Image.asset(IconsAssets.icComment),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            constraints: const BoxConstraints(maxWidth: 60),
-                            child: Text(
-                              "Bình Luận",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  ?.copyWith(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          ?.color,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
+                            Container(
+                              margin: const EdgeInsets.only(left: 10),
+                              constraints: const BoxConstraints(maxWidth: 60),
+                              child: Text(
+                                "Bình Luận",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    ?.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            ?.color,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -456,6 +474,87 @@ class _HomeState extends State<Home> {
                             "Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!Hôm nay thật là vui!!!Hôm nay thật là vui!!!Hôm nay thật là vui!!!Hôm nay thật là vui!!!Hôm nay thật là vui!!!Hôm nay thật là vui!!",
                         style: TextStyle(fontSize: 14)),
                   ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget dialogCmt(){
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+          margin: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Expanded(
+              child: GestureDetector (
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    color: Colors.transparent,
+                  )),
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: 3,
+                  itemBuilder: (context,index){
+                return contentListCmt();
+              }),
+            )
+          ],
+      ),
+        ),
+    );
+  }
+
+  Widget contentListCmt() {
+
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(top: 12,left: 10,right: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(ImageAssets.imgTest,width: 40,height: 40,fit: BoxFit.cover,),
+          ),
+          SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 16,
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: Colors.grey.withOpacity(0.4)
+                  ),
+                  child: Text(
+                    "Hôm nay rất tuyệt Hôm nay rất tuyệt Hôm nay rất tuyệt",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 5),
+                  constraints: const BoxConstraints(
+                      maxWidth: 240
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    "12:00",
+                  ),
+                ),
+              ],
             ),
           ),
         ],

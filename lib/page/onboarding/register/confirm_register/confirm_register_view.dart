@@ -17,8 +17,10 @@ class ConfirmRegister extends StatefulWidget {
   State<ConfirmRegister> createState() => _ConfirmRegisterState();
 }
 
-class _ConfirmRegisterState extends State<ConfirmRegister>with TickerProviderStateMixin {
-  ConfirmRegisterController confirmRegisterController = Get.put(ConfirmRegisterController());
+class _ConfirmRegisterState extends State<ConfirmRegister>
+    with TickerProviderStateMixin {
+  ConfirmRegisterController confirmRegisterController =
+      Get.put(ConfirmRegisterController());
   late final AnimationController animationController;
   @override
   void initState() {
@@ -31,6 +33,7 @@ class _ConfirmRegisterState extends State<ConfirmRegister>with TickerProviderSta
     animationController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ConfirmRegisterController>(
@@ -54,6 +57,23 @@ class _ConfirmRegisterState extends State<ConfirmRegister>with TickerProviderSta
                     color: Colors.black,
                   ),
                 ),
+                actions: [
+                  GestureDetector(
+                    onTap: (){
+                      Get.to(() => Login());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text('Hủy',
+                            style: Theme.of(context).textTheme.headline6?.copyWith(
+                                color: Theme.of(context).textTheme.headline6?.color,
+                                fontSize: 16)),
+                      ),
+                    ),
+                  ),
+                ],
                 elevation: 0,
               ),
               body: SingleChildScrollView(
@@ -86,7 +106,8 @@ class _ConfirmRegisterState extends State<ConfirmRegister>with TickerProviderSta
                       const SizedBox(
                         height: 20,
                       ),
-                      Lottie.asset(AnimationAssets.icConfirm,
+                      Lottie.asset(
+                        AnimationAssets.icConfirm,
                         controller: animationController,
                         reverse: true,
                         repeat: true,

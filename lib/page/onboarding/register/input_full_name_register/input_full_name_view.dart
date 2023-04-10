@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:instagram_app/assets/assets.dart';
 
+import '../../../../util/global.dart';
 import '../../../../widget/button_next.dart';
 import '../upload_avatar_register/upload_avatar_view.dart';
 import 'input_full_name_controller.dart';
@@ -131,6 +132,7 @@ class _InputFullNameState extends State<InputFullName> {
                       /// button
                       ButtonNext(
                         onTap: () {
+                          Global.registerNewFullName = inputFullNameController.fullName.value;
                           Get.to(() => const UploadAvatarForRegister());
                         },
                         textInside: "Tiếp tục".toUpperCase(),

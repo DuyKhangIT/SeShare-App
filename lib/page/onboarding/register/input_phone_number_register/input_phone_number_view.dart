@@ -8,8 +8,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../../assets/icons_assets.dart';
-import '../../../../models/register_response/check_phone_number_request.dart';
-import '../../../../models/register_response/check_phone_number_response.dart';
+import '../../../../models/register_response/check_existing_phone_number/check_phone_number_request.dart';
 import '../../../../util/global.dart';
 import '../../../../util/module.dart';
 import '../input_otp_register/input_otp_view.dart';
@@ -188,9 +187,12 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
                   } else {
                     CheckPhoneNumberRequest? checkPhoneNumberRequest =
                         CheckPhoneNumberRequest(
-                            inputPhoneNumberController.phoneRegister.value);
-                    inputPhoneNumberController
-                        .checkPhoneExistingForRegister(checkPhoneNumberRequest);
+                            removeZeroAtFirstDigitPhoneNumber(inputPhoneNumberController.phoneRegister.value));
+                    // inputPhoneNumberController
+                    //     .checkPhoneExistingForRegister(checkPhoneNumberRequest);
+                    /// save phone number to Global
+                    Global.phoneNumber = removeZeroAtFirstDigitPhoneNumber(inputPhoneNumberController.phoneRegister.value);
+                    Get.to(() => const InputOTP());
                   }
                 },
                 textInside: "Gửi mã",

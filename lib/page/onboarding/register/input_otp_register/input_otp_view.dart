@@ -120,51 +120,51 @@ class _InputOTPState extends State<InputOTP> {
                       /// button next
                       ButtonNext(
                         onTap: () async {
-                          //Get.to(() => const InputPassword());
+                          Get.to(() => const InputPassword());
 
-                          if (inputOTPController.otp.value.isEmpty) {
-                            final snackBar = SnackBar(
-                              /// need to set following properties for best effect of awesome_snackbar_content
-                              elevation: 0,
-                              behavior: SnackBarBehavior.fixed,
-                              backgroundColor: Colors.transparent,
-                              content: AwesomeSnackbarContent(
-                                title: 'Cánh báo!',
-                                message:
-                                    'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
-                                contentType: ContentType.help,
-                              ),
-                            );
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(snackBar);
-                          } else {
-                            try {
-                              // Create a PhoneAuthCredential with the code
-                              PhoneAuthCredential credential =
-                                  PhoneAuthProvider.credential(
-                                      verificationId: Global.verifyFireBase,
-                                      smsCode: inputOTPController.otp.value);
-                              // Sign the user in (or link) with the credential
-                              await auth.signInWithCredential(credential);
-                              Get.to(() => const InputPassword());
-                            } catch (e) {
-                              final snackBar = SnackBar(
-                                elevation: 0,
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor: Colors.transparent,
-                                content: AwesomeSnackbarContent(
-                                  title: 'Lỗi!',
-                                  message:
-                                      'Bạn nhập sai mã otp! Vui lòng nhập lại',
-                                  contentType: ContentType.failure,
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            }
-                          }
+                          // if (inputOTPController.otp.value.isEmpty) {
+                          //   final snackBar = SnackBar(
+                          //     /// need to set following properties for best effect of awesome_snackbar_content
+                          //     elevation: 0,
+                          //     behavior: SnackBarBehavior.fixed,
+                          //     backgroundColor: Colors.transparent,
+                          //     content: AwesomeSnackbarContent(
+                          //       title: 'Cánh báo!',
+                          //       message:
+                          //           'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
+                          //       contentType: ContentType.help,
+                          //     ),
+                          //   );
+                          //   ScaffoldMessenger.of(context)
+                          //     ..hideCurrentSnackBar()
+                          //     ..showSnackBar(snackBar);
+                          // } else {
+                          //   try {
+                          //     // Create a PhoneAuthCredential with the code
+                          //     PhoneAuthCredential credential =
+                          //         PhoneAuthProvider.credential(
+                          //             verificationId: Global.verifyFireBase,
+                          //             smsCode: inputOTPController.otp.value);
+                          //     // Sign the user in (or link) with the credential
+                          //     await auth.signInWithCredential(credential);
+                          //     Get.to(() => const InputPassword());
+                          //   } catch (e) {
+                          //     final snackBar = SnackBar(
+                          //       elevation: 0,
+                          //       behavior: SnackBarBehavior.fixed,
+                          //       backgroundColor: Colors.transparent,
+                          //       content: AwesomeSnackbarContent(
+                          //         title: 'Lỗi!',
+                          //         message:
+                          //             'Bạn nhập sai mã otp! Vui lòng nhập lại',
+                          //         contentType: ContentType.failure,
+                          //       ),
+                          //     );
+                          //     ScaffoldMessenger.of(context)
+                          //       ..hideCurrentSnackBar()
+                          //       ..showSnackBar(snackBar);
+                          //   }
+                          // }
                         },
                         textInside: "Xác nhận OTP",
                       ),
