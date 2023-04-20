@@ -37,7 +37,7 @@ class LoginController extends GetxController {
     try {
       body = await HttpHelper.invokeHttp(
           Uri.parse(
-              "https://seshare-api-production.up.railway.app/api/user/login"),
+              "https://seshareapi.onrender.com/api/user/login"),
           RequestType.post,
           headers: null,
           body: const JsonEncoder().convert(request.toBodyRequest()));
@@ -73,7 +73,6 @@ class LoginController extends GetxController {
     ConfigSharedPreferences().setStringValue(
         SharedData.TOKEN.toString(),
         authenticationResponse.token!);
-    Global.mToken = authenticationResponse.token!;
     Get.to(() => const NavigationBarView());
     return authenticationResponse;
   }

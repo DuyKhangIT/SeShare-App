@@ -193,7 +193,7 @@ class _ChangedAddressViewState extends State<ChangedAddressView> {
                           changedAddressController.changeAddress();
                         },
                         child: Text(
-                          "Đổi địa chỉ".toUpperCase(),
+                          "Chọn địa chỉ".toUpperCase(),
                           style: const TextStyle(
                               color: Colors.white,
                               fontFamily: 'NunitoSans',

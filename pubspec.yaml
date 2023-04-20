@@ -64,6 +64,9 @@ dependencies:
   geolocator: ^9.0.2
   #google_maps_flutter:
   google_maps_flutter: ^2.2.5
+  #flutter_keyboard_visibility:
+  flutter_keyboard_visibility: ^5.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

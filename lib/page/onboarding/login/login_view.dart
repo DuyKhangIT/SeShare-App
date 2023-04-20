@@ -48,15 +48,16 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 40),
                     ButtonNext(
                         onTap: () {
-                          if (loginController.phoneLogin.isNotEmpty &&
-                              loginController.passwordLogin.isNotEmpty) {
-                            UserRequest? userRequest = UserRequest(
-                                removeZeroAtFirstDigitPhoneNumber(
-                                    loginController.phoneLogin),
-                                removeZeroAtFirstDigitPhoneNumber(
-                                    loginController.passwordLogin));
-                           loginController.authenticate(userRequest);
-                           Global.isAvailableToClick();
+                          if(Global.isAvailableToClick()){
+                            if (loginController.phoneLogin.isNotEmpty &&
+                                loginController.passwordLogin.isNotEmpty) {
+                              UserRequest? userRequest = UserRequest(
+                                  removeZeroAtFirstDigitPhoneNumber(
+                                      loginController.phoneLogin),
+                                  removeZeroAtFirstDigitPhoneNumber(
+                                      loginController.passwordLogin));
+                              loginController.authenticate(userRequest);
+                            }
                           }
                         },
                         textInside: "Đăng nhập"),

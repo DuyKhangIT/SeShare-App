@@ -1,18 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../models/story_data.dart';
-
-class HomeController extends GetxController {
-  bool isLike = false;
-  final scrollController = ScrollController();
-  double previousOffset = 0.0;
+class CreateStoryController extends GetxController {
   File? avatar;
+
   @override
   void onReady() {
     super.onReady();
@@ -29,7 +27,7 @@ class HomeController extends GetxController {
   /// function to get the image from the camera
   Future getImageFromCamera() async {
     final pickedImageFromCam =
-    await imagePicker.pickImage(source: ImageSource.camera);
+        await imagePicker.pickImage(source: ImageSource.camera);
     if (pickedImageFromCam == null) {
       return;
     }
@@ -49,7 +47,7 @@ class HomeController extends GetxController {
   /// function to get the image from the gallery
   Future getImageFromGallery() async {
     final pickedImageFromGa =
-    await imagePicker.pickImage(source: ImageSource.gallery);
+        await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImageFromGa == null) {
       return;
     }
@@ -69,7 +67,7 @@ class HomeController extends GetxController {
   /// function to adjustment the image frame
   Future<File?> cropperImage({required File imgFile}) async {
     CroppedFile? cropperImage =
-    await ImageCropper().cropImage(sourcePath: imgFile.path);
+        await ImageCropper().cropImage(sourcePath: imgFile.path);
     if (cropperImage == null) return null;
     return File(cropperImage.path);
   }

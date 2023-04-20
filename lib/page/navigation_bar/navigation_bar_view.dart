@@ -57,7 +57,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
                               : Colors.black,
-                          height: (70),
+                          height: (60),
                           child: BottomNavigationBar(
                             type: BottomNavigationBarType.fixed,
                             currentIndex: currentIndex,
@@ -135,10 +135,10 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                     Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
-                            margin: const EdgeInsets.only(bottom: 38),
+                            margin: const EdgeInsets.only(bottom: 33),
                             alignment: Alignment.center,
-                            width: 60,
-                            height: 60,
+                            width: 55,
+                            height: 55,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(18),
                                 gradient: const LinearGradient(

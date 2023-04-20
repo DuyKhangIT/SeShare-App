@@ -17,7 +17,6 @@ class PostController extends GetxController {
   TextEditingController inputStatusController = TextEditingController();
   String statusPost = "";
   File? avatar;
-  Color? color;
   String checkInPost = "";
 
   @override

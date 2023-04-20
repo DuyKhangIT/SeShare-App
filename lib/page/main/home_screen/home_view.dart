@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/models/story_data.dart';
+import 'package:instagram_app/page/main/home_screen/comments_screen/comments_view.dart';
+import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/notification_screen/notification_view.dart';
 import 'package:instagram_app/widget/avatar_circle.dart';
@@ -27,119 +30,129 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
     return GetBuilder<HomeController>(
-        builder: (controller) => SafeArea(
-              child: Material(
-                key: UniqueKey(),
-                child: Container(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? Colors.black54
-                      : Colors.blueGrey.withOpacity(0.3),
-                  child: CustomScrollView(
-                    controller: homeController.scrollController,
-                    slivers: [
-                      SliverAppBar(
-                        backgroundColor: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.black54
-                            : Colors.white,
-                        automaticallyImplyLeading: false,
-                        title: Text(
-                          'Trang chủ',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              ?.copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      ?.color,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                        centerTitle: true,
-                        actions: [
-                          GestureDetector(
-                            onTap: () {
-                              ThemeService().changeTheme();
-                            },
-                            child: Container(
-                              width: 20,
-                              height: 20,
-                              margin: const EdgeInsets.only(right: 10),
-                              child: ColorFiltered(
-                                colorFilter: ColorFilter.mode(
-                                  Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
-                                  BlendMode.srcIn,
-                                ),
-                                child: const Icon(
-                                  moonIcon,
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.to(() => NotificationScreen());
-                            },
-                            child: ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                                BlendMode.srcIn,
-                              ),
-                              child: Image.asset(IconsAssets.icNotification),
-                            ),
-                          ),
-                        ],
-                        elevation: 0,
-                      ),
-                      //////////// list story  ////////////////
-                      SliverToBoxAdapter(
-                        child: Container(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.black54
-                              : Colors.white,
-                          height: 100, // set height of the container to hold the stories
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return contentListViewStoryFirstIndex();
-                              } else {
-                                return contentListViewStory();
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      //////////// list post  ////////////////
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return contentListViewPost();
-                          },
-                          childCount: homeController.currentMax,
-                        ),
-                      ),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: 70), // add bottom padding here
-                      ),
-                    ],
-                  ),
+        builder: (controller) => Scaffold(
+              appBar: AppBar(
+                backgroundColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black54
+                    : Colors.white,
+                automaticallyImplyLeading: false,
+                title: Text(
+                  'Trang chủ',
+                  style: Theme.of(context).textTheme.headline6?.copyWith(
+                      color: Theme.of(context).textTheme.headline6?.color,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
                 ),
+                centerTitle: true,
+                actions: [
+                  GestureDetector(
+                    onTap: () {
+                      ThemeService().changeTheme();
+                    },
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      margin: const EdgeInsets.only(right: 10),
+                      child: ColorFiltered(
+                        colorFilter: ColorFilter.mode(
+                          Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                          BlendMode.srcIn,
+                        ),
+                        child: const Icon(
+                          moonIcon,
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => const NotificationScreen());
+                    },
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                        BlendMode.srcIn,
+                      ),
+                      child: Image.asset(IconsAssets.icNotification),
+                    ),
+                  ),
+                ],
+                elevation: 0,
+              ),
+              body: SafeArea(
+                child: Container(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black54
+                        : Colors.blueGrey.withOpacity(0.3),
+                    child: Column(
+                      children: [
+                        Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 100,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.black54
+                                    : Colors.white,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return contentListViewStoryFirstIndex(homeController);
+                                } else {
+                                  return contentListViewStory();
+                                }
+                              },
+                            )),
+                        Expanded(
+                            child: ListView.builder(
+                                padding: const EdgeInsets.only(bottom: 90),
+                                itemCount: 4,
+                                itemBuilder: (context, index) {
+                                  return contentListViewPost();
+                                })),
+                      ],
+                    )),
               ),
             ));
   }
 
   /// content list view story
   Widget contentListViewStory() {
+    return Container(
+      width: 80,
+      margin: const EdgeInsets.only(right: 5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          AvatarStory(
+            image: ImageAssets.imgTet,
+            onTap: () {
+              Get.to(() => StoryPage());
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Text("Duy Khang",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// content list view story index == 0
+  Widget contentListViewStoryFirstIndex(homeController) {
     return GestureDetector(
-      onTap: (){
-        Get.to(() => StoryPage());
+      onTap: () {
+        Get.to(() => CreateStoryScreen());
       },
       child: Container(
         width: 80,
@@ -148,13 +161,19 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AvatarStory(
-              image: ImageAssets.imgTet,
-              onTap: () {},
+            Container(
+              width: 65,
+              height: 65,
+              margin: const EdgeInsets.only(top: 8, bottom: 5),
+              decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.black)),
+              child: Image.asset(IconsAssets.icPost),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Text("Duy Khang",
+              child: Text("Tin của bạn",
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
@@ -165,44 +184,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  /// content list view story index == 0
-  Widget contentListViewStoryFirstIndex() {
-    return Container(
-      width: 80,
-      margin: const EdgeInsets.only(right: 5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 65,
-            height: 65,
-            margin: const EdgeInsets.only(top: 8, bottom: 5),
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.black)
-            ),
-            child: Image.asset(IconsAssets.icPost),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text("Tin của bạn",
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
-          ),
-        ],
-      ),
-    );
-  }
-
   /// content list view post
   Widget contentListViewPost() {
     HomeController homeController = Get.put(HomeController());
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      padding: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Theme.of(context).brightness == Brightness.dark
@@ -225,8 +212,7 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.only(right: 10),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(14),
-                        child:
-                        Image.asset(
+                        child: Image.asset(
                           ImageAssets.imgTet,
                           fit: BoxFit.cover,
                           width: 50,
@@ -241,7 +227,7 @@ class _HomeState extends State<Home> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children:  [
+                        children: [
                           const Text("Duy Khang",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -274,26 +260,31 @@ class _HomeState extends State<Home> {
             ),
           ),
           (Global.checkIn != null && Global.checkIn.isNotEmpty)
-          ? Padding(
-            padding: const EdgeInsets.fromLTRB(20,0,20,10),
-            child:
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.asset(IconsAssets.icLocationPost,width: 30,height: 30,),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width/1.4,
-                  height: 40,
-                  child: Text("Địa điểm bạn nhắc tới: ${Global.checkIn}",
-                      maxLines: 2,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          fontFamily: 'Nunito Sans')),
-                ),
-              ],
-            ),
-          ) : Container(),
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        IconsAssets.icLocationPost,
+                        width: 30,
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.4,
+                        height: 40,
+                        child: Text("Địa điểm bạn nhắc tới: ${Global.checkIn}",
+                            maxLines: 2,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                fontFamily: 'Nunito Sans')),
+                      ),
+                    ],
+                  ),
+                )
+              : Container(),
+
           /// image post
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -301,158 +292,155 @@ class _HomeState extends State<Home> {
                   borderRadius: BorderRadius.circular(36),
                   child: Image.asset(ImageAssets.imgTet))),
 
+          /// descriptions of post
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+            child: RichText(
+              text: TextSpan(
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.headline6?.color,
+                      fontFamily: 'Nunito Sans'),
+                  children: const [
+                    TextSpan(
+                        text: "Duy Khang  ",
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: "Đi Vũng Tàu xả stress",
+                        style: TextStyle(fontSize: 14)),
+                  ]),
+            ),
+          ),
+
+          /// viewer and commenter
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+            child: //
+                Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 80,
+                  margin: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width / 7.5),
+                  alignment: Alignment.center,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                        style: TextStyle(
+                            color: Theme.of(context).textTheme.headline6?.color,
+                            fontFamily: 'NunitoSans'),
+                        children: const [
+                          TextSpan(
+                              text: "1K ",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Nunito Sans')),
+                          TextSpan(
+                              text: "Đã Thích",
+                              style: TextStyle(
+                                  fontSize: 12, fontFamily: 'Nunito Sans')),
+                        ]),
+                  ),
+                ),
+                Container(
+                  width: 85,
+                  alignment: Alignment.center,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                        style: TextStyle(
+                            color: Theme.of(context).textTheme.headline6?.color,
+                            fontFamily: 'NunitoSans'),
+                        children: const [
+                          TextSpan(
+                              text: "999K ",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Nunito Sans')),
+                          TextSpan(
+                              text: "Bình Luận",
+                              style: TextStyle(
+                                  fontSize: 12, fontFamily: 'Nunito Sans')),
+                        ]),
+                  ),
+                ),
+                Container(
+                  width: 80,
+                  margin: const EdgeInsets.only(left: 10),
+                  alignment: Alignment.center,
+                  child: RichText(
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                        style: TextStyle(
+                            color: Theme.of(context).textTheme.headline6?.color,
+                            fontFamily: 'NunitoSans'),
+                        children: const [
+                          TextSpan(
+                              text: "999K ",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Nunito Sans')),
+                          TextSpan(
+                              text: "Chia sẻ",
+                              style: TextStyle(
+                                  fontSize: 12, fontFamily: 'Nunito Sans')),
+                        ]),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(),
+
           /// icon like + cmt
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 60,
-            margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-            child: Column(
+            margin: const EdgeInsets.fromLTRB(20, 5, 0, 10),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /// viewer and cmter
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RichText(
-                        overflow: TextOverflow.ellipsis,
-                        text: TextSpan(
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.color,
-                                fontFamily: 'NunitoSans'),
-                            children: const [
-                              TextSpan(
-                                  text: "100K ",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'NunitoSans')),
-                              TextSpan(
-                                  text: "Đã Thích",
-                                  style: TextStyle(
-                                      fontSize: 12, fontFamily: 'NunitoSans')),
-                            ]),
-                      ),
-                      RichText(
-                        overflow: TextOverflow.ellipsis,
-                        text: TextSpan(
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.color,
-                                fontFamily: 'NunitoSans'),
-                            children: const [
-                              TextSpan(
-                                  text: "100K ",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'NunitoSans')),
-                              TextSpan(
-                                  text: "Đã Bình Luận",
-                                  style: TextStyle(
-                                      fontSize: 12, fontFamily: 'NunitoSans')),
-                            ]),
-                      ),
-                    ],
-                  ),
-                ),
-
-                /// icon like + cmt
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    /// ic like
-                    GestureDetector(
-                      onTap: () {
-                        homeController.isLike = !homeController.isLike;
-                        homeController.update();
-                      },
-                      child: Container(
-                          constraints: const BoxConstraints(maxWidth: 80),
-                          padding: const EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              (homeController.isLike == true)
-                                  ? ColorFiltered(
-                                      colorFilter: ColorFilter.mode(
-                                        Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.red
-                                            : Colors.red,
-                                        BlendMode.srcIn,
-                                      ),
-                                      child: Image.asset(IconsAssets.icLikeRed),
-                                    )
-                                  : ColorFiltered(
-                                      colorFilter: ColorFilter.mode(
-                                        Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        BlendMode.srcIn,
-                                      ),
-                                      child: Image.asset(IconsAssets.icLike),
-                                    ),
-                              const SizedBox(width: 10),
-                              Container(
-                                constraints: const BoxConstraints(maxWidth: 45),
-                                child: Text("Thích",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6
-                                        ?.copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                ?.color,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          )),
-                    ),
-
-                    /// ic cmt
-                    GestureDetector(
-                      onTap: (){
-                        showModalBottomSheet<dynamic>(
-                            backgroundColor: Colors.transparent,
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(12))),
-                            context: context,
-                            builder: (context) {
-                              return dialogCmt();
-                            });
-                      },
-                      child: Container(
-                        constraints: BoxConstraints(maxWidth: 105),
-                        padding: const EdgeInsets.all(5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                                BlendMode.srcIn,
-                              ),
-                              child: Image.asset(IconsAssets.icComment),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              constraints: const BoxConstraints(maxWidth: 60),
-                              child: Text(
-                                "Bình Luận",
+                /// ic like
+                GestureDetector(
+                  onTap: () {
+                    homeController.isLike = !homeController.isLike;
+                    homeController.update();
+                  },
+                  child: Container(
+                      constraints: const BoxConstraints(maxWidth: 80),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          (homeController.isLike == true)
+                              ? ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.red
+                                        : Colors.red,
+                                    BlendMode.srcIn,
+                                  ),
+                                  child: Image.asset(IconsAssets.icLikeRed),
+                                )
+                              : ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                                    BlendMode.srcIn,
+                                  ),
+                                  child: Image.asset(IconsAssets.icLike),
+                                ),
+                          const SizedBox(width: 10),
+                          Container(
+                            constraints: const BoxConstraints(maxWidth: 45),
+                            child: Text("Thích",
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6
@@ -462,123 +450,179 @@ class _HomeState extends State<Home> {
                                             .headline6
                                             ?.color,
                                         fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                                        fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      )),
                 ),
-              ],
-            ),
-          ),
 
-          /// descriptions of post
-          Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            child: RichText(
-              text: TextSpan(
-                  style: TextStyle(
-                      color: Theme.of(context).textTheme.headline6?.color,
-                      fontFamily: 'NunitoSans'),
-                  children: const [
-                    TextSpan(
-                        text: "Duy Khang ",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold)),
-                    TextSpan(
-                        text:
-                            "Đi Vũng Tàu xả stress",
-                        style: TextStyle(fontSize: 14)),
-                  ]),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget dialogCmt(){
-    return SafeArea(
-      child: Container(
-        color: Colors.white,
-          margin: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: GestureDetector (
-                  onTap: () => Navigator.pop(context),
+                /// ic cmt
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => const CommentScreen());
+                  },
                   child: Container(
-                    color: Colors.transparent,
-                  )),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 3,
-                  itemBuilder: (context,index){
-                return contentListCmt();
-              }),
-            )
-          ],
-      ),
-        ),
-    );
-  }
-
-  Widget contentListCmt() {
-
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(top: 12,left: 10,right: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.asset(ImageAssets.imgTest,width: 40,height: 40,fit: BoxFit.cover,),
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 16,
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      color: Colors.grey.withOpacity(0.4)
-                  ),
-                  child: Text(
-                    "Hôm nay rất tuyệt Hôm nay rất tuyệt Hôm nay rất tuyệt",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
+                    constraints: BoxConstraints(maxWidth: 105),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                            Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                            BlendMode.srcIn,
+                          ),
+                          child: Image.asset(IconsAssets.icComment),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          constraints: const BoxConstraints(maxWidth: 60),
+                          child: Text(
+                            "Bình Luận",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        ?.color,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(top: 5),
-                  constraints: const BoxConstraints(
-                      maxWidth: 240
-                  ),
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    "12:00",
-                  ),
+
+                /// ic share
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                      constraints: const BoxConstraints(maxWidth: 100),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(IconsAssets.icShare),
+                          const SizedBox(width: 10),
+                          Container(
+                            constraints: const BoxConstraints(maxWidth: 70),
+                            child: Text("Chia sẻ",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    ?.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            ?.color,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      )),
                 ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget detailBottomSheetAddImage(homeController) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 31, right: 31, bottom: 26),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              InkWell(
+                  onTap: () {
+                    homeController.getImageFromCamera();
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    child: Center(
+                      child: Text("Chụp ảnh".toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'NunitoSans',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14)),
+                    ),
+                  )),
+              Divider(
+                thickness: 0.5,
+                height: 0,
+                color: Colors.black.withOpacity(0.1),
+              ),
+              InkWell(
+                  onTap: () {
+                    homeController.getImageFromGallery();
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    child: Center(
+                      child: Text("Chọn ảnh từ thư viện".toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'NunitoSans',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14)),
+                    ),
+                  )),
+            ],
+          ),
+        ),
+
+        /// BUTTON CANCEL
+        Padding(
+            padding: EdgeInsets.only(bottom: 34, left: 34, right: 34),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  elevation: 4,
+                  shadowColor: Colors.black,
+                  side: BorderSide(color: Colors.white, width: 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  "Hủy chọn".toUpperCase(),
+                  style: TextStyle(
+                      fontFamily: 'NunitoSans',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2),
+                ),
+              ),
+            ))
+      ],
     );
   }
 }

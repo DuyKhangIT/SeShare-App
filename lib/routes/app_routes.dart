@@ -2,6 +2,10 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_list/chat_list_view.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_view/chat_binding.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_view/chat_view.dart';
+import 'package:instagram_app/page/main/home_screen/comments_screen/comments_screen_binding.dart';
+import 'package:instagram_app/page/main/home_screen/comments_screen/comments_view.dart';
+import 'package:instagram_app/page/main/home_screen/create_story/create_story_binding.dart';
+import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_binding.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/post_screen/changed_address/changed_address_binding.dart';
@@ -76,6 +80,8 @@ class AppRoutes {
   static const String searchScreen = "/seShare_search_screen";
   static const String postScreen = "/seShare_post_screen";
   static const String storyScreen = "/seShare_story_screen";
+  static const String commentsScreen = "/seShare_comments_screen";
+  static const String createStoryScreen = "/seShare_createStory_screen";
 
 
   /// Chat
@@ -193,6 +199,18 @@ class AppRoutes {
       name: changedAddressScreen,
       page: () => ChangedAddressView(),
       binding: ChangedAddressBinding(),
+    ),
+
+    GetPage(
+      name: commentsScreen,
+      page: () => CommentScreen(),
+      binding: CommentsBinding(),
+    ),
+
+    GetPage(
+      name: createStoryScreen,
+      page: () => CreateStoryScreen(),
+      binding: CreateStoryBinding(),
     ),
   ];
 }
