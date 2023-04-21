@@ -19,18 +19,6 @@ class SearchScreen extends StatelessWidget {
                 backgroundColor: Theme.of(context).brightness == Brightness.dark
                   ? Colors.black54
                   : Colors.white,
-                appBar: AppBar(
-                  automaticallyImplyLeading: false,
-                  centerTitle: true,
-                  title: Text(
-                    'Tìm kiếm',
-                    style: Theme.of(context).textTheme.headline6?.copyWith(
-                        color: Theme.of(context).textTheme.headline6?.color,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  elevation: 0,
-                ),
                 body: Padding(
                   padding: const EdgeInsets.only(bottom: 75),
                   child: Column(
@@ -42,11 +30,11 @@ class SearchScreen extends StatelessWidget {
                           staggeredTileBuilder: (index) => index % 7 == 0
                               ? const StaggeredTile.count(2, 2)
                               : const StaggeredTile.count(1, 1),
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
                           crossAxisCount: 3,
                           itemCount: 9,
-                          itemBuilder: (context, index) => contentGridView(),
+                          itemBuilder: (context, index) => contentGridView(context),
                         ),
                       )
                     ],
@@ -59,10 +47,11 @@ class SearchScreen extends StatelessWidget {
   /// search box
   Widget _searchBox(SearchController controller, BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       height: 45,
-      margin: const EdgeInsets.fromLTRB(20,10,20,30),
+      margin: const EdgeInsets.fromLTRB(10,30,10,10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(36),
+        borderRadius: BorderRadius.circular(14),
           color: Theme.of(context).brightness == Brightness.dark
               ? Colors.white
               : Colors.blueGrey.withOpacity(0.2),
@@ -116,15 +105,12 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-  Widget contentGridView() {
-    return Card(
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Container(
-        margin: const EdgeInsets.all(8),
-        child: ClipRect(
-          child: Image.asset(ImageAssets.imgTest, fit: BoxFit.cover),
-        ),
+  Widget contentGridView(context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: ClipRect(
+        child: Image.asset(ImageAssets.imgTest, fit: BoxFit.cover),
       ),
     );
   }

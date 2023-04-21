@@ -157,7 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ConfigSharedPreferences().setStringValue(
                               SharedData.TOKEN.toString(),
                               "");
-                          Get.to(() => Login());
+                          Get.offAll(() => Login());
                         },
                         child: Container(
                           width: 30,
@@ -381,10 +381,9 @@ class _Tab3 extends State<Tab3> with AutomaticKeepAliveClientMixin<Tab3> {
   /// content gridview
   Widget contentGridView() {
     return Padding(
-      padding: const EdgeInsets.all(8),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(30),
-        child: Image.asset(ImageAssets.imgTest, fit: BoxFit.cover),
+      padding: const EdgeInsets.all(1),
+      child: ClipRect(
+        child: Image.asset(ImageAssets.imgTet, fit: BoxFit.cover),
       ),
     );
   }

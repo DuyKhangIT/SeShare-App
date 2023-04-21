@@ -112,7 +112,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     maxLines: null,
                     textAlignVertical: TextAlignVertical.center,
                     decoration: const InputDecoration(
-                      hintText: 'Nhập tin nhắn',
+                      hintText: 'Nhập bình luận',
                       border: InputBorder.none,
                     ),
                   ),

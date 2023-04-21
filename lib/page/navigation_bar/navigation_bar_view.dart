@@ -64,6 +64,9 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                             onTap: _onItemTapped,
                             showUnselectedLabels: false,
                             showSelectedLabels: false,
+                            selectedItemColor: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
                             elevation: 0,
                             items: [
                               BottomNavigationBarItem(
@@ -138,9 +141,9 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                             margin: const EdgeInsets.only(bottom: 33),
                             alignment: Alignment.center,
                             width: 55,
-                            height: 55,
+                            height: 50,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(18),
+                                borderRadius: BorderRadius.circular(14),
                                 gradient: const LinearGradient(
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
@@ -154,8 +157,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 2,
                                     blurRadius: 10,
-                                    offset: Offset(0,
-                                        3), // Độ dịch chuyển theo trục x và y của đổ bóng
+                                    offset: const Offset(0, 3), // Độ dịch chuyển theo trục x và y của đổ bóng
                                   ),
                                 ]),
                             child: InkWell(
@@ -166,7 +168,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                                 "S",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 25,
+                                    fontSize: 22,
                                     fontWeight: FontWeight.bold),
                               ),
                             ))),

@@ -45,7 +45,7 @@ class InputPhoneNumberController extends GetxController {
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("https://seshareapi.onrender.com/api/user/check-phone"),
+          Uri.parse("https://cndk-seshare.up.railway.app/api/user/check-phone"),
           RequestType.post,
           headers: null,
           body: const JsonEncoder().convert(checkPhoneNumberRequest.toBodyRequest()));

@@ -37,13 +37,12 @@ class _HomeState extends State<Home> {
                     : Colors.white,
                 automaticallyImplyLeading: false,
                 title: Text(
-                  'Trang chủ',
+                  'SeShare',
                   style: Theme.of(context).textTheme.headline6?.copyWith(
                       color: Theme.of(context).textTheme.headline6?.color,
                       fontSize: 22,
                       fontWeight: FontWeight.bold),
                 ),
-                centerTitle: true,
                 actions: [
                   GestureDetector(
                     onTap: () {
@@ -89,6 +88,7 @@ class _HomeState extends State<Home> {
                         ? Colors.black54
                         : Colors.blueGrey.withOpacity(0.3),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
                             width: MediaQuery.of(context).size.width,
@@ -109,12 +109,17 @@ class _HomeState extends State<Home> {
                               },
                             )),
                         Expanded(
-                            child: ListView.builder(
-                                padding: const EdgeInsets.only(bottom: 90),
-                                itemCount: 4,
-                                itemBuilder: (context, index) {
-                                  return contentListViewPost();
-                                })),
+                            child: RefreshIndicator(
+                              edgeOffset: 0,
+                              displacement: 10,
+                              onRefresh: homeController.pullToRefreshData,
+                              child: ListView.builder(
+                                  padding: const EdgeInsets.only(bottom: 90),
+                                  itemCount: 4,
+                                  itemBuilder: (context, index) {
+                                    return contentListViewPost();
+                                  }),
+                            )),
                       ],
                     )),
               ),
@@ -123,9 +128,8 @@ class _HomeState extends State<Home> {
 
   /// content list view story
   Widget contentListViewStory() {
-    return Container(
+    return SizedBox(
       width: 80,
-      margin: const EdgeInsets.only(right: 5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -152,11 +156,11 @@ class _HomeState extends State<Home> {
   Widget contentListViewStoryFirstIndex(homeController) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => CreateStoryScreen());
+        Get.to(() => const CreateStoryScreen());
       },
       child: Container(
         width: 80,
-        margin: const EdgeInsets.only(right: 5),
+        margin: const EdgeInsets.only(left: 5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -264,6 +268,7 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Image.asset(
                         IconsAssets.icLocationPost,
@@ -277,7 +282,7 @@ class _HomeState extends State<Home> {
                             maxLines: 2,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontFamily: 'Nunito Sans')),
                       ),
                     ],
@@ -398,10 +403,12 @@ class _HomeState extends State<Home> {
           ),
           const Divider(),
 
-          /// icon like + cmt
+          /// icon like + cmt + share
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.fromLTRB(20, 5, 0, 10),
+            margin: const EdgeInsets.only(top: 5),
+            padding: const EdgeInsets.only(left: 20,bottom: 10),
+            height: 30,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -455,7 +462,7 @@ class _HomeState extends State<Home> {
                         ],
                       )),
                 ),
-
+                VerticalDivider(),
                 /// ic cmt
                 GestureDetector(
                   onTap: () {
@@ -496,7 +503,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-
+                VerticalDivider(),
                 /// ic share
                 GestureDetector(
                   onTap: () {},

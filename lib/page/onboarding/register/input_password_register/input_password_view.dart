@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../assets/icons_assets.dart';
 import '../../../../util/global.dart';
 import '../../../../widget/button_next.dart';
+import '../../login/login_view.dart';
 import '../input_full_name_register/input_full_name_view.dart';
 import 'input_password_controller.dart';
 
@@ -32,15 +33,21 @@ class _InputPasswordState extends State<InputPassword> {
             ),
             centerTitle: true,
             backgroundColor: Colors.transparent,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_rounded,
-                color: Colors.black,
-              ),
-            ),
+            actions: [
+              InkWell(
+                onTap: (){
+                  Get.offAll(() => Login());
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(right: 25),
+                  child: Text("Hủy",style: TextStyle(
+                    color: Theme.of(context).textTheme.headline6?.color,
+                    fontSize: 18,fontWeight: FontWeight.bold
+                  )),
+                ),
+              )
+            ],
             elevation: 0,
           ),
           body: Container(

@@ -26,18 +26,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
               backgroundColor: Theme.of(context).brightness == Brightness.dark
                   ? Colors.black54
                   : Colors.white,
-              appBar: AppBar(
-                automaticallyImplyLeading: true,
-                title: Text(
-                  'Tin nhắn',
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
-                      color: Theme.of(context).textTheme.headline6?.color,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
-                ),
-                centerTitle: true,
-                elevation: 0,
-              ),
               body: SafeArea(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,9 +33,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     searchBox(chatListController, context),
                     Expanded(
                       child: ListView.builder(
-                        padding: EdgeInsets.only(bottom: 100),
+                        padding: const EdgeInsets.only(bottom: 100),
                         scrollDirection: Axis.vertical,
-                        itemCount: 15,
+                        itemCount: 5,
                         itemBuilder: (context, index) {
                           return contentListChat();
                         },
@@ -86,7 +74,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
             Container(
               width: MediaQuery.of(context).size.width / 1.35,
               height: 35,
-              margin: EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.only(left: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +92,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                                 fontFamily: 'Nunito Sans',
                                 fontWeight: FontWeight.bold)),
                       ),
-                      Text("12:00",
+                      const Text("12:00",
                           style:
                               TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
                     ],
@@ -131,9 +119,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
       ChatListController chatListController, BuildContext context) {
     return Container(
       height: 45,
-      margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(36),
+        borderRadius: BorderRadius.circular(14),
         color: Theme.of(context).brightness == Brightness.dark
             ? Colors.white
             : Colors.blueGrey.withOpacity(0.2),

@@ -36,37 +36,39 @@ class _StartUpScreenState extends State<StartUpScreen>
     return GetBuilder<StartUpController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                /// logo
-                const Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'SeShare',
-                    style: TextStyle(
-                        fontSize: 40,
-                        fontFamily: 'Nunito Sans',
-                        fontStyle: FontStyle.italic),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  /// logo
+                  const Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'SeShare',
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontFamily: 'Nunito Sans',
+                          fontStyle: FontStyle.italic),
+                    ),
                   ),
-                ),
-                welcomeTittle(),
-                Lottie.asset(
-                  AnimationAssets.icSplash,
-                  controller: animationController,
-                  repeat: true,
-                  reverse: true,
-                  onLoaded: (composition) {
-                    // Configure the AnimationController with the duration of the
-                    // Lottie file and start the animation.
-                    animationController
-                      ..duration = composition.duration
-                      ..forward();
-                  },
-                ),
-              ],
+                  welcomeTittle(),
+                  Lottie.asset(
+                    AnimationAssets.icSplash,
+                    controller: animationController,
+                    repeat: true,
+                    reverse: true,
+                    onLoaded: (composition) {
+                      // Configure the AnimationController with the duration of the
+                      // Lottie file and start the animation.
+                      animationController
+                        ..duration = composition.duration
+                        ..forward();
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           bottomNavigationBar: Padding(

@@ -60,7 +60,7 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                 actions: [
                   GestureDetector(
                     onTap: (){
-                      Get.to(() => Login());
+                      Get.offAll(() => Login());
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 20),
@@ -96,7 +96,7 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                         height: 10,
                       ),
                       const Text(
-                          'Chào mừng bạn đến với SeShare. Vui lòng bấm tiếp tục để hoàn thành việc đăng ký',
+                          'Chào mừng bạn đến với SeShare\n Vui lòng bấm tiếp tục để hoàn thành việc đăng ký.',
                           style: TextStyle(
                             fontSize: 12,
                             fontFamily: 'Nunito Sans',

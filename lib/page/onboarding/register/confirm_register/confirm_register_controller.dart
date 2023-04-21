@@ -35,7 +35,7 @@ class ConfirmRegisterController extends GetxController {
     var headers = {
       'Content-Type': 'application/json'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('https://seshareapi.onrender.com/api/user/sign-up'));
+    var request = http.MultipartRequest('POST', Uri.parse('https://cndk-seshare.up.railway.app/api/user/sign-up'));
     request.fields.addAll({
       'phone': Global.phoneNumber,
       'password': Global.registerNewPassword,
@@ -67,7 +67,7 @@ class ConfirmRegisterController extends GetxController {
       ScaffoldMessenger.of(Get.context!)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
-      Get.to(() => Login());
+      Get.offAll(() => Login());
     }
     else {
       print(response.reasonPhrase);

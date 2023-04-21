@@ -55,7 +55,7 @@ class PostController extends GetxController {
 
     String filePaths;
     filePaths = picture.path;
-    Global.registerNewAvatar = filePaths;
+    //Global.registerNewAvatar = filePaths;
     update();
   }
 
@@ -76,7 +76,7 @@ class PostController extends GetxController {
 
     String filePaths;
     filePaths = imgFrame.path;
-    Global.registerNewAvatar = filePaths;
+   // Global.registerNewAvatar = filePaths;
     update();
   }
 

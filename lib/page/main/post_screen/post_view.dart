@@ -213,9 +213,9 @@ class _PostScreenState extends State<PostScreen> {
                         /// add image and changed address
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 40),
+                              vertical: 20, horizontal: 10),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               GestureDetector(
                                   onTap: () {
@@ -232,6 +232,7 @@ class _PostScreenState extends State<PostScreen> {
                                       color: Colors.blue,
                                       width: 30,
                                       height: 30)),
+                              const SizedBox(width: 20),
                               GestureDetector(
                                   onTap: () {
                                     postController.captureData();

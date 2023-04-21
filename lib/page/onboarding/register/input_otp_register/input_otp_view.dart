@@ -7,6 +7,7 @@ import 'package:instagram_app/widget/button_next.dart';
 import 'package:pinput/pinput.dart';
 import '../../../../config/share_preferences.dart';
 import '../../../../util/global.dart';
+import '../../login/login_view.dart';
 import '../input_password_register/input_password_view.dart';
 import 'input_otp_controller.dart';
 
@@ -57,15 +58,21 @@ class _InputOTPState extends State<InputOTP> {
                 ),
                 centerTitle: true,
                 backgroundColor: Colors.transparent,
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_rounded,
-                    color: Colors.black,
-                  ),
-                ),
+                actions: [
+                  InkWell(
+                    onTap: (){
+                      Get.offAll(() => Login());
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(right: 25),
+                      child: Text("Hủy",style: TextStyle(
+                          color: Theme.of(context).textTheme.headline6?.color,
+                          fontSize: 18,fontWeight: FontWeight.bold
+                      )),
+                    ),
+                  )
+                ],
                 elevation: 0,
               ),
               body: Container(
