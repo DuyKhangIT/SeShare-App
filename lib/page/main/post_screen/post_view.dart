@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/post_screen/post_controller.dart';
 import 'package:instagram_app/util/global.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
+
 
 class PostScreen extends StatefulWidget {
   const PostScreen({Key? key}) : super(key: key);
@@ -32,7 +34,9 @@ class _PostScreenState extends State<PostScreen> {
                       fontWeight: FontWeight.w400),
                 ),
                 actions: [
-                  (postController.inputStatusController.text.isEmpty)
+                  (postController.inputStatusController.text.isEmpty &&
+                          postController.privacy.isEmpty &&
+                          postController.avatar == null)
                       ? Container(
                           margin: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
@@ -43,7 +47,8 @@ class _PostScreenState extends State<PostScreen> {
                               foregroundColor:
                                   const Color(0xffFFFFFF).withOpacity(0.4),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                            },
                             child: Text(
                               "Đăng".toUpperCase(),
                               style: const TextStyle(
@@ -66,7 +71,11 @@ class _PostScreenState extends State<PostScreen> {
                               foregroundColor:
                                   const Color(0xffFFFFFF).withOpacity(0.4),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              if(Global.isAvailableToClick()){
+                                postController.posts();
+                              }
+                            },
                             child: Text(
                               "Đăng".toUpperCase(),
                               style: const TextStyle(
@@ -103,13 +112,15 @@ class _PostScreenState extends State<PostScreen> {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: Image.asset(
-                                    ImageAssets.imgTet,
+                                  child:
+                                  Global.userProfileResponse!.avatarPath!.isNotEmpty
+                                  ?Image.network(
+                                    Global.convertMedia(Global.userProfileResponse!.avatarPath!),
                                     fit: BoxFit.cover,
-                                  ),
+                                  ):Container(),
                                 )),
 
-                            /// name and current location user
+                            /// name and current location user and policy
                             SizedBox(
                               width: MediaQuery.of(context).size.width / 1.28,
                               height: 50,
@@ -118,14 +129,79 @@ class _PostScreenState extends State<PostScreen> {
                                     MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    "Duy Khang",
-                                    style: TextStyle(
-                                      fontFamily: 'Nunito Sans',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  Row(
+                                    children: [
+                                       Text(
+                                        Global.userProfileResponse!.fullName,
+                                        style: const TextStyle(
+                                          fontFamily: 'Nunito Sans',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      postController.privacy.isNotEmpty
+                                          ? Container(
+                                              constraints: const BoxConstraints(
+                                                  maxWidth: 92),
+                                              margin: const EdgeInsets.only(
+                                                  left: 15),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      5, 5, 2, 5),
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  border: Border.all(
+                                                      color: Colors.black
+                                                          .withOpacity(0.4))),
+                                              child:
+
+                                                  /// public
+                                                  Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Image.asset(
+                                                    postController.privacy ==
+                                                            "public"
+                                                        ? IconsAssets
+                                                            .icPublicMode
+                                                        : postController
+                                                                    .privacy ==
+                                                                "private"
+                                                            ? IconsAssets
+                                                                .icPrivateMode
+                                                            : IconsAssets
+                                                                .icFriendMode,
+                                                    width: 16,
+                                                    height: 16,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 60,
+                                                    child: Text(
+                                                        postController
+                                                                    .privacy ==
+                                                                "public"
+                                                            ? "Công khai"
+                                                            : postController
+                                                                        .privacy ==
+                                                                    "private"
+                                                                ? "Cá nhân"
+                                                                : "Bạn bè",
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 12,
+                                                            fontFamily:
+                                                                'Nunito Sans')),
+                                                  ),
+                                                ],
+                                              ))
+                                          : const SizedBox()
+                                    ],
                                   ),
+
                                   ///current location user
                                   (Global.currentLocation.isNotEmpty)
                                       ? Text(
@@ -145,18 +221,31 @@ class _PostScreenState extends State<PostScreen> {
                         ),
 
                         (postController.checkInPost.isNotEmpty)
-                            ? Container(
-                                margin: EdgeInsets.only(top: 20),
-                                width: MediaQuery.of(context).size.width,
-                                height: 50,
-                                child: Text(
-                                  "Địa điểm bạn nhắc tới: ${postController.checkInPost}",
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                    fontFamily: 'Nunito Sans',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Image.asset(IconsAssets.icCheckIn),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 10),
+                                      constraints: const BoxConstraints(
+                                          maxWidth: 330, minHeight: 50),
+                                      child: Text(
+                                        "Địa điểm bạn nhắc tới: ${postController.checkInPost}",
+                                        maxLines: 3,
+                                        style: const TextStyle(
+                                          fontFamily: 'Nunito Sans',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               )
                             : const SizedBox(),
@@ -166,7 +255,8 @@ class _PostScreenState extends State<PostScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
-                              margin: const EdgeInsets.only(bottom: 20,top: 10),
+                              margin:
+                                  const EdgeInsets.only(bottom: 20, top: 10),
                               constraints: const BoxConstraints(minHeight: 80),
                               padding: const EdgeInsets.only(left: 14),
                               child: TextField(
@@ -181,11 +271,11 @@ class _PostScreenState extends State<PostScreen> {
                                 keyboardType: TextInputType.text,
                                 cursorColor: Colors.grey,
                                 decoration: const InputDecoration(
-                                  hintText: 'Bạn đang nghĩ gì?',
+                                  hintText: 'Bạn muốn chia sẻ điều gì hôm nay?',
                                   hintStyle: TextStyle(
                                     fontFamily: 'Nunito Sans',
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 16,
+                                    fontSize: 18,
                                   ),
                                   border: InputBorder.none,
                                   focusedBorder: InputBorder.none,
@@ -193,30 +283,48 @@ class _PostScreenState extends State<PostScreen> {
                                   counterText: '',
                                 ),
                                 onChanged: (value) {
-                                  postController.statusPost = value;
+                                  postController.captionPost = value;
                                   postController.update();
                                 },
                               ),
                             ),
-                            (postController.avatar != null)
+
+                            /// list photo of user post
+                            (postController.photoPath.isNotEmpty)
                                 ? SizedBox(
                                     width: MediaQuery.of(context).size.width,
-                                    height: 500,
-                                    child: Image.file(
-                                      postController.avatar!,
-                                      fit: BoxFit.cover,
-                                    ))
+                                    height: 350,
+                                    child:  PhotoViewGallery.builder(
+                                      scrollPhysics: const BouncingScrollPhysics(),
+                                      builder: (BuildContext context, int indexPath) {
+                                        return PhotoViewGalleryPageOptions(
+                                          initialScale: PhotoViewComputedScale.covered,
+                                          minScale: PhotoViewComputedScale.covered,
+                                          maxScale: PhotoViewComputedScale.covered,
+                                          imageProvider: NetworkImage(Global.convertMedia(
+                                              postController.photoPath[indexPath].toString())
+                                          ),
+                                        );
+                                      },
+                                      itemCount: postController.photoPath.length,
+                                    )
+                            )
                                 : const SizedBox()
                           ],
                         ),
 
-                        /// add image and changed address
+                        /// add image and add check in
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 20, horizontal: 10),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              const Text("Thêm vào bài viết của bạn: ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Nunito Sans',
+                                  )),
                               GestureDetector(
                                   onTap: () {
                                     showModalBottomSheet(
@@ -228,17 +336,40 @@ class _PostScreenState extends State<PostScreen> {
                                               postController);
                                         });
                                   },
-                                  child: Image.asset(IconsAssets.icAddImage,
-                                      color: Colors.blue,
-                                      width: 30,
-                                      height: 30)),
-                              const SizedBox(width: 20),
+                                  child: SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: Image.asset(IconsAssets.icAddImage,
+                                        fit: BoxFit.cover,
+                                        color: Colors.lightBlue),
+                                  )),
                               GestureDetector(
                                   onTap: () {
                                     postController.captureData();
                                   },
-                                  child: Image.asset(IconsAssets.icLocationPost,
-                                      width: 30, height: 30)),
+                                  child: SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child:
+                                        Image.asset(IconsAssets.icLocationPost),
+                                  )),
+                              GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (context) {
+                                          return detailBottomSheetPrivacy(
+                                              postController);
+                                        });
+                                  },
+                                  child: SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: Image.asset(IconsAssets.icPrivacy,
+                                        color: Colors.deepPurpleAccent),
+                                  )),
                             ],
                           ),
                         ),
@@ -250,6 +381,7 @@ class _PostScreenState extends State<PostScreen> {
             ));
   }
 
+  /// add image
   Widget detailBottomSheetAddImage(PostController postController) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -280,7 +412,7 @@ class _PostScreenState extends State<PostScreen> {
                     height: 50,
                     child: Center(
                       child: Text("Chụp ảnh".toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.black,
                               fontFamily: 'NunitoSans',
                               fontWeight: FontWeight.w600,
@@ -300,7 +432,7 @@ class _PostScreenState extends State<PostScreen> {
                     height: 50,
                     child: Center(
                       child: Text("Chọn ảnh từ thư viện".toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.black,
                               fontFamily: 'NunitoSans',
                               fontWeight: FontWeight.w600,
@@ -313,7 +445,7 @@ class _PostScreenState extends State<PostScreen> {
 
         /// BUTTON CANCEL
         Padding(
-            padding: EdgeInsets.only(bottom: 34, left: 34, right: 34),
+            padding: const EdgeInsets.only(bottom: 34, left: 34, right: 34),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 50,
@@ -325,14 +457,218 @@ class _PostScreenState extends State<PostScreen> {
                   backgroundColor: Colors.blue,
                   elevation: 4,
                   shadowColor: Colors.black,
-                  side: BorderSide(color: Colors.white, width: 1),
+                  side: const BorderSide(color: Colors.white, width: 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 child: Text(
                   "Hủy chọn".toUpperCase(),
-                  style: TextStyle(
+                  style: const TextStyle(
+                      fontFamily: 'NunitoSans',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2),
+                ),
+              ),
+            ))
+      ],
+    );
+  }
+
+  /// choose policy
+  Widget detailBottomSheetPrivacy(PostController postController) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 31, right: 31, bottom: 26),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              /// public mode
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            postController.isPublic.value =
+                                !postController.isPublic.value;
+                            postController.isPrivate.value = false;
+                            postController.isFriend.value = false;
+                            postController.update();
+                          },
+                          child: Container(
+                            height: 50,
+                            margin: const EdgeInsets.only(right: 10),
+                            child: Center(
+                              child: Text("Chế độ công khai".toUpperCase(),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'NunitoSans',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14)),
+                            ),
+                          )),
+                      postController.isPublic.value == true
+                          ? Image.asset(IconsAssets.icChecked,
+                              width: 20, height: 20)
+                          : const SizedBox()
+                    ],
+                  )),
+              Divider(
+                thickness: 0.5,
+                height: 0,
+                color: Colors.black.withOpacity(0.1),
+              ),
+
+              /// private mode
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            postController.isPrivate.value =
+                                !postController.isPrivate.value;
+                            postController.isPublic.value = false;
+                            postController.isFriend.value = false;
+                            postController.update();
+                          },
+                          child: Container(
+                            height: 50,
+                            margin: const EdgeInsets.only(right: 10),
+                            child: Center(
+                              child: Text("Chế độ cá nhân".toUpperCase(),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'NunitoSans',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14)),
+                            ),
+                          )),
+                      postController.isPrivate.value == true
+                          ? Image.asset(IconsAssets.icChecked,
+                              width: 20, height: 20)
+                          : const SizedBox()
+                    ],
+                  )),
+              Divider(
+                thickness: 0.5,
+                height: 0,
+                color: Colors.black.withOpacity(0.1),
+              ),
+
+              /// friend mode
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            postController.isFriend.value =
+                                !postController.isFriend.value;
+                            postController.isPrivate.value = false;
+                            postController.isPublic.value = false;
+                            postController.update();
+                          },
+                          child: Container(
+                            height: 50,
+                            margin: const EdgeInsets.only(right: 10),
+                            child: Center(
+                              child: Text("Chế độ bạn bè".toUpperCase(),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'NunitoSans',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14)),
+                            ),
+                          )),
+                      postController.isFriend.value == true
+                          ? Image.asset(IconsAssets.icChecked,
+                              width: 20, height: 20)
+                          : const SizedBox()
+                    ],
+                  )),
+            ],
+          ),
+        ),
+
+        /// selected
+        Padding(
+            padding: const EdgeInsets.only(bottom: 20, left: 34, right: 34),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (postController.isPublic.value == true) {
+                    postController.privacy = "public";
+                  } else if (postController.isPrivate.value == true) {
+                    postController.privacy = "private";
+                  } else {
+                    postController.privacy = "friends";
+                  }
+                  postController.update();
+                  Navigator.pop(context);
+                  debugPrint(postController.privacy);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  elevation: 4,
+                  shadowColor: Colors.black,
+                  side: const BorderSide(color: Colors.white, width: 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  "Chọn".toUpperCase(),
+                  style: const TextStyle(
+                      fontFamily: 'NunitoSans',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2),
+                ),
+              ),
+            )),
+
+        /// BUTTON CANCEL
+        Padding(
+            padding: const EdgeInsets.only(bottom: 34, left: 34, right: 34),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  postController.isPublic.value = false;
+                  postController.isPrivate.value = false;
+                  postController.isFriend.value = false;
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  elevation: 4,
+                  shadowColor: Colors.black,
+                  side: const BorderSide(color: Colors.white, width: 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  "Hủy chọn".toUpperCase(),
+                  style: const TextStyle(
                       fontFamily: 'NunitoSans',
                       fontSize: 16,
                       fontWeight: FontWeight.w400,

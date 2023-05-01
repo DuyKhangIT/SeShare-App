@@ -22,7 +22,7 @@ const moonIcon = CupertinoIcons.moon_stars;
 
 class _NavigationBarViewState extends State<NavigationBarView> {
   int currentIndex = 0;
-
+  NavigationBarController? navigationBarController;
   List page = [
     const Home(),
     const ChatListScreen(),

@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../models/user_profile/user_profile_response.dart';
+
 class Global {
 
   static String verifyFireBase = "";
@@ -25,7 +27,8 @@ class Global {
   static String registerNewFullName = "";
   /// new avatar from register
   static String registerNewAvatar = "";
-
+  static String userId = "";
+  static UserProfileResponse? userProfileResponse;
 
   /// block auto click or many time click
   static int mTimeClick = 0;
@@ -36,5 +39,10 @@ class Global {
       return true;
     }
     return false;
+  }
+
+  static String convertMedia(String path) {
+    debugPrint("Loaded path: " + path);
+    return "http://14.225.204.248:8080/$path";
   }
 }

@@ -29,6 +29,11 @@ class IconsAssets {
   static const String icArtist = 'assets/icons/ic_artist_post.png';
   static const String icGPS = 'assets/icons/ic_gps.png';
   static const String icMapMarker = 'assets/icons/ic_map_marker.png';
+  static const String icPrivacy = 'assets/icons/ic_privacy.png';
+  static const String icPublicMode = 'assets/icons/ic_public.png';
+  static const String icPrivateMode = 'assets/icons/ic_private.png';
+  static const String icCheckIn = 'assets/icons/ic_check_in.png';
+  static const String icFriendMode = 'assets/icons/ic_friend_mode.png';
 
 
 }

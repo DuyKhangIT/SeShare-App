@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../api_http/handle_api.dart';
 import '../../../config/share_preferences.dart';
+import '../../../models/user_profile/profile_request.dart';
+import '../../../models/user_profile/profile_response.dart';
 import '../../../util/global.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
 
@@ -13,23 +18,27 @@ class StartUpController extends GetxController{
 
   @override
   void onReady() {
-    checkAlreadyLoggedIn();
     getCurrentLocation();
+    checkAlreadyLoggedIn();
     super.onReady();
   }
+
+
+
   /// check login with shared preferences
   Future<void> checkAlreadyLoggedIn() async {
-    String? userId = await ConfigSharedPreferences().getStringValue(
+    String? userToken = await ConfigSharedPreferences().getStringValue(
         SharedData.TOKEN.toString(),
         defaultValue: "");
-    if (userId.isEmpty || userId == "") {
+    if (userToken.isEmpty || userToken == "") {
       isNewUser.value = true;
     } else {
-      loadData();
+      Global.mToken = userToken;
+      loading();
     }
   }
 
-  Future<void> loadData() async {
+  Future<void> loading() async {
     await Future.delayed(const Duration(seconds: 3));
     isNewUser.value = false;
     Get.to(() =>  const NavigationBarView());
@@ -114,6 +123,7 @@ class StartUpController extends GetxController{
     Global.currentLocation = fullAddress;
     Global.latLng = latLng;
   }
+
 
   @override
   void onClose() {

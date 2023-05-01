@@ -1,17 +1,18 @@
-class UserResponse {
+class UserProfileResponse {
   String id = "";
   String phone = "";
   String password = "";
   String? gender = "";
   String fullName = "";
   String? avatarPath = "";
+  String? bio = "";
   List<String>? photo;
   List<String>? friend;
   String? updatedAt = "";
-  UserResponse(this.id, this.phone, this.password, this.gender,this.fullName,
-      this.avatarPath,this.photo,this.friend,this.updatedAt);
-  UserResponse.buildDefault();
-  factory UserResponse.fromJson(Map<String, dynamic> json) {
+  UserProfileResponse(this.id, this.phone, this.password, this.gender,this.fullName,
+      this.avatarPath,this.bio,this.photo,this.friend,this.updatedAt);
+  UserProfileResponse.buildDefault();
+  factory UserProfileResponse.fromJson(Map<String, dynamic> json) {
     List<String> photoResponse = [];
     if (json['photos'] != null) {
       List<dynamic> arrData = json['photos'];
@@ -29,13 +30,14 @@ class UserResponse {
             .add(friend);
       }
     }
-    return UserResponse(
+    return UserProfileResponse(
       json['_id'],
       json['phone'],
       json['password'],
       json['gender'],
       json['full_name'],
       json['avatar_path'],
+      json['bio'],
       photoResponse,
       friendResponse,
       json['updatedAt'],

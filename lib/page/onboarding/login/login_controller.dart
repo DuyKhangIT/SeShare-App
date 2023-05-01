@@ -33,11 +33,11 @@ class LoginController extends GetxController {
     }
     AuthenticationResponse authenticationResponse;
     Map<String, dynamic>? body;
-    //is this for string quere only
+    //is this for string query only
     try {
       body = await HttpHelper.invokeHttp(
           Uri.parse(
-              "https://cndk-seshare.up.railway.app/api/user/login"),
+              "http://14.225.204.248:8080/api/user/login"),
           RequestType.post,
           headers: null,
           body: const JsonEncoder().convert(request.toBodyRequest()));
@@ -70,9 +70,16 @@ class LoginController extends GetxController {
         ..showSnackBar(snackBar);
     }
     isLoading.value = false;
+    Global.mToken = authenticationResponse.token!;
     ConfigSharedPreferences().setStringValue(
         SharedData.TOKEN.toString(),
-        authenticationResponse.token!);
+        Global.mToken);
+    ConfigSharedPreferences().setStringValue(
+        SharedData.USERID.toString(),
+        authenticationResponse.userResponse!.id);
+    ConfigSharedPreferences().setStringValue(
+        SharedData.PHONE.toString(),
+        authenticationResponse.userResponse!.phone);
     Get.offAll(() => const NavigationBarView());
     return authenticationResponse;
   }

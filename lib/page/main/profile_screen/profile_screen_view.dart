@@ -22,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -58,10 +58,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset(
-                                    ImageAssets.imgTet,
+                                  child: Global.userProfileResponse!.avatarPath!.isNotEmpty
+                                  ?Image.network(
+                                   Global.convertMedia(Global.userProfileResponse!.avatarPath!),
                                     fit: BoxFit.cover,
-                                  ),
+                                  ):Container(),
                                 )),
                           ),
                           Container(
@@ -70,21 +71,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children:  const[
-                                Text("Duy Khang",
-                                    style:  TextStyle(
+                              children:  [
+                                Text(Global.userProfileResponse!.fullName,
+                                    style:  const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                         fontFamily: 'Nunito Sans')),
-                                  SizedBox(
+                                  const SizedBox(
                                   height: 5,
                                 ),
-                                 Text("Một người sáng tạo, đầy hoài bảo",
+                                Global.userProfileResponse!.bio!.isNotEmpty
+                                ?Text(Global.userProfileResponse!.bio!,
                                     maxLines: 2,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 14,
-                                        fontFamily: 'Nunito Sans')),
+                                        fontFamily: 'Nunito Sans')):Container(),
                               ],
                             ),
                           ),
@@ -187,11 +189,11 @@ class _ProfileScreenState extends State<ProfileScreen>
           margin: const EdgeInsets.only(top: 20),
           alignment: Alignment.center,
           child: DefaultTabController(
-              length: 3,
+              length: 2,
               child: TabBar(
                 controller: _tabController,
                 isScrollable: true,
-                labelPadding: const EdgeInsets.symmetric(horizontal: (20)),
+                labelPadding: const EdgeInsets.symmetric(horizontal: (60)),
                 labelColor: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Colors.black,
@@ -240,23 +242,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 : Colors.black,
                             BlendMode.srcIn,
                           ),
-                          child: Image.asset(IconsAssets.icProfilePerson)),
-                      const SizedBox(height: 5),
-                      const Text("Ảnh bạn được gắn thẻ",
-                          style: TextStyle(
-                              fontSize: 12, fontFamily: 'Nunito Sans'))
-                    ],
-                  )),
-                  Tab(
-                      child: Column(
-                    children: [
-                      ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                            Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Colors.black,
-                            BlendMode.srcIn,
-                          ),
                           child: Image.asset(IconsAssets.icShare)),
                       const SizedBox(height: 5),
                       const Text("Story của bạn",
@@ -274,11 +259,8 @@ class _ProfileScreenState extends State<ProfileScreen>
               // girdview of person
               Tab1(tabController: profileController),
 
-              /// tag person
-              Tab2(tabController: profileController),
-
               /// story
-              Tab3(tabController: profileController),
+              Tab2(tabController: profileController),
             ],
           ),
         ),
@@ -321,6 +303,7 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
   }
 }
 
+
 class Tab2 extends StatefulWidget {
   final ProfileController tabController;
   const Tab2({Key? key, required this.tabController}) : super(key: key);
@@ -330,40 +313,6 @@ class Tab2 extends StatefulWidget {
 }
 
 class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return GridView.builder(
-        padding: const EdgeInsets.only(bottom: 75),
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: 2,
-        itemBuilder: (context, index) => contentGridView());
-  }
-
-  /// content gridview
-  Widget contentGridView() {
-    return Padding(
-      padding: const EdgeInsets.all(1),
-      child: ClipRect(
-        child: Image.asset(ImageAssets.imgTest, fit: BoxFit.cover),
-      ),
-    );
-  }
-}
-
-class Tab3 extends StatefulWidget {
-  final ProfileController tabController;
-  const Tab3({Key? key, required this.tabController}) : super(key: key);
-
-  @override
-  _Tab3 createState() => _Tab3();
-}
-
-class _Tab3 extends State<Tab3> with AutomaticKeepAliveClientMixin<Tab3> {
   @override
   bool get wantKeepAlive => true;
 

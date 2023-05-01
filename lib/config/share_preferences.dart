@@ -2,6 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum SharedData {
   TOKEN,
+  USERID,
+  PHONE
 }
 class ConfigSharedPreferences {
   /// khởi tạo shared preference and reload

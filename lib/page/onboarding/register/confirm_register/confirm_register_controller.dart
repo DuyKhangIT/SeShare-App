@@ -35,7 +35,7 @@ class ConfirmRegisterController extends GetxController {
     var headers = {
       'Content-Type': 'application/json'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('https://cndk-seshare.up.railway.app/api/user/sign-up'));
+    var request = http.MultipartRequest('POST', Uri.parse('http://14.225.204.248:8080/api/user/sign-up'));
     request.fields.addAll({
       'phone': Global.phoneNumber,
       'password': Global.registerNewPassword,
