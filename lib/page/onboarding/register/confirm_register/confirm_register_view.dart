@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:instagram_app/assets/animation_assets.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../assets/icons_assets.dart';
 import '../../../../widget/button_next.dart';
 import '../../login/login_view.dart';
 import 'confirm_register_controller.dart';
@@ -121,7 +118,7 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                           padding: const EdgeInsets.symmetric(vertical: 80),
                           child: ButtonNext(
                             onTap: () {
-                              confirmRegisterController.confirmRegister();
+                              confirmRegisterController.signUp();
                             },
                             textInside: 'tiếp tục'.toUpperCase(),
                           ))

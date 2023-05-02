@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -14,7 +13,6 @@ import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 import 'package:instagram_app/util/global.dart';
 
 import '../../../api_http/handle_api.dart';
-import '../../../config/share_preferences.dart';
 import '../../../models/create_post/create_posts_response.dart';
 
 class PostController extends GetxController {
@@ -33,7 +31,6 @@ class PostController extends GetxController {
   bool isLoading = false;
   @override
   void onReady() {
-    getUserID();
     checkInPost = "";
     inputStatusController.text = "";
     privacy = "";
@@ -52,12 +49,6 @@ class PostController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-  }
-
-  void getUserID() async{
-    userID = await ConfigSharedPreferences()
-      .getStringValue(SharedData.USERID.toString(),
-      defaultValue: "");
   }
 
   /// instantiate our image picker object
@@ -170,19 +161,6 @@ class PostController extends GetxController {
         update();
       }
     }
-
-    // if(uploadMediaResponse.status == true){
-    //   CreatePostRequest createPostRequest =
-    //   CreatePostRequest(
-    //       userID,
-    //       captionPost,
-    //       false,
-    //       Global.currentLocation,
-    //       checkInPost,
-    //       privacy,
-    //       photoPath);
-    //   createPost(createPostRequest);
-    // }
     return uploadMediaResponse;
   }
   

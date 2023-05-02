@@ -12,6 +12,8 @@ import 'package:instagram_app/page/main/post_screen/changed_address/changed_addr
 import 'package:instagram_app/page/main/post_screen/changed_address/changed_address_view.dart';
 import 'package:instagram_app/page/main/post_screen/post_binding.dart';
 import 'package:instagram_app/page/main/post_screen/post_view.dart';
+import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_binding.dart';
+import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
 
 import '../page/main/chat_sreen/chat_list/chat_list_binding.dart';
 import '../page/main/home_screen/home_view.dart';
@@ -19,7 +21,7 @@ import '../page/main/home_screen/home_binding.dart';
 import '../page/main/notification_screen/notification_binding.dart';
 import '../page/main/notification_screen/notification_view.dart';
 import '../page/main/profile_screen/profile_binding.dart';
-import '../page/main/profile_screen/profile_screen_view.dart';
+import '../page/main/profile_screen/profile_screen.dart';
 import '../page/main/search_screen/search_binding.dart';
 import '../page/main/search_screen/search_screen_view.dart';
 import '../page/navigation_bar/navigation_bar_view.dart';
@@ -76,7 +78,10 @@ class AppRoutes {
   /// home
   static const String homeScreen = "/seShare_home_screen";
   static const String notificationScreen = "/seShare_Notification_screen";
+  /// profile
   static const String profileScreen = "/seShare_profile_screen";
+  static const String updateProfileScreen = "/seShare_updateProfile_screen";
+
   static const String searchScreen = "/seShare_search_screen";
   static const String postScreen = "/seShare_post_screen";
   static const String storyScreen = "/seShare_story_screen";
@@ -211,6 +216,12 @@ class AppRoutes {
       name: createStoryScreen,
       page: () => CreateStoryScreen(),
       binding: CreateStoryBinding(),
+    ),
+
+    GetPage(
+      name: updateProfileScreen,
+      page: () => UpdateProfileScreen(),
+      binding: UpdateProfileBinding(),
     ),
   ];
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/util/global.dart';
@@ -9,9 +8,7 @@ import '../../../api_http/handle_api.dart';
 import '../../../config/share_preferences.dart';
 import '../../../models/login/authentication_response.dart';
 import '../../../models/login/user_request.dart';
-import '../../main/home_screen/home_view.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
-import 'login_view.dart';
 
 class LoginController extends GetxController {
   UserRequest? userRequest;
@@ -37,7 +34,7 @@ class LoginController extends GetxController {
     try {
       body = await HttpHelper.invokeHttp(
           Uri.parse(
-              "http://14.225.204.248:8080/api/user/login"),
+              "http://14.225.204.248:8080/api/login"),
           RequestType.post,
           headers: null,
           body: const JsonEncoder().convert(request.toBodyRequest()));
@@ -68,19 +65,21 @@ class LoginController extends GetxController {
       ScaffoldMessenger.of(Get.context!)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
+    }else{
+      isLoading.value = false;
+      if (isLoading.value) {
+        Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
+      } else {
+        Get.back(); // Đóng hộp thoại loading nếu isLoading = false
+      }
+      Global.mToken = authenticationResponse.token!;
+      ConfigSharedPreferences().setStringValue(
+          SharedData.TOKEN.toString(),
+          Global.mToken);
+      print(Global.mToken);
+      Get.offAll(() => const NavigationBarView());
     }
-    isLoading.value = false;
-    Global.mToken = authenticationResponse.token!;
-    ConfigSharedPreferences().setStringValue(
-        SharedData.TOKEN.toString(),
-        Global.mToken);
-    ConfigSharedPreferences().setStringValue(
-        SharedData.USERID.toString(),
-        authenticationResponse.userResponse!.id);
-    ConfigSharedPreferences().setStringValue(
-        SharedData.PHONE.toString(),
-        authenticationResponse.userResponse!.phone);
-    Get.offAll(() => const NavigationBarView());
+
     return authenticationResponse;
   }
 

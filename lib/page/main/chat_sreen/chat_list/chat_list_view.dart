@@ -5,7 +5,6 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_list/chat_list_controller.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_view/chat_view.dart';
-import 'package:instagram_app/widget/avatar_circle.dart';
 
 import '../../../../assets/icons_assets.dart';
 import '../../../../config/theme_service.dart';

@@ -7,7 +7,7 @@ import 'package:instagram_app/page/main/post_screen/post_view.dart';
 
 import '../main/home_screen/home_view.dart';
 import '../main/notification_screen/notification_view.dart';
-import '../main/profile_screen/profile_screen_view.dart';
+import '../main/profile_screen/profile_screen.dart';
 import '../main/search_screen/search_screen_view.dart';
 import 'navigation_bar_controller.dart';
 

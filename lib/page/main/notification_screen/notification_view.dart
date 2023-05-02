@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
-import 'package:instagram_app/widget/avatar_circle.dart';
 
-import '../../../config/theme_service.dart';
 import 'notification_controller.dart';
 
 class NotificationScreen extends StatefulWidget {

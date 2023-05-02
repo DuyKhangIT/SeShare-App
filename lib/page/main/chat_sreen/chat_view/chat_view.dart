@@ -6,7 +6,6 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_list/chat_list_view.dart';
 import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
-import 'package:instagram_app/widget/avatar_circle.dart';
 
 import '../../../../widget/dashed_line.dart';
 import 'chat_controller.dart';

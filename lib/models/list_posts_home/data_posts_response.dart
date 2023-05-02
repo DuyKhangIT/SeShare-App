@@ -35,7 +35,7 @@ class DataPostsResponse {
       json['_id'],
       photoPath,
       json['caption'],
-      json['likes'],
+      json['total_likes'],
       cmt,
       json['privacy'],
       (json['user_id'] != null) ? UserInfoResponse.fromJson(json['user_id']) : null,

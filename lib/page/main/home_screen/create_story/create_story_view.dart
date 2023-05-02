@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/creat_story_controller.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 import '../../../navigation_bar/navigation_bar_view.dart';
 
@@ -38,7 +39,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                   ),
                 ),
                 title: Text(
-                  "Tạo Câu Chuyện",
+                  "Tạo tin",
                   style: TextStyle(
                       color: Theme.of(context).brightness == Brightness.dark
                           ? Colors.white
@@ -57,7 +58,15 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                       (createStoryController.avatar != null)
                           ? Image.file(createStoryController.avatar!)
                           : Container(),
-
+                      // GridView.builder(
+                      //     physics: const BouncingScrollPhysics(),
+                      //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      //   crossAxisCount: 2
+                      // ), itemBuilder: (context,index){
+                      //
+                      // }
+                      // ),
+                      listAlbumFromDevice(),
                       /// add image and changed address
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -178,6 +187,79 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                 ),
               ),
             ))
+      ],
+    );
+  }
+
+  Widget listAlbumFromDevice(){
+    CreateStoryController createStoryController = Get.put(CreateStoryController());
+
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          GridView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: createStoryController.assetList.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3
+          ), itemBuilder: (context,index){
+             AssetEntity assetEntity = createStoryController.assetList[index];
+             return Padding(padding: EdgeInsets.all(2),
+               child: assetWidget(assetEntity,createStoryController),
+
+             );
+          }),
+          // Row(
+          //   children: [
+          //     DropdownButton<AssetPathEntity>(
+          //       value: createStoryController.selectedAlbum,
+          //       onChanged: (AssetPathEntity? value){
+          //         createStoryController.selectedAlbum = value;
+          //         createStoryController.update();
+          //         createStoryController.loadAssets(createStoryController.selectedAlbum!).then((value) => {
+          //           createStoryController.assetList = value,
+          //           createStoryController.update()
+          //         });
+          //       },
+          //       items: createStoryController.albumList.map<DropdownMenuItem<AssetPathEntity>>(
+          //           (AssetPathEntity album){
+          //             return DropdownMenuItem<AssetPathEntity>(
+          //               value: album,
+          //               child: Text(
+          //                 "${album.name} (${album.assetCount})"),
+          //             );
+          //           }).toList(),
+          //     )
+          //   ],
+          // ),
+        ],
+      ),
+    );
+  }
+
+  Widget assetWidget(AssetEntity assetEntity,CreateStoryController createStoryController){
+    return Stack(
+      children: [
+        Positioned.fill(child: Padding(
+          padding: EdgeInsets.all(
+              createStoryController.selectedAssetList.contains(assetEntity) == true?15:0
+          ),
+          child: AssetEntityImage(
+            assetEntity,
+            isOriginal: false,
+            thumbnailSize: const ThumbnailSize.square(250),
+            fit: BoxFit.cover,
+            errorBuilder: (context,errpr,stackTrace){
+              return Center(
+                child: Icon(
+                  Icons.error,
+                  color: Colors.red,
+                ),
+              );
+            },
+          ),
+        ))
       ],
     );
   }

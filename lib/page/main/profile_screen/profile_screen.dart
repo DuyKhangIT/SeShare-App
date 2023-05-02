@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
+import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
 import 'package:instagram_app/page/onboarding/login/login_view.dart';
-import 'package:instagram_app/widget/avatar_circle.dart';
 
 import '../../../config/share_preferences.dart';
 import '../../../util/global.dart';
@@ -40,7 +40,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                 body: Stack(
                   children: [
                     /// ảnh bìa
-                    Image.asset(ImageAssets.imgTet, fit: BoxFit.cover,width: MediaQuery.of(context).size.width,height: 180,),
+                    Image.asset(
+                      ImageAssets.imgTet,
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
+                      height: 180,
+                    ),
+
                     /// name and status // tab
                     Padding(
                       padding: const EdgeInsets.only(top: 130),
@@ -58,38 +64,47 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: Global.userProfileResponse!.avatarPath!.isNotEmpty
-                                  ?Image.network(
-                                   Global.convertMedia(Global.userProfileResponse!.avatarPath!),
-                                    fit: BoxFit.cover,
-                                  ):Container(),
+                                  child: Global.userProfileResponse!.avatarPath!
+                                          .isNotEmpty
+                                      ? Image.network(
+                                          Global.convertMedia(Global
+                                              .userProfileResponse!
+                                              .avatarPath!),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(),
                                 )),
                           ),
+
+                          /// full name
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            margin: const EdgeInsets.only(bottom: 30, top: 10),
+                            margin: const EdgeInsets.only(bottom: 20, top: 10),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children:  [
+                              children: [
                                 Text(Global.userProfileResponse!.fullName,
-                                    style:  const TextStyle(
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                         fontFamily: 'Nunito Sans')),
-                                  const SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Global.userProfileResponse!.bio!.isNotEmpty
-                                ?Text(Global.userProfileResponse!.bio!,
-                                    maxLines: 2,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                        fontFamily: 'Nunito Sans')):Container(),
+                                    ? Text(Global.userProfileResponse!.bio!,
+                                        maxLines: 2,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 14,
+                                            fontFamily: 'Nunito Sans'))
+                                    : Container(),
                               ],
                             ),
                           ),
+
+                          /// number of post
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -143,8 +158,50 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 20,
+
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => const UpdateProfileScreen());
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.4),
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: const Text(
+                                      "Chỉnh sửa trang cá nhân",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: 'Nunito Sans',
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 30,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.4),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: const Text(
+                                    "Chia sẻ trang cá nhân",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Nunito Sans',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           Expanded(child: tabProfile())
                         ],
@@ -156,9 +213,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                       alignment: Alignment.topRight,
                       child: GestureDetector(
                         onTap: () {
-                          ConfigSharedPreferences().setStringValue(
-                              SharedData.TOKEN.toString(),
-                              "");
+                          ConfigSharedPreferences()
+                              .setStringValue(SharedData.TOKEN.toString(), "");
                           Get.offAll(() => Login());
                         },
                         child: Container(
@@ -186,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(top: 20),
+          margin: const EdgeInsets.only(top: 5),
           alignment: Alignment.center,
           child: DefaultTabController(
               length: 2,
@@ -197,9 +253,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                 labelColor: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Colors.black,
-                unselectedLabelColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black,
+                unselectedLabelColor:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
                 labelStyle: const TextStyle(
                   fontSize: (13),
                   fontWeight: FontWeight.w700,
@@ -284,25 +341,31 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return GridView.builder(
-        padding: const EdgeInsets.only(bottom: 75),
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: 12,
-        itemBuilder: (context, index) => contentGridView());
+    return Global.userProfileResponse!.photo!.isNotEmpty
+        ? GridView.builder(
+            padding: const EdgeInsets.only(bottom: 75),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3),
+            itemCount: Global.userProfileResponse!.photo!.length,
+            itemBuilder: (context, index) => contentGridView(index))
+        : const Center(
+            child: Text(
+            "Không có ảnh nào trong album của bạn",
+            style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans'),
+          ));
   }
 
   /// content gridview
-  Widget contentGridView() {
+  Widget contentGridView(index) {
     return Padding(
-      padding: const EdgeInsets.all(1),
-      child: ClipRect(
-        child: Image.asset(ImageAssets.imgTet, fit: BoxFit.cover),
-      ),
-    );
+        padding: const EdgeInsets.all(1),
+        child: ClipRect(
+          child: Image.network(
+              Global.convertMedia(Global.userProfileResponse!.photo![index]),
+              fit: BoxFit.cover),
+        ));
   }
 }
-
 
 class Tab2 extends StatefulWidget {
   final ProfileController tabController;

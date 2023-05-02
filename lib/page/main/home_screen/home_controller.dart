@@ -11,7 +11,6 @@ import 'package:instagram_app/models/list_posts_home/list_posts_home_response.da
 
 import '../../../api_http/handle_api.dart';
 import '../../../config/share_preferences.dart';
-import '../../../models/user_profile/profile_request.dart';
 import '../../../models/user_profile/profile_response.dart';
 import '../../../util/global.dart';
 
@@ -30,8 +29,8 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     getListPosts();
+    loadUserProfile();
     update();
-    getPhoneUser();
     super.onReady();
   }
 
@@ -85,17 +84,9 @@ class HomeController extends GetxController {
     return Future.delayed(const Duration(seconds: 1));
   }
 
-  void getPhoneUser() async{
-    phone = await ConfigSharedPreferences()
-        .getStringValue(SharedData.PHONE.toString(),
-        defaultValue: "");
-    if(phone.isNotEmpty){
-      ProfileRequest profileRequest = ProfileRequest(phone);
-      loadUserProfile(profileRequest);
-    }
-  }
+
   /// load user profile
-  Future<ProfileResponse> loadUserProfile(ProfileRequest profileRequest) async {
+  Future<ProfileResponse> loadUserProfile() async {
     ProfileResponse profileResponse;
     Map<String, dynamic>? body;
     try {
@@ -104,7 +95,7 @@ class HomeController extends GetxController {
               "http://14.225.204.248:8080/api/user/profile"),
           RequestType.post,
           headers: null,
-          body: const JsonEncoder().convert(profileRequest.toBodyRequest()));
+          body: null);
     } catch (error) {
       debugPrint("Fail to user profile $error");
       rethrow;

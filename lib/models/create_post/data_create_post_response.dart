@@ -33,7 +33,7 @@ class DataCreatePostResponse {
       json['_id'],
       photoPath,
       json['caption'],
-      json['likes'],
+      json['total_likes'],
       cmt,
       json['privacy'],
       json['user_id'],

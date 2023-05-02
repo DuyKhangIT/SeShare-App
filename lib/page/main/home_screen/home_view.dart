@@ -6,7 +6,6 @@ import 'package:instagram_app/page/main/home_screen/comments_screen/comments_vie
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/notification_screen/notification_view.dart';
-import 'package:instagram_app/widget/avatar_circle.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shimmer/shimmer.dart';
@@ -146,11 +145,29 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AvatarStory(
-            image: ImageAssets.imgTet,
+          GestureDetector(
             onTap: () {
               Get.to(() => const StoryPage());
             },
+            child: Container(
+                width: 65,
+                height: 65,
+                padding: const EdgeInsets.all(2),
+                margin: const EdgeInsets.only(top: 8, bottom: 5),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.blue.withOpacity(0.6),
+                        width: 3,
+                        style: BorderStyle.solid),
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(16)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: Image.asset(
+                    ImageAssets.imgTet,
+                    fit: BoxFit.cover,
+                  ),
+                )),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 5),
@@ -294,7 +311,7 @@ class _HomeState extends State<Home> {
             highlightColor: Colors.grey,
             child: Container(
                 margin: const EdgeInsets.only(left: 20),
-                width: MediaQuery.of(context).size.width/1.25,
+                width: MediaQuery.of(context).size.width / 1.25,
                 height: 350,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
@@ -500,8 +517,13 @@ class _HomeState extends State<Home> {
                   children: [
                     ///avatar
                     Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: ClipRRect(
+                      padding:  const EdgeInsets.only(right: 10),
+                      child:
+                      homeController
+                          .dataPostsResponse![index]
+                          .userInfoResponse!
+                          .avatar.isNotEmpty
+                      ?ClipRRect(
                           borderRadius: BorderRadius.circular(14),
                           child: Image.network(
                             Global.convertMedia(homeController
@@ -514,7 +536,15 @@ class _HomeState extends State<Home> {
                             fit: BoxFit.cover,
                             width: 60,
                             height: 60,
-                          )),
+                          ))
+                      :Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          color: Colors.white
+                        ),
+                      ),
                     ),
 
                     /// user name and location
@@ -651,7 +681,7 @@ class _HomeState extends State<Home> {
 
           /// image post
           SizedBox(
-              width: MediaQuery.of(context).size.width/1.25,
+              width: MediaQuery.of(context).size.width / 1.25,
               height: 350,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
@@ -660,10 +690,10 @@ class _HomeState extends State<Home> {
                     builder: (BuildContext context, int indexPath) {
                       return PhotoViewGalleryPageOptions(
                         initialScale: PhotoViewComputedScale.covered,
-                        minScale: PhotoViewComputedScale.covered*0.9,
+                        minScale: PhotoViewComputedScale.covered * 0.9,
                         imageProvider: NetworkImage(Global.convertMedia(
-                            homeController.dataPostsResponse![index]
-                                .photoPath![indexPath]
+                            homeController
+                                .dataPostsResponse![index].photoPath![indexPath]
                                 .toString())),
                       );
                     },
@@ -673,14 +703,13 @@ class _HomeState extends State<Home> {
                       baseColor: Colors.grey.withOpacity(0.4),
                       highlightColor: Colors.grey,
                       child: Container(
-                          width: MediaQuery.of(context).size.width/1.25,
+                          width: MediaQuery.of(context).size.width / 1.25,
                           height: 350,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
                               color: Colors.grey.withOpacity(0.4))),
                     ),
                   ))),
-
 
           /// descriptions of post
           Container(
@@ -692,8 +721,9 @@ class _HomeState extends State<Home> {
                       color: Theme.of(context).textTheme.headline6?.color,
                       fontFamily: 'Nunito Sans'),
                   children: [
-                     TextSpan(
-                        text: "${homeController.dataPostsResponse![index].userInfoResponse!.fullName}  ",
+                    TextSpan(
+                        text:
+                            "${homeController.dataPostsResponse![index].userInfoResponse!.fullName}  ",
                         style: const TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold)),
                     TextSpan(
@@ -1025,262 +1055,5 @@ class _HomeState extends State<Home> {
             ))
       ],
     );
-  }
-
-  Shimmer getShimmerColor() {
-    return Shimmer.fromColors(
-        baseColor: Colors.grey,
-        highlightColor: Colors.grey.withOpacity(0.2),
-        child: Container(
-          margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          padding: const EdgeInsets.only(top: 20),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.black
-                  : Colors.white),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 14, right: 25, bottom: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    /// avatar + username + location
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ///avatar
-                        Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12)),
-                            )),
-
-                        /// user name and location
-                        Container(
-                          constraints: const BoxConstraints(maxWidth: 220),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey.withOpacity(0.4)),
-                              ),
-                              const SizedBox(height: 4),
-                              Container(
-                                width: 200,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey.withOpacity(0.4)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    /// dot
-                    ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black,
-                        BlendMode.srcIn,
-                      ),
-                      child: Image.asset(IconsAssets.icDot),
-                    ),
-                  ],
-                ),
-              ),
-
-              /// image post
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 300,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Colors.grey.withOpacity(0.4)))),
-
-              /// caption of post
-              Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: 30,
-                  margin: const EdgeInsets.only(top: 20, left: 20),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.grey.withOpacity(0.4))),
-
-              /// viewer and commenter
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-                child: //
-                    Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 20,
-                      decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(12)),
-                      alignment: Alignment.center,
-                    ),
-                    Container(
-                      width: 80,
-                      height: 20,
-                      decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(12)),
-                      alignment: Alignment.center,
-                    ),
-                    Container(
-                      width: 80,
-                      height: 20,
-                      decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(12)),
-                      alignment: Alignment.center,
-                    ),
-                  ],
-                ),
-              ),
-              const Divider(),
-
-              /// icon like + cmt + share
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.only(top: 5),
-                padding: const EdgeInsets.only(left: 20, bottom: 10),
-                height: 30,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    /// ic like
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                          constraints: const BoxConstraints(maxWidth: 80),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              ColorFiltered(
-                                colorFilter: ColorFilter.mode(
-                                  Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
-                                  BlendMode.srcIn,
-                                ),
-                                child: Image.asset(IconsAssets.icLike),
-                              ),
-                              const SizedBox(width: 10),
-                              Container(
-                                constraints: const BoxConstraints(maxWidth: 45),
-                                child: Text("Thích",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6
-                                        ?.copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                ?.color,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          )),
-                    ),
-                    const VerticalDivider(),
-
-                    /// ic cmt
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(() => const CommentScreen());
-                      },
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 105),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            ColorFiltered(
-                              colorFilter: ColorFilter.mode(
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                                BlendMode.srcIn,
-                              ),
-                              child: Image.asset(IconsAssets.icComment),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 10),
-                              constraints: const BoxConstraints(maxWidth: 60),
-                              child: Text(
-                                "Bình Luận",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.copyWith(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .headline6
-                                            ?.color,
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const VerticalDivider(),
-
-                    /// ic share
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                          constraints: const BoxConstraints(maxWidth: 100),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset(IconsAssets.icShare),
-                              const SizedBox(width: 10),
-                              Container(
-                                constraints: const BoxConstraints(maxWidth: 70),
-                                child: Text("Chia sẻ",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6
-                                        ?.copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .headline6
-                                                ?.color,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          )),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ));
   }
 }
