@@ -6,28 +6,19 @@ class UserProfileResponse {
   String fullName = "";
   String? avatarPath = "";
   String? bio = "";
-  List<String>? photo;
   List<String>? friend;
   String? updatedAt = "";
-  UserProfileResponse(this.id, this.phone, this.password, this.gender,this.fullName,
-      this.avatarPath,this.bio,this.photo,this.friend,this.updatedAt);
+  String? backgroundPath = "";
+  UserProfileResponse(this.id, this.phone, this.password, this.gender,
+      this.fullName, this.avatarPath, this.bio, this.friend, this.updatedAt,this.backgroundPath);
   UserProfileResponse.buildDefault();
   factory UserProfileResponse.fromJson(Map<String, dynamic> json) {
-    List<String> photoResponse = [];
-    if (json['photos'] != null) {
-      List<dynamic> arrData = json['photos'];
-      for (var i = 0; i < arrData.length; i++) {
-        String photoUrl = arrData[i];
-        photoResponse.add(photoUrl);
-      }
-    }
     List<String> friendResponse = [];
     if (json['friends'] != null) {
       List<dynamic> arrData = json['friends'];
       for (var i = 0; i < arrData.length; i++) {
         String friend = arrData[i];
-        friendResponse
-            .add(friend);
+        friendResponse.add(friend);
       }
     }
     return UserProfileResponse(
@@ -38,9 +29,9 @@ class UserProfileResponse {
       json['full_name'],
       json['avatar_path'],
       json['bio'],
-      photoResponse,
       friendResponse,
       json['updatedAt'],
+      json['background_path'],
     );
   }
 }

@@ -78,30 +78,66 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       children: [
                         Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 250,
-                                  margin: const EdgeInsets.only(
-                                      top: 10, bottom: 20),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.transparent,
-                                  ),
-                                  child: Image.asset(ImageAssets.imgTet,
-                                      fit: BoxFit.cover)),
-                            ),
+                            Global.userProfileResponse!.backgroundPath!.isNotEmpty
+                            ?Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 250,
+                                margin: const EdgeInsets.only(
+                                    top: 10, bottom: 20),
+                                decoration: const BoxDecoration(
+                                  color: Colors.transparent,
+                                ),
+                                child: Image.network(Global.convertMedia(Global.userProfileResponse!.backgroundPath!, 400, 250),
+                                    fit: BoxFit.cover))
+                            :Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 250,
+                                margin: const EdgeInsets.only(
+                                    top: 10, bottom: 20),
+                                color: Colors.grey,),
                             const Padding(
                               padding: EdgeInsets.only(left: 10, right: 10),
                               child: Icon(Icons.arrow_downward_sharp),
                             ),
-                            GestureDetector(
-                              onTap: () {},
+                            updateProfileController.background!=null
+                            ? GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return detailBottomSheetAddBackGroundImage(
+                                          updateProfileController);
+                                    });
+                              },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: 250,
                                 margin:
                                     const EdgeInsets.only(top: 10, bottom: 20),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.4),
+                                ),
+                                child: Image.file(updateProfileController.background!,fit: BoxFit.cover),
+                              ),
+                            )
+                                :GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return detailBottomSheetAddBackGroundImage(
+                                          updateProfileController);
+                                    });
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 250,
+                                margin:
+                                const EdgeInsets.only(top: 10, bottom: 20),
                                 decoration: BoxDecoration(
                                   color: Colors.grey.withOpacity(0.4),
                                 ),
@@ -132,7 +168,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         child: Image.network(
                                             Global.convertMedia(Global
                                                 .userProfileResponse!
-                                                .avatarPath!),
+                                                .avatarPath!,80,80),
                                             fit: BoxFit.cover)))
                                 : Container(
                                     width: 80,
@@ -402,6 +438,102 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               InkWell(
                   onTap: () {
                     updateProfileController.getImageFromGallery();
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    child: Center(
+                      child: Text("Chọn ảnh từ thư viện".toUpperCase(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'NunitoSans',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14)),
+                    ),
+                  )),
+            ],
+          ),
+        ),
+
+        /// BUTTON CANCEL
+        Padding(
+            padding: const EdgeInsets.only(bottom: 34, left: 34, right: 34),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  elevation: 4,
+                  shadowColor: Colors.black,
+                  side: const BorderSide(color: Colors.white, width: 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  "Hủy chọn".toUpperCase(),
+                  style: const TextStyle(
+                      fontFamily: 'NunitoSans',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2),
+                ),
+              ),
+            ))
+      ],
+    );
+  }
+
+  /// add background image
+  Widget detailBottomSheetAddBackGroundImage(
+      UpdateProfileController updateProfileController) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 31, right: 31, bottom: 26),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(12.0)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              InkWell(
+                  onTap: () {
+                    updateProfileController.getBackgroundImageFromCamera();
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    child: Center(
+                      child: Text("Chụp ảnh".toUpperCase(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'NunitoSans',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14)),
+                    ),
+                  )),
+              Divider(
+                thickness: 0.5,
+                height: 0,
+                color: Colors.black.withOpacity(0.1),
+              ),
+              InkWell(
+                  onTap: () {
+                    updateProfileController.getBackgroundImageFromGallery();
                   },
                   child: SizedBox(
                     height: 50,

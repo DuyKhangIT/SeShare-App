@@ -5,9 +5,10 @@ class UpdateUserProfileRequest {
   String fullName;
   String? avatarPath;
   String? bio;
+  String? backgroundPath;
 
   UpdateUserProfileRequest(this.phone, this.password, this.gender,
-      this.fullName, this.avatarPath, this.bio);
+      this.fullName, this.avatarPath, this.bio,this.backgroundPath);
 
   Map<String, dynamic> toBodyRequest() => {
         'phone': phone,
@@ -16,5 +17,6 @@ class UpdateUserProfileRequest {
         'full_name': fullName,
         'avatar_path': avatarPath,
         'bio': bio,
+        'background_path': backgroundPath,
       };
 }

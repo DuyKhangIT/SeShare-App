@@ -41,8 +41,8 @@ class Global {
     return false;
   }
 
-  static String convertMedia(String path) {
+  static String convertMedia(String path,double? width,int? height) {
     debugPrint("Loaded path: " + path);
-    return "http://14.225.204.248:8080/$path";
+    return "http://14.225.204.248:8080/$path?width=$width&height=$height&fit=cover";
   }
 }

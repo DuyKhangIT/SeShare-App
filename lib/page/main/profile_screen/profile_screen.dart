@@ -40,11 +40,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                 body: Stack(
                   children: [
                     /// ảnh bìa
-                    Image.asset(
-                      ImageAssets.imgTet,
-                      fit: BoxFit.cover,
+                    SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 180,
+                      child: Image.network(
+                        Global.convertMedia(Global.userProfileResponse!.backgroundPath!, 400, 180),
+                        fit: BoxFit.cover,
+                      ),
                     ),
 
                     /// name and status // tab
@@ -69,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       ? Image.network(
                                           Global.convertMedia(Global
                                               .userProfileResponse!
-                                              .avatarPath!),
+                                              .avatarPath!,80,80),
                                           fit: BoxFit.cover,
                                         )
                                       : Container(),
@@ -131,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
                                           fontFamily: 'Nunito Sans')),
-                                  Text("Người theo dõi",
+                                  Text("Bạn bè",
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -341,14 +343,15 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Global.userProfileResponse!.photo!.isNotEmpty
+    return widget.tabController.listPhotos.isNotEmpty
         ? GridView.builder(
             padding: const EdgeInsets.only(bottom: 75),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3),
-            itemCount: Global.userProfileResponse!.photo!.length,
+            itemCount: widget.tabController.listPhotos.length,
             itemBuilder: (context, index) => contentGridView(index))
-        : const Center(
+        :
+    const Center(
             child: Text(
             "Không có ảnh nào trong album của bạn",
             style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans'),
@@ -360,8 +363,9 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
     return Padding(
         padding: const EdgeInsets.all(1),
         child: ClipRect(
-          child: Image.network(
-              Global.convertMedia(Global.userProfileResponse!.photo![index]),
+          child:
+          Image.network(
+              Global.convertMedia(widget.tabController.listPhotos[index], null, null),
               fit: BoxFit.cover),
         ));
   }

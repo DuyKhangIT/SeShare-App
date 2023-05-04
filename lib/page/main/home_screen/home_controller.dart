@@ -23,6 +23,7 @@ class HomeController extends GetxController {
   String userId = "";
   bool isLoading = false;
   String phone = "";
+  String avatarPath = "";
 
 
   List<DataPostsResponse>? dataPostsResponse;
@@ -62,6 +63,9 @@ class HomeController extends GetxController {
     listPostsHomeResponse = ListPostsHomeResponse.fromJson(body);
     if (listPostsHomeResponse.status == true) {
       dataPostsResponse = listPostsHomeResponse.data;
+      for(int i = 0; i <listPostsHomeResponse.data!.length;i++){
+        avatarPath = listPostsHomeResponse.data![i].userInfoResponse!.avatar;
+      }
       await Future.delayed(const Duration(seconds: 1),(){});
       isLoading = false;
       update();

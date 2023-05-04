@@ -115,7 +115,7 @@ class _PostScreenState extends State<PostScreen> {
                                   child:
                                   Global.userProfileResponse!.avatarPath!.isNotEmpty
                                   ?Image.network(
-                                    Global.convertMedia(Global.userProfileResponse!.avatarPath!),
+                                    Global.convertMedia(Global.userProfileResponse!.avatarPath!,55,55),
                                     fit: BoxFit.cover,
                                   ):Container(),
                                 )),
@@ -292,7 +292,7 @@ class _PostScreenState extends State<PostScreen> {
                             /// list photo of user post
                             (postController.photoPath.isNotEmpty)
                                 ? SizedBox(
-                                    width: MediaQuery.of(context).size.width,
+                                    width: 350,
                                     height: 350,
                                     child:  PhotoViewGallery.builder(
                                       scrollPhysics: const BouncingScrollPhysics(),
@@ -302,7 +302,7 @@ class _PostScreenState extends State<PostScreen> {
                                           minScale: PhotoViewComputedScale.covered,
                                           maxScale: PhotoViewComputedScale.covered,
                                           imageProvider: NetworkImage(Global.convertMedia(
-                                              postController.photoPath[indexPath].toString())
+                                              postController.photoPath[indexPath].toString(),350,350)
                                           ),
                                         );
                                       },

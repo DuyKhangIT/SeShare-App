@@ -517,34 +517,27 @@ class _HomeState extends State<Home> {
                   children: [
                     ///avatar
                     Padding(
-                      padding:  const EdgeInsets.only(right: 10),
-                      child:
-                      homeController
-                          .dataPostsResponse![index]
-                          .userInfoResponse!
-                          .avatar.isNotEmpty
-                      ?ClipRRect(
-                          borderRadius: BorderRadius.circular(14),
-                          child: Image.network(
-                            Global.convertMedia(homeController
-                                .dataPostsResponse![index]
-                                .userInfoResponse!
-                                .avatar),
-                            errorBuilder: (context, event, object) {
-                              return Container();
-                            },
-                            fit: BoxFit.cover,
-                            width: 60,
-                            height: 60,
-                          ))
-                      :Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          color: Colors.white
-                        ),
-                      ),
+                      padding: const EdgeInsets.only(right: 10),
+                      child: homeController.avatarPath.isNotEmpty
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(14),
+                              child: Image.network(
+                                Global.convertMedia(
+                                    homeController.avatarPath, 60, 60),
+                                errorBuilder: (context, event, object) {
+                                  return Container();
+                                },
+                                fit: BoxFit.cover,
+                                width: 60,
+                                height: 60,
+                              ))
+                          : Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.white),
+                            ),
                     ),
 
                     /// user name and location
@@ -681,7 +674,7 @@ class _HomeState extends State<Home> {
 
           /// image post
           SizedBox(
-              width: MediaQuery.of(context).size.width / 1.25,
+              width: 320,
               height: 350,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
@@ -694,7 +687,9 @@ class _HomeState extends State<Home> {
                         imageProvider: NetworkImage(Global.convertMedia(
                             homeController
                                 .dataPostsResponse![index].photoPath![indexPath]
-                                .toString())),
+                                .toString(),
+                            320,
+                            350)),
                       );
                     },
                     itemCount: homeController

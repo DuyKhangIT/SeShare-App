@@ -28,12 +28,16 @@ class UpdateProfileController extends GetxController {
   File? avatar;
   String filePath = "";
   String avatarPath = "";
+  File? background;
+  String fileBackgroundPath = "";
+  String backgroundPath = "";
   @override
   void onReady() {
     userNameController.text = Global.userProfileResponse!.fullName;
     bioController.text = Global.userProfileResponse!.bio!;
     genderController.text = Global.userProfileResponse!.gender!;
     avatarPath = Global.userProfileResponse!.avatarPath!;
+    backgroundPath = Global.userProfileResponse!.backgroundPath!;
     update();
     super.onReady();
   }
@@ -96,6 +100,58 @@ class UpdateProfileController extends GetxController {
     return File(cropperImage.path);
   }
 
+  /////////////////////////////
+
+  /// function to get the Background image from the camera
+  Future getBackgroundImageFromCamera() async {
+    final pickedImageFromCam =
+    await imagePicker.pickImage(source: ImageSource.camera);
+    if (pickedImageFromCam == null) {
+      return;
+    }
+    File? picture = File(pickedImageFromCam.path);
+    picture = await cropperImage(imgFile: picture);
+    if (picture == null) {
+      return;
+    }
+    background = picture;
+    Navigator.pop(Get.context!);
+
+    String filePaths;
+    filePaths = picture.path;
+    fileBackgroundPath = filePaths;
+    update();
+  }
+
+  /// function to get the Background image from the gallery
+  Future getBackgroundImageFromGallery() async {
+    final pickedImageFromGa =
+    await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImageFromGa == null) {
+      return;
+    }
+    File? imgFrame = File(pickedImageFromGa.path);
+    imgFrame = await cropperImage(imgFile: imgFrame);
+    if (imgFrame == null) {
+      return;
+    }
+    background = imgFrame;
+    Navigator.pop(Get.context!);
+
+    String filePaths;
+    filePaths = imgFrame.path;
+    fileBackgroundPath = filePaths;
+    update();
+  }
+
+  /// function to adjustment the Background image frame
+  Future<File?> cropperBackgroundImage({required File imgFile}) async {
+    CroppedFile? cropperImage =
+    await ImageCropper().cropImage(sourcePath: imgFile.path);
+    if (cropperImage == null) return null;
+    return File(cropperImage.path);
+  }
+
   /// upload image api
   Future<UploadMediaResponse> uploadMedia() async {
     UploadMediaResponse uploadMediaResponse;
@@ -124,17 +180,63 @@ class UpdateProfileController extends GetxController {
             genderController.text,
             userNameController.text,
             avatarPath,
-            bioController.text);
+            bioController.text,
+            backgroundPath);
         updateProfile(updateUserProfileRequest);
+        update();
+      }
+    }
+    return uploadMediaResponse;
+  }
+
+  /// upload background image api
+  Future<UploadMediaResponse> uploadBackground() async {
+    UploadMediaResponse uploadMediaResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeSingleFile(
+          Uri.parse("http://14.225.204.248:8080/api/photo/upload"),
+          RequestType.post,
+          fileBackgroundPath,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to upload file ${(error)}");
+      rethrow;
+    }
+    if (body == null) return UploadMediaResponse.buildDefault();
+    uploadMediaResponse = UploadMediaResponse.fromJson(body);
+    if (uploadMediaResponse.status == true) {
+      backgroundPath = uploadMediaResponse.data!;
+      update();
+      if(backgroundPath.isNotEmpty){
+        UpdateUserProfileRequest updateUserProfileRequest =
+        UpdateUserProfileRequest(
+            Global.userProfileResponse!.phone,
+            Global.userProfileResponse!.password,
+            genderController.text,
+            userNameController.text,
+            avatarPath,
+            bioController.text,
+            backgroundPath);
+        updateProfile(updateUserProfileRequest);
+        update();
       }
     }
     return uploadMediaResponse;
   }
 
   void updateUserProfile() {
-    if(filePath.isNotEmpty){
+    if(filePath.isNotEmpty && fileBackgroundPath.isNotEmpty){
       uploadMedia();
-    }else{
+      uploadBackground();
+    } else if(fileBackgroundPath.isNotEmpty){
+      uploadBackground();
+
+    } else if(filePath.isNotEmpty){
+      uploadMedia();
+    }
+    else{
       UpdateUserProfileRequest updateUserProfileRequest =
       UpdateUserProfileRequest(
           Global.userProfileResponse!.phone,
@@ -142,7 +244,8 @@ class UpdateProfileController extends GetxController {
           genderController.text,
           userNameController.text,
           avatarPath,
-          bioController.text);
+          bioController.text,
+          backgroundPath);
       updateProfile(updateUserProfileRequest);
     }
 
