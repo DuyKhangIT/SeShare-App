@@ -255,6 +255,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         textFieldFullName(updateProfileController),
                         textFieldBio(updateProfileController),
                         textFieldGender(updateProfileController),
+                        textFieldBirthday(updateProfileController),
                       ],
                     ),
                   ),
@@ -354,6 +355,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     return Container(
       width: double.infinity,
       height: 50,
+      margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
         controller: updateProfileController.genderController,
@@ -377,6 +379,48 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         onChanged: (value) {
           setState(() {
             updateProfileController.gender = value;
+            updateProfileController.update();
+          });
+        },
+        style: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'NunitoSans',
+            fontSize: 14,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w600,
+            height: 1.9),
+      ),
+    );
+  }
+
+  /// text field birthday
+  Widget textFieldBirthday(UpdateProfileController updateProfileController) {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        controller: updateProfileController.birthDayController,
+        keyboardType: TextInputType.text,
+        cursorColor: Colors.grey,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(12),
+        ],
+        decoration: InputDecoration(
+            labelText: "Sinh nhật",
+            labelStyle: TextStyle(
+                fontFamily: 'Nunito Sans',
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.grey),
+            focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey))),
+        onChanged: (value) {
+          setState(() {
+            updateProfileController.birthDay = value;
             updateProfileController.update();
           });
         },

@@ -53,7 +53,7 @@ class StoryController extends GetxController {
           currentStory++;
           startWatching();
         } else {
-          Get.to(() => const NavigationBarView());
+          Get.to(() => NavigationBarView(currentIndex: 0,));
         }
       }
       update();

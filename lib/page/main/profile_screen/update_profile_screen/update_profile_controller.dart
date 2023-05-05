@@ -21,9 +21,11 @@ class UpdateProfileController extends GetxController {
   TextEditingController userNameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
   TextEditingController genderController = TextEditingController();
+  TextEditingController birthDayController = TextEditingController();
   String userName = "";
   String bio = "";
   String gender = "";
+  String birthDay = "";
   bool isLoading = false;
   File? avatar;
   String filePath = "";
@@ -36,6 +38,7 @@ class UpdateProfileController extends GetxController {
     userNameController.text = Global.userProfileResponse!.fullName;
     bioController.text = Global.userProfileResponse!.bio!;
     genderController.text = Global.userProfileResponse!.gender!;
+
     avatarPath = Global.userProfileResponse!.avatarPath!;
     backgroundPath = Global.userProfileResponse!.backgroundPath!;
     update();
@@ -300,7 +303,7 @@ class UpdateProfileController extends GetxController {
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
       Global.userProfileResponse = userProfileResponse;
-      Get.offAll(() => const NavigationBarView());
+      Get.offAll(() => NavigationBarView(currentIndex: 4));
     } else {
       isLoading = false;
       if (isLoading) {

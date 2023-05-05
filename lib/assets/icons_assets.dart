@@ -34,6 +34,14 @@ class IconsAssets {
   static const String icPrivateMode = 'assets/icons/ic_private.png';
   static const String icCheckIn = 'assets/icons/ic_check_in.png';
   static const String icFriendMode = 'assets/icons/ic_friend_mode.png';
+  static const String icAddFriend = 'assets/icons/ic_add_friend.png';
+  static const String icAcceptFriend = 'assets/icons/ic_accept_friend.png';
+  static const String icWaitingAccept = 'assets/icons/ic_waiting_accept.png';
+  static const String icChatProfile = 'assets/icons/ic_chat_profile.png';
+  static const String icSetting = 'assets/icons/ic_setting.png';
+  static const String icQRCode = 'assets/icons/ic_qr_code.png';
+  static const String icSecurity = 'assets/icons/ic_security.png';
+  static const String icInfoApp = 'assets/icons/ic_info_app.png';
 
 
 }

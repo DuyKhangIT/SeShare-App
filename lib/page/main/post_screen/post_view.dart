@@ -95,7 +95,7 @@ class _PostScreenState extends State<PostScreen> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 100),
+                    padding: const EdgeInsets.only(top: 20,bottom: 100),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +106,7 @@ class _PostScreenState extends State<PostScreen> {
                             Container(
                                 width: 55,
                                 height: 55,
-                                margin: const EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(left: 10,right: 10),
                                 decoration: const BoxDecoration(
                                   color: Colors.transparent,
                                 ),
@@ -115,7 +115,7 @@ class _PostScreenState extends State<PostScreen> {
                                   child:
                                   Global.userProfileResponse!.avatarPath!.isNotEmpty
                                   ?Image.network(
-                                    Global.convertMedia(Global.userProfileResponse!.avatarPath!,55,55),
+                                    Global.convertMedia(Global.userProfileResponse!.avatarPath!,null,null),
                                     fit: BoxFit.cover,
                                   ):Container(),
                                 )),
@@ -222,7 +222,7 @@ class _PostScreenState extends State<PostScreen> {
 
                         (postController.checkInPost.isNotEmpty)
                             ? Padding(
-                                padding: const EdgeInsets.only(top: 20),
+                                padding: const EdgeInsets.only(left: 10,top: 20),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,7 +292,7 @@ class _PostScreenState extends State<PostScreen> {
                             /// list photo of user post
                             (postController.photoPath.isNotEmpty)
                                 ? SizedBox(
-                                    width: 350,
+                                    width: MediaQuery.of(context).size.width,
                                     height: 350,
                                     child:  PhotoViewGallery.builder(
                                       scrollPhysics: const BouncingScrollPhysics(),
@@ -302,7 +302,7 @@ class _PostScreenState extends State<PostScreen> {
                                           minScale: PhotoViewComputedScale.covered,
                                           maxScale: PhotoViewComputedScale.covered,
                                           imageProvider: NetworkImage(Global.convertMedia(
-                                              postController.photoPath[indexPath].toString(),350,350)
+                                              postController.photoPath[indexPath].toString(),MediaQuery.of(context).size.width,350)
                                           ),
                                         );
                                       },

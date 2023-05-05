@@ -2,17 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
 import 'package:instagram_app/page/main/home_screen/comments_screen/comments_view.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/notification_screen/notification_view.dart';
+import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../assets/icons_assets.dart';
 import '../../../config/theme_service.dart';
+import '../../../models/another_user_profile/another_user_profile_request.dart';
 import '../../../util/global.dart';
+import '../another_profile_screen/another_profile_screen.dart';
 import 'home_controller.dart';
 
 class Home extends StatefulWidget {
@@ -43,27 +47,6 @@ class _HomeState extends State<Home> {
                       fontWeight: FontWeight.bold),
                 ),
                 actions: [
-                  GestureDetector(
-                    onTap: () {
-                      ThemeService().changeTheme();
-                    },
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      margin: const EdgeInsets.only(right: 10),
-                      child: ColorFiltered(
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                          BlendMode.srcIn,
-                        ),
-                        child: const Icon(
-                          moonIcon,
-                        ),
-                      ),
-                    ),
-                  ),
                   GestureDetector(
                     onTap: () {
                       Get.to(() => const NotificationScreen());
@@ -118,7 +101,7 @@ class _HomeState extends State<Home> {
                                     itemCount: homeController.isLoading == true
                                         ? 5
                                         : homeController
-                                            .dataPostsResponse?.length,
+                                            .dataPostsResponse.length,
                                     itemBuilder: (context, index) {
                                       if (homeController.isLoading) {
                                         return skeleton();
@@ -512,120 +495,146 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 /// avatar + username + location
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ///avatar
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: homeController.avatarPath.isNotEmpty
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(14),
-                              child: Image.network(
-                                Global.convertMedia(
-                                    homeController.avatarPath, 60, 60),
-                                errorBuilder: (context, event, object) {
-                                  return Container();
-                                },
-                                fit: BoxFit.cover,
+                InkWell(
+                  onTap: () {
+                    if (homeController
+                            .dataPostsResponse[index].userInfoResponse!.id !=
+                        Global.userProfileResponse!.id) {
+                      GetAllPhotoAnotherUserRequest anotherUserRequest =
+                          GetAllPhotoAnotherUserRequest(homeController
+                              .dataPostsResponse[index].userInfoResponse!.id);
+                      AnotherUserProfileRequest anotherProfileRequest = AnotherUserProfileRequest(homeController
+                          .dataPostsResponse[index].userInfoResponse!.id);
+                      homeController
+                          .getListPhotoAnOtherUser(anotherUserRequest);
+                      homeController.loadAnotherUserProfile(anotherProfileRequest);
+                    }
+                    else{
+                      Get.offAll(() => NavigationBarView(currentIndex: 4));
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ///avatar
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: homeController.dataPostsResponse[index]
+                                .userInfoResponse!.avatar.isNotEmpty
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(14),
+                                child: Image.network(
+                                  Global.convertMedia(
+                                      homeController.dataPostsResponse[index]
+                                          .userInfoResponse!.avatar,
+                                      null,
+                                      null),
+                                  errorBuilder: (context, event, object) {
+                                    return Container();
+                                  },
+                                  fit: BoxFit.cover,
+                                  width: 60,
+                                  height: 60,
+                                ))
+                            : Container(
                                 width: 60,
                                 height: 60,
-                              ))
-                          : Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  color: Colors.white),
-                            ),
-                    ),
-
-                    /// user name and location
-                    Container(
-                      constraints: const BoxConstraints(maxWidth: 220),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                  homeController.dataPostsResponse![index]
-                                      .userInfoResponse!.fullName,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      fontFamily: 'Nunito Sans')),
-                              Container(
-                                width: 85,
-                                margin: const EdgeInsets.only(left: 15),
-                                padding: const EdgeInsets.fromLTRB(5, 5, 0, 5),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: Colors.black.withOpacity(0.4))),
-                                child:
-
-                                    /// public
-                                    Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    homeController.dataPostsResponse![index]
-                                                .privacy ==
-                                            "public"
-                                        ? Image.asset(
-                                            IconsAssets.icPublicMode,
-                                            width: 12,
-                                            height: 12,
-                                          )
-                                        : homeController
-                                                    .dataPostsResponse![index]
-                                                    .privacy ==
-                                                "private"
-                                            ? Image.asset(
-                                                IconsAssets.icPrivateMode)
-                                            : Image.asset(
-                                                IconsAssets.icFriendMode),
-                                    Container(
-                                      width: 60,
-                                      margin: const EdgeInsets.only(left: 5),
-                                      child: Text(
-                                          homeController
-                                                      .dataPostsResponse![index]
-                                                      .privacy ==
-                                                  "public"
-                                              ? "Công khai"
-                                              : homeController
-                                                          .dataPostsResponse![
-                                                              index]
-                                                          .privacy ==
-                                                      "private"
-                                                  ? "Cá nhân"
-                                                  : "Bạn bè",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 11,
-                                              fontFamily: 'Nunito Sans')),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                              homeController
-                                  .dataPostsResponse![index].userLocation,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                  fontSize: 13, fontFamily: 'Nunito Sans')),
-                        ],
+                                    borderRadius: BorderRadius.circular(14),
+                                    color: Colors.white),
+                              ),
                       ),
-                    ),
-                  ],
+
+                      /// user name and location
+                      Container(
+                        constraints: const BoxConstraints(maxWidth: 220),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                    homeController.dataPostsResponse[index]
+                                        .userInfoResponse!.fullName,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        fontFamily: 'Nunito Sans')),
+                                Container(
+                                  width: 85,
+                                  margin: const EdgeInsets.only(left: 15),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 5, 0, 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                          color:
+                                              Colors.black.withOpacity(0.4))),
+                                  child:
+
+                                      /// public
+                                      Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      homeController.dataPostsResponse[index]
+                                                  .privacy ==
+                                              "public"
+                                          ? Image.asset(
+                                              IconsAssets.icPublicMode,
+                                              width: 12,
+                                              height: 12,
+                                            )
+                                          : homeController
+                                                      .dataPostsResponse[index]
+                                                      .privacy ==
+                                                  "private"
+                                              ? Image.asset(
+                                                  IconsAssets.icPrivateMode)
+                                              : Image.asset(
+                                                  IconsAssets.icFriendMode),
+                                      Container(
+                                        width: 60,
+                                        margin: const EdgeInsets.only(left: 5),
+                                        child: Text(
+                                            homeController
+                                                        .dataPostsResponse[
+                                                            index]
+                                                        .privacy ==
+                                                    "public"
+                                                ? "Công khai"
+                                                : homeController
+                                                            .dataPostsResponse[
+                                                                index]
+                                                            .privacy ==
+                                                        "private"
+                                                    ? "Cá nhân"
+                                                    : "Bạn bè",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 11,
+                                                fontFamily: 'Nunito Sans')),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                                homeController
+                                    .dataPostsResponse[index].userLocation,
+                                maxLines: 2,
+                                style: const TextStyle(
+                                    fontSize: 13, fontFamily: 'Nunito Sans')),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 /// dot
@@ -641,7 +650,7 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-          (homeController.dataPostsResponse![index].checkInLocation.isNotEmpty)
+          (homeController.dataPostsResponse[index].checkInLocation.isNotEmpty)
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(7, 0, 20, 10),
                   child: Row(
@@ -660,7 +669,7 @@ class _HomeState extends State<Home> {
                         margin: const EdgeInsets.only(left: 5),
                         child: Text(
                             overflow: TextOverflow.ellipsis,
-                            "Địa điểm bạn nhắc tới: ${homeController.dataPostsResponse![index].checkInLocation}",
+                            "Địa điểm bạn nhắc tới: ${homeController.dataPostsResponse[index].checkInLocation}",
                             maxLines: 2,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -674,7 +683,7 @@ class _HomeState extends State<Home> {
 
           /// image post
           SizedBox(
-              width: 320,
+              width: MediaQuery.of(context).size.width / 1.25,
               height: 350,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(30),
@@ -686,14 +695,14 @@ class _HomeState extends State<Home> {
                         minScale: PhotoViewComputedScale.covered * 0.9,
                         imageProvider: NetworkImage(Global.convertMedia(
                             homeController
-                                .dataPostsResponse![index].photoPath![indexPath]
+                                .dataPostsResponse[index].photoPath![indexPath]
                                 .toString(),
-                            320,
+                            MediaQuery.of(context).size.width / 1.25,
                             350)),
                       );
                     },
                     itemCount: homeController
-                        .dataPostsResponse![index].photoPath!.length,
+                        .dataPostsResponse[index].photoPath!.length,
                     loadingBuilder: (context, event) => Shimmer.fromColors(
                       baseColor: Colors.grey.withOpacity(0.4),
                       highlightColor: Colors.grey,
@@ -718,11 +727,11 @@ class _HomeState extends State<Home> {
                   children: [
                     TextSpan(
                         text:
-                            "${homeController.dataPostsResponse![index].userInfoResponse!.fullName}  ",
+                            "${homeController.dataPostsResponse[index].userInfoResponse!.fullName}  ",
                         style: const TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold)),
                     TextSpan(
-                        text: homeController.dataPostsResponse![index].caption,
+                        text: homeController.dataPostsResponse[index].caption,
                         style: const TextStyle(fontSize: 14)),
                   ]),
             ),
@@ -750,7 +759,7 @@ class _HomeState extends State<Home> {
                         children: [
                           TextSpan(
                               text: homeController
-                                  .dataPostsResponse![index].likes
+                                  .dataPostsResponse[index].likes
                                   .toString(),
                               style: const TextStyle(
                                   fontSize: 12,
@@ -775,9 +784,9 @@ class _HomeState extends State<Home> {
                         children: [
                           TextSpan(
                               text: homeController
-                                      .dataPostsResponse![index].cmt!.isEmpty
+                                      .dataPostsResponse[index].cmt!.isEmpty
                                   ? "0"
-                                  : homeController.dataPostsResponse![index]
+                                  : homeController.dataPostsResponse[index]
                                       .cmt![index].length
                                       .toString(),
                               style: const TextStyle(

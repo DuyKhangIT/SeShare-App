@@ -29,7 +29,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                 leading:
                 GestureDetector(
                   onTap: (){
-                    Get.to(() => const NavigationBarView());
+                    Get.to(() =>  NavigationBarView(currentIndex: 0,));
                   },
                   child: Icon(
                     Icons.arrow_back,

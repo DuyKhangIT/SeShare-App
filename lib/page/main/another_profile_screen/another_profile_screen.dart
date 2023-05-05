@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
-import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
-import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
-import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
-import 'package:instagram_app/page/onboarding/login/login_view.dart';
+import 'package:instagram_app/page/main/another_profile_screen/another_profile_controller.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../config/share_preferences.dart';
 import '../../../util/global.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class AnOtherProfileScreen extends StatefulWidget {
+  const AnOtherProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<AnOtherProfileScreen> createState() => _AnOtherProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
+class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
@@ -35,8 +31,9 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    ProfileController profileController = Get.put(ProfileController());
-    return GetBuilder<ProfileController>(
+    AnOtherProfileController anOtherProfileController =
+        Get.put(AnOtherProfileController());
+    return GetBuilder<AnOtherProfileController>(
         builder: (controller) => SafeArea(
               child: Scaffold(
                 body: SingleChildScrollView(
@@ -48,24 +45,25 @@ class _ProfileScreenState extends State<ProfileScreen>
                     child: Stack(
                       children: [
                         /// ảnh bìa
-                        Global.userProfileResponse!.backgroundPath!.isNotEmpty
-                            ? SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                height: 180,
-                                child: Image.network(
-                                  Global.convertMedia(
-                                      Global
-                                          .userProfileResponse!.backgroundPath!,
-                                      400,
-                                      180),
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 180,
-                                color: Colors.grey.withOpacity(0.4),
-                              ),
+                         anOtherProfileController
+                                    .background.isNotEmpty
+                                ? SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 180,
+                                    child: Image.network(
+                                      Global.convertMedia(
+                                          anOtherProfileController
+                                              .background,
+                                          400,
+                                          180),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 180,
+                                    color: Colors.grey.withOpacity(0.4),
+                                  ),
 
                         /// name and status // tab
                         Padding(
@@ -83,19 +81,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       color: Colors.transparent,
                                     ),
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Global.userProfileResponse!
-                                              .avatarPath!.isNotEmpty
-                                          ? Image.network(
-                                              Global.convertMedia(
-                                                  Global.userProfileResponse!
-                                                      .avatarPath!,
-                                                  null,
-                                                  null),
-                                              fit: BoxFit.cover,
-                                            )
-                                          : Container(),
-                                    )),
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: anOtherProfileController.avatar.isNotEmpty
+                                                ? Image.network(
+                                                    Global.convertMedia(
+                                                        anOtherProfileController.avatar,
+                                                        80,
+                                                        80),
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Container())),
                               ),
 
                               /// full name
@@ -107,22 +102,30 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(Global.userProfileResponse!.fullName,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            fontFamily: 'Nunito Sans')),
+                                     anOtherProfileController
+                                                .fullName.isNotEmpty
+                                            ? Text(
+                                                anOtherProfileController
+                                                    .fullName,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18,
+                                                    fontFamily: 'Nunito Sans'))
+                                            : Container(),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Global.userProfileResponse!.bio!.isNotEmpty
-                                        ? Text(Global.userProfileResponse!.bio!,
-                                            maxLines: 2,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14,
-                                                fontFamily: 'Nunito Sans'))
-                                        : Container(),
+                                     anOtherProfileController
+                                                .bio.isNotEmpty
+                                            ? Text(
+                                                anOtherProfileController
+                                                    .bio,
+                                                maxLines: 2,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 14,
+                                                    fontFamily: 'Nunito Sans'))
+                                            : Container(),
                                   ],
                                 ),
                               ),
@@ -184,34 +187,95 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
 
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 25),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 25),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     GestureDetector(
-                                      onTap: () {
-                                        Get.to(
-                                            () => const UpdateProfileScreen());
-                                      },
+                                      onTap: () {},
                                       child: Container(
                                         height: 30,
                                         padding: const EdgeInsets.fromLTRB(
                                             10, 6, 10, 6),
+                                        margin:
+                                            const EdgeInsets.only(right: 20),
                                         decoration: BoxDecoration(
                                             color: Colors.grey.withOpacity(0.4),
                                             borderRadius:
                                                 BorderRadius.circular(8)),
-                                        child: const Text(
-                                          "Chỉnh sửa trang cá nhân",
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'Nunito Sans',
-                                              fontWeight: FontWeight.bold),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Image.asset(
+                                                IconsAssets.icAddFriend),
+                                            const SizedBox(width: 6),
+                                            const Text(
+                                              "Thêm bạn",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Nunito Sans',
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //
+                                    //   },
+                                    //   child: Container(
+                                    //     height: 30,
+                                    //     padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                                    //     margin: const EdgeInsets.only(right: 20),
+                                    //     decoration: BoxDecoration(
+                                    //         color: Colors.grey.withOpacity(0.4),
+                                    //         borderRadius: BorderRadius.circular(8)),
+                                    //     child: Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.start,
+                                    //       children: [
+                                    //         Image.asset(IconsAssets.icAcceptFriend),
+                                    //         const SizedBox(width: 6),
+                                    //         const Text(
+                                    //           "Bạn bè",
+                                    //           style: TextStyle(
+                                    //               fontSize: 14,
+                                    //               fontFamily: 'Nunito Sans',
+                                    //               fontWeight: FontWeight.bold),
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //
+                                    //   },
+                                    //   child: Container(
+                                    //     height: 30,
+                                    //     padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                                    //     margin: const EdgeInsets.only(right: 20),
+                                    //     decoration: BoxDecoration(
+                                    //         color: Colors.grey.withOpacity(0.4),
+                                    //         borderRadius: BorderRadius.circular(8)),
+                                    //     child: Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.start,
+                                    //       children: [
+                                    //         Image.asset(IconsAssets.icWaitingAccept),
+                                    //         const SizedBox(width: 6),
+                                    //         const Text(
+                                    //           "Đang theo dõi",
+                                    //           style: TextStyle(
+                                    //               fontSize: 14,
+                                    //               fontFamily: 'Nunito Sans',
+                                    //               fontWeight: FontWeight.bold),
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     Container(
                                       height: 30,
                                       padding: const EdgeInsets.fromLTRB(
@@ -220,12 +284,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                                           color: Colors.grey.withOpacity(0.4),
                                           borderRadius:
                                               BorderRadius.circular(8)),
-                                      child: const Text(
-                                        "Chia sẻ trang cá nhân",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: 'Nunito Sans',
-                                            fontWeight: FontWeight.bold),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                              IconsAssets.icChatProfile),
+                                          const SizedBox(width: 6),
+                                          const Text(
+                                            "Nhắn tin",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito Sans',
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -240,15 +311,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         Align(
                           alignment: Alignment.topRight,
                           child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) {
-                                    return detailBottomSheetMenu();
-                                  });
-                            },
+                            onTap: () {},
                             child: Container(
                               width: 30,
                               height: 30,
@@ -257,6 +320,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 IconsAssets.icDot,
                                 color: Colors.white,
                               ),
+                            ),
+                          ),
+                        ),
+
+                        /// ic back
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              margin: const EdgeInsets.only(top: 20, left: 20),
+                              child: const Icon(Icons.arrow_back,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
@@ -270,7 +350,8 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   /// tab profile
   Widget tabProfile() {
-    ProfileController profileController = Get.put(ProfileController());
+    AnOtherProfileController anOtherProfileController =
+        Get.put(AnOtherProfileController());
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -348,93 +429,20 @@ class _ProfileScreenState extends State<ProfileScreen>
             controller: _tabController,
             children: [
               // girdview of person
-              Tab1(tabController: profileController),
+              Tab1(tabController: anOtherProfileController),
 
               /// story
-              Tab2(tabController: profileController),
+              Tab2(tabController: anOtherProfileController),
             ],
           ),
         ),
       ],
     );
   }
-
-  Widget detailBottomSheetMenu() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Expanded(
-          child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                color: Colors.transparent,
-              )),
-        ),
-        Container(
-            width: MediaQuery.of(context).size.width,
-            height: 180,
-            padding: const EdgeInsets.fromLTRB(20,10,20,0),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(12.0),topLeft: Radius.circular(12.0)),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                  onTap: (){
-                    Get.to(() => const SettingScreen());
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Image.asset(IconsAssets.icSetting),
-                      const SizedBox(width: 10),
-                      const Text(
-                        "Cài đặt",
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Nunito Sans',
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(IconsAssets.icSave),
-                    const SizedBox(width: 10),
-                    const Text(
-                      "Đã lưu",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Nunito Sans'),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(IconsAssets.icQRCode),
-                    const SizedBox(width: 10),
-                    const Text(
-                      "Mã QR",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Nunito Sans'),
-                    ),
-                  ],
-                ),
-              ],
-            )),
-      ],
-    );
-  }
 }
 
 class Tab1 extends StatefulWidget {
-  final ProfileController tabController;
+  final AnOtherProfileController tabController;
   const Tab1({Key? key, required this.tabController}) : super(key: key);
 
   @override
@@ -495,7 +503,7 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
 }
 
 class Tab2 extends StatefulWidget {
-  final ProfileController tabController;
+  final AnOtherProfileController tabController;
   const Tab2({Key? key, required this.tabController}) : super(key: key);
 
   @override

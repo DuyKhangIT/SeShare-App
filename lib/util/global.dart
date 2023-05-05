@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../models/another_user_profile/another_profile_response.dart';
+import '../models/another_user_profile/another_user_profile_response.dart';
+import '../models/list_posts_home/data_posts_response.dart';
 import '../models/user_profile/user_profile_response.dart';
 
 class Global {
@@ -29,6 +32,10 @@ class Global {
   static String registerNewAvatar = "";
   static String userId = "";
   static UserProfileResponse? userProfileResponse;
+  static List<String> listPhotoAnOtherUser = [];
+  static AnOtherUserProfileResponse? anOtherUserProfileResponse;
+  ///
+  static List<DataPostsResponse> listPostInfo = [];
 
   /// block auto click or many time click
   static int mTimeClick = 0;

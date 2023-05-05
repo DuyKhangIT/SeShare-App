@@ -23,7 +23,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 children: [
                   Expanded(
                       child: ListView.builder(
-                          itemCount: 10,
+                          itemCount: 5,
                           itemBuilder: (context,index){
                             return contentListCmt();
                           }
@@ -42,13 +42,16 @@ class _CommentScreenState extends State<CommentScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              ImageAssets.imgTest,
-              width: 35,
-              height: 35,
-              fit: BoxFit.cover,
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                ImageAssets.imgTest,
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           const SizedBox(width: 10),
@@ -56,29 +59,36 @@ class _CommentScreenState extends State<CommentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 16,
-                  ),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      color: Colors.grey.withOpacity(0.4)),
+                Row(
+                  children: [
+                    Text("Duy Khang",style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                      fontFamily: 'Nunito Sans',
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold
+                    )),
+                    const SizedBox(width: 10),
+                    const Text(
+                      "12:00",
+                      style: TextStyle(
+                        fontFamily: 'Nunito Sans',
+                        fontSize: 11,
+                      ),
+                    ),
+                  ],
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 5,top: 5),
                   child: Text(
-                    "Hôm nay rất tuyệt Hôm nay rất tuyệt Hôm nay rất tuyệt",
+                    "Đi chơi đâu đó",
                     style: TextStyle(
                       color: Theme.of(context).brightness == Brightness.dark
                           ? Colors.white
                           : Colors.black,
                     ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 5),
-                  constraints: const BoxConstraints(maxWidth: 240),
-                  alignment: Alignment.centerLeft,
-                  child: const Text(
-                    "12:00",
                   ),
                 ),
               ],

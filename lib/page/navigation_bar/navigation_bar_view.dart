@@ -6,13 +6,13 @@ import 'package:instagram_app/page/main/chat_sreen/chat_list/chat_list_view.dart
 import 'package:instagram_app/page/main/post_screen/post_view.dart';
 
 import '../main/home_screen/home_view.dart';
-import '../main/notification_screen/notification_view.dart';
 import '../main/profile_screen/profile_screen.dart';
 import '../main/search_screen/search_screen_view.dart';
 import 'navigation_bar_controller.dart';
 
 class NavigationBarView extends StatefulWidget {
-  const NavigationBarView({Key? key}) : super(key: key);
+  int currentIndex = 0;
+  NavigationBarView({Key? key,required this.currentIndex}) : super(key: key);
 
   @override
   State<NavigationBarView> createState() => _NavigationBarViewState();
@@ -21,7 +21,6 @@ class NavigationBarView extends StatefulWidget {
 const moonIcon = CupertinoIcons.moon_stars;
 
 class _NavigationBarViewState extends State<NavigationBarView> {
-  int currentIndex = 0;
   NavigationBarController? navigationBarController;
   List page = [
     const Home(),
@@ -33,7 +32,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
 
   void _onItemTapped(int index) {
     setState(() {
-      currentIndex = index;
+      widget.currentIndex = index;
     });
   }
 
@@ -46,7 +45,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
               child: Scaffold(
                 body: Stack(
                   children: [
-                    page[currentIndex],
+                    page[widget.currentIndex],
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: ClipRRect(
@@ -60,7 +59,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                           height: (60),
                           child: BottomNavigationBar(
                             type: BottomNavigationBarType.fixed,
-                            currentIndex: currentIndex,
+                            currentIndex: widget.currentIndex!,
                             onTap: _onItemTapped,
                             showUnselectedLabels: false,
                             showSelectedLabels: false,

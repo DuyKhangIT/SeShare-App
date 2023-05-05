@@ -77,7 +77,7 @@ class LoginController extends GetxController {
           SharedData.TOKEN.toString(),
           Global.mToken);
       print(Global.mToken);
-      Get.offAll(() => const NavigationBarView());
+      Get.offAll(() =>  NavigationBarView(currentIndex: 0,));
     }
 
     return authenticationResponse;

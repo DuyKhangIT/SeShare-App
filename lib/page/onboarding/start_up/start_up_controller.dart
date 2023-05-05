@@ -39,7 +39,7 @@ class StartUpController extends GetxController{
   Future<void> loading() async {
     await Future.delayed(const Duration(seconds: 3));
     isNewUser.value = false;
-    Get.to(() =>  const NavigationBarView());
+    Get.to(() =>  NavigationBarView(currentIndex: 0,));
     update();
   }
 

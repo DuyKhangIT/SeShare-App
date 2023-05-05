@@ -208,7 +208,7 @@ class PostController extends GetxController {
       ScaffoldMessenger.of(Get.context!)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
-      Get.offAll(() => const NavigationBarView());
+      Get.offAll(() =>  NavigationBarView(currentIndex: 0,));
     }
     return createPostResponse;
   }
