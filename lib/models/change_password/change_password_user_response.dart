@@ -1,6 +1,8 @@
-class UserResponse {
+class ChangePasswordUserResponse {
   String id = "";
   String phone = "";
+  String password = "";
+  String age = "";
   String? gender = "";
   String fullName = "";
   String? avatarPath = "";
@@ -8,11 +10,21 @@ class UserResponse {
   List<String>? friend;
   String? updatedAt = "";
   String? backgroundPath = "";
-  String age = "";
-  UserResponse(this.id, this.phone, this.gender, this.fullName, this.avatarPath,
-      this.photo, this.friend, this.updatedAt, this.backgroundPath, this.age);
-  UserResponse.buildDefault();
-  factory UserResponse.fromJson(Map<String, dynamic> json) {
+
+  ChangePasswordUserResponse(
+      this.id,
+      this.phone,
+      this.password,
+      this.age,
+      this.gender,
+      this.fullName,
+      this.avatarPath,
+      this.photo,
+      this.friend,
+      this.updatedAt,
+      this.backgroundPath);
+  ChangePasswordUserResponse.buildDefault();
+  factory ChangePasswordUserResponse.fromJson(Map<String, dynamic> json) {
     List<String> photoResponse = [];
     if (json['photos'] != null) {
       List<dynamic> arrData = json['photos'];
@@ -29,9 +41,11 @@ class UserResponse {
         friendResponse.add(friend);
       }
     }
-    return UserResponse(
+    return ChangePasswordUserResponse(
       json['_id'],
       json['phone'],
+      json['password'],
+      json['age'],
       json['gender'],
       json['full_name'],
       json['avatar_path'],
@@ -39,7 +53,6 @@ class UserResponse {
       friendResponse,
       json['updatedAt'],
       json['background_path'],
-      json['age'],
     );
   }
 }

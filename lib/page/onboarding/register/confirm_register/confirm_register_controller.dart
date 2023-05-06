@@ -30,7 +30,7 @@ class ConfirmRegisterController extends GetxController {
     if (Global.registerNewAvatar.isNotEmpty) {
       filePath = Global.registerNewAvatar;
       uploadMediaWithoutToken();
-    }else{
+    } else {
       ConfirmRegisterRequest confirmRegisterRequest = ConfirmRegisterRequest(
           Global.phoneNumber,
           Global.registerNewPassword,
@@ -118,8 +118,8 @@ class ConfirmRegisterController extends GetxController {
       ScaffoldMessenger.of(Get.context!)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
+      Get.offAll(() => Login());
     }
-    Get.offAll(() => Login());
     return confirmRegisterResponse;
   }
 }

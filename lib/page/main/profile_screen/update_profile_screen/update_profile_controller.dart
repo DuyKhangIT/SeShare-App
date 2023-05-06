@@ -10,11 +10,11 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/models/update_user_profile/update_user_profile_request.dart';
-import 'package:instagram_app/models/user_profile/user_profile_response.dart';
 import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 
 import '../../../../api_http/handle_api.dart';
 import '../../../../models/upload_media/upload_media_response.dart';
+import '../../../../models/user_profile/profile_response.dart';
 import '../../../../util/global.dart';
 
 class UpdateProfileController extends GetxController {
@@ -38,9 +38,9 @@ class UpdateProfileController extends GetxController {
     userNameController.text = Global.userProfileResponse!.fullName;
     bioController.text = Global.userProfileResponse!.bio!;
     genderController.text = Global.userProfileResponse!.gender!;
-
     avatarPath = Global.userProfileResponse!.avatarPath!;
     backgroundPath = Global.userProfileResponse!.backgroundPath!;
+    birthDayController.text = Global.userProfileResponse!.age;
     update();
     super.onReady();
   }
@@ -108,7 +108,7 @@ class UpdateProfileController extends GetxController {
   /// function to get the Background image from the camera
   Future getBackgroundImageFromCamera() async {
     final pickedImageFromCam =
-    await imagePicker.pickImage(source: ImageSource.camera);
+        await imagePicker.pickImage(source: ImageSource.camera);
     if (pickedImageFromCam == null) {
       return;
     }
@@ -129,7 +129,7 @@ class UpdateProfileController extends GetxController {
   /// function to get the Background image from the gallery
   Future getBackgroundImageFromGallery() async {
     final pickedImageFromGa =
-    await imagePicker.pickImage(source: ImageSource.gallery);
+        await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImageFromGa == null) {
       return;
     }
@@ -150,7 +150,7 @@ class UpdateProfileController extends GetxController {
   /// function to adjustment the Background image frame
   Future<File?> cropperBackgroundImage({required File imgFile}) async {
     CroppedFile? cropperImage =
-    await ImageCropper().cropImage(sourcePath: imgFile.path);
+        await ImageCropper().cropImage(sourcePath: imgFile.path);
     if (cropperImage == null) return null;
     return File(cropperImage.path);
   }
@@ -175,16 +175,15 @@ class UpdateProfileController extends GetxController {
     if (uploadMediaResponse.status == true) {
       avatarPath = uploadMediaResponse.data!;
       update();
-      if(avatarPath.isNotEmpty){
+      if (avatarPath.isNotEmpty) {
         UpdateUserProfileRequest updateUserProfileRequest =
-        UpdateUserProfileRequest(
-            Global.userProfileResponse!.phone,
-            Global.userProfileResponse!.password,
-            genderController.text,
-            userNameController.text,
-            avatarPath,
-            bioController.text,
-            backgroundPath);
+            UpdateUserProfileRequest(
+                genderController.text,
+                userNameController.text,
+                avatarPath,
+                bioController.text,
+                backgroundPath,
+                birthDayController.text);
         updateProfile(updateUserProfileRequest);
         update();
       }
@@ -212,16 +211,15 @@ class UpdateProfileController extends GetxController {
     if (uploadMediaResponse.status == true) {
       backgroundPath = uploadMediaResponse.data!;
       update();
-      if(backgroundPath.isNotEmpty){
+      if (backgroundPath.isNotEmpty) {
         UpdateUserProfileRequest updateUserProfileRequest =
-        UpdateUserProfileRequest(
-            Global.userProfileResponse!.phone,
-            Global.userProfileResponse!.password,
-            genderController.text,
-            userNameController.text,
-            avatarPath,
-            bioController.text,
-            backgroundPath);
+            UpdateUserProfileRequest(
+                genderController.text,
+                userNameController.text,
+                avatarPath,
+                bioController.text,
+                backgroundPath,
+                birthDayController.text);
         updateProfile(updateUserProfileRequest);
         update();
       }
@@ -230,32 +228,28 @@ class UpdateProfileController extends GetxController {
   }
 
   void updateUserProfile() {
-    if(filePath.isNotEmpty && fileBackgroundPath.isNotEmpty){
+    if (filePath.isNotEmpty && fileBackgroundPath.isNotEmpty) {
       uploadMedia();
       uploadBackground();
-    } else if(fileBackgroundPath.isNotEmpty){
+    } else if (fileBackgroundPath.isNotEmpty) {
       uploadBackground();
-
-    } else if(filePath.isNotEmpty){
+    } else if (filePath.isNotEmpty) {
       uploadMedia();
-    }
-    else{
+    } else {
       UpdateUserProfileRequest updateUserProfileRequest =
-      UpdateUserProfileRequest(
-          Global.userProfileResponse!.phone,
-          Global.userProfileResponse!.password,
-          genderController.text,
-          userNameController.text,
-          avatarPath,
-          bioController.text,
-          backgroundPath);
+          UpdateUserProfileRequest(
+              genderController.text,
+              userNameController.text,
+              avatarPath,
+              bioController.text,
+              backgroundPath,
+              birthDayController.text);
       updateProfile(updateUserProfileRequest);
     }
-
   }
 
   /// handle update user profile api
-  Future<UserProfileResponse> updateProfile(
+  Future<ProfileResponse> updateProfile(
       UpdateUserProfileRequest updateUserProfileRequest) async {
     isLoading = true;
     if (isLoading) {
@@ -264,7 +258,7 @@ class UpdateProfileController extends GetxController {
     } else {
       Get.back(); // Đóng hộp thoại loading nếu isLoading = false
     }
-    UserProfileResponse userProfileResponse;
+    ProfileResponse profileResponse;
     Map<String, dynamic>? body;
     //is this for string query only
     try {
@@ -278,10 +272,10 @@ class UpdateProfileController extends GetxController {
       debugPrint("Fail to update user profile $error");
       rethrow;
     }
-    if (body == null) return UserProfileResponse.buildDefault();
+    if (body == null) return ProfileResponse.buildDefault();
     //get data from api here
-    userProfileResponse = UserProfileResponse.fromJson(body);
-    if (userProfileResponse.id.isNotEmpty) {
+    profileResponse = ProfileResponse.fromJson(body);
+    if (profileResponse.status == true) {
       isLoading = false;
       if (isLoading) {
         Get.dialog(const Center(child: CircularProgressIndicator()),
@@ -302,7 +296,7 @@ class UpdateProfileController extends GetxController {
       ScaffoldMessenger.of(Get.context!)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
-      Global.userProfileResponse = userProfileResponse;
+      Global.userProfileResponse = profileResponse.userProfileResponse;
       Get.offAll(() => NavigationBarView(currentIndex: 4));
     } else {
       isLoading = false;
@@ -327,6 +321,6 @@ class UpdateProfileController extends GetxController {
         ..showSnackBar(snackBar);
     }
 
-    return userProfileResponse;
+    return profileResponse;
   }
 }

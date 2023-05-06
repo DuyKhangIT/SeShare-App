@@ -1,26 +1,30 @@
-class UserResponse {
+class ForgotPasswordUserResponse {
   String id = "";
   String phone = "";
+  String password = "";
   String? gender = "";
   String fullName = "";
   String? avatarPath = "";
-  List<String>? photo;
+  String? bio;
   List<String>? friend;
   String? updatedAt = "";
   String? backgroundPath = "";
-  String age = "";
-  UserResponse(this.id, this.phone, this.gender, this.fullName, this.avatarPath,
-      this.photo, this.friend, this.updatedAt, this.backgroundPath, this.age);
-  UserResponse.buildDefault();
-  factory UserResponse.fromJson(Map<String, dynamic> json) {
-    List<String> photoResponse = [];
-    if (json['photos'] != null) {
-      List<dynamic> arrData = json['photos'];
-      for (var i = 0; i < arrData.length; i++) {
-        String photoUrl = arrData[i];
-        photoResponse.add(photoUrl);
-      }
-    }
+  String? age = "";
+
+  ForgotPasswordUserResponse(
+      this.id,
+      this.phone,
+      this.password,
+      this.gender,
+      this.fullName,
+      this.avatarPath,
+      this.bio,
+      this.friend,
+      this.updatedAt,
+      this.backgroundPath,
+      this.age);
+  ForgotPasswordUserResponse.buildDefault();
+  factory ForgotPasswordUserResponse.fromJson(Map<String, dynamic> json) {
     List<String> friendResponse = [];
     if (json['friends'] != null) {
       List<dynamic> arrData = json['friends'];
@@ -29,13 +33,14 @@ class UserResponse {
         friendResponse.add(friend);
       }
     }
-    return UserResponse(
+    return ForgotPasswordUserResponse(
       json['_id'],
       json['phone'],
+      json['password'],
       json['gender'],
       json['full_name'],
       json['avatar_path'],
-      photoResponse,
+      json['bio'],
       friendResponse,
       json['updatedAt'],
       json['background_path'],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/change_password/change_password_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_controller.dart';
 
@@ -48,7 +49,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Get.to(() => const ChangePasswordScreen());
                       },
                       child: Row(
@@ -120,10 +121,9 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                     const SizedBox(height: 30),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width/1.2,
+                      width: MediaQuery.of(context).size.width / 1.2,
                       height: 30,
-                      child: const Text(
-                          "Trung tâm tài khoản",
+                      child: const Text("Trung tâm tài khoản",
                           style: TextStyle(
                             fontFamily: 'Nunito Sans',
                             fontSize: 16,
@@ -132,16 +132,17 @@ class _SettingScreenState extends State<SettingScreen> {
                           )),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width/1.2,
+                      width: MediaQuery.of(context).size.width / 1.2,
                       height: 50,
                       child: Text(
                           "Kiểm soát chế độ cài đặt khi kết nối các trải nghiệm trên SeShare, bao gồm tính năng chia sẻ tin, bài viết, đăng nhập.",
                           style: TextStyle(
                             fontFamily: 'Nunito Sans',
                             fontSize: 14,
-                            color: Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Colors.black.withOpacity(0.6),
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black.withOpacity(0.6),
                           )),
                     ),
                     const SizedBox(height: 30),
@@ -157,9 +158,30 @@ class _SettingScreenState extends State<SettingScreen> {
                     const SizedBox(height: 30),
                     InkWell(
                       onTap: () {
-                        ConfigSharedPreferences()
-                            .setStringValue(SharedData.TOKEN.toString(), "");
-                        Get.offAll(() => Login());
+                        /// dialog logout
+                        Get.defaultDialog(
+                            backgroundColor: Colors.white,
+                            titleStyle: const TextStyle(
+                                color: Colors.black, fontFamily: 'Nunito Sans'),
+                            textConfirm: "Xác nhận",
+                            textCancel: "Hủy",
+                            onConfirm: () {
+                              ConfigSharedPreferences().setStringValue(
+                                  SharedData.TOKEN.toString(), "");
+                              Get.offAll(() => Login());
+                            },
+                            title: "Đăng xuất",
+                            onCancel: () {},
+                            cancelTextColor: Colors.black,
+                            confirmTextColor: Colors.white,
+                            barrierDismissible: false,
+                            radius: 12,
+                            content: const Text(
+                                "Bạn có chắc là muốn đăng xuất không?",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontFamily: 'Nunito Sans')));
                       },
                       child: Text("Đăng xuất",
                           style: TextStyle(

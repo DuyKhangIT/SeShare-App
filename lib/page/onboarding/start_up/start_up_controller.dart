@@ -50,20 +50,19 @@ class StartUpController extends GetxController{
       if (permission == LocationPermission.denied) {
         // Xử lý trường hợp người dùng từ chối cấp quyền truy cập vị trí
         Get.defaultDialog(
-            backgroundColor: Colors.green,
-            titleStyle: const TextStyle(color: Colors.white),
-            middleTextStyle: const TextStyle(color: Colors.white),
+            backgroundColor: Colors.white,
+            titleStyle: const TextStyle(color: Colors.black),
             textConfirm: "Confirm",
             textCancel: "Cancel",
             onConfirm: (){
               Navigator.pop(Get.context!);
             },
             onCancel: (){},
-            cancelTextColor: Colors.white,
-            confirmTextColor: Colors.white,
-            buttonColor: Colors.red,
+            cancelTextColor: Colors.black,
+            confirmTextColor: Colors.black,
+            buttonColor: Colors.blue,
             barrierDismissible: false,
-            radius: 50,
+            radius: 14,
             content: const Text("Vui lòng cấp quyền truy cập vị trí để sử dụng tính năng này.")
         );
       }

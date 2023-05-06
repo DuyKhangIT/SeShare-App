@@ -1,5 +1,4 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,6 @@ import 'package:instagram_app/widget/button_next.dart';
 import '../../../../assets/icons_assets.dart';
 import '../../../../models/register_response/check_existing_phone_number/check_phone_number_request.dart';
 import '../../../../util/global.dart';
-import '../input_otp_forgot_password/input_otp_forgot_password_view.dart';
 import 'input_phone_number_forgot_password_controller.dart';
 
 class InputPhoneNumberForgotPassword extends StatefulWidget {
@@ -156,10 +154,9 @@ class _InputPhoneNumberForgotPasswordState
                                     ),
                                     onChanged: (value) {
                                       setState(() {
-                                        controller.phoneForgotPassword.value =
-                                            value;
-                                        Global.phoneNumber =
-                                            controller.phoneForgotPassword.value;
+                                        controller.phoneForgotPassword.value = value;
+                                        Global.phoneNumberForgotPassword = controller.phoneForgotPassword.value;
+                                        controller.update();
                                       });
                                     }),
                               ))
@@ -189,9 +186,7 @@ class _InputPhoneNumberForgotPasswordState
                           CheckPhoneNumberRequest? checkPhoneNumberRequest =
                           CheckPhoneNumberRequest(
                               removeZeroAtFirstDigitPhoneNumber(controller.phoneForgotPassword.value));
-                          // controller
-                          //     .checkPhoneExistingForRegister(checkPhoneNumberRequest);
-                          Get.to(() => const InputOTPForgotPassword());
+                          controller.checkPhoneExistingForgotPassword(checkPhoneNumberRequest);
                         }
                       },
                       textInside: "Gửi mã",

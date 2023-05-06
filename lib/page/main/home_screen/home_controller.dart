@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_response.dart';
+import 'package:instagram_app/models/like_post/like_post_request.dart';
+import 'package:instagram_app/models/like_post/like_post_response.dart';
 
 import 'package:instagram_app/models/list_posts_home/data_posts_response.dart';
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
@@ -19,7 +22,6 @@ import '../../../util/global.dart';
 import '../another_profile_screen/another_profile_screen.dart';
 
 class HomeController extends GetxController {
-  bool isLike = false;
   final scrollController = ScrollController();
   double previousOffset = 0.0;
   File? avatar;
@@ -27,6 +29,7 @@ class HomeController extends GetxController {
   String userId = "";
   bool isLoading = false;
   String phone = "";
+  bool isLike = false;
 
   List<DataPostsResponse> dataPostsResponse = [];
   @override
@@ -111,7 +114,6 @@ class HomeController extends GetxController {
     return profileResponse;
   }
 
-
   /// call api list photo another user
   Future<GetAllPhotoAnOtherUserResponse> getListPhotoAnOtherUser(
       GetAllPhotoAnotherUserRequest getAllPhotoAnotherUserRequest) async {
@@ -160,13 +162,41 @@ class HomeController extends GetxController {
     //get data from api here
     anOtherProfileResponse = AnOtherProfileResponse.fromJson(body);
     if (anOtherProfileResponse.status == true) {
-      Global.anOtherUserProfileResponse = anOtherProfileResponse.anOtherUserProfileResponse;
+      Global.anOtherUserProfileResponse =
+          anOtherProfileResponse.anOtherUserProfileResponse;
       print("load profile success");
       update();
-      if(Global.anOtherUserProfileResponse!=null){
+      if (Global.anOtherUserProfileResponse != null) {
         Get.to(() => const AnOtherProfileScreen());
       }
+    } else {
+      debugPrint("Lỗi api");
     }
     return anOtherProfileResponse;
+  }
+
+  /// handle like post api
+  Future<LikePostResponse> likePost(LikePostRequest likePostRequest) async {
+    LikePostResponse likePostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/like"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(likePostRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to user profile $error");
+      rethrow;
+    }
+    if (body == null) return LikePostResponse.buildDefault();
+    //get data from api here
+    likePostResponse = LikePostResponse.fromJson(body);
+    if (likePostResponse.status == true) {
+
+      print("like post success");
+      update();
+    }
+    return likePostResponse;
   }
 }

@@ -1,8 +1,12 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:instagram_app/models/forgot_password/forgot_password_request.dart';
+import 'package:instagram_app/util/module.dart';
 
 import '../../../../assets/icons_assets.dart';
+import '../../../../util/global.dart';
 import '../../../../widget/button_next.dart';
 import '../../login/login_view.dart';
 import 'input_password_forgot_password_controller.dart';
@@ -109,8 +113,8 @@ class _InputPasswordForgotPasswordState
                                     .newPasswordController.text.isEmpty)
                                 ? const SizedBox()
                                 : inputPasswordForgotPasswordController
-                                            .newPasswordController.text.length <
-                                        7
+                                            .newPasswordController.text.length >=
+                                        6
                                     ? GestureDetector(
                                         onTap: () {
                                           inputPasswordForgotPasswordController
@@ -150,7 +154,30 @@ class _InputPasswordForgotPasswordState
                       /// button
                       ButtonNext(
                         onTap: () {
-                          Get.to(() => Login());
+                          if (Global.phoneNumberForgotPassword.isNotEmpty &&
+                              inputPasswordForgotPasswordController
+                                  .newPassword.value.isNotEmpty) {
+                            ForgotPasswordRequest request =
+                                ForgotPasswordRequest(
+                                    removeZeroAtFirstDigitPhoneNumber(Global.phoneNumberForgotPassword),
+                                    inputPasswordForgotPasswordController
+                                        .newPasswordController.text);
+                            inputPasswordForgotPasswordController.forgotPassword(request);
+                          }else{
+                            final snackBar = SnackBar(
+                              elevation: 0,
+                              behavior: SnackBarBehavior.fixed,
+                              backgroundColor: Colors.transparent,
+                              content: AwesomeSnackbarContent(
+                                title: 'Cảnh báo!',
+                                message: "Vui lòng nhập đủ thông tin",
+                                contentType: ContentType.warning,
+                              ),
+                            );
+                            ScaffoldMessenger.of(Get.context!)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(snackBar);
+                          }
                         },
                         textInside: "Tiếp tục",
                       ),

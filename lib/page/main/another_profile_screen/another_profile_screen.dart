@@ -364,7 +364,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
               child: TabBar(
                 controller: _tabController,
                 isScrollable: true,
-                labelPadding: const EdgeInsets.symmetric(horizontal: (60)),
+                labelPadding: const EdgeInsets.symmetric(horizontal: (50)),
                 labelColor: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Colors.black,
@@ -399,8 +399,8 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           ),
                           child: Image.asset(IconsAssets.icGridView)),
                       const SizedBox(height: 5),
-                      const Text("Ảnh của bạn",
-                          style: TextStyle(
+                       Text("Ảnh của ${anOtherProfileController.fullName}",
+                          style: const TextStyle(
                               fontSize: 12, fontFamily: 'Nunito Sans'))
                     ],
                   )),
@@ -416,8 +416,8 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           ),
                           child: Image.asset(IconsAssets.icShare)),
                       const SizedBox(height: 5),
-                      const Text("Story của bạn",
-                          style: TextStyle(
+                       Text("Story của ${anOtherProfileController.fullName}",
+                          style: const TextStyle(
                               fontSize: 12, fontFamily: 'Nunito Sans'))
                     ],
                   )),

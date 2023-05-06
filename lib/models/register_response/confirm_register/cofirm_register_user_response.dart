@@ -1,27 +1,25 @@
-class UserProfileResponse {
-  String id = "";
+class ConfirmRegisterUserResponse {
   String phone = "";
   String? gender = "";
   String fullName = "";
   String? avatarPath = "";
-  String? bio = "";
-  List<String>? friend;
-  String? updatedAt = "";
   String? backgroundPath = "";
+  List<String>? friend;
+  String id = "";
+  String? updatedAt = "";
   String age = "";
-  UserProfileResponse(
-      this.id,
+  ConfirmRegisterUserResponse(
       this.phone,
       this.gender,
       this.fullName,
       this.avatarPath,
-      this.bio,
       this.friend,
+      this.id,
       this.updatedAt,
       this.backgroundPath,
       this.age);
-  UserProfileResponse.buildDefault();
-  factory UserProfileResponse.fromJson(Map<String, dynamic> json) {
+  ConfirmRegisterUserResponse.buildDefault();
+  factory ConfirmRegisterUserResponse.fromJson(Map<String, dynamic> json) {
     List<String> friendResponse = [];
     if (json['friends'] != null) {
       List<dynamic> arrData = json['friends'];
@@ -30,14 +28,13 @@ class UserProfileResponse {
         friendResponse.add(friend);
       }
     }
-    return UserProfileResponse(
-      json['_id'],
-     json['phone'],
+    return ConfirmRegisterUserResponse(
+      json['phone'],
       json['gender'],
       json['full_name'],
       json['avatar_path'],
-      json['bio'],
       friendResponse,
+      json['_id'],
       json['updatedAt'],
       json['background_path'],
       json['age'],

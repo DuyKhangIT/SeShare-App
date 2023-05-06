@@ -36,6 +36,9 @@ class Global {
   static AnOtherUserProfileResponse? anOtherUserProfileResponse;
   ///
   static List<DataPostsResponse> listPostInfo = [];
+  /// new phone number from forgot password
+  static String phoneNumberForgotPassword = "";
+
 
   /// block auto click or many time click
   static int mTimeClick = 0;

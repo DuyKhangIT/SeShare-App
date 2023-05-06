@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
+import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/page/main/home_screen/comments_screen/comments_view.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
@@ -12,11 +13,8 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../assets/icons_assets.dart';
-import '../../../config/theme_service.dart';
 import '../../../models/another_user_profile/another_user_profile_request.dart';
 import '../../../util/global.dart';
-import '../another_profile_screen/another_profile_screen.dart';
 import 'home_controller.dart';
 
 class Home extends StatefulWidget {
@@ -106,8 +104,8 @@ class _HomeState extends State<Home> {
                                       if (homeController.isLoading) {
                                         return skeleton();
                                       } else {
-                                        if (homeController.dataPostsResponse !=
-                                            null) {
+                                        if (homeController
+                                            .dataPostsResponse.isNotEmpty) {
                                           return contentListViewPost(index);
                                         } else {
                                           return skeleton();
@@ -503,13 +501,14 @@ class _HomeState extends State<Home> {
                       GetAllPhotoAnotherUserRequest anotherUserRequest =
                           GetAllPhotoAnotherUserRequest(homeController
                               .dataPostsResponse[index].userInfoResponse!.id);
-                      AnotherUserProfileRequest anotherProfileRequest = AnotherUserProfileRequest(homeController
-                          .dataPostsResponse[index].userInfoResponse!.id);
+                      AnotherUserProfileRequest anotherProfileRequest =
+                          AnotherUserProfileRequest(homeController
+                              .dataPostsResponse[index].userInfoResponse!.id);
                       homeController
                           .getListPhotoAnOtherUser(anotherUserRequest);
-                      homeController.loadAnotherUserProfile(anotherProfileRequest);
-                    }
-                    else{
+                      homeController
+                          .loadAnotherUserProfile(anotherProfileRequest);
+                    } else {
                       Get.offAll(() => NavigationBarView(currentIndex: 4));
                     }
                   },
@@ -759,7 +758,7 @@ class _HomeState extends State<Home> {
                         children: [
                           TextSpan(
                               text: homeController
-                                  .dataPostsResponse[index].likes
+                                  .dataPostsResponse[index].totalLikes
                                   .toString(),
                               style: const TextStyle(
                                   fontSize: 12,
@@ -841,15 +840,27 @@ class _HomeState extends State<Home> {
                 /// ic like
                 GestureDetector(
                   onTap: () {
-                    homeController.isLike = !homeController.isLike;
-                    homeController.update();
+                    // setState(() {
+                    //   homeController.isLike = !homeController.isLike;
+                    //   homeController.update();
+                    // });
+                    if (Global.isAvailableToClick()) {
+                      if (homeController
+                          .dataPostsResponse[index].id.isNotEmpty) {
+                        LikePostRequest likePostRequest = LikePostRequest(
+                            homeController.dataPostsResponse[index].id);
+                        homeController.likePost(likePostRequest);
+                        homeController.update();
+                      }
+                    }
                   },
                   child: Container(
                       constraints: const BoxConstraints(maxWidth: 80),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          (homeController.isLike == true)
+                          (homeController.dataPostsResponse[index].liked ==
+                                  true)
                               ? ColorFiltered(
                                   colorFilter: ColorFilter.mode(
                                     Theme.of(context).brightness ==

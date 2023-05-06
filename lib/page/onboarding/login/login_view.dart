@@ -212,10 +212,11 @@ class _LoginState extends State<Login> {
                               child: Obx(() => loginController
                                           .isShowPassword.value ==
                                       true
-                                  ? Icon(Icons.visibility, color: Colors.black)
-                                  : Icon(Icons.visibility_off,
+                                  ? const Icon(Icons.visibility, color: Colors.black)
+                                  : const Icon(Icons.visibility_off,
                                       color: Colors.black))),
-                        )),
+                        )
+              ),
               onChanged: (value) {
                 setState(() {
                   loginController.passwordLogin = value;
