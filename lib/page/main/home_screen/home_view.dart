@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
 import 'package:instagram_app/models/like_post/like_post_request.dart';
+import 'package:instagram_app/models/list_comments_post/list_comments_post_request.dart';
 import 'package:instagram_app/page/main/home_screen/comments_screen/comments_view.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
@@ -41,6 +42,7 @@ class _HomeState extends State<Home> {
                   'SeShare',
                   style: Theme.of(context).textTheme.headline6?.copyWith(
                       color: Theme.of(context).textTheme.headline6?.color,
+                      fontFamily: 'Nunito Sans',
                       fontSize: 22,
                       fontWeight: FontWeight.bold),
                 ),
@@ -359,115 +361,6 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-          const Divider(),
-
-          /// icon like + cmt + share
-          Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(top: 5),
-            padding: const EdgeInsets.only(left: 20, bottom: 10),
-            height: 30,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                /// ic like
-                Container(
-                    constraints: const BoxConstraints(maxWidth: 80),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        ColorFiltered(
-                          colorFilter: ColorFilter.mode(
-                            Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Colors.black,
-                            BlendMode.srcIn,
-                          ),
-                          child: Image.asset(IconsAssets.icLike),
-                        ),
-                        const SizedBox(width: 10),
-                        Container(
-                          constraints: const BoxConstraints(maxWidth: 45),
-                          child: Text("Thích",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  ?.copyWith(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          ?.color,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    )),
-                const VerticalDivider(),
-
-                /// ic cmt
-                Container(
-                  constraints: const BoxConstraints(maxWidth: 105),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      ColorFiltered(
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                          BlendMode.srcIn,
-                        ),
-                        child: Image.asset(IconsAssets.icComment),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 10),
-                        constraints: const BoxConstraints(maxWidth: 60),
-                        child: Text(
-                          "Bình Luận",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              ?.copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      ?.color,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const VerticalDivider(),
-
-                /// ic share
-                Container(
-                    constraints: const BoxConstraints(maxWidth: 100),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Image.asset(IconsAssets.icShare),
-                        const SizedBox(width: 10),
-                        Container(
-                          constraints: const BoxConstraints(maxWidth: 70),
-                          child: Text("Chia sẻ",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  ?.copyWith(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          ?.color,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    )),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -783,10 +676,11 @@ class _HomeState extends State<Home> {
                         children: [
                           TextSpan(
                               text: homeController
-                                      .dataPostsResponse[index].cmt!.isEmpty
+                                          .dataPostsResponse[index].totalCmt ==
+                                      0
                                   ? "0"
-                                  : homeController.dataPostsResponse[index]
-                                      .cmt![index].length
+                                  : homeController
+                                      .dataPostsResponse[index].totalCmt
                                       .toString(),
                               style: const TextStyle(
                                   fontSize: 12,
@@ -838,20 +732,13 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 /// ic like
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    // setState(() {
-                    //   homeController.isLike = !homeController.isLike;
-                    //   homeController.update();
-                    // });
-                    if (Global.isAvailableToClick()) {
-                      if (homeController
-                          .dataPostsResponse[index].id.isNotEmpty) {
-                        LikePostRequest likePostRequest = LikePostRequest(
-                            homeController.dataPostsResponse[index].id);
-                        homeController.likePost(likePostRequest);
-                        homeController.update();
-                      }
+                    if (homeController.dataPostsResponse[index].id.isNotEmpty) {
+                      LikePostRequest likePostRequest = LikePostRequest(
+                          homeController.dataPostsResponse[index].id);
+                      homeController.likePost(likePostRequest);
+                      homeController.update();
                     }
                   },
                   child: Container(
@@ -902,9 +789,17 @@ class _HomeState extends State<Home> {
                 const VerticalDivider(),
 
                 /// ic cmt
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    Get.to(() => const CommentScreen());
+                    if (Global.isAvailableToClick()) {
+                      if (homeController
+                          .dataPostsResponse[index].id.isNotEmpty) {
+                        ListCommentsPostRequest request =
+                            ListCommentsPostRequest(
+                                homeController.dataPostsResponse[index].id);
+                        homeController.getListCommentsPost(request);
+                      }
+                    }
                   },
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 105),
@@ -944,7 +839,7 @@ class _HomeState extends State<Home> {
                 const VerticalDivider(),
 
                 /// ic share
-                GestureDetector(
+                InkWell(
                   onTap: () {},
                   child: Container(
                       constraints: const BoxConstraints(maxWidth: 90),

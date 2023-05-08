@@ -5,25 +5,27 @@ class DataPostsResponse {
   List<String>? photoPath;
   String? caption = "";
   int totalLikes = 0;
+  List<String>? listLike;
   bool liked = false;
-  List<String>? cmt;
   String privacy = "";
   UserInfoResponse? userInfoResponse;
   String userLocation = "";
   String checkInLocation = "";
   String? updatedAt = "";
+  int? totalCmt;
   DataPostsResponse(
       this.id,
       this.photoPath,
       this.caption,
       this.totalLikes,
+      this.listLike,
       this.liked,
-      this.cmt,
       this.privacy,
       this.userInfoResponse,
       this.userLocation,
       this.checkInLocation,
-      this.updatedAt);
+      this.updatedAt,
+      this.totalCmt);
   DataPostsResponse.buildDefault();
   factory DataPostsResponse.fromJson(Map<String, dynamic> json) {
     List<String>? photoPath = [];
@@ -33,9 +35,9 @@ class DataPostsResponse {
         photoPath.add(arrData[i]);
       }
     }
-    List<String>? cmt = [];
-    if (json['comment'] != null) {
-      List<dynamic> arrData = json['comment'];
+    List<String>? listLikes = [];
+    if (json['list_likes'] != null) {
+      List<dynamic> arrData = json['list_likes'];
       for (int i = 0; i < arrData.length; i++) {
         photoPath.add(arrData[i]);
       }
@@ -45,8 +47,8 @@ class DataPostsResponse {
       photoPath,
       json['caption'],
       json['total_likes'],
+      listLikes,
       json['liked'],
-      cmt,
       json['privacy'],
       (json['user_id'] != null)
           ? UserInfoResponse.fromJson(json['user_id'])
@@ -54,6 +56,7 @@ class DataPostsResponse {
       json['user_location'],
       json['checkin_location'],
       json['updatedAt'],
+      json['total_comment'],
     );
   }
 }

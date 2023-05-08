@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/page/main/home_screen/comments_screen/comments_screen_controller.dart';
 
-import '../../../../assets/images_assets.dart';
+import '../../../../util/global.dart';
 
 class CommentScreen extends StatefulWidget {
   const CommentScreen({Key? key}) : super(key: key);
@@ -18,24 +17,50 @@ class _CommentScreenState extends State<CommentScreen> {
     CommentsController commentsController = Get.put(CommentsController());
     return GetBuilder<CommentsController>(
         builder: (controller) => Scaffold(
+              appBar: AppBar(
+                leading: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Theme.of(context).textTheme.headline6?.color,
+                    )),
+                title: Text("Bình luận",
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                        color: Theme.of(context).textTheme.headline6?.color,
+                        fontFamily: 'Nunito Sans',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                elevation: 0,
+              ),
               body: SafeArea(
                   child: Column(
                 children: [
                   Expanded(
-                      child: ListView.builder(
-                          itemCount: 5,
-                          itemBuilder: (context,index){
-                            return contentListCmt();
-                          }
-                  )),
-
-                  inputMessageTextfield(commentsController)
+                      child: Global.dataListCmt.isEmpty
+                          ? Center(
+                              child: Text("Không có bình luận nào",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          ?.color,
+                                      fontFamily: 'Nunito Sans',
+                                      fontSize: 13)),
+                            )
+                          : ListView.builder(
+                              itemCount: Global.dataListCmt.length,
+                              itemBuilder: (context, index) {
+                                return contentListCmt(index);
+                              })),
+                  inputMessageTextField(commentsController)
                 ],
               )),
             ));
   }
 
-  Widget contentListCmt() {
+  Widget contentListCmt(index) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(10),
@@ -44,15 +69,26 @@ class _CommentScreenState extends State<CommentScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                ImageAssets.imgTest,
-                width: 40,
-                height: 40,
-                fit: BoxFit.cover,
-              ),
-            ),
+            child: Global.dataListCmt[index].userInfoCommentResponse!.avatar
+                    .isNotEmpty
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      Global.convertMedia(
+                          Global.dataListCmt[index].userInfoCommentResponse!
+                              .avatar,
+                          40,
+                          40),
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : Container(
+                    width: 40,
+                    height: 40,
+                    color: Colors.grey.withOpacity(0.4),
+                  ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -61,14 +97,17 @@ class _CommentScreenState extends State<CommentScreen> {
               children: [
                 Row(
                   children: [
-                    Text("Duy Khang",style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black,
-                      fontFamily: 'Nunito Sans',
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold
-                    )),
+                    Text(
+                        Global.dataListCmt[index].userInfoCommentResponse!
+                            .fullName,
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                            fontFamily: 'Nunito Sans',
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold)),
                     const SizedBox(width: 10),
                     const Text(
                       "12:00",
@@ -79,11 +118,10 @@ class _CommentScreenState extends State<CommentScreen> {
                     ),
                   ],
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.only(left: 5,top: 5),
+                  padding: const EdgeInsets.only(left: 5, top: 5),
                   child: Text(
-                    "Đi chơi đâu đó",
+                    Global.dataListCmt[index].comment,
                     style: TextStyle(
                       color: Theme.of(context).brightness == Brightness.dark
                           ? Colors.white
@@ -99,7 +137,7 @@ class _CommentScreenState extends State<CommentScreen> {
     );
   }
 
-  Widget inputMessageTextfield(commentsController) {
+  Widget inputMessageTextField(commentsController) {
     return Container(
       width: double.infinity,
       color: Colors.white,

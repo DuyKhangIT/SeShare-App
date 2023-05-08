@@ -17,9 +17,12 @@ import 'package:instagram_app/models/list_posts_home/list_posts_home_response.da
 import '../../../api_http/handle_api.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
 import '../../../models/another_user_profile/another_user_profile_request.dart';
+import '../../../models/list_comments_post/list_comments_post_request.dart';
+import '../../../models/list_comments_post/list_comments_post_response.dart';
 import '../../../models/user_profile/profile_response.dart';
 import '../../../util/global.dart';
 import '../another_profile_screen/another_profile_screen.dart';
+import 'comments_screen/comments_view.dart';
 
 class HomeController extends GetxController {
   final scrollController = ScrollController();
@@ -69,6 +72,31 @@ class HomeController extends GetxController {
       Global.listPostInfo = dataPostsResponse;
       await Future.delayed(const Duration(seconds: 1), () {});
       isLoading = false;
+      update();
+    }
+    return listPostsHomeResponse;
+  }
+
+  /// call api list post when liked
+  Future<ListPostsHomeResponse> getListPostsWhenLiked() async {
+    ListPostsHomeResponse listPostsHomeResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/homepage-posts"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list posts $error");
+      rethrow;
+    }
+    if (body == null) return ListPostsHomeResponse.buildDefault();
+    //get data from api here
+    listPostsHomeResponse = ListPostsHomeResponse.fromJson(body);
+    if (listPostsHomeResponse.status == true) {
+      dataPostsResponse = listPostsHomeResponse.data!;
+      Global.listPostInfo = dataPostsResponse;
       update();
     }
     return listPostsHomeResponse;
@@ -193,10 +221,38 @@ class HomeController extends GetxController {
     //get data from api here
     likePostResponse = LikePostResponse.fromJson(body);
     if (likePostResponse.status == true) {
-
+      getListPostsWhenLiked();
       print("like post success");
       update();
     }
     return likePostResponse;
+  }
+
+  /// call api list comment post
+  Future<ListCommentsPostResponse> getListCommentsPost(
+      ListCommentsPostRequest request) async {
+    ListCommentsPostResponse listCommentsPostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(
+              "http://14.225.204.248:8080/api/photo/list-comment-of-post"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(request.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to get list cmt $error");
+      rethrow;
+    }
+    if (body == null) return ListCommentsPostResponse.buildDefault();
+    //get data from api here
+    listCommentsPostResponse = ListCommentsPostResponse.fromJson(body);
+    if (listCommentsPostResponse.status == true) {
+      Global.dataListCmt = listCommentsPostResponse.data!.comments!;
+      update();
+
+      Get.to(() => const CommentScreen());
+    }
+    return listCommentsPostResponse;
   }
 }

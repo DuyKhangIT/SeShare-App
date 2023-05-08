@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/another_user_profile/another_profile_response.dart';
 import '../models/another_user_profile/another_user_profile_response.dart';
+import '../models/list_comments_post/comment_object_response.dart';
 import '../models/list_posts_home/data_posts_response.dart';
 import '../models/user_profile/user_profile_response.dart';
 
@@ -38,7 +39,7 @@ class Global {
   static List<DataPostsResponse> listPostInfo = [];
   /// new phone number from forgot password
   static String phoneNumberForgotPassword = "";
-
+  static List<CommentObjectResponse> dataListCmt = [];
 
   /// block auto click or many time click
   static int mTimeClick = 0;
