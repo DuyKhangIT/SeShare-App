@@ -42,6 +42,15 @@ class IconsAssets {
   static const String icQRCode = 'assets/icons/ic_qr_code.png';
   static const String icSecurity = 'assets/icons/ic_security.png';
   static const String icInfoApp = 'assets/icons/ic_info_app.png';
+  static const String icStar = 'assets/icons/ic_star.png';
+  static const String icUnfollow = 'assets/icons/ic_unfollow.png';
+  static const String icInforAccount= 'assets/icons/ic_infor_account.png';
+  static const String icCalendar= 'assets/icons/ic_calendar.png';
+  static const String icLocationAccount= 'assets/icons/ic_location_account.png';
+  static const String icDeletePost = 'assets/icons/ic_delete_post.png';
+  static const String icEditPost = 'assets/icons/ic_edit_post.png';
+  static const String icWhite = 'assets/icons/ic_white.png';
+  static const String icPlaceHolder = 'assets/icons/ic_placeholder_image.gif';
 
 
 }

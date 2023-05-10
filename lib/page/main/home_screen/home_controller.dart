@@ -4,17 +4,18 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_app/models/delete_post/delete_post_request.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_response.dart';
 import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/like_post/like_post_response.dart';
 
-import 'package:instagram_app/models/list_posts_home/data_posts_response.dart';
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
 
 import '../../../api_http/handle_api.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
 import '../../../models/another_user_profile/another_user_profile_request.dart';
+import '../../../models/delete_post/delete_post_response.dart';
 import '../../../models/list_comments_post/list_comments_post_request.dart';
 import '../../../models/list_comments_post/list_comments_post_response.dart';
 import '../../../models/user_profile/profile_response.dart';
@@ -31,6 +32,7 @@ class HomeController extends GetxController {
   bool isLike = false;
   String userIdForLoadListAnotherProfile = "";
   String postIdForLikePost = "";
+  String postIdForDeletePost = "";
 
   //List<DataPostsResponse> dataPostsResponse = [];
   @override
@@ -63,6 +65,12 @@ class HomeController extends GetxController {
   void handleLikePost() {
     LikePostRequest likePostRequest = LikePostRequest(postIdForLikePost);
     likePost(likePostRequest);
+    update();
+  }
+
+  void handleDeletePost() {
+    DeletePostRequest deletePostRequest = DeletePostRequest(postIdForDeletePost);
+    deletePost(deletePostRequest);
     update();
   }
 
@@ -272,5 +280,28 @@ class HomeController extends GetxController {
       Get.to(() => const CommentScreen());
     }
     return listCommentsPostResponse;
+  }
+
+  /// handle delete post api
+  Future<DeletePostResponse> deletePost(DeletePostRequest deletePostRequest) async {
+    DeletePostResponse deletePostsResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/delete-by-id"),
+          RequestType.delete,
+          headers: null,
+          body: const JsonEncoder().convert(deletePostRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to delete post $error");
+      rethrow;
+    }
+    if (body == null) return DeletePostResponse.buildDefault();
+    //get data from api here
+    deletePostsResponse = DeletePostResponse.fromJson(body);
+      getListPosts();
+      debugPrint("----------delete post success----------");
+      update();
+    return deletePostsResponse;
   }
 }

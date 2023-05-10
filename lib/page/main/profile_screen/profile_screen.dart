@@ -7,6 +7,7 @@ import 'package:instagram_app/page/main/profile_screen/update_profile_screen/upd
 import 'package:shimmer/shimmer.dart';
 
 import '../../../util/global.dart';
+import '../../../util/module.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -50,14 +51,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ? SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 height: 180,
-                                child: Image.network(
-                                  Global.convertMedia(
-                                      Global
-                                          .userProfileResponse!.backgroundPath!,
-                                      400,
-                                      180),
-                                  fit: BoxFit.cover,
-                                ),
+                                child: getNetworkImage(
+                                    Global.userProfileResponse!.backgroundPath!,
+                                    width: 400,
+                                    height: 180)
                               )
                             : Container(
                                 width: MediaQuery.of(context).size.width,
@@ -84,14 +81,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       borderRadius: BorderRadius.circular(20),
                                       child: Global.userProfileResponse!
                                               .avatarPath!.isNotEmpty
-                                          ? Image.network(
-                                              Global.convertMedia(
-                                                  Global.userProfileResponse!
-                                                      .avatarPath!,
-                                                  null,
-                                                  null),
-                                              fit: BoxFit.cover,
-                                            )
+                                          ? getNetworkImage(
+                                              Global.userProfileResponse!
+                                                  .avatarPath,
+                                              width: 80,
+                                              height: 80)
                                           : Container(),
                                     )),
                               ),
@@ -381,6 +375,13 @@ class _ProfileScreenState extends State<ProfileScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Container(
+                  width: 40,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black.withOpacity(0.6)),
+                ),
                 GestureDetector(
                   onTap: () {
                     Get.to(() => const SettingScreen());
@@ -474,10 +475,10 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
     return Padding(
         padding: const EdgeInsets.all(1),
         child: ClipRect(
-          child: Image.network(
-              Global.convertMedia(
-                  widget.tabController.listPhotos[index], null, null),
-              fit: BoxFit.cover),
+          child: getNetworkImage(
+              widget.tabController.listPhotos[index],
+              width: null,
+              height: null)
         ));
   }
 

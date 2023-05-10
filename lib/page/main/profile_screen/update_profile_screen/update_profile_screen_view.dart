@@ -5,6 +5,7 @@ import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_controller.dart';
 
 import '../../../../util/global.dart';
+import '../../../../util/module.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({Key? key}) : super(key: key);
@@ -87,8 +88,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 decoration: const BoxDecoration(
                                   color: Colors.transparent,
                                 ),
-                                child: Image.network(Global.convertMedia(Global.userProfileResponse!.backgroundPath!, 400, 250),
-                                    fit: BoxFit.cover))
+                                child: getNetworkImage(
+                                    Global.userProfileResponse!.backgroundPath!,
+                                    width: 400,
+                                    height: 250))
                             :Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: 250,
@@ -165,11 +168,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     ),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
-                                        child: Image.network(
-                                            Global.convertMedia(Global
-                                                .userProfileResponse!
-                                                .avatarPath!,80,80),
-                                            fit: BoxFit.cover)))
+                                        child: getNetworkImage(
+                                            Global.userProfileResponse!.avatarPath!,
+                                            width: 80,
+                                            height: 80)))
                                 : Container(
                                     width: 80,
                                     height: 80,

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
-import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
 import 'package:instagram_app/models/list_comments_post/list_comments_post_request.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
@@ -12,10 +11,10 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../models/another_user_profile/another_user_profile_request.dart';
-import '../../../models/like_post/like_post_request.dart';
 import '../../../util/global.dart';
+import '../../../util/module.dart';
 import 'home_controller.dart';
+import 'infor_account_screen/infro_account_view.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -99,12 +98,12 @@ class _HomeState extends State<Home> {
                                     padding: const EdgeInsets.only(bottom: 90),
                                     itemCount: homeController.isLoading == true
                                         ? 5
-                                        :  Global.listPostInfo.length,
+                                        : Global.listPostInfo.length,
                                     itemBuilder: (context, index) {
                                       if (homeController.isLoading) {
                                         return skeleton();
                                       } else {
-                                        if ( Global.listPostInfo.isNotEmpty) {
+                                        if (Global.listPostInfo.isNotEmpty) {
                                           return contentListViewPost(index);
                                         } else {
                                           return skeleton();
@@ -227,8 +226,8 @@ class _HomeState extends State<Home> {
                           baseColor: Colors.grey.withOpacity(0.4),
                           highlightColor: Colors.grey,
                           child: Container(
-                            width: 50,
-                            height: 50,
+                            width: 60,
+                            height: 60,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.grey.withOpacity(0.4)),
@@ -385,7 +384,7 @@ class _HomeState extends State<Home> {
                 /// avatar + username + location
                 GestureDetector(
                   onTap: () {
-                    if ( Global.listPostInfo[index].userInfoResponse!.id !=
+                    if (Global.listPostInfo[index].userInfoResponse!.id !=
                         Global.userProfileResponse!.id) {
                       homeController.userIdForLoadListAnotherProfile =
                           Global.listPostInfo[index].userInfoResponse!.id;
@@ -401,23 +400,19 @@ class _HomeState extends State<Home> {
                       ///avatar
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
-                        child:  Global.listPostInfo[index]
-                                .userInfoResponse!.avatar.isNotEmpty
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(14),
-                                child: Image.network(
-                                  Global.convertMedia(
-                                       Global.listPostInfo[index]
-                                          .userInfoResponse!.avatar,
-                                      null,
-                                      null),
-                                  errorBuilder: (context, event, object) {
-                                    return Container();
-                                  },
-                                  fit: BoxFit.cover,
-                                  width: 60,
-                                  height: 60,
-                                ))
+                        child: Global.listPostInfo[index].userInfoResponse!
+                                .avatar.isNotEmpty
+                            ? SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(14),
+                                    child: getNetworkImage(
+                                        Global.listPostInfo[index]
+                                            .userInfoResponse!.avatar,
+                                        width: 60,
+                                        height: 60)),
+                              )
                             : Container(
                                 width: 60,
                                 height: 60,
@@ -437,8 +432,8 @@ class _HomeState extends State<Home> {
                             Row(
                               children: [
                                 Text(
-                                     Global.listPostInfo[index]
-                                        .userInfoResponse!.fullName,
+                                    Global.listPostInfo[index].userInfoResponse!
+                                        .fullName,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -464,7 +459,7 @@ class _HomeState extends State<Home> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                       Global.listPostInfo[index].privacy ==
+                                      Global.listPostInfo[index].privacy ==
                                               "public"
                                           ? Image.asset(IconsAssets.icPublicMode,
                                               width: 12,
@@ -473,16 +468,17 @@ class _HomeState extends State<Home> {
                                                       Brightness.dark
                                                   ? Colors.white
                                                   : Colors.black)
-                                          :  Global.listPostInfo[index]
-                                                      .privacy ==
+                                          : Global.listPostInfo[index].privacy ==
                                                   "private"
                                               ? Image.asset(
                                                   IconsAssets.icPrivateMode,
-                                                  color: Theme.of(context).brightness ==
+                                                  color: Theme.of(context)
+                                                              .brightness ==
                                                           Brightness.dark
                                                       ? Colors.white
                                                       : Colors.black)
-                                              : Image.asset(IconsAssets.icFriendMode,
+                                              : Image.asset(
+                                                  IconsAssets.icFriendMode,
                                                   color: Theme.of(context)
                                                               .brightness ==
                                                           Brightness.dark
@@ -492,13 +488,11 @@ class _HomeState extends State<Home> {
                                         width: 60,
                                         margin: const EdgeInsets.only(left: 5),
                                         child: Text(
-                                            Global.listPostInfo[
-                                                            index]
+                                            Global.listPostInfo[index]
                                                         .privacy ==
                                                     "public"
                                                 ? "Công khai"
-                                                :  Global.listPostInfo[
-                                                                index]
+                                                : Global.listPostInfo[index]
                                                             .privacy ==
                                                         "private"
                                                     ? "Cá nhân"
@@ -514,8 +508,7 @@ class _HomeState extends State<Home> {
                               ],
                             ),
                             const SizedBox(height: 4),
-                            Text(
-                                Global.listPostInfo[index].userLocation,
+                            Text(Global.listPostInfo[index].userLocation,
                                 maxLines: 2,
                                 style: const TextStyle(
                                     fontSize: 13, fontFamily: 'Nunito Sans')),
@@ -527,19 +520,31 @@ class _HomeState extends State<Home> {
                 ),
 
                 /// dot
-                ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
-                    BlendMode.srcIn,
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) {
+                          return detailBottomSheetMenuDot(
+                              homeController, index);
+                        });
+                  },
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                      BlendMode.srcIn,
+                    ),
+                    child: Image.asset(IconsAssets.icDot),
                   ),
-                  child: Image.asset(IconsAssets.icDot),
                 ),
               ],
             ),
           ),
-          ( Global.listPostInfo[index].checkInLocation.isNotEmpty)
+          (Global.listPostInfo[index].checkInLocation.isNotEmpty)
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(7, 0, 20, 10),
                   child: Row(
@@ -558,7 +563,7 @@ class _HomeState extends State<Home> {
                         margin: const EdgeInsets.only(left: 5),
                         child: Text(
                             overflow: TextOverflow.ellipsis,
-                            "Địa điểm bạn nhắc tới: ${ Global.listPostInfo[index].checkInLocation}",
+                            "Địa điểm bạn nhắc tới: ${Global.listPostInfo[index].checkInLocation}",
                             maxLines: 2,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -575,8 +580,11 @@ class _HomeState extends State<Home> {
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.fromLTRB(25, 0, 25, 20),
               child: Text(
-                 Global.listPostInfo[index].caption!,
-                style: const TextStyle(fontSize: 14, fontFamily: 'Nunito Sans',fontWeight: FontWeight.w400),
+                Global.listPostInfo[index].caption!,
+                style: const TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Nunito Sans',
+                    fontWeight: FontWeight.w400),
               )
 
               // RichText(
@@ -605,14 +613,13 @@ class _HomeState extends State<Home> {
                   borderRadius: BorderRadius.circular(18),
                   child: PhotoViewGallery.builder(
                     scrollPhysics: const BouncingScrollPhysics(),
-                    itemCount:  Global.listPostInfo[index].photoPath!.length,
+                    itemCount: Global.listPostInfo[index].photoPath!.length,
                     builder: (BuildContext context, int indexPath) {
                       return PhotoViewGalleryPageOptions(
                           initialScale: PhotoViewComputedScale.covered,
                           minScale: PhotoViewComputedScale.covered * 0.95,
                           imageProvider: NetworkImage(Global.convertMedia(
-                              Global.listPostInfo[index]
-                                  .photoPath![indexPath]
+                              Global.listPostInfo[index].photoPath![indexPath]
                                   .toString(),
                               MediaQuery.of(context).size.width / 1.25,
                               350)),
@@ -652,7 +659,7 @@ class _HomeState extends State<Home> {
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
-                              text:  Global.listPostInfo[index].totalLikes
+                              text: Global.listPostInfo[index].totalLikes
                                   .toString(),
                               style: const TextStyle(
                                   fontSize: 12,
@@ -676,10 +683,9 @@ class _HomeState extends State<Home> {
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
-                              text:  Global.listPostInfo[index].totalCmt ==
-                                      0
+                              text: Global.listPostInfo[index].totalCmt == 0
                                   ? "0"
-                                  :  Global.listPostInfo[index].totalCmt
+                                  : Global.listPostInfo[index].totalCmt
                                       .toString(),
                               style: const TextStyle(
                                   fontSize: 12,
@@ -735,9 +741,9 @@ class _HomeState extends State<Home> {
                 /// ic like
                 GestureDetector(
                   onTap: () {
-                    if ( Global.listPostInfo[index].id.isNotEmpty) {
+                    if (Global.listPostInfo[index].id.isNotEmpty) {
                       homeController.postIdForLikePost =
-                           Global.listPostInfo[index].id;
+                          Global.listPostInfo[index].id;
                       homeController.handleLikePost();
                     }
                   },
@@ -746,8 +752,7 @@ class _HomeState extends State<Home> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ( Global.listPostInfo[index].liked ==
-                                  true)
+                          (Global.listPostInfo[index].liked == true)
                               ? ColorFiltered(
                                   colorFilter: ColorFilter.mode(
                                     Theme.of(context).brightness ==
@@ -795,12 +800,11 @@ class _HomeState extends State<Home> {
                 GestureDetector(
                   onTap: () {
                     if (Global.isAvailableToClick()) {
-                      if ( Global.listPostInfo[index].id.isNotEmpty) {
-                        Global.idPost =
-                             Global.listPostInfo[index].id;
+                      if (Global.listPostInfo[index].id.isNotEmpty) {
+                        Global.idPost = Global.listPostInfo[index].id;
                         ListCommentsPostRequest request =
                             ListCommentsPostRequest(
-                                 Global.listPostInfo[index].id);
+                                Global.listPostInfo[index].id);
                         homeController.getListCommentsPost(request);
                       }
                     }
@@ -974,6 +978,337 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ))
+      ],
+    );
+  }
+
+  Widget detailBottomSheetMenuDot(HomeController homeController, index) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: 280,
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0)),
+            ),
+            child: (Global.listPostInfo[index].userInfoResponse!.id !=
+                    Global.userProfileResponse!.id)
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 5,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.black.withOpacity(0.6)),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          //Get.to(() => const SettingScreen());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(IconsAssets.icStar),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Thêm vào mục yêu thích",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Nunito Sans',
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      /// unfollow
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(IconsAssets.icUnfollow),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Bỏ theo dõi",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Nunito Sans',
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+
+                      /// the reason seeing the post
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              context: context,
+                              builder: (context) {
+                                return detailBottomSheetReasonSeeingThePost(
+                                    index);
+                              });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(IconsAssets.icInfoApp),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Lý do bạn nhìn thấy bài viết này",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Nunito Sans',
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(IconsAssets.icQRCode),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Mã QR",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Nunito Sans',
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Global.userInfoResponseFromListPost =
+                              Global.listPostInfo[index].userInfoResponse;
+                          Global.userLocationFromListPost =
+                              Global.listPostInfo[index].userLocation;
+                          Get.to(() => const InForAccountScreen());
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(IconsAssets.icInforAccount),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Giới thiệu về tài khoản này",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Nunito Sans',
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 5,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.black.withOpacity(0.6)),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(IconsAssets.icWaitingAccept),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Lưu trữ",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Nunito Sans',
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(IconsAssets.icEditPost),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Chỉnh sửa",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Nunito Sans',
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(IconsAssets.icQRCode),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Mã QR",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Nunito Sans',
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (Global.isAvailableToClick()) {
+                            // homeController.postIdForDeletePost = Global.listPostInfo[index].id;
+                            // homeController.handleDeletePost();
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(IconsAssets.icDeletePost,
+                                color: Colors.redAccent),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Xóa",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Nunito Sans',
+                                  color: Colors.redAccent),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
+      ],
+    );
+  }
+
+  Widget detailBottomSheetReasonSeeingThePost(index) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: 280,
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 40,
+                  height: 5,
+                  margin: const EdgeInsets.only(bottom: 15),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black.withOpacity(0.6)),
+                ),
+                const Text("Lý do bạn nhìn thấy bài viết này",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Nunito Sans',
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold)),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Divider(color: Colors.grey),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 40,
+                  margin: const EdgeInsets.only(bottom: 40),
+                  child: const Text(
+                    "Hệ thống hiển thị bài viết trong bảng feed dựa theo nhiều yếu tố, bao gồm cả hoạt động của bạn trên SeShare.",
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: 'Nunito Sans',
+                        color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: getNetworkImage(
+                              Global.listPostInfo[index]
+                                  .userInfoResponse!.avatar,
+                              width: 60,
+                              height: 60)),
+                    ),
+                    const SizedBox(width: 10),
+                    Container(
+                      width: 290,
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: RichText(
+                        text: TextSpan(
+                            style: const TextStyle(
+                                color: Colors.black, fontFamily: 'Nunito Sans'),
+                            children: [
+                              TextSpan(
+                                  text:
+                                      "${Global.listPostInfo[index].userInfoResponse!.fullName} ",
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold)),
+                              const TextSpan(
+                                  text: "đang đăng ở chế độ ",
+                                  style: TextStyle(fontSize: 14)),
+                              const TextSpan(
+                                  text: "Công khai ",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold)),
+                              const TextSpan(
+                                  text: "hoặc ",
+                                  style: TextStyle(fontSize: 14)),
+                              const TextSpan(
+                                  text: "Bạn bè",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold)),
+                            ]),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )),
       ],
     );
   }

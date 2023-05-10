@@ -8,6 +8,7 @@ import '../models/another_user_profile/another_user_profile_response.dart';
 import '../models/list_comments_post/comment_object_response.dart';
 import '../models/list_comments_post/data_list_comments_post_response.dart';
 import '../models/list_posts_home/data_posts_response.dart';
+import '../models/list_posts_home/user_infor_response.dart';
 import '../models/user_profile/user_profile_response.dart';
 
 class Global {
@@ -38,6 +39,10 @@ class Global {
   static AnOtherUserProfileResponse? anOtherUserProfileResponse;
   /// data list post
   static List<DataPostsResponse> listPostInfo = [];
+  /// user for item list post
+  static UserInfoResponse? userInfoResponseFromListPost;
+  /// user location for item list post
+  static String userLocationFromListPost = "";
   /// new phone number from forgot password
   static String phoneNumberForgotPassword = "";
   /// data list cmt response

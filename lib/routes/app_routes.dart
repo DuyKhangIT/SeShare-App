@@ -8,6 +8,8 @@ import 'package:instagram_app/page/main/home_screen/comments_screen/comments_scr
 import 'package:instagram_app/page/main/home_screen/comments_screen/comments_view.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_binding.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
+import 'package:instagram_app/page/main/home_screen/infor_account_screen/infor_account_binding.dart';
+import 'package:instagram_app/page/main/home_screen/infor_account_screen/infro_account_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_binding.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/post_screen/changed_address/changed_address_binding.dart';
@@ -93,6 +95,8 @@ class AppRoutes {
   static const String storyScreen = "/seShare_story_screen";
   static const String commentsScreen = "/seShare_comments_screen";
   static const String createStoryScreen = "/seShare_createStory_screen";
+  /// infor account screen
+  static const String inForAccountScreen = "/seShare_InForAccount_screen";
   /// another profile
   static const String anOtherProfileScreen = "/seShare_anOtherProfile_screen";
 
@@ -252,6 +256,12 @@ class AppRoutes {
       name: changePasswordScreen,
       page: () => const ChangePasswordScreen(),
       binding: ChangePasswordBinding(),
+    ),
+
+    GetPage(
+      name: inForAccountScreen,
+      page: () => const InForAccountScreen(),
+      binding: InForAccountBinding(),
     ),
   ];
 }

@@ -94,7 +94,6 @@ class StartUpController extends GetxController{
     LatLng latLng = LatLng(position.latitude, position.longitude);
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark place = placemarks[0];
-   // String fullAddress = '${placemark.subAdministrativeArea}, ${placemark.administrativeArea}, ${placemark.country}.';
     String fullAddress = getAddressFromPlaceUserLocation(place);
     //String fullAddress = '${placemark.street}, ${placemark.subAdministrativeArea},${placemark.administrativeArea},${placemark.country}.';
     Global.currentLocation = fullAddress;

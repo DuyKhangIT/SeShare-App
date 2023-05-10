@@ -6,6 +6,7 @@ import 'package:instagram_app/util/global.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+import '../../../util/module.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({Key? key}) : super(key: key);
@@ -47,8 +48,7 @@ class _PostScreenState extends State<PostScreen> {
                               foregroundColor:
                                   const Color(0xffFFFFFF).withOpacity(0.4),
                             ),
-                            onPressed: () {
-                            },
+                            onPressed: () {},
                             child: Text(
                               "Đăng".toUpperCase(),
                               style: const TextStyle(
@@ -72,7 +72,7 @@ class _PostScreenState extends State<PostScreen> {
                                   const Color(0xffFFFFFF).withOpacity(0.4),
                             ),
                             onPressed: () {
-                              if(Global.isAvailableToClick()){
+                              if (Global.isAvailableToClick()) {
                                 postController.posts();
                               }
                             },
@@ -95,7 +95,7 @@ class _PostScreenState extends State<PostScreen> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 20,bottom: 100),
+                    padding: const EdgeInsets.only(top: 20, bottom: 100),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,18 +106,21 @@ class _PostScreenState extends State<PostScreen> {
                             Container(
                                 width: 55,
                                 height: 55,
-                                margin: const EdgeInsets.only(left: 10,right: 10),
+                                margin:
+                                    const EdgeInsets.only(left: 10, right: 10),
                                 decoration: const BoxDecoration(
                                   color: Colors.transparent,
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  child:
-                                  Global.userProfileResponse!.avatarPath!.isNotEmpty
-                                  ?Image.network(
-                                    Global.convertMedia(Global.userProfileResponse!.avatarPath!,null,null),
-                                    fit: BoxFit.cover,
-                                  ):Container(),
+                                  child: Global.userProfileResponse!.avatarPath!
+                                          .isNotEmpty
+                                      ? getNetworkImage(
+                                          Global
+                                              .userProfileResponse!.avatarPath,
+                                          width: null,
+                                          height: null)
+                                      : Container(),
                                 )),
 
                             /// name and current location user and policy
@@ -131,7 +134,7 @@ class _PostScreenState extends State<PostScreen> {
                                 children: [
                                   Row(
                                     children: [
-                                       Text(
+                                      Text(
                                         Global.userProfileResponse!.fullName,
                                         style: const TextStyle(
                                           fontFamily: 'Nunito Sans',
@@ -222,7 +225,8 @@ class _PostScreenState extends State<PostScreen> {
 
                         (postController.checkInPost.isNotEmpty)
                             ? Padding(
-                                padding: const EdgeInsets.only(left: 10,top: 20),
+                                padding:
+                                    const EdgeInsets.only(left: 10, top: 20),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,21 +298,32 @@ class _PostScreenState extends State<PostScreen> {
                                 ? SizedBox(
                                     width: MediaQuery.of(context).size.width,
                                     height: 350,
-                                    child:  PhotoViewGallery.builder(
-                                      scrollPhysics: const BouncingScrollPhysics(),
-                                      builder: (BuildContext context, int indexPath) {
+                                    child: PhotoViewGallery.builder(
+                                      scrollPhysics:
+                                          const BouncingScrollPhysics(),
+                                      builder: (BuildContext context,
+                                          int indexPath) {
                                         return PhotoViewGalleryPageOptions(
-                                          initialScale: PhotoViewComputedScale.covered,
-                                          minScale: PhotoViewComputedScale.covered,
-                                          maxScale: PhotoViewComputedScale.covered,
-                                          imageProvider: NetworkImage(Global.convertMedia(
-                                              postController.photoPath[indexPath].toString(),MediaQuery.of(context).size.width,350)
-                                          ),
+                                          initialScale:
+                                              PhotoViewComputedScale.covered,
+                                          minScale:
+                                              PhotoViewComputedScale.covered,
+                                          maxScale:
+                                              PhotoViewComputedScale.covered,
+                                          imageProvider: NetworkImage(
+                                              Global.convertMedia(
+                                                  postController
+                                                      .photoPath[indexPath]
+                                                      .toString(),
+                                                  MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  350)),
                                         );
                                       },
-                                      itemCount: postController.photoPath.length,
-                                    )
-                            )
+                                      itemCount:
+                                          postController.photoPath.length,
+                                    ))
                                 : const SizedBox()
                           ],
                         ),

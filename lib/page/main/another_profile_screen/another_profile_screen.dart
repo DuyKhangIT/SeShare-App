@@ -5,6 +5,7 @@ import 'package:instagram_app/page/main/another_profile_screen/another_profile_c
 import 'package:shimmer/shimmer.dart';
 
 import '../../../util/global.dart';
+import '../../../util/module.dart';
 
 class AnOtherProfileScreen extends StatefulWidget {
   const AnOtherProfileScreen({Key? key}) : super(key: key);
@@ -45,25 +46,19 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                     child: Stack(
                       children: [
                         /// ảnh bìa
-                         anOtherProfileController
-                                    .background.isNotEmpty
-                                ? SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 180,
-                                    child: Image.network(
-                                      Global.convertMedia(
-                                          anOtherProfileController
-                                              .background,
-                                          400,
-                                          180),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 180,
-                                    color: Colors.grey.withOpacity(0.4),
-                                  ),
+                        anOtherProfileController.background.isNotEmpty
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 180,
+                                child: getNetworkImage(
+                                    anOtherProfileController.background,
+                                    width: 400,
+                                    height: 180))
+                            : Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 180,
+                                color: Colors.grey.withOpacity(0.4),
+                              ),
 
                         /// name and status // tab
                         Padding(
@@ -82,15 +77,13 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                     ),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
-                                        child: anOtherProfileController.avatar.isNotEmpty
-                                                ? Image.network(
-                                                    Global.convertMedia(
-                                                        anOtherProfileController.avatar,
-                                                        80,
-                                                        80),
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Container())),
+                                        child: anOtherProfileController
+                                                .avatar.isNotEmpty
+                                            ? getNetworkImage(
+                                                anOtherProfileController.avatar,
+                                                width: 80,
+                                                height: 80)
+                                            : Container())),
                               ),
 
                               /// full name
@@ -102,30 +95,25 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                     anOtherProfileController
-                                                .fullName.isNotEmpty
-                                            ? Text(
-                                                anOtherProfileController
-                                                    .fullName,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
-                                                    fontFamily: 'Nunito Sans'))
-                                            : Container(),
+                                    anOtherProfileController.fullName.isNotEmpty
+                                        ? Text(
+                                            anOtherProfileController.fullName,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                fontFamily: 'Nunito Sans'))
+                                        : Container(),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                     anOtherProfileController
-                                                .bio.isNotEmpty
-                                            ? Text(
-                                                anOtherProfileController
-                                                    .bio,
-                                                maxLines: 2,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 14,
-                                                    fontFamily: 'Nunito Sans'))
-                                            : Container(),
+                                    anOtherProfileController.bio.isNotEmpty
+                                        ? Text(anOtherProfileController.bio,
+                                            maxLines: 2,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito Sans'))
+                                        : Container(),
                                   ],
                                 ),
                               ),
@@ -208,10 +196,12 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Image.asset(
-                                                IconsAssets.icAddFriend,color: Theme.of(context).brightness == Brightness.dark
-                                                ? Colors.white
-                                                : Colors.black),
+                                            Image.asset(IconsAssets.icAddFriend,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black),
                                             const SizedBox(width: 6),
                                             const Text(
                                               "Thêm bạn",
@@ -288,10 +278,12 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                               BorderRadius.circular(8)),
                                       child: Row(
                                         children: [
-                                          Image.asset(
-                                              IconsAssets.icChatProfile,color: Theme.of(context).brightness == Brightness.dark
-                                              ? Colors.white
-                                              : Colors.black),
+                                          Image.asset(IconsAssets.icChatProfile,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black),
                                           const SizedBox(width: 6),
                                           const Text(
                                             "Nhắn tin",
@@ -403,7 +395,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           ),
                           child: Image.asset(IconsAssets.icGridView)),
                       const SizedBox(height: 5),
-                       Text("Ảnh của ${anOtherProfileController.fullName}",
+                      Text("Ảnh của ${anOtherProfileController.fullName}",
                           style: const TextStyle(
                               fontSize: 12, fontFamily: 'Nunito Sans'))
                     ],
@@ -420,7 +412,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           ),
                           child: Image.asset(IconsAssets.icShare)),
                       const SizedBox(height: 5),
-                       Text("Story của ${anOtherProfileController.fullName}",
+                      Text("Story của ${anOtherProfileController.fullName}",
                           style: const TextStyle(
                               fontSize: 12, fontFamily: 'Nunito Sans'))
                     ],
@@ -484,10 +476,10 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
     return Padding(
         padding: const EdgeInsets.all(1),
         child: ClipRect(
-          child: Image.network(
-              Global.convertMedia(
-                  widget.tabController.listPhotos[index], null, null),
-              fit: BoxFit.cover),
+          child: getNetworkImage(
+              widget.tabController.listPhotos[index],
+              width: null,
+              height: null)
         ));
   }
 
