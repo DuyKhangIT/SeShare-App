@@ -34,7 +34,7 @@ class _InputPasswordState extends State<InputPassword> {
             centerTitle: true,
             backgroundColor: Colors.transparent,
             actions: [
-              InkWell(
+              GestureDetector(
                 onTap: (){
                   Get.offAll(() => Login());
                 },

@@ -459,7 +459,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     updateProfileController.getImageFromCamera();
                   },
@@ -479,7 +479,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 height: 0,
                 color: Colors.black.withOpacity(0.1),
               ),
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     updateProfileController.getImageFromGallery();
                   },
@@ -555,7 +555,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     updateProfileController.getBackgroundImageFromCamera();
                   },
@@ -575,7 +575,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 height: 0,
                 color: Colors.black.withOpacity(0.1),
               ),
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     updateProfileController.getBackgroundImageFromGallery();
                   },

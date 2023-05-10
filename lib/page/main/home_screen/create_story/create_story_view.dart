@@ -119,7 +119,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     createStoryController.getImageFromCamera();
                   },
@@ -139,7 +139,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                 height: 0,
                 color: Colors.black.withOpacity(0.1),
               ),
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     createStoryController.getImageFromGallery();
                   },

@@ -4,10 +4,7 @@ class DataListCommentsPostResponse {
   String id = "";
   String postId = "";
   List<CommentObjectResponse>? comments;
-  String createdAt = "";
-  String updatedAt = "";
-  DataListCommentsPostResponse(
-      this.id, this.postId, this.comments, this.createdAt, this.updatedAt);
+  DataListCommentsPostResponse(this.id, this.postId, this.comments);
   DataListCommentsPostResponse.buildDefault();
   factory DataListCommentsPostResponse.fromJson(Map<String, dynamic> json) {
     List<CommentObjectResponse> listCmt = [];
@@ -22,8 +19,6 @@ class DataListCommentsPostResponse {
       json['_id'],
       json['post_id'],
       listCmt,
-      json['createdAt'],
-      json['updatedAt'],
     );
   }
 }

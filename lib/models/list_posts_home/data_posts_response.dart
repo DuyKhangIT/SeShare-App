@@ -7,6 +7,7 @@ class DataPostsResponse {
   int totalLikes = 0;
   List<String>? listLike;
   bool liked = false;
+  bool isAvatar = false;
   String privacy = "";
   UserInfoResponse? userInfoResponse;
   String userLocation = "";
@@ -20,6 +21,7 @@ class DataPostsResponse {
       this.totalLikes,
       this.listLike,
       this.liked,
+      this.isAvatar,
       this.privacy,
       this.userInfoResponse,
       this.userLocation,
@@ -39,7 +41,7 @@ class DataPostsResponse {
     if (json['list_likes'] != null) {
       List<dynamic> arrData = json['list_likes'];
       for (int i = 0; i < arrData.length; i++) {
-        photoPath.add(arrData[i]);
+        listLikes.add(arrData[i]);
       }
     }
     return DataPostsResponse(
@@ -49,13 +51,14 @@ class DataPostsResponse {
       json['total_likes'],
       listLikes,
       json['liked'],
+      json['isAvatar'],
       json['privacy'],
       (json['user_id'] != null)
           ? UserInfoResponse.fromJson(json['user_id'])
           : null,
       json['user_location'],
       json['checkin_location'],
-      json['updatedAt'],
+      json['uploadAt'],
       json['total_comment'],
     );
   }

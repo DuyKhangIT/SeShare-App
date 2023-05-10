@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
-import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/list_comments_post/list_comments_post_request.dart';
-import 'package:instagram_app/page/main/home_screen/comments_screen/comments_view.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/notification_screen/notification_view.dart';
@@ -15,6 +13,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../models/another_user_profile/another_user_profile_request.dart';
+import '../../../models/like_post/like_post_request.dart';
 import '../../../util/global.dart';
 import 'home_controller.dart';
 
@@ -100,14 +99,12 @@ class _HomeState extends State<Home> {
                                     padding: const EdgeInsets.only(bottom: 90),
                                     itemCount: homeController.isLoading == true
                                         ? 5
-                                        : homeController
-                                            .dataPostsResponse.length,
+                                        :  Global.listPostInfo.length,
                                     itemBuilder: (context, index) {
                                       if (homeController.isLoading) {
                                         return skeleton();
                                       } else {
-                                        if (homeController
-                                            .dataPostsResponse.isNotEmpty) {
+                                        if ( Global.listPostInfo.isNotEmpty) {
                                           return contentListViewPost(index);
                                         } else {
                                           return skeleton();
@@ -386,21 +383,14 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 /// avatar + username + location
-                InkWell(
+                GestureDetector(
                   onTap: () {
-                    if (homeController
-                            .dataPostsResponse[index].userInfoResponse!.id !=
+                    if ( Global.listPostInfo[index].userInfoResponse!.id !=
                         Global.userProfileResponse!.id) {
-                      GetAllPhotoAnotherUserRequest anotherUserRequest =
-                          GetAllPhotoAnotherUserRequest(homeController
-                              .dataPostsResponse[index].userInfoResponse!.id);
-                      AnotherUserProfileRequest anotherProfileRequest =
-                          AnotherUserProfileRequest(homeController
-                              .dataPostsResponse[index].userInfoResponse!.id);
-                      homeController
-                          .getListPhotoAnOtherUser(anotherUserRequest);
-                      homeController
-                          .loadAnotherUserProfile(anotherProfileRequest);
+                      homeController.userIdForLoadListAnotherProfile =
+                          Global.listPostInfo[index].userInfoResponse!.id;
+                      homeController.loadListPhotoAnotherUser();
+                      homeController.loadAnotherProfile();
                     } else {
                       Get.offAll(() => NavigationBarView(currentIndex: 4));
                     }
@@ -411,13 +401,13 @@ class _HomeState extends State<Home> {
                       ///avatar
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
-                        child: homeController.dataPostsResponse[index]
+                        child:  Global.listPostInfo[index]
                                 .userInfoResponse!.avatar.isNotEmpty
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
                                 child: Image.network(
                                   Global.convertMedia(
-                                      homeController.dataPostsResponse[index]
+                                       Global.listPostInfo[index]
                                           .userInfoResponse!.avatar,
                                       null,
                                       null),
@@ -447,7 +437,7 @@ class _HomeState extends State<Home> {
                             Row(
                               children: [
                                 Text(
-                                    homeController.dataPostsResponse[index]
+                                     Global.listPostInfo[index]
                                         .userInfoResponse!.fullName,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -463,8 +453,10 @@ class _HomeState extends State<Home> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
-                                          color:
-                                              Colors.black.withOpacity(0.4))),
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black.withOpacity(0.4))),
                                   child:
 
                                       /// public
@@ -472,34 +464,40 @@ class _HomeState extends State<Home> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      homeController.dataPostsResponse[index]
-                                                  .privacy ==
+                                       Global.listPostInfo[index].privacy ==
                                               "public"
-                                          ? Image.asset(
-                                              IconsAssets.icPublicMode,
+                                          ? Image.asset(IconsAssets.icPublicMode,
                                               width: 12,
                                               height: 12,
-                                            )
-                                          : homeController
-                                                      .dataPostsResponse[index]
+                                              color: Theme.of(context).brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black)
+                                          :  Global.listPostInfo[index]
                                                       .privacy ==
                                                   "private"
                                               ? Image.asset(
-                                                  IconsAssets.icPrivateMode)
-                                              : Image.asset(
-                                                  IconsAssets.icFriendMode),
+                                                  IconsAssets.icPrivateMode,
+                                                  color: Theme.of(context).brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.black)
+                                              : Image.asset(IconsAssets.icFriendMode,
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.black),
                                       Container(
                                         width: 60,
                                         margin: const EdgeInsets.only(left: 5),
                                         child: Text(
-                                            homeController
-                                                        .dataPostsResponse[
+                                            Global.listPostInfo[
                                                             index]
                                                         .privacy ==
                                                     "public"
                                                 ? "Công khai"
-                                                : homeController
-                                                            .dataPostsResponse[
+                                                :  Global.listPostInfo[
                                                                 index]
                                                             .privacy ==
                                                         "private"
@@ -517,8 +515,7 @@ class _HomeState extends State<Home> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                                homeController
-                                    .dataPostsResponse[index].userLocation,
+                                Global.listPostInfo[index].userLocation,
                                 maxLines: 2,
                                 style: const TextStyle(
                                     fontSize: 13, fontFamily: 'Nunito Sans')),
@@ -542,7 +539,7 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-          (homeController.dataPostsResponse[index].checkInLocation.isNotEmpty)
+          ( Global.listPostInfo[index].checkInLocation.isNotEmpty)
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(7, 0, 20, 10),
                   child: Row(
@@ -561,7 +558,7 @@ class _HomeState extends State<Home> {
                         margin: const EdgeInsets.only(left: 5),
                         child: Text(
                             overflow: TextOverflow.ellipsis,
-                            "Địa điểm bạn nhắc tới: ${homeController.dataPostsResponse[index].checkInLocation}",
+                            "Địa điểm bạn nhắc tới: ${ Global.listPostInfo[index].checkInLocation}",
                             maxLines: 2,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -573,28 +570,55 @@ class _HomeState extends State<Home> {
                 )
               : Container(),
 
+          /// caption of post
+          Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.fromLTRB(25, 0, 25, 20),
+              child: Text(
+                 Global.listPostInfo[index].caption!,
+                style: const TextStyle(fontSize: 14, fontFamily: 'Nunito Sans',fontWeight: FontWeight.w400),
+              )
+
+              // RichText(
+              //   text: TextSpan(
+              //       style: TextStyle(
+              //           color: Theme.of(context).textTheme.headline6?.color,
+              //           fontFamily: 'Nunito Sans'),
+              //       children: [
+              //         TextSpan(
+              //             text:
+              //             "${ Global.listPostInfo[index].userInfoResponse!.fullName}  ",
+              //             style: const TextStyle(
+              //                 fontSize: 14, fontWeight: FontWeight.bold)),
+              //         TextSpan(
+              //             text:  Global.listPostInfo[index].caption,
+              //             style: const TextStyle(fontSize: 14)),
+              //       ]),
+              // ),
+              ),
+
           /// image post
           SizedBox(
               width: MediaQuery.of(context).size.width / 1.25,
               height: 350,
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(18),
                   child: PhotoViewGallery.builder(
                     scrollPhysics: const BouncingScrollPhysics(),
+                    itemCount:  Global.listPostInfo[index].photoPath!.length,
                     builder: (BuildContext context, int indexPath) {
                       return PhotoViewGalleryPageOptions(
-                        initialScale: PhotoViewComputedScale.covered,
-                        minScale: PhotoViewComputedScale.covered * 0.9,
-                        imageProvider: NetworkImage(Global.convertMedia(
-                            homeController
-                                .dataPostsResponse[index].photoPath![indexPath]
-                                .toString(),
-                            MediaQuery.of(context).size.width / 1.25,
-                            350)),
-                      );
+                          initialScale: PhotoViewComputedScale.covered,
+                          minScale: PhotoViewComputedScale.covered * 0.95,
+                          imageProvider: NetworkImage(Global.convertMedia(
+                              Global.listPostInfo[index]
+                                  .photoPath![indexPath]
+                                  .toString(),
+                              MediaQuery.of(context).size.width / 1.25,
+                              350)),
+                          errorBuilder: (context, event, stackTrace) =>
+                              Container(color: Colors.grey));
                     },
-                    itemCount: homeController
-                        .dataPostsResponse[index].photoPath!.length,
                     loadingBuilder: (context, event) => Shimmer.fromColors(
                       baseColor: Colors.grey.withOpacity(0.4),
                       highlightColor: Colors.grey,
@@ -607,40 +631,18 @@ class _HomeState extends State<Home> {
                     ),
                   ))),
 
-          /// descriptions of post
+          /// viewer and commenter and Saver
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-            child: RichText(
-              text: TextSpan(
-                  style: TextStyle(
-                      color: Theme.of(context).textTheme.headline6?.color,
-                      fontFamily: 'Nunito Sans'),
-                  children: [
-                    TextSpan(
-                        text:
-                            "${homeController.dataPostsResponse[index].userInfoResponse!.fullName}  ",
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold)),
-                    TextSpan(
-                        text: homeController.dataPostsResponse[index].caption,
-                        style: const TextStyle(fontSize: 14)),
-                  ]),
-            ),
-          ),
-
-          /// viewer and commenter
-          Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+            margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
             child: //
                 Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
                   width: 80,
-                  margin: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width / 7.5),
+                  // margin: EdgeInsets.only(
+                  //     right: MediaQuery.of(context).size.width/8),
                   alignment: Alignment.center,
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
@@ -650,8 +652,7 @@ class _HomeState extends State<Home> {
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
-                              text: homeController
-                                  .dataPostsResponse[index].totalLikes
+                              text:  Global.listPostInfo[index].totalLikes
                                   .toString(),
                               style: const TextStyle(
                                   fontSize: 12,
@@ -675,12 +676,10 @@ class _HomeState extends State<Home> {
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
-                              text: homeController
-                                          .dataPostsResponse[index].totalCmt ==
+                              text:  Global.listPostInfo[index].totalCmt ==
                                       0
                                   ? "0"
-                                  : homeController
-                                      .dataPostsResponse[index].totalCmt
+                                  :  Global.listPostInfo[index].totalCmt
                                       .toString(),
                               style: const TextStyle(
                                   fontSize: 12,
@@ -694,8 +693,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Container(
-                  width: 80,
-                  margin: const EdgeInsets.only(left: 10),
+                  width: 85,
                   alignment: Alignment.center,
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
@@ -711,7 +709,7 @@ class _HomeState extends State<Home> {
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Nunito Sans')),
                           TextSpan(
-                              text: "  Lượt lưu",
+                              text: "  Lượt Lưu",
                               style: TextStyle(
                                   fontSize: 12, fontFamily: 'Nunito Sans')),
                         ]),
@@ -720,7 +718,10 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-          const Divider(),
+          Divider(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black),
 
           /// icon like + cmt + share
           Container(
@@ -732,13 +733,12 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 /// ic like
-                InkWell(
+                GestureDetector(
                   onTap: () {
-                    if (homeController.dataPostsResponse[index].id.isNotEmpty) {
-                      LikePostRequest likePostRequest = LikePostRequest(
-                          homeController.dataPostsResponse[index].id);
-                      homeController.likePost(likePostRequest);
-                      homeController.update();
+                    if ( Global.listPostInfo[index].id.isNotEmpty) {
+                      homeController.postIdForLikePost =
+                           Global.listPostInfo[index].id;
+                      homeController.handleLikePost();
                     }
                   },
                   child: Container(
@@ -746,7 +746,7 @@ class _HomeState extends State<Home> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          (homeController.dataPostsResponse[index].liked ==
+                          ( Global.listPostInfo[index].liked ==
                                   true)
                               ? ColorFiltered(
                                   colorFilter: ColorFilter.mode(
@@ -786,17 +786,21 @@ class _HomeState extends State<Home> {
                         ],
                       )),
                 ),
-                const VerticalDivider(),
+                VerticalDivider(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
 
                 /// ic cmt
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     if (Global.isAvailableToClick()) {
-                      if (homeController
-                          .dataPostsResponse[index].id.isNotEmpty) {
+                      if ( Global.listPostInfo[index].id.isNotEmpty) {
+                        Global.idPost =
+                             Global.listPostInfo[index].id;
                         ListCommentsPostRequest request =
                             ListCommentsPostRequest(
-                                homeController.dataPostsResponse[index].id);
+                                 Global.listPostInfo[index].id);
                         homeController.getListCommentsPost(request);
                       }
                     }
@@ -836,17 +840,24 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                const VerticalDivider(),
+                VerticalDivider(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black),
 
                 /// ic share
-                InkWell(
+                GestureDetector(
                   onTap: () {},
                   child: Container(
                       constraints: const BoxConstraints(maxWidth: 90),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Image.asset(IconsAssets.icSave),
+                          Image.asset(IconsAssets.icSave,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black),
                           const SizedBox(width: 10),
                           Container(
                             constraints: const BoxConstraints(maxWidth: 70),
@@ -895,7 +906,7 @@ class _HomeState extends State<Home> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     homeController.getImageFromCamera();
                   },
@@ -915,7 +926,7 @@ class _HomeState extends State<Home> {
                 height: 0,
                 color: Colors.black.withOpacity(0.1),
               ),
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     homeController.getImageFromGallery();
                   },

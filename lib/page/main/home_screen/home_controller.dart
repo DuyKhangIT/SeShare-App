@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_response.dart';
 import 'package:instagram_app/models/like_post/like_post_request.dart';
@@ -25,16 +23,16 @@ import '../another_profile_screen/another_profile_screen.dart';
 import 'comments_screen/comments_view.dart';
 
 class HomeController extends GetxController {
-  final scrollController = ScrollController();
-  double previousOffset = 0.0;
   File? avatar;
   bool isNewUpdate = false;
   String userId = "";
   bool isLoading = false;
   String phone = "";
   bool isLike = false;
+  String userIdForLoadListAnotherProfile = "";
+  String postIdForLikePost = "";
 
-  List<DataPostsResponse> dataPostsResponse = [];
+  //List<DataPostsResponse> dataPostsResponse = [];
   @override
   void onReady() {
     getListPosts();
@@ -46,6 +44,26 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void loadListPhotoAnotherUser() {
+    GetAllPhotoAnotherUserRequest anotherUserRequest =
+        GetAllPhotoAnotherUserRequest(userIdForLoadListAnotherProfile);
+    getListPhotoAnOtherUser(anotherUserRequest);
+    update();
+  }
+
+  void loadAnotherProfile() {
+    AnotherUserProfileRequest anotherProfileRequest =
+        AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
+    loadAnotherUserProfile(anotherProfileRequest);
+    update();
+  }
+
+  void handleLikePost() {
+    LikePostRequest likePostRequest = LikePostRequest(postIdForLikePost);
+    likePost(likePostRequest);
+    update();
   }
 
   /// call api list post
@@ -68,8 +86,8 @@ class HomeController extends GetxController {
     //get data from api here
     listPostsHomeResponse = ListPostsHomeResponse.fromJson(body);
     if (listPostsHomeResponse.status == true) {
-      dataPostsResponse = listPostsHomeResponse.data!;
-      Global.listPostInfo = dataPostsResponse;
+      //dataPostsResponse = listPostsHomeResponse.data!;
+      Global.listPostInfo = listPostsHomeResponse.data!;
       await Future.delayed(const Duration(seconds: 1), () {});
       isLoading = false;
       update();
@@ -95,8 +113,8 @@ class HomeController extends GetxController {
     //get data from api here
     listPostsHomeResponse = ListPostsHomeResponse.fromJson(body);
     if (listPostsHomeResponse.status == true) {
-      dataPostsResponse = listPostsHomeResponse.data!;
-      Global.listPostInfo = dataPostsResponse;
+      //dataPostsResponse = listPostsHomeResponse.data!;
+      Global.listPostInfo = listPostsHomeResponse.data!;
       update();
     }
     return listPostsHomeResponse;
@@ -136,7 +154,7 @@ class HomeController extends GetxController {
     profileResponse = ProfileResponse.fromJson(body);
     if (profileResponse.status == true) {
       Global.userProfileResponse = profileResponse.userProfileResponse;
-      print("load profile success");
+      debugPrint("----------load profile success----------");
       update();
     }
     return profileResponse;
@@ -192,7 +210,7 @@ class HomeController extends GetxController {
     if (anOtherProfileResponse.status == true) {
       Global.anOtherUserProfileResponse =
           anOtherProfileResponse.anOtherUserProfileResponse;
-      print("load profile success");
+      debugPrint("----------load profile success----------");
       update();
       if (Global.anOtherUserProfileResponse != null) {
         Get.to(() => const AnOtherProfileScreen());
@@ -222,7 +240,7 @@ class HomeController extends GetxController {
     likePostResponse = LikePostResponse.fromJson(body);
     if (likePostResponse.status == true) {
       getListPostsWhenLiked();
-      print("like post success");
+      debugPrint("----------like post success----------");
       update();
     }
     return likePostResponse;
@@ -248,7 +266,7 @@ class HomeController extends GetxController {
     //get data from api here
     listCommentsPostResponse = ListCommentsPostResponse.fromJson(body);
     if (listCommentsPostResponse.status == true) {
-      Global.dataListCmt = listCommentsPostResponse.data!.comments!;
+      Global.dataListCmt = listCommentsPostResponse.data;
       update();
 
       Get.to(() => const CommentScreen());

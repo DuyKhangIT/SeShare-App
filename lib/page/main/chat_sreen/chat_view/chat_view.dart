@@ -53,7 +53,7 @@ class _ChatViewState extends State<ChatView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              InkWell(
+              GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
@@ -259,7 +259,7 @@ class _ChatViewState extends State<ChatView> {
               SizedBox(
                 width: 18,
                 height: 48,
-                child: InkWell(
+                child: GestureDetector(
                   onTap: (){},
                   child: Icon(
                     Icons.send_rounded,

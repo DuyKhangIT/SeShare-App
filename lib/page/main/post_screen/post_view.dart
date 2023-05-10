@@ -404,7 +404,7 @@ class _PostScreenState extends State<PostScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     postController.getImageFromCamera();
                   },
@@ -424,7 +424,7 @@ class _PostScreenState extends State<PostScreen> {
                 height: 0,
                 color: Colors.black.withOpacity(0.1),
               ),
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     postController.getImageFromGallery();
                   },
@@ -503,7 +503,7 @@ class _PostScreenState extends State<PostScreen> {
               Obx(() => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      InkWell(
+                      GestureDetector(
                           onTap: () {
                             postController.isPublic.value =
                                 !postController.isPublic.value;
@@ -539,7 +539,7 @@ class _PostScreenState extends State<PostScreen> {
               Obx(() => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      InkWell(
+                      GestureDetector(
                           onTap: () {
                             postController.isPrivate.value =
                                 !postController.isPrivate.value;
@@ -575,7 +575,7 @@ class _PostScreenState extends State<PostScreen> {
               Obx(() => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      InkWell(
+                      GestureDetector(
                           onTap: () {
                             postController.isFriend.value =
                                 !postController.isFriend.value;

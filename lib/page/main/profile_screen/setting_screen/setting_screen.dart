@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/change_password/change_password_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_controller.dart';
+import 'package:instagram_app/page/onboarding/register/input_phone_number_register/input_phone_number_view.dart';
+import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../../assets/icons_assets.dart';
 import '../../../../config/share_preferences.dart';
@@ -24,7 +26,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return GetBuilder<SettingController>(
         builder: (controller) => Scaffold(
               appBar: AppBar(
-                leading: InkWell(
+                leading: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -48,7 +50,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
+                    /// security
+                    GestureDetector(
                       onTap: () {
                         Get.to(() => const ChangePasswordScreen());
                       },
@@ -89,11 +92,13 @@ class _SettingScreenState extends State<SettingScreen> {
                       ],
                     ),
                     const SizedBox(height: 25),
-                    InkWell(
+                    /// light mode or dark mode
+                    GestureDetector(
                       onTap: () {
                         ThemeService().changeTheme();
+                        settingController.isClick = !settingController.isClick;
+                        settingController.update();
                       },
-                      splashColor: Colors.transparent,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -109,9 +114,11 @@ class _SettingScreenState extends State<SettingScreen> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          const Text(
-                            "Chế độ tối",
-                            style: TextStyle(
+                          Text(
+                            settingController.isClick
+                                ? "Chế độ sáng"
+                                : "Chế độ tối",
+                            style: const TextStyle(
                               fontSize: 16,
                               fontFamily: 'Nunito Sans',
                             ),
@@ -146,8 +153,17 @@ class _SettingScreenState extends State<SettingScreen> {
                           )),
                     ),
                     const SizedBox(height: 30),
-                    InkWell(
-                      onTap: () {},
+                    /// adding account
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) {
+                              return detailBottomSheetMenu();
+                            });
+                      },
                       child: Text("Thêm tài khoản",
                           style: TextStyle(
                             fontFamily: 'Nunito Sans',
@@ -156,7 +172,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           )),
                     ),
                     const SizedBox(height: 30),
-                    InkWell(
+                    /// logout
+                    GestureDetector(
                       onTap: () {
                         /// dialog logout
                         Get.defaultDialog(
@@ -194,5 +211,69 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               )),
             ));
+  }
+
+  Widget detailBottomSheetMenu() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: 180,
+            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text(
+                  "Thêm tài khoản",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Nunito Sans',
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Divider(),
+                ),
+                ButtonNext(
+                  onTap: () {
+                    ConfigSharedPreferences().setStringValue(
+                        SharedData.TOKEN.toString(), "");
+                    Get.offAll(() => Login());
+                  },
+                  textInside: "Đăng nhập với tài khoản hiện có",
+                ),
+                GestureDetector(
+                  onTap: (){
+                    ConfigSharedPreferences().setStringValue(
+                        SharedData.TOKEN.toString(), "");
+                    Get.offAll(() => const InputPhoneNumber());
+                  },
+                  child: const Text(
+                    "Tạo tài khoản mới",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Nunito Sans',
+                        color: Colors.black),
+                  ),
+                ),
+              ],
+            )),
+      ],
+    );
   }
 }

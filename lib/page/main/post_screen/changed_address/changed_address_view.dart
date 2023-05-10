@@ -69,7 +69,7 @@ class _ChangedAddressViewState extends State<ChangedAddressView> {
         alignment: Alignment.bottomRight,
         child: Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 35, 140),
-            child: InkWell(
+            child: GestureDetector(
                 onTap: () {
                   changedAddressController.goToTheLake();
                 },

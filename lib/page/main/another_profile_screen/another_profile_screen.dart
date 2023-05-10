@@ -209,7 +209,9 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                               MainAxisAlignment.start,
                                           children: [
                                             Image.asset(
-                                                IconsAssets.icAddFriend),
+                                                IconsAssets.icAddFriend,color: Theme.of(context).brightness == Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black),
                                             const SizedBox(width: 6),
                                             const Text(
                                               "Thêm bạn",
@@ -287,7 +289,9 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                       child: Row(
                                         children: [
                                           Image.asset(
-                                              IconsAssets.icChatProfile),
+                                              IconsAssets.icChatProfile,color: Theme.of(context).brightness == Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black),
                                           const SizedBox(width: 6),
                                           const Text(
                                             "Nhắn tin",

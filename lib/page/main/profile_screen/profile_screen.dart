@@ -4,10 +4,8 @@ import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
-import 'package:instagram_app/page/onboarding/login/login_view.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../config/share_preferences.dart';
 import '../../../util/global.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -373,16 +371,18 @@ class _ProfileScreenState extends State<ProfileScreen>
         Container(
             width: MediaQuery.of(context).size.width,
             height: 180,
-            padding: const EdgeInsets.fromLTRB(20,10,20,0),
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(topRight: Radius.circular(12.0),topLeft: Radius.circular(12.0)),
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0)),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                InkWell(
-                  onTap: (){
+                GestureDetector(
+                  onTap: () {
                     Get.to(() => const SettingScreen());
                   },
                   child: Row(
@@ -395,7 +395,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Nunito Sans',
-                        ),
+                            color: Colors.black),
                       ),
                     ],
                   ),
@@ -409,7 +409,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                       "Đã lưu",
                       style: TextStyle(
                           fontSize: 16,
-                          fontFamily: 'Nunito Sans'),
+                          fontFamily: 'Nunito Sans',
+                          color: Colors.black),
                     ),
                   ],
                 ),
@@ -422,7 +423,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                       "Mã QR",
                       style: TextStyle(
                           fontSize: 14,
-                          fontFamily: 'Nunito Sans'),
+                          fontFamily: 'Nunito Sans',
+                          color: Colors.black),
                     ),
                   ],
                 ),

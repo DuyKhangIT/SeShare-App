@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../api_http/handle_api.dart';
 import '../../../config/share_preferences.dart';
 import '../../../util/global.dart';
+import '../../../util/module.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
 
 class StartUpController extends GetxController{
@@ -62,7 +63,7 @@ class StartUpController extends GetxController{
             confirmTextColor: Colors.black,
             buttonColor: Colors.blue,
             barrierDismissible: false,
-            radius: 14,
+            radius: 12,
             content: const Text("Vui lòng cấp quyền truy cập vị trí để sử dụng tính năng này.")
         );
       }
@@ -70,9 +71,8 @@ class StartUpController extends GetxController{
     if (permission == LocationPermission.deniedForever) {
       // Xử lý trường hợp người dùng không bao giờ muốn cấp quyền truy cập vị trí
       Get.defaultDialog(
-          backgroundColor: Colors.green,
-          titleStyle: TextStyle(color: Colors.white),
-          middleTextStyle: TextStyle(color: Colors.white),
+          backgroundColor: Colors.white,
+          titleStyle: TextStyle(color: Colors.black),
           textConfirm: "Confirm",
           textCancel: "Cancel",
           onConfirm: (){
@@ -81,11 +81,11 @@ class StartUpController extends GetxController{
           onCancel: (){
             Navigator.pop(Get.context!);
           },
-          cancelTextColor: Colors.white,
-          confirmTextColor: Colors.white,
-          buttonColor: Colors.red,
+          cancelTextColor: Colors.black,
+          confirmTextColor: Colors.black,
+          buttonColor: Colors.blue,
           barrierDismissible: false,
-          radius: 50,
+          radius: 12,
           content: Text("Bạn đã từ chối cấp quyền truy cập vị trí. Vui lòng cấp quyền trong phần cài đặt của thiết bị.")
       );
       update();
@@ -93,8 +93,9 @@ class StartUpController extends GetxController{
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     LatLng latLng = LatLng(position.latitude, position.longitude);
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-    Placemark placemark = placemarks[0];
-    String fullAddress = '${placemark.subAdministrativeArea}, ${placemark.administrativeArea}, ${placemark.country}.';
+    Placemark place = placemarks[0];
+   // String fullAddress = '${placemark.subAdministrativeArea}, ${placemark.administrativeArea}, ${placemark.country}.';
+    String fullAddress = getAddressFromPlaceUserLocation(place);
     //String fullAddress = '${placemark.street}, ${placemark.subAdministrativeArea},${placemark.administrativeArea},${placemark.country}.';
     Global.currentLocation = fullAddress;
     Global.latLng = latLng;

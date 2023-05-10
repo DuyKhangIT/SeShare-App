@@ -72,7 +72,7 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
                           ),
                           textAlign: TextAlign.center),
                       (uploadAvatarController.avatar != null)
-                      ? InkWell(
+                      ? GestureDetector(
                         onTap: (){
                           showModalBottomSheet(
                               isScrollControlled: true,
@@ -118,7 +118,7 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
                           ],
                         ),
                       )
-                      : InkWell(
+                      : GestureDetector(
                         onTap: (){
                           showModalBottomSheet(
                               isScrollControlled: true,
@@ -182,7 +182,7 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     uploadAvatarController.getImageFromCamera();
                   },
@@ -201,7 +201,7 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
                 height: 0,
                 color: Colors.black.withOpacity(0.1),
               ),
-              InkWell(
+              GestureDetector(
                   onTap: () {
                     uploadAvatarController.getImageFromGallery();
                   },

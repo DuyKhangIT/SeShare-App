@@ -159,7 +159,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                                     offset: const Offset(0, 3), // Độ dịch chuyển theo trục x và y của đổ bóng
                                   ),
                                 ]),
-                            child: InkWell(
+                            child: GestureDetector(
                               onTap: () {
                                 _onItemTapped(2);
                               },

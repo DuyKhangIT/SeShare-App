@@ -59,7 +59,7 @@ class _InputOTPState extends State<InputOTP> {
                 centerTitle: true,
                 backgroundColor: Colors.transparent,
                 actions: [
-                  InkWell(
+                  GestureDetector(
                     onTap: (){
                       Get.offAll(() => Login());
                     },

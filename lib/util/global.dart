@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/another_user_profile/another_profile_response.dart';
 import '../models/another_user_profile/another_user_profile_response.dart';
 import '../models/list_comments_post/comment_object_response.dart';
+import '../models/list_comments_post/data_list_comments_post_response.dart';
 import '../models/list_posts_home/data_posts_response.dart';
 import '../models/user_profile/user_profile_response.dart';
 
@@ -35,14 +36,17 @@ class Global {
   static UserProfileResponse? userProfileResponse;
   static List<String> listPhotoAnOtherUser = [];
   static AnOtherUserProfileResponse? anOtherUserProfileResponse;
-  ///
+  /// data list post
   static List<DataPostsResponse> listPostInfo = [];
   /// new phone number from forgot password
   static String phoneNumberForgotPassword = "";
-  static List<CommentObjectResponse> dataListCmt = [];
-
+  /// data list cmt response
+  static DataListCommentsPostResponse? dataListCmt;
+  /// id post for cmt post
+  static String idPost = "";
   /// block auto click or many time click
   static int mTimeClick = 0;
+
   static bool isAvailableToClick() {
     debugPrint("clicked ${DateTime.now().millisecondsSinceEpoch - mTimeClick}");
     if (DateTime.now().millisecondsSinceEpoch - mTimeClick > 1000) {

@@ -5,9 +5,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoding/geocoding.dart' as GeoCoding;
+import 'package:geocoding/geocoding.dart';
 
 import '../../../../util/global.dart';
+import '../../../../util/module.dart';
 
 class ChangedAddressController extends GetxController {
   final Completer<GoogleMapController> _controller = Completer();
@@ -38,11 +39,12 @@ class ChangedAddressController extends GetxController {
 
   void changeAddress() async {
     LatLng centerPosition = await getCenter();
-    await GeoCoding.placemarkFromCoordinates(
+    await placemarkFromCoordinates(
         centerPosition.latitude, centerPosition.longitude)
-        .then((List<GeoCoding.Placemark> placemarks) {
-      GeoCoding.Placemark place = placemarks[0];
-     String address = '${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}.';
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+     //String address = '${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}.';
+     String address = getAddressFromPlaceCheckIn(place);
       // Lưu dữ liệu address vào state để sử dụng khi back về trang trước đó
       Global.checkIn = address;
       update();

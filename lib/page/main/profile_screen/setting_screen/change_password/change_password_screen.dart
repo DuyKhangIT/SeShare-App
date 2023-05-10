@@ -23,7 +23,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     return GetBuilder<ChangePasswordController>(
         builder: (controller) => Scaffold(
               appBar: AppBar(
-                leading: InkWell(
+                leading: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
                   },
@@ -38,7 +38,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       color: Theme.of(context).textTheme.headline6?.color,
                     )),
                 actions: [
-                  InkWell(
+                  GestureDetector(
                     onTap: () {
                       if (Global.isAvailableToClick()) {
                         /// check empty
