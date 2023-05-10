@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_view.dart';
 
 import '../../../../util/global.dart';
 import '../../../../widget/button_next.dart';
@@ -133,7 +134,7 @@ class _InputFullNameState extends State<InputFullName> {
                       ButtonNext(
                         onTap: () {
                           Global.registerNewFullName = inputFullNameController.fullName.value;
-                          Get.to(() => const UploadAvatarForRegister());
+                          Get.to(() => const InputBirthday());
                         },
                         textInside: "Tiếp tục".toUpperCase(),
                       ),

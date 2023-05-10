@@ -4,6 +4,7 @@ class ConfirmRegisterUserResponse {
   String fullName = "";
   String? avatarPath = "";
   String? backgroundPath = "";
+  String? bio = "";
   List<String>? friend;
   String id = "";
   String? updatedAt = "";
@@ -13,10 +14,11 @@ class ConfirmRegisterUserResponse {
       this.gender,
       this.fullName,
       this.avatarPath,
+      this.backgroundPath,
+      this.bio,
       this.friend,
       this.id,
       this.updatedAt,
-      this.backgroundPath,
       this.age);
   ConfirmRegisterUserResponse.buildDefault();
   factory ConfirmRegisterUserResponse.fromJson(Map<String, dynamic> json) {
@@ -33,10 +35,11 @@ class ConfirmRegisterUserResponse {
       json['gender'],
       json['full_name'],
       json['avatar_path'],
+      json['background_path'],
+      json['bio'],
       friendResponse,
       json['_id'],
       json['updatedAt'],
-      json['background_path'],
       json['age'],
     );
   }

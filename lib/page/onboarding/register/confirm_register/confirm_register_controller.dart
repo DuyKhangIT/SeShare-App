@@ -35,6 +35,7 @@ class ConfirmRegisterController extends GetxController {
           Global.phoneNumber,
           Global.registerNewPassword,
           Global.registerNewFullName,
+          Global.registerNewBirthday,
           newAvatar);
       confirmRegister(confirmRegisterRequest);
     }
@@ -65,6 +66,7 @@ class ConfirmRegisterController extends GetxController {
             Global.phoneNumber,
             Global.registerNewPassword,
             Global.registerNewFullName,
+            Global.registerNewBirthday,
             newAvatar);
         confirmRegister(confirmRegisterRequest);
       }
@@ -86,10 +88,10 @@ class ConfirmRegisterController extends GetxController {
     //is this for string query only
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("http://14.225.204.248:8080/api/sign-up"), RequestType.post,
+          Uri.parse("http://14.225.204.248:8080/api/sign-up"),
+          RequestType.post,
           headers: null,
-          body: const JsonEncoder()
-              .convert(confirmRegisterRequest.toBodyRequest()));
+          body: const JsonEncoder().convert(confirmRegisterRequest.toBodyRequest()));
     } catch (error) {
       debugPrint("Fail to sign up $error");
       rethrow;
@@ -119,6 +121,8 @@ class ConfirmRegisterController extends GetxController {
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
       Get.offAll(() => Login());
+    }else{
+      debugPrint("fail");
     }
     return confirmRegisterResponse;
   }

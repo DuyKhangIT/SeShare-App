@@ -21,6 +21,8 @@ import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_bi
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
+import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_binding.dart';
+import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_view.dart';
 
 import '../page/main/chat_sreen/chat_list/chat_list_binding.dart';
 import '../page/main/home_screen/home_view.dart';
@@ -79,9 +81,11 @@ class AppRoutes {
       "/seShare_inputPasswordRegister_screen";
   static const String inputFullNameRegisterScreen =
       "/seShare_inputFullNameRegister_screen";
+  static const String inputBirthdayRegisterScreen = "/seShare_inputBirthdayRegister_screen";
   static const String uploadAvatarRegisterScreen =
       "/seShare_uploadAvatarRegister_screen";
   static const String confirmRegisterScreen = "/seShare_confirmRegister_screen";
+
 
   /// home
   static const String homeScreen = "/seShare_home_screen";
@@ -153,6 +157,13 @@ class AppRoutes {
         name: inputFullNameRegisterScreen,
         page: () => InputFullName(),
         binding: InputFullNameBinding()),
+
+    GetPage(
+      name: inputBirthdayRegisterScreen,
+      page: () => const InputBirthday(),
+      binding: InputBirthdayBinding(),
+    ),
+
     GetPage(
         name: uploadAvatarRegisterScreen,
         page: () => UploadAvatarForRegister(),

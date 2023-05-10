@@ -31,6 +31,8 @@ class Global {
   static String registerNewPassword = "";
   /// new full name from register
   static String registerNewFullName = "";
+  /// new birthday from register
+  static String registerNewBirthday = "";
   /// new avatar from register
   static String registerNewAvatar = "";
   static String userId = "";

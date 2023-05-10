@@ -34,7 +34,6 @@ class HomeController extends GetxController {
   String postIdForLikePost = "";
   String postIdForDeletePost = "";
 
-  //List<DataPostsResponse> dataPostsResponse = [];
   @override
   void onReady() {
     getListPosts();
