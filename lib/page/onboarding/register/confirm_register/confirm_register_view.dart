@@ -56,7 +56,7 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                 ),
                 actions: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Get.offAll(() => Login());
                     },
                     child: Padding(
@@ -64,9 +64,15 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                       child: Align(
                         alignment: Alignment.center,
                         child: Text('Hủy',
-                            style: Theme.of(context).textTheme.headline6?.copyWith(
-                                color: Theme.of(context).textTheme.headline6?.color,
-                                fontSize: 16)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        ?.color,
+                                    fontSize: 16)),
                       ),
                     ),
                   ),
@@ -84,24 +90,24 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                     children: [
                       const Text('Xác nhận đăng ký',
                           style: TextStyle(
-                            fontSize: 30,
+                            fontSize: 26,
                             fontFamily: 'Nunito Sans',
                             fontWeight: FontWeight.w600,
                           ),
                           textAlign: TextAlign.center),
                       const SizedBox(
-                        height: 10,
+                        height: 20,
                       ),
                       const Text(
-                          'Chào mừng bạn đến với SeShare\n Vui lòng bấm tiếp tục để hoàn thành việc đăng ký.',
+                          'Chào mừng bạn đến với SeShare\n Vui lòng bấm xác nhận để hoàn thành việc đăng ký.',
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 13,
                             fontFamily: 'Nunito Sans',
                             fontWeight: FontWeight.normal,
                           ),
                           textAlign: TextAlign.center),
                       const SizedBox(
-                        height: 20,
+                        height: 80,
                       ),
                       Lottie.asset(
                         AnimationAssets.icConfirm,
@@ -114,18 +120,19 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                             ..forward();
                         },
                       ),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 80),
-                          child: ButtonNext(
-                            onTap: () {
-                              confirmRegisterController.signUp();
-                            },
-                            textInside: 'xác nhận'.toUpperCase(),
-                          ))
                     ],
                   ),
                 ),
               ),
+              bottomNavigationBar: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  child: ButtonNext(
+                    onTap: () {
+                      confirmRegisterController.signUp();
+                    },
+                    textInside: 'xác nhận'.toUpperCase(),
+                  )),
             )));
   }
 }

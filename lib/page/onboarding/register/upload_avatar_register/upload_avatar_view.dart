@@ -55,18 +55,18 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
                     children: [
                       const Text('Ảnh đại diện của bạn',
                           style: TextStyle(
-                            fontSize: 30,
+                            fontSize: 26,
                             fontFamily: 'Nunito Sans',
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                           ),
                           textAlign: TextAlign.center),
                       const SizedBox(
-                        height: 10,
+                        height: 20,
                       ),
                       const Text(
                           'Bạn có thể cập nhật ảnh đại diện của bạn tại đây',
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 13,
                             fontFamily: 'Nunito Sans',
                             fontWeight: FontWeight.normal,
                           ),
@@ -85,8 +85,8 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
                         child: Stack(
                           children: [
                             Container(
-                                width: 157,
-                                height: 157,
+                                width: 160,
+                                height: 160,
                                 margin: const EdgeInsets.only(top: 80),
                                 decoration:
                                 const BoxDecoration(shape: BoxShape.circle),
@@ -129,9 +129,9 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
                               });
                         },
                         child: Container(
-                            width: 157,
-                            height: 157,
-                            margin: const EdgeInsets.only(top: 80),
+                            width: 160,
+                            height: 160,
+                            margin: const EdgeInsets.only(top: 100),
                             decoration:
                                 const BoxDecoration(shape: BoxShape.circle),
                             child: DottedBorder(
@@ -143,19 +143,18 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
                                 child: Center(
                                     child: Image.asset(IconsAssets.icUpload)))),
                       ),
-                      Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 80),
-                          child: ButtonNext(
-                            onTap: () {
-                              Get.to(() => const ConfirmRegister());
-                            },
-                            textInside: 'tiếp tục'.toUpperCase(),
-                          ))
+
                     ],
                   ),
                 ),
-
-                /// button next ///
+                bottomNavigationBar:  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 20),
+                    child: ButtonNext(
+                      onTap: () {
+                        Get.to(() => const ConfirmRegister());
+                      },
+                      textInside: 'tiếp tục'.toUpperCase(),
+                    )),
               ),
             ));
   }
@@ -173,8 +172,8 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.only(left: 31, right: 31, bottom: 26),
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          margin: const EdgeInsets.only(left: 31, right: 31, bottom: 26),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(12.0)),
@@ -190,7 +189,7 @@ class _UploadAvatarForRegisterState extends State<UploadAvatarForRegister> {
                     height: 50,
                     child: Center(
                       child: Text("Chụp ảnh".toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'NunitoSans',
                               fontWeight: FontWeight.w600,
                               fontSize: 14)),
