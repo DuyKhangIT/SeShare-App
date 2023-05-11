@@ -1,11 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_controller.dart';
+import 'package:instagram_app/util/module.dart';
 
 import '../../../../util/global.dart';
-import '../../../../util/module.dart';
 import '../../../../widget/button_next.dart';
 import '../upload_avatar_register/upload_avatar_view.dart';
 
@@ -70,13 +70,12 @@ class _InputBirthdayState extends State<InputBirthday> {
                           textAlign: TextAlign.center),
 
                       /// birthday text field
-                      birthdayTextField(inputBirthdayController),
-
+                      //birthdayTextField(inputBirthdayController),
+                      birthdayPicker(inputBirthdayController),
                       /// button
                       ButtonNext(
                         onTap: () {
                           if (Global.isAvailableToClick()) {
-                            inputBirthdayController.handleBirthday();
                             if (inputBirthdayController.birthDay.isNotEmpty) {
                               Global.registerNewBirthday =
                                   inputBirthdayController.birthDay;
@@ -94,165 +93,186 @@ class _InputBirthdayState extends State<InputBirthday> {
             ));
   }
 
-  Widget birthdayTextField(InputBirthdayController inputBirthdayController) {
+  // Widget birthdayTextField(InputBirthdayController inputBirthdayController) {
+  //   return SizedBox(
+  //     width: MediaQuery.of(context).size.width,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         /// day
+  //         Container(
+  //           width: 80,
+  //           height: 50,
+  //           decoration: BoxDecoration(
+  //             border: Border.all(color: Colors.grey),
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           margin: const EdgeInsets.symmetric(vertical: 20),
+  //           child: TextField(
+  //             controller: inputBirthdayController.dayController,
+  //             keyboardType: TextInputType.number,
+  //             autofocus: true,
+  //             textAlign: TextAlign.center,
+  //             cursorColor: Colors.grey,
+  //             inputFormatters: [
+  //               LengthLimitingTextInputFormatter(2),
+  //             ],
+  //             decoration: const InputDecoration(
+  //               isDense: true,
+  //               hintText: 'Ngày',
+  //               hintStyle: TextStyle(
+  //                 fontFamily: 'NunitoSans',
+  //                 fontStyle: FontStyle.normal,
+  //                 fontWeight: FontWeight.w400,
+  //                 fontSize: 14,
+  //               ),
+  //               border: InputBorder.none,
+  //               focusedBorder: InputBorder.none,
+  //               enabledBorder: InputBorder.none,
+  //               counterText: '',
+  //             ),
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 inputBirthdayController.day.value = value;
+  //               });
+  //             },
+  //             style: const TextStyle(
+  //                 color: Colors.black,
+  //                 fontFamily: 'NunitoSans',
+  //                 fontSize: 14,
+  //                 fontStyle: FontStyle.normal,
+  //                 fontWeight: FontWeight.w600,
+  //                 height: 1.9),
+  //           ),
+  //         ),
+  //         Container(
+  //             width: 15,
+  //             margin: const EdgeInsets.symmetric(horizontal: 10),
+  //             child: Divider(
+  //                 thickness: 1,
+  //                 color: Theme.of(context).textTheme.headline6?.color)),
+  //
+  //         /// month
+  //         Container(
+  //           width: 80,
+  //           height: 50,
+  //           decoration: BoxDecoration(
+  //             border: Border.all(color: Colors.grey),
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           margin: const EdgeInsets.symmetric(vertical: 20),
+  //           child: TextField(
+  //             controller: inputBirthdayController.monthController,
+  //             keyboardType: TextInputType.number,
+  //             autofocus: true,
+  //             cursorColor: Colors.grey,
+  //             textAlign: TextAlign.center,
+  //             inputFormatters: [
+  //               LengthLimitingTextInputFormatter(2),
+  //             ],
+  //             decoration: const InputDecoration(
+  //               isDense: true,
+  //               hintText: 'Tháng',
+  //               hintStyle: TextStyle(
+  //                 fontFamily: 'NunitoSans',
+  //                 fontStyle: FontStyle.normal,
+  //                 fontWeight: FontWeight.w400,
+  //                 fontSize: 14,
+  //               ),
+  //               border: InputBorder.none,
+  //               focusedBorder: InputBorder.none,
+  //               enabledBorder: InputBorder.none,
+  //               counterText: '',
+  //             ),
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 inputBirthdayController.month.value = value;
+  //               });
+  //             },
+  //             style: const TextStyle(
+  //                 color: Colors.black,
+  //                 fontFamily: 'NunitoSans',
+  //                 fontSize: 14,
+  //                 fontStyle: FontStyle.normal,
+  //                 fontWeight: FontWeight.w600,
+  //                 height: 1.9),
+  //           ),
+  //         ),
+  //         Container(
+  //             width: 15,
+  //             margin: const EdgeInsets.symmetric(horizontal: 10),
+  //             child: Divider(
+  //                 thickness: 1,
+  //                 color: Theme.of(context).textTheme.headline6?.color)),
+  //
+  //         /// year
+  //         Container(
+  //           width: 90,
+  //           height: 50,
+  //           decoration: BoxDecoration(
+  //             border: Border.all(color: Colors.grey),
+  //             borderRadius: BorderRadius.circular(6),
+  //           ),
+  //           margin: const EdgeInsets.fromLTRB(0, 20, 10, 20),
+  //           child: TextField(
+  //             controller: inputBirthdayController.yearController,
+  //             keyboardType: TextInputType.number,
+  //             autofocus: true,
+  //             cursorColor: Colors.grey,
+  //             textAlign: TextAlign.center,
+  //             inputFormatters: [
+  //               LengthLimitingTextInputFormatter(4),
+  //             ],
+  //             decoration: const InputDecoration(
+  //               isDense: true,
+  //               hintText: 'Năm',
+  //               hintStyle: TextStyle(
+  //                 fontFamily: 'NunitoSans',
+  //                 fontStyle: FontStyle.normal,
+  //                 fontWeight: FontWeight.w400,
+  //                 fontSize: 14,
+  //               ),
+  //               border: InputBorder.none,
+  //               focusedBorder: InputBorder.none,
+  //               enabledBorder: InputBorder.none,
+  //               counterText: '',
+  //             ),
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 inputBirthdayController.year.value = value;
+  //               });
+  //             },
+  //             style: const TextStyle(
+  //                 color: Colors.black,
+  //                 fontFamily: 'NunitoSans',
+  //                 fontSize: 14,
+  //                 fontStyle: FontStyle.normal,
+  //                 fontWeight: FontWeight.w600,
+  //                 height: 1.9),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Widget birthdayPicker(InputBirthdayController inputBirthdayController){
+    DateTime dateTime = DateTime.now();
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          /// day
-          Container(
-            width: 80,
-            height: 50,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            child: TextField(
-              controller: inputBirthdayController.dayController,
-              keyboardType: TextInputType.number,
-              autofocus: true,
-              textAlign: TextAlign.center,
-              cursorColor: Colors.grey,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(2),
-              ],
-              decoration: const InputDecoration(
-                isDense: true,
-                hintText: 'Ngày sinh',
-                hintStyle: TextStyle(
-                  fontFamily: 'NunitoSans',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 13,
-                ),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                counterText: '',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  inputBirthdayController.day.value = value;
-                });
-              },
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'NunitoSans',
-                  fontSize: 14,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w600,
-                  height: 1.9),
-            ),
-          ),
-          Container(
-              width: 15,
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: Divider(
-                  thickness: 1,
-                  color: Theme.of(context).textTheme.headline6?.color)),
+      height: 170,
+      child: CupertinoDatePicker(
+          maximumYear: DateTime.now().year,
+          initialDateTime: dateTime,
+          mode: CupertinoDatePickerMode.date,
+          onDateTimeChanged: (dateTime) {
+            return setState(() {
+              dateTime = dateTime;
+              inputBirthdayController.birthDay = formatMMDDYYYY(dateTime.toString());
+              inputBirthdayController.update();
+            });
+          }
 
-          /// month
-          Container(
-            width: 80,
-            height: 50,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            child: TextField(
-              controller: inputBirthdayController.monthController,
-              keyboardType: TextInputType.number,
-              autofocus: true,
-              cursorColor: Colors.grey,
-              textAlign: TextAlign.center,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(2),
-              ],
-              decoration: const InputDecoration(
-                isDense: true,
-                hintText: 'Tháng sinh',
-                hintStyle: TextStyle(
-                  fontFamily: 'NunitoSans',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 13,
-                ),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                counterText: '',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  inputBirthdayController.month.value = value;
-                });
-              },
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'NunitoSans',
-                  fontSize: 14,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w600,
-                  height: 1.9),
-            ),
-          ),
-          Container(
-              width: 15,
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: Divider(
-                  thickness: 1,
-                  color: Theme.of(context).textTheme.headline6?.color)),
-
-          /// year
-          Container(
-            width: 90,
-            height: 50,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            margin: const EdgeInsets.fromLTRB(0, 20, 10, 20),
-            child: TextField(
-              controller: inputBirthdayController.yearController,
-              keyboardType: TextInputType.number,
-              autofocus: true,
-              cursorColor: Colors.grey,
-              textAlign: TextAlign.center,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(4),
-              ],
-              decoration: const InputDecoration(
-                isDense: true,
-                hintText: 'Năm sinh',
-                hintStyle: TextStyle(
-                  fontFamily: 'NunitoSans',
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                counterText: '',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  inputBirthdayController.year.value = value;
-                });
-              },
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'NunitoSans',
-                  fontSize: 14,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w600,
-                  height: 1.9),
-            ),
-          ),
-        ],
       ),
     );
   }

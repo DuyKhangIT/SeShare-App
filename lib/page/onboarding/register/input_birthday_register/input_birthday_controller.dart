@@ -10,9 +10,6 @@ class InputBirthdayController extends GetxController {
   RxString year = RxString("");
   String birthDay = "";
 
-  void handleBirthday(){
-    birthDay = "${month.value}/${day.value}/${year.value}";
-  }
   @override
   void onReady() {
     super.onReady();

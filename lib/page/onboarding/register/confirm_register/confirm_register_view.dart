@@ -120,7 +120,7 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                             onTap: () {
                               confirmRegisterController.signUp();
                             },
-                            textInside: 'tiếp tục'.toUpperCase(),
+                            textInside: 'xác nhận'.toUpperCase(),
                           ))
                     ],
                   ),

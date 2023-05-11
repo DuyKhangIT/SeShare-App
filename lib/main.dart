@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:instagram_app/routes/app_routes.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 import 'config/theme_service.dart';
@@ -24,7 +25,15 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeService().darkTheme,
       themeMode: ThemeService().getThemeMode(),
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.inputPasswordRegisterScreen,
+      initialRoute: AppRoutes.startUpScreen,
+      localizationsDelegates: const[
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+         Locale('vi', 'VN'), // Định nghĩa ngôn ngữ là tiếng Việt
+      ],
       getPages: AppRoutes.pages,
       // home: const ResponsiveLayout(
       //     mobileScreenLayout: MobileScreenLayout(),

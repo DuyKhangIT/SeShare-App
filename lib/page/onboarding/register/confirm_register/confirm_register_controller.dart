@@ -32,7 +32,7 @@ class ConfirmRegisterController extends GetxController {
       uploadMediaWithoutToken();
     } else {
       ConfirmRegisterRequest confirmRegisterRequest = ConfirmRegisterRequest(
-          Global.phoneNumber,
+          "762449965",
           Global.registerNewPassword,
           Global.registerNewFullName,
           Global.registerNewBirthday,
@@ -63,7 +63,7 @@ class ConfirmRegisterController extends GetxController {
       update();
       if (newAvatar.isNotEmpty) {
         ConfirmRegisterRequest confirmRegisterRequest = ConfirmRegisterRequest(
-            Global.phoneNumber,
+            "762449965",
             Global.registerNewPassword,
             Global.registerNewFullName,
             Global.registerNewBirthday,
@@ -114,7 +114,7 @@ class ConfirmRegisterController extends GetxController {
         content: AwesomeSnackbarContent(
           title: 'Thành Công!',
           message: "Đăng ký thành công",
-          contentType: ContentType.warning,
+          contentType: ContentType.success,
         ),
       );
       ScaffoldMessenger.of(Get.context!)
