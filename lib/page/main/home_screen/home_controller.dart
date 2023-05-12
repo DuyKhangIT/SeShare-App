@@ -11,6 +11,8 @@ import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/like_post/like_post_response.dart';
 
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
+import 'package:instagram_app/models/update_post/update_post_request.dart';
+import 'package:instagram_app/models/update_post/update_post_response.dart';
 
 import '../../../api_http/handle_api.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
@@ -217,7 +219,7 @@ class HomeController extends GetxController {
     if (anOtherProfileResponse.status == true) {
       Global.anOtherUserProfileResponse =
           anOtherProfileResponse.anOtherUserProfileResponse;
-      debugPrint("----------load profile success----------");
+      debugPrint("----------load another profile success----------");
       update();
       if (Global.anOtherUserProfileResponse != null) {
         Get.to(() => const AnOtherProfileScreen());
@@ -303,4 +305,5 @@ class HomeController extends GetxController {
       update();
     return deletePostsResponse;
   }
+
 }

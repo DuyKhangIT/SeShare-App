@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -88,9 +89,27 @@ class _InputPasswordState extends State<InputPassword> {
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
             child: ButtonNext(
               onTap: () {
-                Global.registerNewPassword =
-                    inputPasswordController.password.value;
-                Get.to(() => const InputFullName());
+                if(Global.isAvailableToClick()){
+                  if(inputPasswordController.password.value.isNotEmpty){
+                    Global.registerNewPassword =
+                        inputPasswordController.password.value;
+                    Get.to(() => const InputFullName());
+                  }else{
+                    final snackBar = SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.fixed,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'Cảnh báo!',
+                        message: "Vui lòng nhập mật khẩu của bạn",
+                        contentType: ContentType.warning,
+                      ),
+                    );
+                    ScaffoldMessenger.of(Get.context!)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                  }
+                }
               },
               textInside: "Tiếp tục",
             ),

@@ -43,7 +43,7 @@ String getAddressFromPlaceCheckIn(Placemark place) {
           ? '${place.administrativeArea.toString()}, '
           : '') +
       ((place.country.toString().isNotEmpty)
-          ? '${place.country.toString()}, '
+          ? '${place.country.toString()} '
           : '');
 }
 
@@ -55,7 +55,7 @@ String getAddressFromPlaceUserLocation(Placemark place) {
           ? '${place.administrativeArea.toString()}, '
           : '') +
       ((place.country.toString().isNotEmpty)
-          ? '${place.country.toString()}, '
+          ? '${place.country.toString()} '
           : '');
 }
 

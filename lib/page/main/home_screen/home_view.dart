@@ -5,6 +5,7 @@ import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/models/list_comments_post/list_comments_post_request.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
+import 'package:instagram_app/page/main/home_screen/update_post_screen/update_post_view.dart';
 import 'package:instagram_app/page/main/notification_screen/notification_view.dart';
 import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 import 'package:photo_view/photo_view.dart';
@@ -422,96 +423,62 @@ class _HomeState extends State<Home> {
                               ),
                       ),
 
-                      /// user name and location
+                      /// full name of user
                       Container(
                         constraints: const BoxConstraints(maxWidth: 220),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                    Global.listPostInfo[index].userInfoResponse!
-                                        .fullName,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        fontFamily: 'Nunito Sans')),
-                                Container(
-                                  width: 85,
-                                  margin: const EdgeInsets.only(left: 15),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 5, 0, 5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.black.withOpacity(0.4))),
-                                  child:
+                            Text(
+                                Global.listPostInfo[index].userInfoResponse!
+                                    .fullName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    fontFamily: 'Nunito Sans')),
+                            const SizedBox(height: 4),
 
-                                      /// public
-                                      Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Global.listPostInfo[index].privacy ==
-                                              "public"
-                                          ? Image.asset(IconsAssets.icPublicMode,
-                                              width: 12,
-                                              height: 12,
-                                              color: Theme.of(context).brightness ==
-                                                      Brightness.dark
-                                                  ? Colors.white
-                                                  : Colors.black)
-                                          : Global.listPostInfo[index].privacy ==
-                                                  "private"
-                                              ? Image.asset(
-                                                  IconsAssets.icPrivateMode,
-                                                  color: Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark
-                                                      ? Colors.white
-                                                      : Colors.black)
-                                              : Image.asset(
-                                                  IconsAssets.icFriendMode,
-                                                  color: Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark
-                                                      ? Colors.white
-                                                      : Colors.black),
-                                      Container(
-                                        width: 60,
-                                        margin: const EdgeInsets.only(left: 5),
-                                        child: Text(
-                                            Global.listPostInfo[index]
-                                                        .privacy ==
-                                                    "public"
-                                                ? "Công khai"
-                                                : Global.listPostInfo[index]
-                                                            .privacy ==
-                                                        "private"
-                                                    ? "Cá nhân"
-                                                    : "Bạn bè",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 11,
-                                                fontFamily: 'Nunito Sans')),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                            /// create post time and mode privacy
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(Global.listPostInfo[index].updatedAt!,
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'Nunito Sans')),
+                                const SizedBox(width: 10),
+                                /// public
+                                Global.listPostInfo[index].privacy == "public"
+                                    ? Image.asset(IconsAssets.icPublicMode,
+                                        width: 13,
+                                        height: 13,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black)
+                                    : Global.listPostInfo[index].privacy ==
+                                            "private"
+                                        ? Image.asset(IconsAssets.icPrivateMode,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black)
+                                        : Image.asset(IconsAssets.icFriendMode,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black),
                               ],
                             ),
-                            const SizedBox(height: 4),
-                            Text(Global.listPostInfo[index].userLocation,
-                                maxLines: 2,
-                                style: const TextStyle(
-                                    fontSize: 13, fontFamily: 'Nunito Sans')),
+                            // Text(Global.listPostInfo[index].userLocation,
+                            //     maxLines: 2,
+                            //     style: const TextStyle(
+                            //         fontSize: 13, fontFamily: 'Nunito Sans')),
                           ],
                         ),
                       ),
@@ -544,6 +511,7 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
+
           (Global.listPostInfo[index].checkInLocation.isNotEmpty)
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(7, 0, 20, 10),
@@ -1129,48 +1097,68 @@ class _HomeState extends State<Home> {
                       ),
                       GestureDetector(
                         onTap: () {},
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icWaitingAccept),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Lưu trữ",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      /// update post
+                      GestureDetector(
+                        onTap: (){
+                          Global.infoMyPost = Global.listPostInfo[index];
+                          Get.to(() => const UpdatePostScreen());
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icEditPost),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Chỉnh sửa",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.transparent,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Image.asset(IconsAssets.icWaitingAccept),
+                            Image.asset(IconsAssets.icQRCode),
                             const SizedBox(width: 10),
                             const Text(
-                              "Lưu trữ",
+                              "Mã QR",
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   fontFamily: 'Nunito Sans',
                                   color: Colors.black),
                             ),
                           ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(IconsAssets.icEditPost),
-                          const SizedBox(width: 10),
-                          const Text(
-                            "Chỉnh sửa",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Nunito Sans',
-                                color: Colors.black),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(IconsAssets.icQRCode),
-                          const SizedBox(width: 10),
-                          const Text(
-                            "Mã QR",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Nunito Sans',
-                                color: Colors.black),
-                          ),
-                        ],
                       ),
                       GestureDetector(
                         onTap: () {
@@ -1179,20 +1167,24 @@ class _HomeState extends State<Home> {
                             // homeController.handleDeletePost();
                           }
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image.asset(IconsAssets.icDeletePost,
-                                color: Colors.redAccent),
-                            const SizedBox(width: 10),
-                            const Text(
-                              "Xóa",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Nunito Sans',
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icDeletePost,
                                   color: Colors.redAccent),
-                            ),
-                          ],
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Xóa",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.redAccent),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -1265,14 +1257,16 @@ class _HomeState extends State<Home> {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: getNetworkImage(
-                              Global.listPostInfo[index]
-                                  .userInfoResponse!.avatar,
+                              Global
+                                  .listPostInfo[index].userInfoResponse!.avatar,
                               width: 60,
                               height: 60)),
                     ),
                     const SizedBox(width: 10),
                     Container(
-                      width: 290,
+                      constraints: const BoxConstraints(
+                        maxWidth: 275
+                      ),
                       height: 40,
                       alignment: Alignment.center,
                       child: RichText(

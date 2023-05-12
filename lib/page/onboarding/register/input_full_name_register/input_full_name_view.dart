@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
@@ -78,8 +79,27 @@ class _InputFullNameState extends State<InputFullName> {
                   padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 20),
                   child: ButtonNext(
                     onTap: () {
-                      Global.registerNewFullName = inputFullNameController.fullName.value;
-                      Get.to(() => const InputBirthday());
+                      if(Global.isAvailableToClick()){
+                        if(inputFullNameController.fullName.value.isNotEmpty){
+                          Global.registerNewFullName = inputFullNameController.fullName.value;
+                          Get.to(() => const InputBirthday());
+                        }else{
+                          final snackBar = SnackBar(
+                            elevation: 0,
+                            behavior: SnackBarBehavior.fixed,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: 'Cảnh báo!',
+                              message: "Vui lòng nhập tên của bạn",
+                              contentType: ContentType.warning,
+                            ),
+                          );
+                          ScaffoldMessenger.of(Get.context!)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(snackBar);
+                        }
+                      }
+
                     },
                     textInside: "Tiếp tục".toUpperCase(),
                   ),

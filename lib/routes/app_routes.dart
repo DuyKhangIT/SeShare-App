@@ -12,6 +12,8 @@ import 'package:instagram_app/page/main/home_screen/infor_account_screen/infor_a
 import 'package:instagram_app/page/main/home_screen/infor_account_screen/infro_account_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_binding.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
+import 'package:instagram_app/page/main/home_screen/update_post_screen/update_post_binding.dart';
+import 'package:instagram_app/page/main/home_screen/update_post_screen/update_post_view.dart';
 import 'package:instagram_app/page/main/post_screen/changed_address/changed_address_binding.dart';
 import 'package:instagram_app/page/main/post_screen/changed_address/changed_address_view.dart';
 import 'package:instagram_app/page/main/post_screen/post_binding.dart';
@@ -101,8 +103,12 @@ class AppRoutes {
   static const String createStoryScreen = "/seShare_createStory_screen";
   /// infor account screen
   static const String inForAccountScreen = "/seShare_InForAccount_screen";
+
   /// another profile
   static const String anOtherProfileScreen = "/seShare_anOtherProfile_screen";
+
+  /// update post
+  static const String updatePostScreen = "/seShare_updatePost_screen";
 
   /// setting screen
   static const String settingScreen = "/seShare_setting_screen";
@@ -273,6 +279,12 @@ class AppRoutes {
       name: inForAccountScreen,
       page: () => const InForAccountScreen(),
       binding: InForAccountBinding(),
+    ),
+
+    GetPage(
+      name: updatePostScreen,
+      page: () => const UpdatePostScreen(),
+      binding: UpdatePostBinding(),
     ),
   ];
 }

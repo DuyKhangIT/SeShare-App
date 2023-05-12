@@ -32,7 +32,7 @@ class ConfirmRegisterController extends GetxController {
       uploadMediaWithoutToken();
     } else {
       ConfirmRegisterRequest confirmRegisterRequest = ConfirmRegisterRequest(
-          "762449965",
+          Global.phoneNumber,
           Global.registerNewPassword,
           Global.registerNewFullName,
           Global.registerNewBirthday,
@@ -63,7 +63,7 @@ class ConfirmRegisterController extends GetxController {
       update();
       if (newAvatar.isNotEmpty) {
         ConfirmRegisterRequest confirmRegisterRequest = ConfirmRegisterRequest(
-            "762449965",
+            Global.phoneNumber,
             Global.registerNewPassword,
             Global.registerNewFullName,
             Global.registerNewBirthday,

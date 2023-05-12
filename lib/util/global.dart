@@ -41,6 +41,8 @@ class Global {
   static AnOtherUserProfileResponse? anOtherUserProfileResponse;
   /// data list post
   static List<DataPostsResponse> listPostInfo = [];
+  /// info my post
+  static DataPostsResponse? infoMyPost;
   /// user for item list post
   static UserInfoResponse? userInfoResponseFromListPost;
   /// user location for item list post

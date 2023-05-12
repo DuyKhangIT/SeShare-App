@@ -278,7 +278,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         keyboardType: TextInputType.text,
         cursorColor: Colors.grey,
         inputFormatters: [
-          LengthLimitingTextInputFormatter(12),
+          LengthLimitingTextInputFormatter(6),
         ],
         decoration: InputDecoration(
             labelText: "Tên",
@@ -320,9 +320,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         controller: updateProfileController.bioController,
         keyboardType: TextInputType.text,
         cursorColor: Colors.grey,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(12),
-        ],
         decoration: InputDecoration(
             labelText: "Tiểu sử",
             labelStyle: TextStyle(

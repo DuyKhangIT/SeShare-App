@@ -17,6 +17,7 @@ class InputPasswordForgotPasswordController extends GetxController {
   TextEditingController newPasswordController = TextEditingController();
   RxString newPassword = RxString("");
   bool isLoading = false;
+  RxBool isShowPassword = false.obs;
   void clearTextInputPassword() {
     newPassword.value = "";
     newPasswordController.clear();
