@@ -614,10 +614,8 @@ class _HomeState extends State<Home> {
                 Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
+               Container(
                   width: 80,
-                  // margin: EdgeInsets.only(
-                  //     right: MediaQuery.of(context).size.width/8),
                   alignment: Alignment.center,
                   child: RichText(
                     overflow: TextOverflow.ellipsis,
@@ -666,6 +664,7 @@ class _HomeState extends State<Home> {
                         ]),
                   ),
                 ),
+
                 Container(
                   width: 85,
                   alignment: Alignment.center,
@@ -763,7 +762,6 @@ class _HomeState extends State<Home> {
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
                         : Colors.black),
-
                 /// ic cmt
                 GestureDetector(
                   onTap: () {
@@ -1112,6 +1110,52 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icHideLike),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Ẩn lượt thích",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          homeController.hideCmt = !homeController.hideCmt;
+                          homeController.update();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icHideCmt),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Tắt tính năng bình luận",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       /// update post
                       GestureDetector(
                         onTap: (){
@@ -1137,7 +1181,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-
+                      /// qr code
                       Container(
                         width: MediaQuery.of(context).size.width,
                         color: Colors.transparent,
@@ -1156,6 +1200,7 @@ class _HomeState extends State<Home> {
                           ],
                         ),
                       ),
+                      /// delete post
                       GestureDetector(
                         onTap: () {
                           if (Global.isAvailableToClick()) {

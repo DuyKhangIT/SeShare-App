@@ -7,7 +7,6 @@ import '../../../api_http/handle_api.dart';
 
 class ProfileController extends GetxController {
   List<String>listPhotos = [];
-  bool isLoading = false;
   @override
   void onReady() {
     getListPhotoUser();
@@ -22,8 +21,6 @@ class ProfileController extends GetxController {
 
   /// call api list post
   Future<GetAllPhotoUserResponse> getListPhotoUser() async {
-    isLoading = true;
-    update();
     GetAllPhotoUserResponse getAllPhotoUserResponse;
     Map<String, dynamic>? body;
     try {
@@ -42,8 +39,6 @@ class ProfileController extends GetxController {
     getAllPhotoUserResponse = GetAllPhotoUserResponse.fromJson(body);
     if (getAllPhotoUserResponse.status == true) {
       listPhotos = getAllPhotoUserResponse.listPhotosUser!;
-      await Future.delayed(const Duration(seconds: 1),(){});
-      isLoading = false;
       update();
     }
     return getAllPhotoUserResponse;

@@ -51,6 +51,8 @@ class IconsAssets {
   static const String icEditPost = 'assets/icons/ic_edit_post.png';
   static const String icWhite = 'assets/icons/ic_white.png';
   static const String icPlaceHolder = 'assets/icons/ic_placeholder_image.gif';
+  static const String icHideLike = 'assets/icons/ic_hide_like.png';
+  static const String icHideCmt = 'assets/icons/ic_hide_cmt.png';
 
 
 }

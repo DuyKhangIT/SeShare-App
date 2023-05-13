@@ -30,6 +30,8 @@ class HomeController extends GetxController {
   bool isLoading = false;
   String phone = "";
   bool isLike = false;
+  bool hideLike = false;
+  bool hideCmt = false;
   String userIdForLoadListAnotherProfile = "";
   String postIdForLikePost = "";
   String postIdForDeletePost = "";

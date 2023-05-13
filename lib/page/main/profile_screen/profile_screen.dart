@@ -54,8 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 child: getNetworkImage(
                                     Global.userProfileResponse!.backgroundPath!,
                                     width: 400,
-                                    height: 180)
-                              )
+                                    height: 180))
                             : Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: 180,
@@ -293,12 +292,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(
-                    width: 1,
-                      color: Theme.of(context).brightness ==
-                          Brightness.dark
+                      width: 1,
+                      color: Theme.of(context).brightness == Brightness.dark
                           ? Colors.white
-                          : Colors.black
-                  ),
+                          : Colors.black),
                 ),
                 tabs: [
                   Tab(
@@ -457,18 +454,12 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
     return GridView.builder(
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: widget.tabController.listPhotos.isNotEmpty
-            ? widget.tabController.listPhotos.length
-            : 6,
+        itemCount: widget.tabController.listPhotos.length,
         itemBuilder: (context, index) {
-          if (widget.tabController.isLoading == true) {
-            return shimmerContentGridView();
+          if (widget.tabController.listPhotos.isNotEmpty) {
+            return contentGridView(index);
           } else {
-            if (widget.tabController.listPhotos.isNotEmpty) {
-              return contentGridView(index);
-            } else {
-              return Container();
-            }
+            return Container();
           }
         });
   }
@@ -478,26 +469,10 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
     return Padding(
         padding: const EdgeInsets.all(1),
         child: ClipRect(
-          child: getNetworkImage(
-              widget.tabController.listPhotos[index],
-              width: null,
-              height: null)
-        ));
+            child: getNetworkImage(widget.tabController.listPhotos[index],
+                width: null, height: null)));
   }
 
-  Widget shimmerContentGridView() {
-    return Padding(
-        padding: const EdgeInsets.all(1),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey.withOpacity(0.4),
-          highlightColor: Colors.grey,
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(12)),
-          ),
-        ));
-  }
 }
 
 class Tab2 extends StatefulWidget {

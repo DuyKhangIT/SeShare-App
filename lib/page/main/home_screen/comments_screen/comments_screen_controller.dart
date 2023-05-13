@@ -14,7 +14,9 @@ import '../../../navigation_bar/navigation_bar_view.dart';
 
 class CommentsController extends GetxController {
   TextEditingController cmtController = TextEditingController();
+  TextEditingController editCmtController = TextEditingController();
   bool isTyping = false;
+  String editCmt = "";
 
   @override
   void onReady() {
