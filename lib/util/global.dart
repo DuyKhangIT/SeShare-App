@@ -43,10 +43,6 @@ class Global {
   static List<DataPostsResponse> listPostInfo = [];
   /// info my post
   static DataPostsResponse? infoMyPost;
-  /// user for item list post
-  static UserInfoResponse? userInfoResponseFromListPost;
-  /// user location for item list post
-  static String userLocationFromListPost = "";
   /// new phone number from forgot password
   static String phoneNumberForgotPassword = "";
   /// data list cmt response

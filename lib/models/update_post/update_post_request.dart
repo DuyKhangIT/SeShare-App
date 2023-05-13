@@ -10,7 +10,7 @@ class UpdatePostRequest {
   Map<String, dynamic> toBodyRequest() => {
         'postId': postId,
         'caption': caption,
-        'checkinLocation': checkinLocation,
+        'checkin_location': checkinLocation,
         'privacy': privacy,
       };
 }

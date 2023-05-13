@@ -3,10 +3,11 @@ class UserProfileResponse {
   String phone = "";
   String? gender = "";
   String fullName = "";
+  String place = "";
   String? avatarPath = "";
   String? bio = "";
   List<String>? friend;
-  String? updatedAt = "";
+  String? createdAt = "";
   String? backgroundPath = "";
   String age = "";
   UserProfileResponse(
@@ -14,10 +15,11 @@ class UserProfileResponse {
       this.phone,
       this.gender,
       this.fullName,
+      this.place,
       this.avatarPath,
       this.bio,
       this.friend,
-      this.updatedAt,
+      this.createdAt,
       this.backgroundPath,
       this.age);
   UserProfileResponse.buildDefault();
@@ -35,10 +37,11 @@ class UserProfileResponse {
      json['phone'],
       json['gender'],
       json['full_name'],
+      json['place'],
       json['avatar_path'],
       json['bio'],
       friendResponse,
-      json['updatedAt'],
+      json['createdAt'],
       json['background_path'],
       json['age'],
     );

@@ -139,7 +139,7 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                           },
                                           child: Container(
                                               constraints: const BoxConstraints(
-                                                  maxWidth: 120),
+                                                  maxWidth: 115),
                                               margin: const EdgeInsets.only(
                                                   top: 5),
                                               padding:
@@ -167,8 +167,8 @@ class _UpdatePostScreenState extends State<UpdatePostScreen> {
                                                         .icPrivateMode
                                                         : IconsAssets
                                                         .icFriendMode,
-                                                    width: 16,
-                                                    height: 16,
+                                                    width: 14,
+                                                    height: 14,
                                                   ),
                                                   Container(
                                                     width: 60,

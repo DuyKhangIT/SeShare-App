@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_private_info/update_private_info_view.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_controller.dart';
 
 import '../../../../util/global.dart';
@@ -22,14 +23,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     return GetBuilder<UpdateProfileController>(
         builder: (controller) => SafeArea(
               child: Scaffold(
-                backgroundColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.black54
-                    : Colors.white,
                 appBar: AppBar(
-                  backgroundColor:
-                      Theme.of(context).brightness == Brightness.dark
-                          ? Colors.black54
-                          : Colors.white,
                   leading: GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -79,79 +73,90 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       children: [
                         Column(
                           children: [
-                            Global.userProfileResponse!.backgroundPath!.isNotEmpty
-                            ?Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 250,
-                                margin: const EdgeInsets.only(
-                                    top: 10, bottom: 20),
-                                decoration: const BoxDecoration(
-                                  color: Colors.transparent,
-                                ),
-                                child: getNetworkImage(
-                                    Global.userProfileResponse!.backgroundPath!,
-                                    width: 400,
-                                    height: 250))
-                            :Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 250,
-                                margin: const EdgeInsets.only(
-                                    top: 10, bottom: 20),
-                                color: Colors.grey,),
+                            Global.userProfileResponse!.backgroundPath!
+                                    .isNotEmpty
+                                ? Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 250,
+                                    margin: const EdgeInsets.only(
+                                        top: 10, bottom: 20),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
+                                    child: getNetworkImage(
+                                        Global.userProfileResponse!
+                                            .backgroundPath!,
+                                        width: 400,
+                                        height: 250))
+                                : Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 250,
+                                    margin: const EdgeInsets.only(
+                                        top: 10, bottom: 20),
+                                    color: Colors.grey,
+                                  ),
                             const Padding(
                               padding: EdgeInsets.only(left: 10, right: 10),
                               child: Icon(Icons.arrow_downward_sharp),
                             ),
-                            updateProfileController.background!=null
-                            ? GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) {
-                                      return detailBottomSheetAddBackGroundImage(
-                                          updateProfileController);
-                                    });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 250,
-                                margin:
-                                    const EdgeInsets.only(top: 10, bottom: 20),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(0.4),
-                                ),
-                                child: Image.file(updateProfileController.background!,fit: BoxFit.cover),
-                              ),
-                            )
-                                :GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) {
-                                      return detailBottomSheetAddBackGroundImage(
-                                          updateProfileController);
-                                    });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 250,
-                                margin:
-                                const EdgeInsets.only(top: 10, bottom: 20),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(0.4),
-                                ),
-                                child: Image.asset(IconsAssets.icUpload),
-                              ),
-                            ),
+                            updateProfileController.background != null
+                                ? GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (context) {
+                                            return detailBottomSheetAddBackGroundImage(
+                                                updateProfileController);
+                                          });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 250,
+                                      margin: const EdgeInsets.only(
+                                          top: 10, bottom: 20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.4),
+                                      ),
+                                      child: Image.file(
+                                          updateProfileController.background!,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          context: context,
+                                          builder: (context) {
+                                            return detailBottomSheetAddBackGroundImage(
+                                                updateProfileController);
+                                          });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 250,
+                                      margin: const EdgeInsets.only(
+                                          top: 10, bottom: 20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.4),
+                                      ),
+                                      child: Image.asset(IconsAssets.icUpload, color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black),
+                                    ),
+                                  ),
                           ],
                         ),
-                        const Text("Chỉnh sửa ảnh bìa",
+                        Text("Chỉnh sửa ảnh bìa",
                             style: TextStyle(
-                                color: Colors.blueGrey,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.blueGrey,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold)),
                         Row(
@@ -169,7 +174,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
                                         child: getNetworkImage(
-                                            Global.userProfileResponse!.avatarPath!,
+                                            Global.userProfileResponse!
+                                                .avatarPath!,
                                             width: 80,
                                             height: 80)))
                                 : Container(
@@ -232,7 +238,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                         borderRadius: BorderRadius.circular(20),
                                         color: Colors.grey.withOpacity(0.4),
                                       ),
-                                      child: Image.asset(IconsAssets.icUpload),
+                                      child: Image.asset(IconsAssets.icUpload,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black),
                                     ),
                                   ),
                           ],
@@ -248,16 +258,32 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       updateProfileController);
                                 });
                           },
-                          child: const Text("Chỉnh sửa ảnh đại diện",
+                          child: Text("Chỉnh sửa ảnh đại diện",
                               style: TextStyle(
-                                  color: Colors.blueGrey,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.blueGrey,
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold)),
                         ),
                         textFieldFullName(updateProfileController),
                         textFieldBio(updateProfileController),
-                        textFieldGender(updateProfileController),
-                        textFieldBirthday(updateProfileController),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => const UpdatePrivateInfoScreen());
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.only(left: 20, top: 20),
+                            child: const Text("Cài đặt thông tin cá nhân",
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500)),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -298,8 +324,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             updateProfileController.update();
           });
         },
-        style: const TextStyle(
-            color: Colors.black,
+        style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
             fontFamily: 'NunitoSans',
             fontSize: 14,
             fontStyle: FontStyle.normal,
@@ -338,93 +366,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             updateProfileController.update();
           });
         },
-        style: const TextStyle(
-            color: Colors.black,
-            fontFamily: 'NunitoSans',
-            fontSize: 14,
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w600,
-            height: 1.9),
-      ),
-    );
-  }
-
-  /// text field gender
-  Widget textFieldGender(UpdateProfileController updateProfileController) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextField(
-        controller: updateProfileController.genderController,
-        keyboardType: TextInputType.text,
-        cursorColor: Colors.grey,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(12),
-        ],
-        decoration: InputDecoration(
-            labelText: "Giới tính",
-            labelStyle: TextStyle(
-                fontFamily: 'Nunito Sans',
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.grey),
-            focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey))),
-        onChanged: (value) {
-          setState(() {
-            updateProfileController.gender = value;
-            updateProfileController.update();
-          });
-        },
-        style: const TextStyle(
-            color: Colors.black,
-            fontFamily: 'NunitoSans',
-            fontSize: 14,
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w600,
-            height: 1.9),
-      ),
-    );
-  }
-
-  /// text field birthday
-  Widget textFieldBirthday(UpdateProfileController updateProfileController) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: TextField(
-        controller: updateProfileController.birthDayController,
-        keyboardType: TextInputType.text,
-        cursorColor: Colors.grey,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(12),
-        ],
-        decoration: InputDecoration(
-            labelText: "Sinh nhật",
-            labelStyle: TextStyle(
-                fontFamily: 'Nunito Sans',
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.grey),
-            focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey))),
-        onChanged: (value) {
-          setState(() {
-            updateProfileController.birthDay = value;
-            updateProfileController.update();
-          });
-        },
-        style: const TextStyle(
-            color: Colors.black,
+        style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
             fontFamily: 'NunitoSans',
             fontSize: 14,
             fontStyle: FontStyle.normal,

@@ -1,9 +1,9 @@
 class DeletePostRequest {
-  String mRecordId;
+  String postId;
 
-  DeletePostRequest(this.mRecordId);
+  DeletePostRequest(this.postId);
 
   Map<String, dynamic> toBodyRequest() => {
-        'recordId': mRecordId,
+        'postId': postId,
       };
 }

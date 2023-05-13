@@ -36,9 +36,12 @@ class _InputFullNameState extends State<InputFullName> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_ios_rounded,
-                      color: Colors.black,
+                        color: Theme.of(context).brightness ==
+                            Brightness.dark
+                            ? Colors.white
+                            : Colors.black
                     ),
                   ),
                   elevation: 0,
@@ -157,8 +160,11 @@ class _InputFullNameState extends State<InputFullName> {
             inputFullNameController.fullName.value = value;
           });
         },
-        style: const TextStyle(
-            color: Colors.black,
+        style: TextStyle(
+            color: Theme.of(context).brightness ==
+                Brightness.dark
+                ? Colors.white
+                : Colors.black,
             fontFamily: 'NunitoSans',
             fontSize: 14,
             fontStyle: FontStyle.normal,

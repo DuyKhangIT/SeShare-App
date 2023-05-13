@@ -16,6 +16,7 @@ class ConfirmRegisterController extends GetxController {
   bool isLoading = false;
   String filePath = "";
   String newAvatar = "";
+
   @override
   void onReady() {
     super.onReady();
@@ -36,7 +37,8 @@ class ConfirmRegisterController extends GetxController {
           Global.registerNewPassword,
           Global.registerNewFullName,
           Global.registerNewBirthday,
-          newAvatar);
+          newAvatar
+      );
       confirmRegister(confirmRegisterRequest);
     }
   }
@@ -100,6 +102,7 @@ class ConfirmRegisterController extends GetxController {
     //get data from api here
     confirmRegisterResponse = ConfirmRegisterResponse.fromJson(body);
     if (confirmRegisterResponse.mStatus == true) {
+      debugPrint("-----------Sign up successfully------------");
       isLoading = false;
       if (isLoading) {
         Get.dialog(const Center(child: CircularProgressIndicator()),

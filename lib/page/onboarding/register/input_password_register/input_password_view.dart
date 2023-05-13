@@ -205,8 +205,11 @@ class _InputPasswordState extends State<InputPassword> {
             inputPasswordController.password.value = value;
           });
         },
-        style: const TextStyle(
-            color: Colors.black,
+        style:  TextStyle(
+            color: Theme.of(context).brightness ==
+                Brightness.dark
+                ? Colors.white
+                : Colors.black,
             fontFamily: 'NunitoSans',
             fontSize: 14,
             fontStyle: FontStyle.normal,

@@ -27,13 +27,13 @@ class PostController extends GetxController {
   String privacy = "";
   List<String> photoPath = [];
   String photo = "";
-  String userID = "";
   bool isLoading = false;
   @override
   void onReady() {
     checkInPost = "";
     inputStatusController.text = "";
-    privacy = "";
+    privacy = "public";
+    isPublic.value = true;
     avatar = null;
     update();
     super.onReady();
@@ -41,9 +41,11 @@ class PostController extends GetxController {
   }
 
   Future<void> captureData() async {
-    var result = await Get.to(const ChangedAddressView());
-    checkInPost = result;
-    update();
+    var result = await Get.to(() => const ChangedAddressView());
+    if(result != null){
+      checkInPost = result;
+      update();
+    }
   }
 
   @override
@@ -115,7 +117,6 @@ class PostController extends GetxController {
       uploadMedia();
       CreatePostRequest createPostRequest =
       CreatePostRequest(
-          userID,
           captionPost,
           false,
           Global.currentLocation,
@@ -126,7 +127,6 @@ class PostController extends GetxController {
     }else{
       CreatePostRequest createPostRequest =
       CreatePostRequest(
-          userID,
           captionPost,
           false,
           Global.currentLocation,

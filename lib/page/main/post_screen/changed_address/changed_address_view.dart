@@ -55,7 +55,7 @@ class _ChangedAddressViewState extends State<ChangedAddressView> {
     return Align(
         alignment: Alignment.center,
         child: Padding(
-            padding: EdgeInsets.only(bottom: 40),
+            padding: const EdgeInsets.only(bottom: 40),
             child: Image.asset(
               IconsAssets.icLocationPost,
               width: 30,
@@ -68,7 +68,7 @@ class _ChangedAddressViewState extends State<ChangedAddressView> {
     return Align(
         alignment: Alignment.bottomRight,
         child: Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 35, 140),
+            padding: const EdgeInsets.fromLTRB(0, 0, 35, 140),
             child: GestureDetector(
                 onTap: () {
                   changedAddressController.goToTheLake();
@@ -125,7 +125,7 @@ class _ChangedAddressViewState extends State<ChangedAddressView> {
                 const SizedBox(width: 7),
                 Flexible(
                     child: Text(
-                      Global.checkIn ?? "",
+                      Global.checkIn.isEmpty ? Global.currentLocation : Global.checkIn,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(

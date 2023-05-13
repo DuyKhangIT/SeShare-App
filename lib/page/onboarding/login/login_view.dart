@@ -70,12 +70,15 @@ class _LoginState extends State<Login> {
                     /// register
                     RichText(
                         text: TextSpan(children: [
-                      const TextSpan(
+                       TextSpan(
                           text: 'Bạn không có tải khoản?',
                           style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Nunito Sans',
-                              color: Colors.black)),
+                              color: Theme.of(context).brightness ==
+                                  Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black)),
                       const TextSpan(text: " "),
                       TextSpan(
                           recognizer: TapGestureRecognizer()
@@ -146,13 +149,19 @@ class _LoginState extends State<Login> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               child: Image.asset(
-                                IconsAssets.icClearText,
+                                IconsAssets.icClearText,color: Theme.of(context).brightness ==
+                                  Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black
                               ),
                             ),
                           )
                         : Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Image.asset(IconsAssets.icChecked),
+                            child: Image.asset(IconsAssets.icChecked,color: Theme.of(context).brightness ==
+                                Brightness.dark
+                                ? Colors.greenAccent
+                                : null),
                           ),
               ),
               onChanged: (value) {
@@ -161,8 +170,11 @@ class _LoginState extends State<Login> {
                   loginController.update();
                 });
               },
-              style: const TextStyle(
-                  color: Colors.black,
+              style: TextStyle(
+                  color: Theme.of(context).brightness ==
+                      Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
                   fontFamily: 'NunitoSans',
                   fontSize: 14,
                   fontStyle: FontStyle.normal,
@@ -212,9 +224,15 @@ class _LoginState extends State<Login> {
                               child: Obx(() => loginController
                                           .isShowPassword.value ==
                                       true
-                                  ? const Icon(Icons.visibility, color: Colors.black)
-                                  : const Icon(Icons.visibility_off,
-                                      color: Colors.black))),
+                                  ?  Icon(Icons.visibility, color: Theme.of(context).brightness ==
+                                  Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black)
+                                  :  Icon(Icons.visibility_off,
+                                  color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black))),
                         )
               ),
               onChanged: (value) {
@@ -223,8 +241,11 @@ class _LoginState extends State<Login> {
                   loginController.update();
                 });
               },
-              style: const TextStyle(
-                  color: Colors.black,
+              style: TextStyle(
+                  color: Theme.of(context).brightness ==
+                      Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
                   fontFamily: 'NunitoSans',
                   fontSize: 14,
                   fontStyle: FontStyle.normal,
@@ -260,20 +281,26 @@ class _LoginState extends State<Login> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const Expanded(
+         Expanded(
           child: Padding(
-            padding: EdgeInsets.only(right: 30),
-            child: Divider(thickness: 0.5),
+            padding: const EdgeInsets.only(right: 30),
+            child: Divider(thickness: 0.5,color: Theme.of(context).brightness ==
+                Brightness.dark
+                ? Colors.white
+                : Colors.black),
           ),
         ),
         Text(
-          'or'.toUpperCase(),
+          'Hoặc'.toUpperCase(),
           style: const TextStyle(fontSize: 12, fontFamily: 'Nunito Sans'),
         ),
-        const Expanded(
+         Expanded(
           child: Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: Divider(thickness: 0.5),
+            padding: const EdgeInsets.only(left: 30),
+            child: Divider(thickness: 0.5,color: Theme.of(context).brightness ==
+                Brightness.dark
+                ? Colors.white
+                : Colors.black),
           ),
         ),
       ],

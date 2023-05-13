@@ -21,6 +21,8 @@ import 'package:instagram_app/page/main/post_screen/post_view.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/change_password/change_password_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
+import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_private_info/update_private_info_view.dart';
+import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_private_info/update_private_infor_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
 import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_binding.dart';
@@ -95,6 +97,7 @@ class AppRoutes {
   /// profile
   static const String profileScreen = "/seShare_profile_screen";
   static const String updateProfileScreen = "/seShare_updateProfile_screen";
+  static const String updatePrivateInfoScreen = "/seShare_updatePrivateInfo_screen";
 
   static const String searchScreen = "/seShare_search_screen";
   static const String postScreen = "/seShare_post_screen";
@@ -277,7 +280,7 @@ class AppRoutes {
 
     GetPage(
       name: inForAccountScreen,
-      page: () => const InForAccountScreen(),
+      page: () => InForAccountScreen(isMyAccount: false),
       binding: InForAccountBinding(),
     ),
 
@@ -285,6 +288,12 @@ class AppRoutes {
       name: updatePostScreen,
       page: () => const UpdatePostScreen(),
       binding: UpdatePostBinding(),
+    ),
+
+    GetPage(
+      name: updatePrivateInfoScreen,
+      page: () => const UpdatePrivateInfoScreen(),
+      binding: UpdatePrivateInfoBinding(),
     ),
   ];
 }

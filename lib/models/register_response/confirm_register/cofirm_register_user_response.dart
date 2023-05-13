@@ -2,6 +2,7 @@ class ConfirmRegisterUserResponse {
   String phone = "";
   String? gender = "";
   String fullName = "";
+  String place = "";
   String? avatarPath = "";
   String? backgroundPath = "";
   String? bio = "";
@@ -13,6 +14,7 @@ class ConfirmRegisterUserResponse {
       this.phone,
       this.gender,
       this.fullName,
+      this.place,
       this.avatarPath,
       this.backgroundPath,
       this.bio,
@@ -34,6 +36,7 @@ class ConfirmRegisterUserResponse {
       json['phone'],
       json['gender'],
       json['full_name'],
+      json['place'],
       json['avatar_path'],
       json['background_path'],
       json['bio'],

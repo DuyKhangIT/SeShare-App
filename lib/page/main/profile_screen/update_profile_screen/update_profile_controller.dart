@@ -20,12 +20,8 @@ import '../../../../util/global.dart';
 class UpdateProfileController extends GetxController {
   TextEditingController userNameController = TextEditingController();
   TextEditingController bioController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
-  TextEditingController birthDayController = TextEditingController();
   String userName = "";
   String bio = "";
-  String gender = "";
-  String birthDay = "";
   bool isLoading = false;
   File? avatar;
   String filePath = "";
@@ -37,10 +33,8 @@ class UpdateProfileController extends GetxController {
   void onReady() {
     userNameController.text = Global.userProfileResponse!.fullName;
     bioController.text = Global.userProfileResponse!.bio!;
-    genderController.text = Global.userProfileResponse!.gender!;
     avatarPath = Global.userProfileResponse!.avatarPath!;
     backgroundPath = Global.userProfileResponse!.backgroundPath!;
-    birthDayController.text = Global.userProfileResponse!.age;
     update();
     super.onReady();
   }
@@ -178,12 +172,13 @@ class UpdateProfileController extends GetxController {
       if (avatarPath.isNotEmpty) {
         UpdateUserProfileRequest updateUserProfileRequest =
             UpdateUserProfileRequest(
-                genderController.text,
+                Global.userProfileResponse!.gender!,
                 userNameController.text,
+                Global.userProfileResponse!.place,
                 avatarPath,
                 bioController.text,
                 backgroundPath,
-                birthDayController.text);
+                Global.userProfileResponse!.age);
         updateProfile(updateUserProfileRequest);
         update();
       }
@@ -214,12 +209,13 @@ class UpdateProfileController extends GetxController {
       if (backgroundPath.isNotEmpty) {
         UpdateUserProfileRequest updateUserProfileRequest =
             UpdateUserProfileRequest(
-                genderController.text,
+                Global.userProfileResponse!.gender!,
                 userNameController.text,
+                Global.userProfileResponse!.place,
                 avatarPath,
                 bioController.text,
                 backgroundPath,
-                birthDayController.text);
+                Global.userProfileResponse!.age);
         updateProfile(updateUserProfileRequest);
         update();
       }
@@ -238,12 +234,13 @@ class UpdateProfileController extends GetxController {
     } else {
       UpdateUserProfileRequest updateUserProfileRequest =
           UpdateUserProfileRequest(
-              genderController.text,
+              Global.userProfileResponse!.gender!,
               userNameController.text,
+              Global.userProfileResponse!.place,
               avatarPath,
               bioController.text,
               backgroundPath,
-              birthDayController.text);
+              Global.userProfileResponse!.age);
       updateProfile(updateUserProfileRequest);
     }
   }

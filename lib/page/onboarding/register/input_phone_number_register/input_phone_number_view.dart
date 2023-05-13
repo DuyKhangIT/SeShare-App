@@ -1,17 +1,13 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../../assets/icons_assets.dart';
 import '../../../../models/register_response/check_existing_phone_number/check_phone_number_request.dart';
 import '../../../../util/global.dart';
 import '../../../../util/module.dart';
-import '../input_otp_register/input_otp_view.dart';
 import 'input_phone_number_controller.dart';
 
 class InputPhoneNumber extends StatefulWidget {
@@ -41,9 +37,12 @@ class _InputPhoneNumberState extends State<InputPhoneNumber> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios_rounded,
-              color: Colors.black,
+                color: Theme.of(context).brightness ==
+                    Brightness.dark
+                    ? Colors.white
+                    : Colors.black
             ),
           ),
           elevation: 0,

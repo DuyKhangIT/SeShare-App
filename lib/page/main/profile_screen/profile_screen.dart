@@ -291,10 +291,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                   fontSize: (13),
                   fontWeight: FontWeight.w400,
                 ),
-                indicator: const UnderlineTabIndicator(
+                indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(
                     width: 1,
-                    color: Colors.black,
+                      color: Theme.of(context).brightness ==
+                          Brightness.dark
+                          ? Colors.white
+                          : Colors.black
                   ),
                 ),
                 tabs: [

@@ -3,14 +3,15 @@ class AnOtherUserProfileResponse {
   String phone = "";
   String? gender = "";
   String fullName = "";
+  String place = "";
   String? avatarPath = "";
   String? bio = "";
   List<String>? friend;
-  String? updatedAt = "";
+  String? createdAt = "";
   String? backgroundPath = "";
   String age = "";
   AnOtherUserProfileResponse(this.id, this.phone, this.gender,
-      this.fullName, this.avatarPath, this.bio, this.friend, this.updatedAt,this.backgroundPath,this.age);
+      this.fullName,this.place, this.avatarPath, this.bio, this.friend, this.createdAt,this.backgroundPath,this.age);
   AnOtherUserProfileResponse.buildDefault();
   factory AnOtherUserProfileResponse.fromJson(Map<String, dynamic> json) {
     List<String> friendResponse = [];
@@ -26,10 +27,11 @@ class AnOtherUserProfileResponse {
       json['phone'],
       json['gender'],
       json['full_name'],
+      json['place'],
       json['avatar_path'],
       json['bio'],
       friendResponse,
-      json['updatedAt'],
+      json['createdAt'],
       json['background_path'],
       json['age'],
     );

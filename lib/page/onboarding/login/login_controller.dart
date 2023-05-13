@@ -66,6 +66,7 @@ class LoginController extends GetxController {
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
     }else{
+      debugPrint("-----------Login successfully------------");
       isLoading.value = false;
       if (isLoading.value) {
         Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
@@ -76,10 +77,9 @@ class LoginController extends GetxController {
       ConfigSharedPreferences().setStringValue(
           SharedData.TOKEN.toString(),
           Global.mToken);
-      print(Global.mToken);
-      Get.offAll(() =>  NavigationBarView(currentIndex: 0,));
+      debugPrint(Global.mToken);
+      Get.offAll(() =>  NavigationBarView(currentIndex: 0));
     }
-
     return authenticationResponse;
   }
 

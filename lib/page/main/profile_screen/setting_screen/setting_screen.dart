@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/page/main/home_screen/infor_account_screen/infro_account_view.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/change_password/change_password_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_controller.dart';
 import 'package:instagram_app/page/onboarding/register/input_phone_number_register/input_phone_number_view.dart';
@@ -28,7 +29,7 @@ class _SettingScreenState extends State<SettingScreen> {
               appBar: AppBar(
                 leading: GestureDetector(
                   onTap: () {
-                    Navigator.pop(context);
+                    Get.to(() => NavigationBarView(currentIndex: 4));
                   },
                   child: Icon(Icons.arrow_back,
                       color: Theme.of(context).textTheme.headline6?.color),
@@ -92,6 +93,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       ],
                     ),
                     const SizedBox(height: 25),
+
                     /// light mode or dark mode
                     GestureDetector(
                       onTap: () {
@@ -126,6 +128,38 @@ class _SettingScreenState extends State<SettingScreen> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 25),
+
+                    /// light mode or dark mode
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => InForAccountScreen(isMyAccount: true));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ColorFiltered(
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                              BlendMode.srcIn,
+                            ),
+                            child: const Icon(
+                              Icons.account_circle_outlined,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Giới thiệu tài khoản",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Nunito Sans',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(height: 30),
                     SizedBox(
                       width: MediaQuery.of(context).size.width / 1.2,
@@ -153,6 +187,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           )),
                     ),
                     const SizedBox(height: 30),
+
                     /// adding account
                     GestureDetector(
                       onTap: () {
@@ -172,6 +207,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           )),
                     ),
                     const SizedBox(height: 30),
+
                     /// logout
                     GestureDetector(
                       onTap: () {
@@ -180,18 +216,48 @@ class _SettingScreenState extends State<SettingScreen> {
                             backgroundColor: Colors.white,
                             titleStyle: const TextStyle(
                                 color: Colors.black, fontFamily: 'Nunito Sans'),
-                            textConfirm: "Xác nhận",
-                            textCancel: "Hủy",
-                            onConfirm: () {
-                              ConfigSharedPreferences().setStringValue(
-                                  SharedData.TOKEN.toString(), "");
-                              Get.offAll(() => Login());
-                            },
                             title: "Đăng xuất",
-                            onCancel: () {},
-                            cancelTextColor: Colors.black,
-                            confirmTextColor: Colors.white,
                             barrierDismissible: false,
+                            cancel: GestureDetector(
+                              onTap: (){
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                width: 70,
+                                height: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.blue,style: BorderStyle.solid)),
+                                child: const Text("Hủy",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Nunito Sans')),
+                              ),
+                            ),
+                            confirm: GestureDetector(
+                              onTap: (){
+                                ConfigSharedPreferences().setStringValue(
+                                    SharedData.TOKEN.toString(), "");
+                                Get.offAll(() => Login());
+                              },
+                              child: Container(
+                                width: 80,
+                                height: 35,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.blue,style: BorderStyle.solid)),
+                                child: const Text("Xác nhận",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Nunito Sans')),
+                              ),
+                            ),
                             radius: 12,
                             content: const Text(
                                 "Bạn có chắc là muốn đăng xuất không?",
@@ -227,7 +293,7 @@ class _SettingScreenState extends State<SettingScreen> {
         Container(
             width: MediaQuery.of(context).size.width,
             height: 180,
-            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -251,16 +317,16 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 ButtonNext(
                   onTap: () {
-                    ConfigSharedPreferences().setStringValue(
-                        SharedData.TOKEN.toString(), "");
+                    ConfigSharedPreferences()
+                        .setStringValue(SharedData.TOKEN.toString(), "");
                     Get.offAll(() => Login());
                   },
                   textInside: "Đăng nhập với tài khoản hiện có",
                 ),
                 GestureDetector(
-                  onTap: (){
-                    ConfigSharedPreferences().setStringValue(
-                        SharedData.TOKEN.toString(), "");
+                  onTap: () {
+                    ConfigSharedPreferences()
+                        .setStringValue(SharedData.TOKEN.toString(), "");
                     Get.offAll(() => const InputPhoneNumber());
                   },
                   child: const Text(

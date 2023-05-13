@@ -26,7 +26,7 @@ class UpdatePostController extends GetxController {
   void onReady() {
     postId = Global.infoMyPost!.id;
     inputCaptionController.text = Global.infoMyPost!.caption!;
-    inputCheckInLocationController.text = "Địa điểm bạn nhắc tới: ${Global.infoMyPost!.checkInLocation}";
+    inputCheckInLocationController.text = Global.infoMyPost!.checkInLocation;
     privacy = Global.infoMyPost!.privacy;
     update();
     super.onReady();

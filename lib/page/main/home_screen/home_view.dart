@@ -1062,11 +1062,7 @@ class _HomeState extends State<Home> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Global.userInfoResponseFromListPost =
-                              Global.listPostInfo[index].userInfoResponse;
-                          Global.userLocationFromListPost =
-                              Global.listPostInfo[index].userLocation;
-                          Get.to(() => const InForAccountScreen());
+                          Get.to(() => InForAccountScreen(isMyAccount: false));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -1163,8 +1159,59 @@ class _HomeState extends State<Home> {
                       GestureDetector(
                         onTap: () {
                           if (Global.isAvailableToClick()) {
-                            // homeController.postIdForDeletePost = Global.listPostInfo[index].id;
-                            // homeController.handleDeletePost();
+                            Get.defaultDialog(
+                                backgroundColor: Colors.white,
+                                titleStyle: const TextStyle(
+                                    color: Colors.black, fontFamily: 'Nunito Sans'),
+                                title: "Xóa bài viết",
+                                barrierDismissible: false,
+                                cancel: GestureDetector(
+                                  onTap: (){
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    width: 70,
+                                    height: 35,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(color: Colors.blue,style: BorderStyle.solid)),
+                                    child: const Text("Hủy",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: 'Nunito Sans')),
+                                  ),
+                                ),
+                                confirm: GestureDetector(
+                                  onTap: (){
+                                    Navigator.pop(context);
+                                    homeController.postIdForDeletePost = Global.listPostInfo[index].id;
+                                    homeController.handleDeletePost();
+                                  },
+                                  child: Container(
+                                    width: 80,
+                                    height: 35,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(color: Colors.blue,style: BorderStyle.solid)),
+                                    child: const Text("Xác nhận",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: 'Nunito Sans')),
+                                  ),
+                                ),
+                                radius: 12,
+                                content: const Text(
+                                    "Bạn có chắc là muốn xóa bài viết không?",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontFamily: 'Nunito Sans')));
                           }
                         },
                         child: Container(

@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
@@ -22,9 +23,6 @@ class _PostScreenState extends State<PostScreen> {
     return GetBuilder<PostController>(
         builder: (controller) => Scaffold(
               appBar: AppBar(
-                backgroundColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.black
-                    : Colors.white,
                 centerTitle: true,
                 title: Text(
                   "Tạo bài viết",
@@ -73,7 +71,24 @@ class _PostScreenState extends State<PostScreen> {
                             ),
                             onPressed: () {
                               if (Global.isAvailableToClick()) {
-                                postController.posts();
+                                if(postController.captionPost.isNotEmpty){
+                                  postController.posts();
+                                }else{
+                                  final snackBar = SnackBar(
+                                    elevation: 0,
+                                    behavior: SnackBarBehavior.fixed,
+                                    backgroundColor: Colors.transparent,
+                                    content: AwesomeSnackbarContent(
+                                      title: 'Cảnh báo!',
+                                      message: "Vui lòng nhập thông tin",
+                                      contentType: ContentType.warning,
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                    ..hideCurrentSnackBar()
+                                    ..showSnackBar(snackBar);
+                                }
+
                               }
                             },
                             child: Text(
@@ -126,97 +141,73 @@ class _PostScreenState extends State<PostScreen> {
                             /// name and current location user and policy
                             SizedBox(
                               width: MediaQuery.of(context).size.width / 1.28,
-                              height: 50,
+                              height: 55,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        Global.userProfileResponse!.fullName,
-                                        style: const TextStyle(
-                                          fontFamily: 'Nunito Sans',
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      postController.privacy.isNotEmpty
-                                          ? Container(
-                                              constraints: const BoxConstraints(
-                                                  maxWidth: 92),
-                                              margin: const EdgeInsets.only(
-                                                  left: 15),
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      5, 5, 2, 5),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                      color: Colors.black
-                                                          .withOpacity(0.4))),
-                                              child:
-
-                                                  /// public
-                                                  Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Image.asset(
-                                                    postController.privacy ==
-                                                            "public"
-                                                        ? IconsAssets
-                                                            .icPublicMode
-                                                        : postController
-                                                                    .privacy ==
-                                                                "private"
-                                                            ? IconsAssets
-                                                                .icPrivateMode
-                                                            : IconsAssets
-                                                                .icFriendMode,
-                                                    width: 16,
-                                                    height: 16,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 60,
-                                                    child: Text(
-                                                        postController
-                                                                    .privacy ==
-                                                                "public"
-                                                            ? "Công khai"
-                                                            : postController
-                                                                        .privacy ==
-                                                                    "private"
-                                                                ? "Cá nhân"
-                                                                : "Bạn bè",
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 12,
-                                                            fontFamily:
-                                                                'Nunito Sans')),
-                                                  ),
-                                                ],
-                                              ))
-                                          : const SizedBox()
-                                    ],
+                                  Text(
+                                    Global.userProfileResponse!.fullName,
+                                    style: const TextStyle(
+                                      fontFamily: 'Nunito Sans',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-
-                                  ///current location user
-                                  (Global.currentLocation.isNotEmpty)
-                                      ? Text(
-                                          Global.currentLocation,
-                                          maxLines: 2,
-                                          style: const TextStyle(
-                                            fontFamily: 'Nunito Sans',
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
+                                  postController.privacy.isNotEmpty
+                                      ? Container(
+                                      constraints: const BoxConstraints(maxWidth: 92),
+                                      margin: const EdgeInsets.only(top: 4),
+                                      padding: const EdgeInsets.fromLTRB(5, 5, 2, 5),
+                                      decoration:
+                                      BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(color: Colors.black.withOpacity(0.4))),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Image.asset(
+                                            postController.privacy ==
+                                                "public"
+                                                ? IconsAssets
+                                                .icPublicMode
+                                                : postController
+                                                .privacy ==
+                                                "private"
+                                                ? IconsAssets
+                                                .icPrivateMode
+                                                : IconsAssets
+                                                .icFriendMode,
+                                            width: 14,
+                                            height: 14,
+                                            color: Theme.of(context).brightness == Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black,
                                           ),
-                                        )
-                                      : const SizedBox(),
+                                          SizedBox(
+                                            width: 60,
+                                            child: Text(
+                                                postController
+                                                    .privacy ==
+                                                    "public"
+                                                    ? "Công khai"
+                                                    : postController
+                                                    .privacy ==
+                                                    "private"
+                                                    ? "Cá nhân"
+                                                    : "Bạn bè",
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    fontSize: 12,
+                                                    fontFamily:
+                                                    'Nunito Sans')),
+                                          ),
+                                        ],
+                                      ))
+                                      : const SizedBox()
+
                                 ],
                               ),
                             ),

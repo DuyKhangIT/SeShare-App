@@ -11,8 +11,6 @@ import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/like_post/like_post_response.dart';
 
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
-import 'package:instagram_app/models/update_post/update_post_request.dart';
-import 'package:instagram_app/models/update_post/update_post_response.dart';
 
 import '../../../api_http/handle_api.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
@@ -289,8 +287,8 @@ class HomeController extends GetxController {
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("http://14.225.204.248:8080/api/photo/delete-by-id"),
-          RequestType.delete,
+          Uri.parse("http://14.225.204.248:8080/api/photo/delete-post"),
+          RequestType.post,
           headers: null,
           body: const JsonEncoder().convert(deletePostRequest.toBodyRequest()));
     } catch (error) {
@@ -300,6 +298,7 @@ class HomeController extends GetxController {
     if (body == null) return DeletePostResponse.buildDefault();
     //get data from api here
     deletePostsResponse = DeletePostResponse.fromJson(body);
+      Navigator.pop(Get.context!);
       getListPosts();
       debugPrint("----------delete post success----------");
       update();

@@ -145,7 +145,9 @@ class _CommentScreenState extends State<CommentScreen> {
   Widget inputMessageTextField(CommentsController commentsController) {
     return Container(
       width: double.infinity,
-      color: Colors.white,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.black.withOpacity(0.6)
+          : Colors.white,
       child: SafeArea(
         child: Container(
           width: double.infinity,
@@ -164,9 +166,21 @@ class _CommentScreenState extends State<CommentScreen> {
                     controller: commentsController.cmtController,
                     maxLines: null,
                     textAlignVertical: TextAlignVertical.center,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Nhập bình luận',
+                      hintStyle: TextStyle(
+                        fontFamily: 'Nunito Sans',
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black
+                      ),
                       border: InputBorder.none,
+                    ),
+                    style: TextStyle(
+                      fontFamily: 'Nunito Sans',
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black
                     ),
                   ),
                 ),
@@ -184,9 +198,9 @@ class _CommentScreenState extends State<CommentScreen> {
                   },
                   child: Icon(
                     Icons.send_rounded,
-                    color: commentsController.isTyping
-                        ? Colors.blue[700]
-                        : Colors.black,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black
                   ),
                 ),
               ),

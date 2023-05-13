@@ -40,9 +40,12 @@ class _InputPhoneNumberForgotPasswordState
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_back_ios_rounded,
-                    color: Colors.black,
+                      color: Theme.of(context).brightness ==
+                          Brightness.dark
+                          ? Colors.white
+                          : Colors.black
                   ),
                 ),
                 elevation: 0,
@@ -141,6 +144,10 @@ class _InputPhoneNumberForgotPasswordState
                                                         .symmetric(vertical: 8),
                                                     child: Image.asset(
                                                       IconsAssets.icClearText,
+                                                        color: Theme.of(context).brightness ==
+                                                            Brightness.dark
+                                                            ? Colors.white
+                                                            : Colors.black
                                                     ),
                                                   ),
                                                 )
@@ -149,7 +156,10 @@ class _InputPhoneNumberForgotPasswordState
                                                       const EdgeInsets.symmetric(
                                                           vertical: 8),
                                                   child: Image.asset(
-                                                      IconsAssets.icChecked),
+                                                      IconsAssets.icChecked,color: Theme.of(context).brightness ==
+                                                      Brightness.dark
+                                                      ? Colors.greenAccent
+                                                      : null),
                                                 ),
                                     ),
                                     onChanged: (value) {
