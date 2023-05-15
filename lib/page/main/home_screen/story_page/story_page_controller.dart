@@ -10,6 +10,7 @@ import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 class StoryController extends GetxController {
   int currentStory = 0;
   List<double> percentWatched = [];
+
   List<Widget> myStories = [
     SizedBox(
         width: double.infinity,

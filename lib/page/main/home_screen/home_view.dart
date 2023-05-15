@@ -15,7 +15,6 @@ import 'package:shimmer/shimmer.dart';
 import '../../../util/global.dart';
 import '../../../util/module.dart';
 import 'home_controller.dart';
-import 'infor_account_screen/infro_account_view.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -1060,7 +1059,10 @@ class _HomeState extends State<Home> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.to(() => InForAccountScreen(isMyAccount: false));
+                          homeController.userIdForLoadListAnotherProfile =
+                              Global.listPostInfo[index].userInfoResponse!.id;
+                          homeController.loadListPhotoAnotherUser();
+                          homeController.loadAnotherProfileForInfoAnotherUser();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,

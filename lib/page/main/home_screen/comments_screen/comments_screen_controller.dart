@@ -4,6 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/models/add_coment_post/add_comment_post_request.dart';
 import 'package:instagram_app/models/add_coment_post/add_comment_post_response.dart';
+import 'package:instagram_app/models/delete_comment_post/delete_comment_post_request.dart';
+import 'package:instagram_app/models/delete_comment_post/delete_comment_post_response.dart';
+import 'package:instagram_app/models/edit_comment_post/edit_comment_post_request.dart';
+import 'package:instagram_app/models/edit_comment_post/edit_comment_post_response.dart';
 
 import '../../../../api_http/handle_api.dart';
 import '../../../../models/list_comments_post/list_comments_post_request.dart';
@@ -58,6 +62,56 @@ class CommentsController extends GetxController {
       update();
     }
     return addCommentPostResponse;
+  }
+
+  /// handle delete comment api
+  Future<DeleteCommentPostResponse> deleteCommentPost(
+      DeleteCommentPostRequest deleteCmtRequest) async {
+    DeleteCommentPostResponse deleteCommentPostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/delete-comment"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(deleteCmtRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to get delete cmt $error");
+      rethrow;
+    }
+    if (body == null) return DeleteCommentPostResponse.buildDefault();
+    //get data from api here
+    deleteCommentPostResponse = DeleteCommentPostResponse.fromJson(body);
+    if (deleteCommentPostResponse.status == true) {
+      loadListCmt();
+      update();
+    }
+    return deleteCommentPostResponse;
+  }
+
+  /// handle edit comment api
+  Future<EditCommentPostResponse> editCommentPost(
+      EditCommentPostRequest editCommentPostRequest) async {
+    EditCommentPostResponse editCommentPostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/update-comment"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(editCommentPostRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to edit cmt $error");
+      rethrow;
+    }
+    if (body == null) return EditCommentPostResponse.buildDefault();
+    //get data from api here
+    editCommentPostResponse = EditCommentPostResponse.fromJson(body);
+    if (editCommentPostResponse.status == true) {
+      loadListCmt();
+      update();
+    }
+    return editCommentPostResponse;
   }
 
   /// handle get list comment api

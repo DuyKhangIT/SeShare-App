@@ -3,30 +3,38 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_manager/photo_manager.dart';
+import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
+
+import '../../../../api_http/handle_api.dart';
+import '../../../../models/upload_media/upload_media_response.dart';
+
 
 class CreateStoryController extends GetxController {
+  TextEditingController inputTextStoryController = TextEditingController();
   File? avatar;
-  AssetPathEntity? selectedAlbum;
-  List<AssetPathEntity> albumList = [];
-  List<AssetEntity> assetList = [];
-  List<AssetEntity> selectedAssetList = [];
-  RequestType? requestType;
+  List<String> photoPath = [];
+  String photo = "";
+  String textStory = "";
+  String filePath = "";
+  double xPosition = 0.0;
+  double yPosition = 0.0;
+  double scaleValue = 2.0;
+  bool addText = false;
+  bool addColor = false;
+  bool isScale = false;
+  String colorValue = "";
+
   @override
   void onReady() {
-    loadAlbums(requestType!).then((value) => {
-      albumList = value,
-      selectedAlbum = value[0],
-      update,
-      loadAssets(selectedAlbum!).then((value) => {
-        assetList = value,
-        update
-      })
-    });
+    inputTextStoryController.text = "";
+    textStory = "";
+    avatar = null;
+    addText = false;
+    addColor = false;
+    colorValue = "0xffffffff";
+    update();
     super.onReady();
   }
 
@@ -34,23 +42,34 @@ class CreateStoryController extends GetxController {
   void onClose() {
     super.onClose();
   }
-  /// load album
-  Future loadAlbums(RequestType requestType) async{
-    var permission = await PhotoManager.requestPermissionExtend();
-    List<AssetPathEntity> albumList = [];
 
-    if(permission.isAuth==true){
-        albumList = await PhotoManager.getAssetPathList(
-          type: requestType
-        );
-    }else{
-      PhotoManager.openSetting();
+
+
+  /// upload image api
+  Future<UploadMediaResponse> uploadMedia() async {
+    UploadMediaResponse uploadMediaResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeSingleFile(
+          Uri.parse("http://14.225.204.248:8080/api/photo/upload"),
+          RequestType.post,
+          filePath,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to upload file ${(error)}");
+      rethrow;
     }
-    return albumList;
-  }
-  Future loadAssets(AssetPathEntity selectedAlbums)async{
-    List<AssetEntity> assetList = await selectedAlbums.getAssetListRange(start: 0, end: selectedAlbums.assetCount);
-    return assetList;
+    if (body == null) return UploadMediaResponse.buildDefault();
+    uploadMediaResponse = UploadMediaResponse.fromJson(body);
+    if(uploadMediaResponse.status == true){
+      photo = uploadMediaResponse.data!;
+      if(photo!=null && photo.isNotEmpty){
+        photoPath.add(photo);
+        update();
+      }
+    }
+    return uploadMediaResponse;
   }
 
   /// instantiate our image picker object
@@ -73,6 +92,7 @@ class CreateStoryController extends GetxController {
 
     String filePaths;
     filePaths = picture.path;
+    filePath = filePaths;
     update();
   }
 
@@ -90,9 +110,9 @@ class CreateStoryController extends GetxController {
     }
     avatar = imgFrame;
     Navigator.pop(Get.context!);
-
     String filePaths;
     filePaths = imgFrame.path;
+    filePath = filePaths;
     update();
   }
 

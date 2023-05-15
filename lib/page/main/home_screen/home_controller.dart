@@ -22,6 +22,7 @@ import '../../../models/user_profile/profile_response.dart';
 import '../../../util/global.dart';
 import '../another_profile_screen/another_profile_screen.dart';
 import 'comments_screen/comments_view.dart';
+import 'infor_account_screen/infro_account_view.dart';
 
 class HomeController extends GetxController {
   File? avatar;
@@ -61,7 +62,20 @@ class HomeController extends GetxController {
         AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
     loadAnotherUserProfile(anotherProfileRequest);
     update();
+    if (Global.anOtherUserProfileResponse != null) {
+      Get.to(() => const AnOtherProfileScreen());
+    }
   }
+  void loadAnotherProfileForInfoAnotherUser() {
+    AnotherUserProfileRequest anotherProfileRequest =
+    AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
+    loadAnotherUserProfile(anotherProfileRequest);
+    update();
+    if (Global.anOtherUserProfileResponse != null) {
+      Get.to(() => InForAccountScreen(isMyAccount: false));
+    }
+  }
+
 
   void handleLikePost() {
     LikePostRequest likePostRequest = LikePostRequest(postIdForLikePost);
@@ -221,9 +235,6 @@ class HomeController extends GetxController {
           anOtherProfileResponse.anOtherUserProfileResponse;
       debugPrint("----------load another profile success----------");
       update();
-      if (Global.anOtherUserProfileResponse != null) {
-        Get.to(() => const AnOtherProfileScreen());
-      }
     } else {
       debugPrint("Lỗi api");
     }

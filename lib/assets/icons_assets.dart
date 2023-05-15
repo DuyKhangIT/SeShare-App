@@ -53,6 +53,10 @@ class IconsAssets {
   static const String icPlaceHolder = 'assets/icons/ic_placeholder_image.gif';
   static const String icHideLike = 'assets/icons/ic_hide_like.png';
   static const String icHideCmt = 'assets/icons/ic_hide_cmt.png';
+  static const String icFullColor = 'assets/icons/ic_full_color.png';
+  static const String icAddText = 'assets/icons/ic_add_text.png';
+  static const String icBanText = 'assets/icons/ic_ban_text.png';
+  static const String icScaleText = 'assets/icons/ic_scale_text.png';
 
 
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/models/add_coment_post/add_comment_post_request.dart';
+import 'package:instagram_app/models/edit_comment_post/edit_comment_post_request.dart';
 import 'package:instagram_app/page/main/home_screen/comments_screen/comments_screen_controller.dart';
 
 import '../../../../assets/icons_assets.dart';
+import '../../../../models/delete_comment_post/delete_comment_post_request.dart';
 import '../../../../util/global.dart';
 
 class CommentScreen extends StatefulWidget {
@@ -68,13 +70,15 @@ class _CommentScreenState extends State<CommentScreen> {
   Widget contentListCmt(CommentsController commentsController, index) {
     return GestureDetector(
       onLongPress: () {
-        showModalBottomSheet(
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            context: context,
-            builder: (context) {
-              return detailBottomSheetMenuComment(commentsController, index);
-            });
+        if (Global.dataListCmt!.comments![index].isCommented == true) {
+          showModalBottomSheet(
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (context) {
+                return detailBottomSheetMenuComment(commentsController, index);
+              });
+        }
       },
       child: Container(
         width: double.infinity,
@@ -289,7 +293,16 @@ class _CommentScreenState extends State<CommentScreen> {
 
                 /// delete cmt
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    if (Global.isAvailableToClick()) {
+                      Navigator.pop(context);
+                      DeleteCommentPostRequest deleteCmtRequest =
+                          DeleteCommentPostRequest(Global.dataListCmt!.postId,
+                              Global.dataListCmt!.comments![index].commentId);
+                      commentsController.deleteCommentPost(deleteCmtRequest);
+                      commentsController.update();
+                    }
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     color: Colors.transparent,
@@ -343,21 +356,22 @@ class _CommentScreenState extends State<CommentScreen> {
                   width: MediaQuery.of(context).size.width,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children:  [
+                    children: [
                       GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Navigator.pop(context);
                           },
                           child: const Icon(Icons.arrow_back)),
                       Container(
-                        width: MediaQuery.of(context).size.width/1.2,
+                        width: MediaQuery.of(context).size.width / 1.2,
                         alignment: Alignment.center,
                         child: const Text(
-                          "Chỉnh sửa",style: TextStyle(
-                          fontFamily: 'Nunito Sans',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                          "Chỉnh sửa",
+                          style: TextStyle(
+                            fontFamily: 'Nunito Sans',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ],
@@ -449,7 +463,18 @@ class _CommentScreenState extends State<CommentScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (Global.isAvailableToClick()) {
+                            Navigator.pop(context);
+                            EditCommentPostRequest editCmtRequest =
+                                EditCommentPostRequest(
+                                    Global.dataListCmt!.postId,
+                                    Global.dataListCmt!.comments![index].commentId,
+                                    commentsController.editCmt);
+                            commentsController.editCommentPost(editCmtRequest);
+                            commentsController.update();
+                          }
+                        },
                         child: Container(
                           width: 80,
                           height: 40,

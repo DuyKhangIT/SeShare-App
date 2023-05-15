@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/creat_story_controller.dart';
-import 'package:photo_manager/photo_manager.dart';
 
+import '../../../../util/global.dart';
 import '../../../navigation_bar/navigation_bar_view.dart';
 
 class CreateStoryScreen extends StatefulWidget {
@@ -26,10 +25,19 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                     ? Colors.black
                     : Colors.white,
                 centerTitle: true,
-                leading:
-                GestureDetector(
-                  onTap: (){
-                    Get.to(() =>  NavigationBarView(currentIndex: 0,));
+                leading: GestureDetector(
+                  onTap: () {
+                    createStoryController.avatar = null;
+                    createStoryController.textStory = "";
+                    createStoryController.inputTextStoryController.text = "";
+                    createStoryController.addText = false;
+                    createStoryController.addColor = false;
+                    createStoryController.isScale = false;
+                    createStoryController.colorValue = "0xffffffff";
+                    createStoryController.update();
+                    Get.to(() => NavigationBarView(
+                          currentIndex: 0,
+                        ));
                   },
                   child: Icon(
                     Icons.arrow_back,
@@ -46,52 +54,235 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                           : Colors.black,
                       fontWeight: FontWeight.w400),
                 ),
+                actions: [
+                  GestureDetector(
+                    onTap: () {
+                      if (Global.isAvailableToClick()) {}
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Icon(
+                        Icons.check,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    ),
+                  )
+                ],
                 elevation: 0,
               ),
               body: SafeArea(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      (createStoryController.avatar != null)
-                          ? Image.file(createStoryController.avatar!)
-                          : Container(),
-                      // GridView.builder(
-                      //     physics: const BouncingScrollPhysics(),
-                      //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      //   crossAxisCount: 2
-                      // ), itemBuilder: (context,index){
-                      //
-                      // }
-                      // ),
-                      listAlbumFromDevice(),
-                      /// add image and changed address
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 40),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            GestureDetector(
-                                onTap: () {
+                child: Stack(
+                  children: [
+                    /// list photo of user post
+                    (createStoryController.avatar != null)
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            child: Image.file(
+                              createStoryController.avatar!,
+                              fit: BoxFit.cover,
+                            ))
+                        : const SizedBox(),
+
+                    /// scale text
+                    createStoryController.isScale == true
+                        ? Positioned(
+                            top: 60,
+                            left: 90,
+                            child: Slider(
+                              inactiveColor: Colors.white,
+                              activeColor: Colors.black,
+                              thumbColor: Colors.black,
+                              value: createStoryController.scaleValue,
+                              min: 0.5,
+                              max: 10.0,
+                              onChanged: (value) {
+                                createStoryController.scaleValue = value;
+                                createStoryController.update();
+                              },
+                            ),
+                          )
+                        : Container(),
+
+                    /// text
+                    createStoryController.avatar != null &&
+                            createStoryController.addText == true
+                        ? Positioned(
+                            left: createStoryController.xPosition,
+                            top: createStoryController.yPosition,
+                            child: GestureDetector(
+                              onPanUpdate: (details) {
+                                createStoryController.xPosition +=
+                                    details.delta.dx;
+                                createStoryController.yPosition +=
+                                    details.delta.dy;
+                                createStoryController.update();
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: const EdgeInsets.only(top: 200),
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: 'Nunito Sans',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        14 * createStoryController.scaleValue,
+                                    color: Color(int.parse(
+                                        createStoryController.colorValue)),
+                                  ),
+                                  autofocus: true,
+                                  maxLines: null,
+                                  controller: createStoryController
+                                      .inputTextStoryController,
+                                  keyboardType: TextInputType.text,
+                                  cursorColor: Colors.black,
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    counterText: '',
+                                  ),
+                                  onChanged: (value) {
+                                    createStoryController.textStory = value;
+                                    createStoryController.update();
+                                  },
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
+
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          /// add image
+                          GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return detailBottomSheetAddImage(
+                                          createStoryController);
+                                    });
+                              },
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                padding: const EdgeInsets.all(11),
+                                margin: const EdgeInsets.only(right: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.6),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Image.asset(IconsAssets.icAddImage,
+                                    fit: BoxFit.cover, color: Colors.white),
+                              )),
+
+                          /// add text
+                          GestureDetector(
+                              onTap: () {
+                                if (createStoryController.avatar != null) {
+                                  createStoryController.addText =
+                                      !createStoryController.addText;
+                                  if (createStoryController.addText == false) {
+                                    createStoryController.textStory = "";
+                                    createStoryController
+                                        .inputTextStoryController.text = "";
+                                    createStoryController.scaleValue = 2.0;
+                                    createStoryController.isScale = false;
+                                    createStoryController.colorValue =
+                                        "0xffffffff";
+                                    createStoryController.update();
+                                  }
+                                  createStoryController.update();
+                                }else{
+                                  debugPrint("Bạn chưa thêm ảnh");
+                                }
+                              },
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                padding: const EdgeInsets.all(12),
+                                margin: const EdgeInsets.only(right: 20),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.6),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Image.asset(
+                                    (createStoryController.addText == true)
+                                        ? IconsAssets.icBanText
+                                        : IconsAssets.icAddText,
+                                    color: Colors.white),
+                              )),
+
+                          /// scale text
+                          GestureDetector(
+                              onTap: () {
+                                if (createStoryController
+                                    .inputTextStoryController.text.isNotEmpty) {
+                                  createStoryController.isScale =
+                                      !createStoryController.isScale;
+                                  createStoryController.update();
+                                }else{
+                                  debugPrint("Bạn chưa nhập chữ");
+                                }
+                              },
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                padding: const EdgeInsets.all(12),
+                                margin: const EdgeInsets.only(right: 20),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.6),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child:
+                                createStoryController.isScale == true
+                                ?Image.asset(IconsAssets.icScaleText,
+                                    color: Colors.blue)
+                                :Image.asset(IconsAssets.icScaleText,
+                                    color: Colors.white),
+                              )),
+
+                          /// add color text
+                          GestureDetector(
+                              onTap: () {
+                                if(createStoryController.inputTextStoryController.text.isNotEmpty){
                                   showModalBottomSheet(
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
                                       context: context,
                                       builder: (context) {
-                                        return detailBottomSheetAddImage(
+                                        return detailBottomSheetAddColor(
                                             createStoryController);
                                       });
-                                },
-                                child: Image.asset(IconsAssets.icAddImage,
-                                    color: Colors.blue, width: 30, height: 30)),
-                          ],
-                        ),
+                                }else{
+                                  debugPrint("Bạn chưa nhập chữ");
+                                }
+
+                              },
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                padding: const EdgeInsets.all(12),
+                                margin: const EdgeInsets.only(right: 20),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.6),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Image.asset(IconsAssets.icFullColor),
+                              )),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ));
@@ -147,7 +338,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                     height: 50,
                     child: Center(
                       child: Text("Chọn ảnh từ thư viện".toUpperCase(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.black,
                               fontFamily: 'NunitoSans',
                               fontWeight: FontWeight.w600,
@@ -160,7 +351,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
 
         /// BUTTON CANCEL
         Padding(
-            padding: EdgeInsets.only(bottom: 34, left: 34, right: 34),
+            padding: const EdgeInsets.only(bottom: 34, left: 34, right: 34),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 50,
@@ -172,14 +363,14 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                   backgroundColor: Colors.blue,
                   elevation: 4,
                   shadowColor: Colors.black,
-                  side: BorderSide(color: Colors.white, width: 1),
+                  side: const BorderSide(color: Colors.white, width: 1),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 child: Text(
                   "Hủy chọn".toUpperCase(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontFamily: 'NunitoSans',
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -191,75 +382,109 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
     );
   }
 
-  Widget listAlbumFromDevice(){
-    CreateStoryController createStoryController = Get.put(CreateStoryController());
-
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          GridView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: createStoryController.assetList.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3
-          ), itemBuilder: (context,index){
-             AssetEntity assetEntity = createStoryController.assetList[index];
-             return Padding(padding: EdgeInsets.all(2),
-               child: assetWidget(assetEntity,createStoryController),
-
-             );
-          }),
-          // Row(
-          //   children: [
-          //     DropdownButton<AssetPathEntity>(
-          //       value: createStoryController.selectedAlbum,
-          //       onChanged: (AssetPathEntity? value){
-          //         createStoryController.selectedAlbum = value;
-          //         createStoryController.update();
-          //         createStoryController.loadAssets(createStoryController.selectedAlbum!).then((value) => {
-          //           createStoryController.assetList = value,
-          //           createStoryController.update()
-          //         });
-          //       },
-          //       items: createStoryController.albumList.map<DropdownMenuItem<AssetPathEntity>>(
-          //           (AssetPathEntity album){
-          //             return DropdownMenuItem<AssetPathEntity>(
-          //               value: album,
-          //               child: Text(
-          //                 "${album.name} (${album.assetCount})"),
-          //             );
-          //           }).toList(),
-          //     )
-          //   ],
-          // ),
-        ],
-      ),
-    );
-  }
-
-  Widget assetWidget(AssetEntity assetEntity,CreateStoryController createStoryController){
-    return Stack(
+  Widget detailBottomSheetAddColor(
+      CreateStoryController createStoryController) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Positioned.fill(child: Padding(
-          padding: EdgeInsets.all(
-              createStoryController.selectedAssetList.contains(assetEntity) == true?15:0
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 31, right: 31, bottom: 26),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(12.0)),
           ),
-          child: AssetEntityImage(
-            assetEntity,
-            isOriginal: false,
-            thumbnailSize: const ThumbnailSize.square(250),
-            fit: BoxFit.cover,
-            errorBuilder: (context,errpr,stackTrace){
-              return Center(
-                child: Icon(
-                  Icons.error,
-                  color: Colors.red,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              GestureDetector(
+                  onTap: () {
+                    createStoryController.colorValue = "0xffffffff";
+                    debugPrint(createStoryController.colorValue);
+                    createStoryController.update();
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    color: Colors.white,
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    createStoryController.colorValue = "0xffffeb3b";
+                    debugPrint(createStoryController.colorValue);
+                    createStoryController.update();
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    color: Colors.yellow,
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    createStoryController.colorValue = "0xff69f0ae";
+                    debugPrint(createStoryController.colorValue);
+                    createStoryController.update();
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    color: Colors.greenAccent,
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    createStoryController.colorValue = "0xff000000";
+                    debugPrint(createStoryController.colorValue);
+                    createStoryController.update();
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    color: Colors.black,
+                  )),
+            ],
+          ),
+        ),
+
+        /// BUTTON CANCEL
+        Padding(
+            padding: const EdgeInsets.only(bottom: 34, left: 34, right: 34),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  elevation: 4,
+                  shadowColor: Colors.black,
+                  side: const BorderSide(color: Colors.white, width: 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
-              );
-            },
-          ),
-        ))
+                child: Text(
+                  "Hủy chọn".toUpperCase(),
+                  style: const TextStyle(
+                      fontFamily: 'NunitoSans',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: 2),
+                ),
+              ),
+            ))
       ],
     );
   }

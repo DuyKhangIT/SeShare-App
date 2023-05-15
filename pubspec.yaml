@@ -70,8 +70,11 @@ dependencies:
   shimmer: ^2.0.0
   #photo_view:
   photo_view: ^0.14.0
-  #photo_manager:
-  photo_manager: ^2.6.0
+  #story:
+  story: ^1.0.0+1
+  #qr_flutter:
+  qr_flutter: ^4.0.0
+
 
 
 dev_dependencies:
