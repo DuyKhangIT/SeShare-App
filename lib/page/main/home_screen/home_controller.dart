@@ -11,6 +11,7 @@ import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/like_post/like_post_response.dart';
 
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
+import 'package:instagram_app/models/list_story/list_story_response.dart';
 
 import '../../../api_http/handle_api.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
@@ -40,6 +41,7 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     getListPosts();
+    getListStories();
     loadUserProfile();
     update();
     super.onReady();
@@ -66,16 +68,16 @@ class HomeController extends GetxController {
       Get.to(() => const AnOtherProfileScreen());
     }
   }
+
   void loadAnotherProfileForInfoAnotherUser() {
     AnotherUserProfileRequest anotherProfileRequest =
-    AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
+        AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
     loadAnotherUserProfile(anotherProfileRequest);
     update();
     if (Global.anOtherUserProfileResponse != null) {
       Get.to(() => InForAccountScreen(isMyAccount: false));
     }
   }
-
 
   void handleLikePost() {
     LikePostRequest likePostRequest = LikePostRequest(postIdForLikePost);
@@ -84,7 +86,8 @@ class HomeController extends GetxController {
   }
 
   void handleDeletePost() {
-    DeletePostRequest deletePostRequest = DeletePostRequest(postIdForDeletePost);
+    DeletePostRequest deletePostRequest =
+        DeletePostRequest(postIdForDeletePost);
     deletePost(deletePostRequest);
     update();
   }
@@ -109,7 +112,7 @@ class HomeController extends GetxController {
     //get data from api here
     listPostsHomeResponse = ListPostsHomeResponse.fromJson(body);
     if (listPostsHomeResponse.status == true) {
-      //dataPostsResponse = listPostsHomeResponse.data!;
+      debugPrint("------------- GET LIST POST SUCCESSFULLY--------------");
       Global.listPostInfo = listPostsHomeResponse.data!;
       await Future.delayed(const Duration(seconds: 1), () {});
       isLoading = false;
@@ -148,12 +151,14 @@ class HomeController extends GetxController {
     isNewUpdate = false;
     update();
     getListPosts();
+    getListStories();
   }
 
   /// pull to refresh
   Future<void> pullToRefreshData({bool isRefreshIndicator = true}) async {
     isNewUpdate = false;
     getListPosts();
+    getListStories();
     update();
     return Future.delayed(const Duration(seconds: 1));
   }
@@ -168,6 +173,7 @@ class HomeController extends GetxController {
           RequestType.post,
           headers: null,
           body: null);
+      debugPrint("------------- RESTFULL API USER PROFILE -------------");
     } catch (error) {
       debugPrint("Fail to user profile $error");
       rethrow;
@@ -177,7 +183,7 @@ class HomeController extends GetxController {
     profileResponse = ProfileResponse.fromJson(body);
     if (profileResponse.status == true) {
       Global.userProfileResponse = profileResponse.userProfileResponse;
-      debugPrint("----------load profile success----------");
+      debugPrint("------------- LOAD USER PROFILE SUCCESSFULLY -------------");
       update();
     }
     return profileResponse;
@@ -205,6 +211,8 @@ class HomeController extends GetxController {
     getAllPhotoAnOtherUserResponse =
         GetAllPhotoAnOtherUserResponse.fromJson(body);
     if (getAllPhotoAnOtherUserResponse.status == true) {
+      debugPrint(
+          "------------- GET LIST PHOTOS ANOTHER USER SUCCESSFULLY -------------");
       Global.listPhotoAnOtherUser =
           getAllPhotoAnOtherUserResponse.listPhotosUser!;
     }
@@ -233,7 +241,8 @@ class HomeController extends GetxController {
     if (anOtherProfileResponse.status == true) {
       Global.anOtherUserProfileResponse =
           anOtherProfileResponse.anOtherUserProfileResponse;
-      debugPrint("----------load another profile success----------");
+      debugPrint(
+          "-------------  LOAD ANOTHER USER PROFILE SUCCESSFULLY -------------");
       update();
     } else {
       debugPrint("Lỗi api");
@@ -260,7 +269,7 @@ class HomeController extends GetxController {
     likePostResponse = LikePostResponse.fromJson(body);
     if (likePostResponse.status == true) {
       getListPostsWhenLiked();
-      debugPrint("----------like post success----------");
+      debugPrint("----------LIKE POST SUCCESSFULLY----------");
       update();
     }
     return likePostResponse;
@@ -286,16 +295,18 @@ class HomeController extends GetxController {
     //get data from api here
     listCommentsPostResponse = ListCommentsPostResponse.fromJson(body);
     if (listCommentsPostResponse.status == true) {
+      debugPrint(
+          "------------- GET LIST COMMENT POST SUCCESSFULLY -------------");
       Global.dataListCmt = listCommentsPostResponse.data;
       update();
-
       Get.to(() => const CommentScreen());
     }
     return listCommentsPostResponse;
   }
 
   /// handle delete post api
-  Future<DeletePostResponse> deletePost(DeletePostRequest deletePostRequest) async {
+  Future<DeletePostResponse> deletePost(
+      DeletePostRequest deletePostRequest) async {
     DeletePostResponse deletePostsResponse;
     Map<String, dynamic>? body;
     try {
@@ -311,11 +322,41 @@ class HomeController extends GetxController {
     if (body == null) return DeletePostResponse.buildDefault();
     //get data from api here
     deletePostsResponse = DeletePostResponse.fromJson(body);
+    if (deletePostsResponse.status == true) {
       Navigator.pop(Get.context!);
       getListPosts();
-      debugPrint("----------delete post success----------");
+      debugPrint("------------- DELETE POST SUCCESSFULLY -------------");
       update();
+    }
     return deletePostsResponse;
   }
 
+  /// call api list story
+  Future<ListStoryResponse> getListStories() async {
+    isLoading = true;
+    update();
+    ListStoryResponse listStoryResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/story/get-list-stories"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list stories $error");
+      rethrow;
+    }
+    if (body == null) return ListStoryResponse.buildDefault();
+    //get data from api here
+    listStoryResponse = ListStoryResponse.fromJson(body);
+    if (listStoryResponse.status == true) {
+      debugPrint("------------- GET LIST STORIES SUCCESSFULLY -------------");
+      Global.listStoriesData = listStoryResponse.data!;
+      await Future.delayed(const Duration(seconds: 1), () {});
+      isLoading = false;
+      update();
+    }
+    return listStoryResponse;
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
@@ -57,7 +58,27 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                 actions: [
                   GestureDetector(
                     onTap: () {
-                      if (Global.isAvailableToClick()) {}
+                      if (Global.isAvailableToClick()) {
+                        if (createStoryController.avatar != null ||
+                            createStoryController
+                                .inputTextStoryController.text.isNotEmpty) {
+                          createStoryController.handleCreateStory();
+                        } else {
+                          final snackBar = SnackBar(
+                            elevation: 0,
+                            behavior: SnackBarBehavior.fixed,
+                            backgroundColor: Colors.transparent,
+                            content: AwesomeSnackbarContent(
+                              title: 'Cảnh báo!',
+                              message: "Vui lòng điền đủ thông tin",
+                              contentType: ContentType.warning,
+                            ),
+                          );
+                          ScaffoldMessenger.of(Get.context!)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(snackBar);
+                        }
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(right: 20),
@@ -202,7 +223,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                                     createStoryController.update();
                                   }
                                   createStoryController.update();
-                                }else{
+                                } else {
                                   debugPrint("Bạn chưa thêm ảnh");
                                 }
                               },
@@ -230,7 +251,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                                   createStoryController.isScale =
                                       !createStoryController.isScale;
                                   createStoryController.update();
-                                }else{
+                                } else {
                                   debugPrint("Bạn chưa nhập chữ");
                                 }
                               },
@@ -243,18 +264,18 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                                 decoration: BoxDecoration(
                                     color: Colors.black.withOpacity(0.6),
                                     borderRadius: BorderRadius.circular(12)),
-                                child:
-                                createStoryController.isScale == true
-                                ?Image.asset(IconsAssets.icScaleText,
-                                    color: Colors.blue)
-                                :Image.asset(IconsAssets.icScaleText,
-                                    color: Colors.white),
+                                child: createStoryController.isScale == true
+                                    ? Image.asset(IconsAssets.icScaleText,
+                                        color: Colors.blue)
+                                    : Image.asset(IconsAssets.icScaleText,
+                                        color: Colors.white),
                               )),
 
                           /// add color text
                           GestureDetector(
                               onTap: () {
-                                if(createStoryController.inputTextStoryController.text.isNotEmpty){
+                                if (createStoryController
+                                    .inputTextStoryController.text.isNotEmpty) {
                                   showModalBottomSheet(
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
@@ -263,10 +284,9 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                                         return detailBottomSheetAddColor(
                                             createStoryController);
                                       });
-                                }else{
+                                } else {
                                   debugPrint("Bạn chưa nhập chữ");
                                 }
-
                               },
                               child: Container(
                                 width: 40,

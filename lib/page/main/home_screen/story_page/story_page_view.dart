@@ -4,10 +4,12 @@ import 'package:instagram_app/page/main/home_screen/story_page/story_page_contro
 import 'package:story/story_page_view.dart';
 
 import '../../../../assets/icons_assets.dart';
-import '../../../../assets/images_assets.dart';
+import '../../../../util/global.dart';
+import '../../../../util/module.dart';
 
 class StoryPage extends StatefulWidget {
-  const StoryPage({Key? key}) : super(key: key);
+  int? index = 0;
+  StoryPage({Key? key, this.index}) : super(key: key);
 
   @override
   State<StoryPage> createState() => _StoryPageState();
@@ -26,101 +28,114 @@ class _StoryPageState extends State<StoryPage> {
               child: Scaffold(
                   body: StoryPageView(
                 indicatorPadding:
-                   const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                indicatorVisitedColor: Colors.blue,
+                indicatorUnvisitedColor: Colors.black.withOpacity(0.4),
                 itemBuilder: (context, pageIndex, storyIndex) {
                   return contentStory(pageIndex, storyIndex, storyController);
                 },
+                initialPage: widget.index!,
 
-                /// số tin trong 1 trang
+                /// number of stories on a page
                 storyLength: (pageIndex) {
-                  return 3;
+                  return Global.listStoriesData[pageIndex].stories!.length;
                 },
 
-                /// số trang
-                pageLength: 4,
+                /// number of page
+                pageLength: Global.listStoriesData.length,
               )),
             )));
   }
 
   Widget contentStory(pageIndex, storyIndex, StoryController storyController) {
-    return SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Stack(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: Image.asset(
-                ImageAssets.imgTet,
-                fit: BoxFit.cover,
+    return Stack(
+      children: [
+        /// photo
+        SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: getNetworkImage(
+              Global.listStoriesData[pageIndex].stories![storyIndex].photoPath,
+              width: MediaQuery.of(context).size.width / 1.5,
+              height: 400),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(top: 40, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              /// avatar user
+              Container(
+                width: 40,
+                height: 40,
+                margin: const EdgeInsets.only(right: 10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: getNetworkImage(
+                      Global.listStoriesData[pageIndex].userInfoStoryResponse!
+                          .avatar,
+                      width: 65,
+                      height: 65),
+                ),
               ),
-            ),
-            Container(
+              Container(
+                margin: const EdgeInsets.only(right: 10),
+                constraints: const BoxConstraints(
+                  maxWidth: 100,
+                ),
+                child: Text(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  Global.listStoriesData[pageIndex].userInfoStoryResponse!
+                      .fullName,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontFamily: 'Nunito Sans',
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Text(
+                Global
+                    .listStoriesData[pageIndex].stories![storyIndex].createTime,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 10,
+                    fontFamily: 'Nunito Sans',
+                    fontWeight: FontWeight.w400),
+              ),
+              const SizedBox(width: 10),
+              Image.asset(IconsAssets.icPublicMode,
+                  width: 11, height: 11, color: Colors.black)
+            ],
+          ),
+        ),
+        Positioned(
+          left: Global.listStoriesData[pageIndex].stories![storyIndex]
+                  .xPositionText +
+              100.0,
+          //xPosition,
+          top: Global
+              .listStoriesData[pageIndex].stories![storyIndex].yPositionText,
+          //yPosition,
+          child: Container(
               width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(top: 40, left: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    margin:const EdgeInsets.only(right: 10),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child:
-                            Image.asset(ImageAssets.imgMeo, fit: BoxFit.cover)),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    constraints: const BoxConstraints(
-                      maxWidth: 100,
-                    ),
-                    child: const Text(
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      "Duy Khang",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Nunito Sans',
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const Text(
-                    "10 phút trước",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontFamily: 'Nunito Sans',
-                        fontWeight: FontWeight.w400),
-                  ),
-                  const SizedBox(width: 10),
-                  Image.asset(IconsAssets.icPublicMode,
-                      width: 11, height: 11, color: Colors.white)
-                ],
-              ),
-            ),
-            Positioned(
-              left: 20.0,
-              //xPosition,
-              top:  120.0,
-              //yPosition,
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    "Index of PageView: $pageIndex Index of story: $storyIndex",
-                    style: const TextStyle(
-                        color: Colors.white,
-                        //color: Color(int.parse(colorValue)),
-                        //fontSize: 14 * scale,
-                        fontSize: 14,
-                        fontFamily: 'Nunito Sans',
-                        fontWeight: FontWeight.bold),
-                  )),
-            ),
-          ],
-        ));
+              margin: const EdgeInsets.only(top: 200),
+              child: Text(
+                Global.listStoriesData[pageIndex].stories![storyIndex].text,
+                style: TextStyle(
+                    color: Color(int.parse(Global.listStoriesData[pageIndex]
+                        .stories![storyIndex].colorText)),
+                    fontSize: 14 *
+                        Global.listStoriesData[pageIndex].stories![storyIndex]
+                            .scaleText,
+                    fontFamily: 'Nunito Sans',
+                    fontWeight: FontWeight.bold),
+              )),
+        ),
+      ],
+    );
   }
 }

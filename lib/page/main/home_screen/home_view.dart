@@ -77,17 +77,32 @@ class _HomeState extends State<Home> {
                                 Theme.of(context).brightness == Brightness.dark
                                     ? Colors.black54
                                     : Colors.white,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                if (index == 0) {
-                                  return contentListViewStoryFirstIndex(
-                                      homeController);
-                                } else {
-                                  return contentListViewStory();
-                                }
-                              },
+                            child: Row(
+                              children: [
+                                contentListViewStoryFirstIndex(homeController),
+                                Expanded(
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: homeController.isLoading == true
+                                      ? 5
+                                      :Global.listStoriesData.length,
+                                    itemBuilder: (context, index) {
+                                      // if (index == 0) {
+                                      //   return contentListViewStoryFirstIndex(
+                                      //       homeController);
+                                      // } else {
+                                      //   return contentListViewStory(index);
+                                      // }
+                                      if(homeController.isLoading){
+                                        return skeletonListViewStory(index);
+                                      } else{
+                                        return contentListViewStory(homeController,index);
+                                      }
+
+                                    },
+                                  ),
+                                ),
+                              ],
                             )),
                         Expanded(
                             child: RefreshIndicator(
@@ -117,7 +132,7 @@ class _HomeState extends State<Home> {
   }
 
   /// content list view story
-  Widget contentListViewStory() {
+  Widget contentListViewStory(HomeController homeController, index) {
     return SizedBox(
       width: 80,
       child: Column(
@@ -126,8 +141,61 @@ class _HomeState extends State<Home> {
         children: [
           GestureDetector(
             onTap: () {
-              Get.to(() => const StoryPage());
+              // homeController.seeStory = true;
+              // homeController.update();
+              if(Global.listStoriesData.isNotEmpty){
+                Get.to(() => StoryPage(index: index));
+              }
             },
+            child: Container(
+                width: 65,
+                height: 65,
+                padding: const EdgeInsets.all(2),
+                margin: const EdgeInsets.only(top: 8, bottom: 5),
+                decoration:
+                // homeController.seeStory == true
+                // ?BoxDecoration(
+                //     color: Colors.transparent,
+                //     borderRadius: BorderRadius.circular(16))
+                // :
+                BoxDecoration(
+                    border: Border.all(
+                        color: Colors.blue.withOpacity(0.6),
+                        width: 3,
+                        style: BorderStyle.solid),
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(16)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: getNetworkImage(
+                      Global.listStoriesData[index]
+                          .userInfoStoryResponse!.avatar,
+                      width: 65,
+                      height: 65),
+                )),
+          ),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: Text(Global.listStoriesData[index].userInfoStoryResponse!.fullName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget skeletonListViewStory(index) {
+    return SizedBox(
+      width: 80,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Shimmer.fromColors(
+            baseColor: Colors.grey.withOpacity(0.4),
+            highlightColor: Colors.grey.withOpacity(0.8),
             child: Container(
                 width: 65,
                 height: 65,
@@ -138,22 +206,23 @@ class _HomeState extends State<Home> {
                         color: Colors.blue.withOpacity(0.6),
                         width: 3,
                         style: BorderStyle.solid),
-                    color: Colors.transparent,
+                    color: Colors.grey.withOpacity(0.4),
                     borderRadius: BorderRadius.circular(16)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: Image.asset(
-                    ImageAssets.imgTet,
-                    fit: BoxFit.cover,
-                  ),
-                )),
+               ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Text("Duy Khang",
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.withOpacity(0.4),
+              highlightColor: Colors.grey.withOpacity(0.8),
+              child: Container(
+                width: 65,
+                height: 12,
+                decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(16)),
+              ),
+            ),
           ),
         ],
       ),

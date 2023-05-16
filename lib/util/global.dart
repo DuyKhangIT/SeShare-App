@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:instagram_app/models/list_story/data_story_response.dart';
 
 import '../models/another_user_profile/another_profile_response.dart';
 import '../models/another_user_profile/another_user_profile_response.dart';
@@ -41,6 +42,7 @@ class Global {
   static AnOtherUserProfileResponse? anOtherUserProfileResponse;
   /// data list post
   static List<DataPostsResponse> listPostInfo = [];
+  static List<DataStoryResponse> listStoriesData = [];
   /// info my post
   static DataPostsResponse? infoMyPost;
   /// new phone number from forgot password
