@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../util/global.dart';
 import '../../../util/module.dart';
