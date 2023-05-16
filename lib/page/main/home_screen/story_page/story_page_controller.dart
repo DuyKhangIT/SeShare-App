@@ -1,41 +1,19 @@
-import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:instagram_app/assets/assets.dart';
-import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
+import 'package:instagram_app/models/delete_story/delete_story_request.dart';
+import 'package:instagram_app/models/delete_story/delete_story_response.dart';
+
+import '../../../../api_http/handle_api.dart';
+import '../../../navigation_bar/navigation_bar_view.dart';
 
 class StoryController extends GetxController {
-  int currentStory = 0;
-  List<double> percentWatched = [];
-
-  List<Widget> myStories = [
-    SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Image.asset(
-          ImageAssets.imgTet,
-          fit: BoxFit.cover,
-        )),
-    SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Image.asset(ImageAssets.imgTest, fit: BoxFit.cover)),
-    SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Image.asset(ImageAssets.imgTet, fit: BoxFit.cover)),
-  ];
   @override
-  void onInit() {
-    for (int i = 0; i < myStories.length; i++) {
-      percentWatched.add(0);
-      update();
-    }
-    startWatching();
-    super.onInit();
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
   }
 
   @override
@@ -43,42 +21,31 @@ class StoryController extends GetxController {
     super.onClose();
   }
 
-  void startWatching() {
-    Timer.periodic(const Duration(milliseconds: 30), (timer) {
-      if (percentWatched[currentStory] + 0.01 < 1) {
-        percentWatched[currentStory] += 0.01;
-      } else {
-        percentWatched[currentStory] = 1;
-        timer.cancel();
-        if (currentStory < myStories.length - 1) {
-          currentStory++;
-          startWatching();
-        } else {
-          Get.to(() => NavigationBarView(currentIndex: 0,));
-        }
-      }
-      update();
-    });
-  }
 
-  void onTapPrevious(TapDownDetails details, BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double dx = details.globalPosition.dx;
-
-    if (dx < screenWidth / 2) {
-      if (currentStory > 0) {
-        percentWatched[currentStory - 1] = 0;
-        percentWatched[currentStory] = 0;
-
-        currentStory--;
-      }
-    } else {
-      if (currentStory < myStories.length - 1) {
-        percentWatched[currentStory] = 1;
-        currentStory++;
-      } else {
-        percentWatched[currentStory] = 1;
-      }
+  /// handle delete post api
+  Future<DeleteStoryResponse> deleteStory(
+      DeleteStoryRequest deleteStoryRequest) async {
+    DeleteStoryResponse deleteStoryResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/story/delete-story"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(deleteStoryRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to delete story $error");
+      rethrow;
     }
+    if (body == null) return DeleteStoryResponse.buildDefault();
+    //get data from api here
+    deleteStoryResponse = DeleteStoryResponse.fromJson(body);
+    if (deleteStoryResponse.status == true) {
+      Get.offAll(() => NavigationBarView(currentIndex: 0));
+      //getListPosts();
+      debugPrint("------------- DELETE STORY SUCCESSFULLY -------------");
+      update();
+    }
+    return deleteStoryResponse;
   }
 }

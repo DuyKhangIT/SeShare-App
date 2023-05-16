@@ -76,7 +76,7 @@ bool checkEmailAddress(String newEmail) {
 }
 
 Widget getNetworkImage(String? imageKey,
-    {String? accessToken, String? customUrlPath, double? width, int? height}) {
+    {String? accessToken, String? customUrlPath, double? width, double? height}) {
   if (imageKey == null || imageKey.trim().isEmpty) {
     return Container();
   }

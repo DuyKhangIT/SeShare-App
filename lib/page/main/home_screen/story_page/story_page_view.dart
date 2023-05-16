@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_app/models/delete_story/delete_story_request.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_controller.dart';
 import 'package:story/story_page_view.dart';
 
@@ -21,43 +22,48 @@ class _StoryPageState extends State<StoryPage> {
     StoryController storyController = Get.put(StoryController());
     return GetBuilder<StoryController>(
         builder: (controller) => SafeArea(
-                child: GestureDetector(
-              onTapDown: (details) {
-                storyController.onTapPrevious(details, context);
+                child: Scaffold(
+                    body: StoryPageView(
+              gestureItemBuilder: (context, pageIndex, storyIndex) {
+                return Global.listStoriesData[pageIndex].isMyStory == true
+                    ? deleteStory(pageIndex, storyIndex, storyController)
+                    : Container();
               },
-              child: Scaffold(
-                  body: StoryPageView(
-                indicatorPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                indicatorVisitedColor: Colors.blue,
-                indicatorUnvisitedColor: Colors.black.withOpacity(0.4),
-                itemBuilder: (context, pageIndex, storyIndex) {
-                  return contentStory(pageIndex, storyIndex, storyController);
-                },
-                initialPage: widget.index!,
+              indicatorDuration: const Duration(seconds: 15),
+              indicatorPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              indicatorVisitedColor: Colors.blue,
+              indicatorUnvisitedColor: Colors.white,
+              itemBuilder: (context, pageIndex, storyIndex) {
+                return contentStory(pageIndex, storyIndex, storyController);
+              },
+              initialPage: widget.index!,
 
-                /// number of stories on a page
-                storyLength: (pageIndex) {
-                  return Global.listStoriesData[pageIndex].stories!.length;
-                },
+              /// number of stories on a page
+              storyLength: (pageIndex) {
+                return Global.listStoriesData[pageIndex].stories!.length;
+              },
 
-                /// number of page
-                pageLength: Global.listStoriesData.length,
-              )),
-            )));
+              /// number of page
+              pageLength: Global.listStoriesData.length,
+            ))));
   }
 
   Widget contentStory(pageIndex, storyIndex, StoryController storyController) {
     return Stack(
       children: [
         /// photo
-        SizedBox(
+        Container(
           width: double.infinity,
           height: double.infinity,
-          child: getNetworkImage(
-              Global.listStoriesData[pageIndex].stories![storyIndex].photoPath,
-              width: MediaQuery.of(context).size.width / 1.5,
-              height: 400),
+          color: Colors.black,
+          child: Image.network(
+              Global.convertMedia(
+                  Global.listStoriesData[pageIndex].stories![storyIndex]
+                      .photoPath,
+                  MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height / 1.5),
+              fit: BoxFit.contain),
         ),
         Container(
           width: MediaQuery.of(context).size.width,
@@ -91,7 +97,7 @@ class _StoryPageState extends State<StoryPage> {
                   Global.listStoriesData[pageIndex].userInfoStoryResponse!
                       .fullName,
                   style: const TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 14,
                       fontFamily: 'Nunito Sans',
                       fontWeight: FontWeight.bold),
@@ -101,41 +107,45 @@ class _StoryPageState extends State<StoryPage> {
                 Global
                     .listStoriesData[pageIndex].stories![storyIndex].createTime,
                 style: const TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 10,
                     fontFamily: 'Nunito Sans',
                     fontWeight: FontWeight.w400),
               ),
               const SizedBox(width: 10),
               Image.asset(IconsAssets.icPublicMode,
-                  width: 11, height: 11, color: Colors.black)
+                  width: 11, height: 11, color: Colors.white),
+              const SizedBox(width: 120),
             ],
           ),
         ),
-        Positioned(
-          left: Global.listStoriesData[pageIndex].stories![storyIndex]
-                  .xPositionText +
-              100.0,
-          //xPosition,
-          top: Global
-              .listStoriesData[pageIndex].stories![storyIndex].yPositionText,
-          //yPosition,
-          child: Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(top: 200),
-              child: Text(
-                Global.listStoriesData[pageIndex].stories![storyIndex].text,
-                style: TextStyle(
-                    color: Color(int.parse(Global.listStoriesData[pageIndex]
-                        .stories![storyIndex].colorText)),
-                    fontSize: 14 *
-                        Global.listStoriesData[pageIndex].stories![storyIndex]
-                            .scaleText,
-                    fontFamily: 'Nunito Sans',
-                    fontWeight: FontWeight.bold),
-              )),
-        ),
       ],
+    );
+  }
+
+  Widget deleteStory(pageIndex, storyIndex, StoryController storyController) {
+    /// delete story
+    return GestureDetector(
+      onTap: () {
+        if (Global.isAvailableToClick()) {
+          DeleteStoryRequest deleteStoryRequest = DeleteStoryRequest(
+              Global.listStoriesData[pageIndex].stories![storyIndex].id);
+          storyController.deleteStory(deleteStoryRequest);
+        }
+      },
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: Container(
+          width: 40,
+          height: 25,
+          margin: const EdgeInsets.only(bottom: 20, right: 20),
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), color: Colors.white),
+          child: Image.asset(IconsAssets.icDeletePost,
+              width: 11, height: 11, color: Colors.black),
+        ),
+      ),
     );
   }
 }

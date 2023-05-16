@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_app/models/create_story/create_story_request.dart';
 import 'package:instagram_app/models/create_story/create_story_response.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../../../../api_http/handle_api.dart';
 import '../../../../models/upload_media/upload_media_response.dart';
@@ -15,10 +17,12 @@ import '../../../navigation_bar/navigation_bar_view.dart';
 
 class CreateStoryController extends GetxController {
   TextEditingController inputTextStoryController = TextEditingController();
+  ScreenshotController  screenShotController = ScreenshotController();
+  Uint8List? imageFile;
   File? avatar;
   String photo = "";
   String textStory = "";
-  String filePath = "";
+  String storyFilePath = "";
   double xPosition = 0.0;
   double yPosition = 0.0;
   double scaleValue = 2.0;
@@ -26,6 +30,9 @@ class CreateStoryController extends GetxController {
   bool addColor = false;
   bool isScale = false;
   bool isLoading = false;
+  RxBool isPublic = false.obs;
+  RxBool isPrivate = false.obs;
+  RxBool isFriend = false.obs;
   String colorValue = "";
   String privacy = "";
 
@@ -48,7 +55,7 @@ class CreateStoryController extends GetxController {
   }
 
   void handleCreateStory() {
-    if (avatar != null) {
+    if (storyFilePath.isNotEmpty) {
       uploadMedia();
     } else {
       debugPrint("Bạn chưa thêm hình");
@@ -63,7 +70,7 @@ class CreateStoryController extends GetxController {
       body = await HttpHelper.invokeSingleFile(
           Uri.parse("http://14.225.204.248:8080/api/photo/upload"),
           RequestType.post,
-          filePath,
+          storyFilePath,
           headers: null,
           body: null);
     } catch (error) {
@@ -75,8 +82,7 @@ class CreateStoryController extends GetxController {
     if (uploadMediaResponse.status == true) {
       photo = uploadMediaResponse.data!;
       if (photo.isNotEmpty) {
-        CreateStoryRequest createStoryRequest = CreateStoryRequest(photo,
-            xPosition, yPosition, scaleValue, colorValue, textStory, privacy);
+        CreateStoryRequest createStoryRequest = CreateStoryRequest(photo, privacy);
         createStory(createStoryRequest);
       }
     }
@@ -100,10 +106,6 @@ class CreateStoryController extends GetxController {
     }
     avatar = picture;
     Navigator.pop(Get.context!);
-
-    String filePaths;
-    filePaths = picture.path;
-    filePath = filePaths;
     update();
   }
 
@@ -121,9 +123,6 @@ class CreateStoryController extends GetxController {
     }
     avatar = imgFrame;
     Navigator.pop(Get.context!);
-    String filePaths;
-    filePaths = imgFrame.path;
-    filePath = filePaths;
     update();
   }
 

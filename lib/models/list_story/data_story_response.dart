@@ -5,8 +5,9 @@ class DataStoryResponse {
   String id = "";
   List<StoryObjectResponse>? stories;
   UserInfoStoryResponse? userInfoStoryResponse;
+  bool isMyStory = false;
 
-  DataStoryResponse(this.id, this.stories, this.userInfoStoryResponse);
+  DataStoryResponse(this.id, this.stories, this.userInfoStoryResponse,this.isMyStory);
   DataStoryResponse.buildDefault();
   factory DataStoryResponse.fromJson(Map<String, dynamic> json) {
     List<StoryObjectResponse>? listStories = [];
@@ -22,6 +23,9 @@ class DataStoryResponse {
         listStories,
         (json['user'] != null)
             ? UserInfoStoryResponse.fromJson(json['user'])
-            : null);
+            : null,
+        json['is_your_stories'],
+    );
+
   }
 }
