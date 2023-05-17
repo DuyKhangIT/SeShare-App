@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
+import 'package:instagram_app/page/main/profile_screen/stories_archive/stories_archive_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
 
 import '../../../util/global.dart';
@@ -363,8 +364,8 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
         Container(
             width: MediaQuery.of(context).size.width,
-            height: 180,
-            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            height: 200,
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -392,6 +393,26 @@ class _ProfileScreenState extends State<ProfileScreen>
                       const SizedBox(width: 10),
                       const Text(
                         "Cài đặt",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Nunito Sans',
+                            color: Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+
+                GestureDetector(
+                  onTap: (){
+                    Get.to(() => const StoriesArchiveScreen());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(IconsAssets.icWaitingAccept),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Kho lưu trữ",
                         style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Nunito Sans',
@@ -493,16 +514,31 @@ class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
         padding: const EdgeInsets.only(bottom: 75),
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: 5,
-        itemBuilder: (context, index) => contentGridView());
+        itemCount: 3,
+        // Global.listFavoriteStories!.stories!.isNotEmpty
+        //     ?Global.listFavoriteStories!.stories!.length
+        //     :0,
+        itemBuilder: (context, index) {
+          return contentGridView(index);
+          // if (Global.listFavoriteStories!.stories!.isNotEmpty) {
+          //   return contentGridView(index);
+          // } else {
+          //   return Container();
+          // }
+        });
   }
 
   /// content gridview
-  Widget contentGridView() {
+  Widget contentGridView(index) {
     return Padding(
       padding: const EdgeInsets.all(1),
       child: ClipRect(
-        child: Image.asset(ImageAssets.imgTet, fit: BoxFit.cover),
+        child:
+        Image.asset(ImageAssets.imgMeo)
+        // getNetworkImage(
+        //     Global.listFavoriteStories!.stories![index].photoPath,
+        //     width: null,
+        //     height: null),
       ),
     );
   }

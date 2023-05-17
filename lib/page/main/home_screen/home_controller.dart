@@ -9,6 +9,7 @@ import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_an
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_response.dart';
 import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/like_post/like_post_response.dart';
+import 'package:instagram_app/models/list_favorite_stories_another_user/list_favorite_stories_another_user_response.dart';
 
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
 import 'package:instagram_app/models/list_story/list_story_response.dart';
@@ -19,6 +20,7 @@ import '../../../models/another_user_profile/another_user_profile_request.dart';
 import '../../../models/delete_post/delete_post_response.dart';
 import '../../../models/list_comments_post/list_comments_post_request.dart';
 import '../../../models/list_comments_post/list_comments_post_response.dart';
+import '../../../models/list_favorite_stories_another_user/list_favorite_stories_another_user_request.dart';
 import '../../../models/user_profile/profile_response.dart';
 import '../../../util/global.dart';
 import '../another_profile_screen/another_profile_screen.dart';
@@ -90,6 +92,15 @@ class HomeController extends GetxController {
         DeletePostRequest(postIdForDeletePost);
     deletePost(deletePostRequest);
     update();
+  }
+
+  void loadListFavoriteStoriesAnotherUser() {
+    ListFavoriteStoriesAnotherUserRequest listFavoriteStoriesAnotherUserRequest = ListFavoriteStoriesAnotherUserRequest(userIdForLoadListAnotherProfile);
+    getListFavoriteStoriesAnotherUser(listFavoriteStoriesAnotherUserRequest);
+    update();
+    // if (Global.listFavoriteStories != null) {
+    //   Get.to(() => const AnOtherProfileScreen());
+    // }
   }
 
   /// call api list post
@@ -339,7 +350,7 @@ class HomeController extends GetxController {
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("http://14.225.204.248:8080/api/story/get-list-stories"),
+          Uri.parse("http://14.225.204.248:8080/api/story/home-page-stories"),
           RequestType.post,
           headers: null,
           body: null);
@@ -358,5 +369,35 @@ class HomeController extends GetxController {
       update();
     }
     return listStoryResponse;
+  }
+
+  /// call api list favorite stories another user
+  Future<ListFavoriteStoriesAnotherUserResponse> getListFavoriteStoriesAnotherUser(
+      ListFavoriteStoriesAnotherUserRequest listFavoriteStoriesAnotherUserRequest) async {
+    ListFavoriteStoriesAnotherUserResponse listFavoriteStoriesAnotherUserResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/story/get-favorite"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder()
+              .convert(listFavoriteStoriesAnotherUserRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to get list favorite stories $error");
+      rethrow;
+    }
+    if (body == null) return ListFavoriteStoriesAnotherUserResponse.buildDefault();
+    //get data from api here
+    listFavoriteStoriesAnotherUserResponse = ListFavoriteStoriesAnotherUserResponse.fromJson(body);
+    if (listFavoriteStoriesAnotherUserResponse.status == true) {
+      debugPrint(
+          "------------- GET LIST FAVORITE STORIES ANOTHER USER SUCCESSFULLY -------------");
+      //Global.listFavoriteStories = listFavoriteStoriesAnotherUserResponse.data;
+      update();
+    }else{
+      debugPrint("------------- ERROR API-------------");
+    }
+    return listFavoriteStoriesAnotherUserResponse;
   }
 }

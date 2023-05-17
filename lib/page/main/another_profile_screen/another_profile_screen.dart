@@ -476,11 +476,8 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
     return Padding(
         padding: const EdgeInsets.all(1),
         child: ClipRect(
-          child: getNetworkImage(
-              widget.tabController.listPhotos[index],
-              width: null,
-              height: null)
-        ));
+            child: getNetworkImage(widget.tabController.listPhotos[index],
+                width: null, height: null)));
   }
 
   Widget shimmerContentGridView() {
@@ -517,16 +514,30 @@ class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
         padding: const EdgeInsets.only(bottom: 75),
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: 5,
-        itemBuilder: (context, index) => contentGridView());
+        itemCount: 3,
+        // Global.listFavoriteStories!.stories!.isNotEmpty
+        // ?Global.listFavoriteStories!.stories!.length
+        // :0,
+        itemBuilder: (context, index) {
+          return contentGridView(index);
+          // if (Global.listFavoriteStories!.stories!.isNotEmpty) {
+          //   return contentGridView(index);
+          // } else {
+          //   return Container();
+          // }
+        });
   }
 
   /// content gridview
-  Widget contentGridView() {
+  Widget contentGridView(index) {
     return Padding(
       padding: const EdgeInsets.all(1),
       child: ClipRect(
-        child: Image.asset(ImageAssets.imgTet, fit: BoxFit.cover),
+        child: Image.asset(ImageAssets.imgMeo)
+        // getNetworkImage(
+        //     Global.listFavoriteStories!.stories![index].photoPath,
+        //     width: null,
+        //     height: null),
       ),
     );
   }

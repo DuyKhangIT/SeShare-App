@@ -21,6 +21,8 @@ import 'package:instagram_app/page/main/post_screen/post_view.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/change_password/change_password_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
+import 'package:instagram_app/page/main/profile_screen/stories_archive/stories_achive_binding.dart';
+import 'package:instagram_app/page/main/profile_screen/stories_archive/stories_archive_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_private_info/update_private_info_view.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_private_info/update_private_infor_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_binding.dart';
@@ -117,6 +119,8 @@ class AppRoutes {
   static const String settingScreen = "/seShare_setting_screen";
   /// change password
   static const String changePasswordScreen = "/seShare_changePassword_screen";
+  /// stories archive
+  static const String storiesArchiveScreen = "/seShare_storiesArchive_screen";
 
   /// Chat
   static const String chatListScreen = "/seShare_chat_list_screen";
@@ -294,6 +298,12 @@ class AppRoutes {
       name: updatePrivateInfoScreen,
       page: () => const UpdatePrivateInfoScreen(),
       binding: UpdatePrivateInfoBinding(),
+    ),
+
+    GetPage(
+      name: storiesArchiveScreen,
+      page: () => const StoriesArchiveScreen(),
+      binding: StoriesArchiveBinding(),
     ),
   ];
 }

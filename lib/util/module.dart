@@ -16,6 +16,8 @@ String removeZeroAtFirstDigitPhoneNumber(String inputPhoneNumber) {
 const String dateTimeFormat = "HH:mm, dd/MM/yyyy";
 const String mmDDYYYYFormat = "MM/dd/yyyy";
 const String ddMMYYYYFormat = "dd/MM/yyyy";
+const String ddFormat = "dd";
+const String MMFormat = "MM";
 
 /// format date time to 'HH:mm, dd/MM/yyyy'
 String formatDateTime(String dateTime) {
@@ -30,6 +32,16 @@ String formatMMDDYYYY(String dateTime) {
 
 String formatDDMMYYYY(String dateTime) {
   return MyFormat.DateFormat(ddMMYYYYFormat)
+      .format(DateTime.parse((dateTime)).toLocal());
+}
+
+String formatDD(String dateTime) {
+  return MyFormat.DateFormat(ddFormat)
+      .format(DateTime.parse((dateTime)).toLocal());
+}
+
+String formatMM(String dateTime) {
+  return MyFormat.DateFormat(MMFormat)
       .format(DateTime.parse((dateTime)).toLocal());
 }
 

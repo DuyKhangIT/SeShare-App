@@ -1,4 +1,4 @@
-class StoryObjectResponse {
+class StoryObjectFavoriteStoriesAnotherUserResponse {
   String id = "";
   String photoPath = "";
   String privacy = "";
@@ -7,13 +7,13 @@ class StoryObjectResponse {
   String createTime = "";
   bool isFavorite = false;
 
-  StoryObjectResponse(this.id, this.photoPath, this.privacy, this.userId,
+  StoryObjectFavoriteStoriesAnotherUserResponse(this.id, this.photoPath, this.privacy, this.userId,
       this.isOver, this.createTime,this.isFavorite);
 
-  StoryObjectResponse.buildDefault();
+  StoryObjectFavoriteStoriesAnotherUserResponse.buildDefault();
 
-  factory StoryObjectResponse.fromJson(Map<String, dynamic> json) {
-    return StoryObjectResponse(
+  factory StoryObjectFavoriteStoriesAnotherUserResponse.fromJson(Map<String, dynamic> json) {
+    return StoryObjectFavoriteStoriesAnotherUserResponse(
       json['_id'],
       json['photo_path'],
       json['privacy'],

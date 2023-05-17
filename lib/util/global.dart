@@ -1,19 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:instagram_app/models/list_story/data_story_response.dart';
 
-import '../models/another_user_profile/another_profile_response.dart';
 import '../models/another_user_profile/another_user_profile_response.dart';
-import '../models/list_comments_post/comment_object_response.dart';
 import '../models/list_comments_post/data_list_comments_post_response.dart';
+import '../models/list_my_stories/data_list_my_stories_response.dart';
 import '../models/list_posts_home/data_posts_response.dart';
-import '../models/list_posts_home/user_infor_response.dart';
 import '../models/user_profile/user_profile_response.dart';
 
 class Global {
-
   static String verifyFireBase = "";
 
   static const mobileBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
@@ -26,31 +21,45 @@ class Global {
   static LatLng? latLng;
   static String currentLocation = "";
   static String mToken = "";
+
   /// new phone number from register
   static String phoneNumber = "";
+
   /// new password from register
   static String registerNewPassword = "";
+
   /// new full name from register
   static String registerNewFullName = "";
+
   /// new birthday from register
   static String registerNewBirthday = "";
+
   /// new avatar from register
   static String registerNewAvatar = "";
   static String userId = "";
   static UserProfileResponse? userProfileResponse;
   static List<String> listPhotoAnOtherUser = [];
   static AnOtherUserProfileResponse? anOtherUserProfileResponse;
+
   /// data list post
   static List<DataPostsResponse> listPostInfo = [];
   static List<DataStoryResponse> listStoriesData = [];
+
+  /// list my stories
+  static List<DataListMyStoriesResponse> listMyStories = [];
+
   /// info my post
   static DataPostsResponse? infoMyPost;
+
   /// new phone number from forgot password
   static String phoneNumberForgotPassword = "";
+
   /// data list cmt response
   static DataListCommentsPostResponse? dataListCmt;
+
   /// id post for cmt post
   static String idPost = "";
+
   /// block auto click or many time click
   static int mTimeClick = 0;
 
@@ -63,7 +72,7 @@ class Global {
     return false;
   }
 
-  static String convertMedia(String path,double? width,double? height) {
+  static String convertMedia(String path, double? width, double? height) {
     debugPrint("Loaded path: " + path);
     return "http://14.225.204.248:8080/$path?width=$width&height=$height&fit=cover";
   }

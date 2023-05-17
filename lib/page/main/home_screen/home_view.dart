@@ -453,15 +453,15 @@ class _HomeState extends State<Home> {
                 /// avatar + username + location
                 GestureDetector(
                   onTap: () {
-                    if (Global.listPostInfo[index].userInfoResponse!.id !=
-                        Global.userProfileResponse!.id) {
-                      homeController.userIdForLoadListAnotherProfile =
-                          Global.listPostInfo[index].userInfoResponse!.id;
-                      homeController.loadListPhotoAnotherUser();
-                      homeController.loadAnotherProfile();
-                    } else {
-                      Get.offAll(() => NavigationBarView(currentIndex: 4));
-                    }
+                      if (Global.listPostInfo[index].userInfoResponse!.id !=
+                          Global.userProfileResponse!.id) {
+                        homeController.userIdForLoadListAnotherProfile =
+                            Global.listPostInfo[index].userInfoResponse!.id;
+                        homeController.loadListPhotoAnotherUser();
+                        homeController.loadAnotherProfile();
+                      } else {
+                        Get.offAll(() => NavigationBarView(currentIndex: 4));
+                      }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,

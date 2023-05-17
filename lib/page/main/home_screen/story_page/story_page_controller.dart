@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:instagram_app/models/delete_story/delete_story_request.dart';
 import 'package:instagram_app/models/delete_story/delete_story_response.dart';
+import 'package:instagram_app/models/favorite_story/favorite_story_request.dart';
+import 'package:instagram_app/models/favorite_story/favorite_story_response.dart';
 
 import '../../../../api_http/handle_api.dart';
 import '../../../navigation_bar/navigation_bar_view.dart';
@@ -22,7 +23,7 @@ class StoryController extends GetxController {
   }
 
 
-  /// handle delete post api
+  /// handle delete story api
   Future<DeleteStoryResponse> deleteStory(
       DeleteStoryRequest deleteStoryRequest) async {
     DeleteStoryResponse deleteStoryResponse;
@@ -42,10 +43,34 @@ class StoryController extends GetxController {
     deleteStoryResponse = DeleteStoryResponse.fromJson(body);
     if (deleteStoryResponse.status == true) {
       Get.offAll(() => NavigationBarView(currentIndex: 0));
-      //getListPosts();
       debugPrint("------------- DELETE STORY SUCCESSFULLY -------------");
       update();
     }
     return deleteStoryResponse;
+  }
+
+  /// handle favorite story api
+  Future<FavoriteStoryResponse> favoriteStory(FavoriteStoryRequest favoriteStoryRequest) async {
+    FavoriteStoryResponse favoriteStoryResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/story/update-favorite"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(favoriteStoryRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to favorite story $error");
+      rethrow;
+    }
+    if (body == null) return FavoriteStoryResponse.buildDefault();
+    //get data from api here
+    favoriteStoryResponse = FavoriteStoryResponse.fromJson(body);
+    if (favoriteStoryResponse.status == true) {
+      debugPrint("----------FAVORITE STORY SUCCESSFULLY----------");
+      Get.offAll(() => NavigationBarView(currentIndex: 0));
+      update();
+    }
+    return favoriteStoryResponse;
   }
 }
