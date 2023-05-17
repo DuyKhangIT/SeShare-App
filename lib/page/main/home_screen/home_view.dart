@@ -622,23 +622,6 @@ class _HomeState extends State<Home> {
                     fontFamily: 'Nunito Sans',
                     fontWeight: FontWeight.w400),
               )
-
-              // RichText(
-              //   text: TextSpan(
-              //       style: TextStyle(
-              //           color: Theme.of(context).textTheme.headline6?.color,
-              //           fontFamily: 'Nunito Sans'),
-              //       children: [
-              //         TextSpan(
-              //             text:
-              //             "${ Global.listPostInfo[index].userInfoResponse!.fullName}  ",
-              //             style: const TextStyle(
-              //                 fontSize: 14, fontWeight: FontWeight.bold)),
-              //         TextSpan(
-              //             text:  Global.listPostInfo[index].caption,
-              //             style: const TextStyle(fontSize: 14)),
-              //       ]),
-              // ),
               ),
 
           /// image post

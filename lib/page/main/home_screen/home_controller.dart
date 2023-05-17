@@ -310,7 +310,7 @@ class HomeController extends GetxController {
           "------------- GET LIST COMMENT POST SUCCESSFULLY -------------");
       Global.dataListCmt = listCommentsPostResponse.data;
       update();
-      Get.to(() => const CommentScreen());
+      Get.to(() => CommentScreen());
     }
     return listCommentsPostResponse;
   }

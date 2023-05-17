@@ -50,6 +50,7 @@ String formatTimeToHour(String time) {
       .format(DateTime.parse((time)).toLocal());
 }
 
+
 String getAddressFromPlaceCheckIn(Placemark place) {
   return ((place.street.toString().isNotEmpty)
           ? '${place.street.toString()}, '

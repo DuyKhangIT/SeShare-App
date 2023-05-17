@@ -8,7 +8,6 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../util/global.dart';
 import '../../../../util/module.dart';
-import '../../../navigation_bar/navigation_bar_view.dart';
 
 class UpdatePostScreen extends StatefulWidget {
   const UpdatePostScreen({Key? key}) : super(key: key);

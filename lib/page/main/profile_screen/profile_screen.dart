@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/stories_archive/stories_archive_screen.dart';
@@ -486,11 +487,16 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
 
   /// content gridview
   Widget contentGridView(index) {
-    return Padding(
-        padding: const EdgeInsets.all(1),
-        child: ClipRect(
-            child: getNetworkImage(widget.tabController.listPhotos[index],
-                width: null, height: null)));
+    return GestureDetector(
+      onTap: (){
+        Get.to(() => const PostArchiveScreen());
+      },
+      child: Padding(
+          padding: const EdgeInsets.all(1),
+          child: ClipRect(
+              child: getNetworkImage(widget.tabController.listPhotos[index],
+                  width: null, height: null))),
+    );
   }
 
 }

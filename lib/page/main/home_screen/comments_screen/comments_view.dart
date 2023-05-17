@@ -9,7 +9,8 @@ import '../../../../models/delete_comment_post/delete_comment_post_request.dart'
 import '../../../../util/global.dart';
 
 class CommentScreen extends StatefulWidget {
-  const CommentScreen({Key? key}) : super(key: key);
+  bool? isMyPost = false;
+  CommentScreen({Key? key,this.isMyPost}) : super(key: key);
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
@@ -25,7 +26,9 @@ class _CommentScreenState extends State<CommentScreen> {
                 leading: GestureDetector(
                     onTap: () {
                       if (Global.isAvailableToClick()) {
-                        commentsController.updateListPosts();
+                        widget.isMyPost == true
+                        ?commentsController.updateListMyPosts()
+                        :commentsController.updateListPosts();
                       }
                     },
                     child: Icon(

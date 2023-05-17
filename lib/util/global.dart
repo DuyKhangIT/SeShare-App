@@ -4,6 +4,7 @@ import 'package:instagram_app/models/list_story/data_story_response.dart';
 
 import '../models/another_user_profile/another_user_profile_response.dart';
 import '../models/list_comments_post/data_list_comments_post_response.dart';
+import '../models/list_my_post/data_my_post_response.dart';
 import '../models/list_my_stories/data_list_my_stories_response.dart';
 import '../models/list_posts_home/data_posts_response.dart';
 import '../models/user_profile/user_profile_response.dart';
@@ -48,7 +49,7 @@ class Global {
   /// list my stories
   static List<DataListMyStoriesResponse> listMyStories = [];
 
-  /// info my post
+  /// info post home
   static DataPostsResponse? infoMyPost;
 
   /// new phone number from forgot password

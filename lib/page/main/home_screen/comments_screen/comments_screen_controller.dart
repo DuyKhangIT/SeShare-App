@@ -8,10 +8,13 @@ import 'package:instagram_app/models/delete_comment_post/delete_comment_post_req
 import 'package:instagram_app/models/delete_comment_post/delete_comment_post_response.dart';
 import 'package:instagram_app/models/edit_comment_post/edit_comment_post_request.dart';
 import 'package:instagram_app/models/edit_comment_post/edit_comment_post_response.dart';
+import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_controller.dart';
+import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_screen.dart';
 
 import '../../../../api_http/handle_api.dart';
 import '../../../../models/list_comments_post/list_comments_post_request.dart';
 import '../../../../models/list_comments_post/list_comments_post_response.dart';
+import '../../../../models/list_my_post/list_my_post_response.dart';
 import '../../../../models/list_posts_home/list_posts_home_response.dart';
 import '../../../../util/global.dart';
 import '../../../navigation_bar/navigation_bar_view.dart';
@@ -164,5 +167,29 @@ class CommentsController extends GetxController {
       Get.to(() => NavigationBarView(currentIndex: 0));
     }
     return listPostsHomeResponse;
+  }
+
+  /// call api update list post after cmt
+  Future<ListMyPostResponse> updateListMyPosts() async {
+    ListMyPostResponse listMyPostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/get-list-all-posts"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list my posts $error");
+      rethrow;
+    }
+    if (body == null) return ListMyPostResponse.buildDefault();
+    //get data from api here
+    listMyPostResponse = ListMyPostResponse.fromJson(body);
+    if (listMyPostResponse.status == true) {
+      debugPrint("------------- GET LIST MY POSTS SUCCESSFULLY--------------");
+      Get.offAll(() => const PostArchiveScreen());
+    }
+    return listMyPostResponse;
   }
 }
