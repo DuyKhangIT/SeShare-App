@@ -10,6 +10,7 @@ import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_an
 import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/like_post/like_post_response.dart';
 import 'package:instagram_app/models/list_favorite_stories_another_user/list_favorite_stories_another_user_response.dart';
+import 'package:instagram_app/models/list_my_favorite_stories/list_my_favorite_stories_response.dart';
 
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
 import 'package:instagram_app/models/list_story/list_story_response.dart';
@@ -45,6 +46,7 @@ class HomeController extends GetxController {
     getListPosts();
     getListStories();
     loadUserProfile();
+    getListMyFavoriteStories();
     update();
     super.onReady();
   }
@@ -66,9 +68,6 @@ class HomeController extends GetxController {
         AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
     loadAnotherUserProfile(anotherProfileRequest);
     update();
-    if (Global.anOtherUserProfileResponse != null) {
-      Get.to(() => const AnOtherProfileScreen());
-    }
   }
 
   void loadAnotherProfileForInfoAnotherUser() {
@@ -95,12 +94,14 @@ class HomeController extends GetxController {
   }
 
   void loadListFavoriteStoriesAnotherUser() {
-    ListFavoriteStoriesAnotherUserRequest listFavoriteStoriesAnotherUserRequest = ListFavoriteStoriesAnotherUserRequest(userIdForLoadListAnotherProfile);
+    ListFavoriteStoriesAnotherUserRequest
+        listFavoriteStoriesAnotherUserRequest =
+        ListFavoriteStoriesAnotherUserRequest(userIdForLoadListAnotherProfile);
     getListFavoriteStoriesAnotherUser(listFavoriteStoriesAnotherUserRequest);
     update();
-    // if (Global.listFavoriteStories != null) {
-    //   Get.to(() => const AnOtherProfileScreen());
-    // }
+    if (Global.listFavoriteStoriesAnotherUser.isNotEmpty) {
+      Get.to(() => const AnOtherProfileScreen());
+    }
   }
 
   /// call api list post
@@ -371,14 +372,46 @@ class HomeController extends GetxController {
     return listStoryResponse;
   }
 
+  /// call api list my favorite stories
+  Future<ListMyFavoriteStoriesResponse> getListMyFavoriteStories() async {
+    ListMyFavoriteStoriesResponse listMyFavoriteStoriesResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(
+              "http://14.225.204.248:8080/api/story/get-my-favorite"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list my favorite stories $error");
+      rethrow;
+    }
+    if (body == null) return ListMyFavoriteStoriesResponse.buildDefault();
+    //get data from api here
+    listMyFavoriteStoriesResponse = ListMyFavoriteStoriesResponse.fromJson(body);
+    if (listMyFavoriteStoriesResponse.status == true) {
+      debugPrint(
+          "------------- GET LIST MY FAVORITE STORIES SUCCESSFULLY -------------");
+      Global.listMyFavoriteStories = listMyFavoriteStoriesResponse.data!.stories!;
+      update();
+    } else {
+      debugPrint("------------- ERROR API-------------");
+    }
+    return listMyFavoriteStoriesResponse;
+  }
+
   /// call api list favorite stories another user
-  Future<ListFavoriteStoriesAnotherUserResponse> getListFavoriteStoriesAnotherUser(
-      ListFavoriteStoriesAnotherUserRequest listFavoriteStoriesAnotherUserRequest) async {
+  Future<ListFavoriteStoriesAnotherUserResponse>
+      getListFavoriteStoriesAnotherUser(
+          ListFavoriteStoriesAnotherUserRequest
+              listFavoriteStoriesAnotherUserRequest) async {
     ListFavoriteStoriesAnotherUserResponse listFavoriteStoriesAnotherUserResponse;
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("http://14.225.204.248:8080/api/story/get-favorite"),
+          Uri.parse(
+              "http://14.225.204.248:8080/api/story/get-another-favorite"),
           RequestType.post,
           headers: null,
           body: const JsonEncoder()
@@ -389,13 +422,14 @@ class HomeController extends GetxController {
     }
     if (body == null) return ListFavoriteStoriesAnotherUserResponse.buildDefault();
     //get data from api here
-    listFavoriteStoriesAnotherUserResponse = ListFavoriteStoriesAnotherUserResponse.fromJson(body);
+    listFavoriteStoriesAnotherUserResponse =
+        ListFavoriteStoriesAnotherUserResponse.fromJson(body);
     if (listFavoriteStoriesAnotherUserResponse.status == true) {
       debugPrint(
           "------------- GET LIST FAVORITE STORIES ANOTHER USER SUCCESSFULLY -------------");
-      //Global.listFavoriteStories = listFavoriteStoriesAnotherUserResponse.data;
+      Global.listFavoriteStoriesAnotherUser = listFavoriteStoriesAnotherUserResponse.data!.stories!;
       update();
-    }else{
+    } else {
       debugPrint("------------- ERROR API-------------");
     }
     return listFavoriteStoriesAnotherUserResponse;

@@ -91,7 +91,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child:
-                      Global.userProfileResponse!.avatarPath!.isNotEmpty
+                      postArchiveController.data[index].userInfoResponse!.avatar.isNotEmpty
                           ?
                       SizedBox(
                         width: 60,
@@ -99,7 +99,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(14),
                             child: getNetworkImage(
-                                Global.userProfileResponse!.avatarPath,
+                                postArchiveController.data[index].userInfoResponse!.avatar,
                                 width: 60,
                                 height: 60)
                         ),
@@ -120,7 +120,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(Global.userProfileResponse!.fullName,
+                          Text(postArchiveController.data[index].userInfoResponse!.fullName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -133,7 +133,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(formatTimeToHour(postArchiveController.data[index].updatedAt!),
+                              Text(postArchiveController.data[index].updatedAt!,
                                   style: const TextStyle(
                                       fontSize: 13,
                                       fontFamily: 'Nunito Sans')),

@@ -95,7 +95,10 @@ class _StoryPageState extends State<StoryPage> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: widget.isStoriesArchive == true
-                      ? Image.asset(ImageAssets.imgMeo)
+                      ? getNetworkImage(
+                      Global.listMyStories[storyIndex].userInfoResponse!.avatar,
+                      width: 65,
+                      height: 65)
                       : getNetworkImage(
                           Global.listStoriesData[pageIndex]
                               .userInfoStoryResponse!.avatar,
@@ -112,7 +115,7 @@ class _StoryPageState extends State<StoryPage> {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   widget.isStoriesArchive == true
-                      ? "Chờ sửa API"
+                      ? Global.listMyStories[storyIndex].userInfoResponse!.fullName
                       : Global.listStoriesData[pageIndex].userInfoStoryResponse!
                           .fullName,
                   style: const TextStyle(

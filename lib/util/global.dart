@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:instagram_app/models/list_my_favorite_stories/story_object_my_favorite_stories_response.dart';
 import 'package:instagram_app/models/list_story/data_story_response.dart';
 
 import '../models/another_user_profile/another_user_profile_response.dart';
 import '../models/list_comments_post/data_list_comments_post_response.dart';
+import '../models/list_favorite_stories_another_user/story_object_favorite_stories_another_user_response.dart';
 import '../models/list_my_post/data_my_post_response.dart';
 import '../models/list_my_stories/data_list_my_stories_response.dart';
 import '../models/list_posts_home/data_posts_response.dart';
@@ -48,6 +50,12 @@ class Global {
 
   /// list my stories
   static List<DataListMyStoriesResponse> listMyStories = [];
+
+  /// list favorite stories another user
+  static List<StoryObjectFavoriteStoriesAnotherUserResponse> listFavoriteStoriesAnotherUser = [];
+
+  /// list my favorite stories
+  static List<StoryObjectMyFavoriteStoriesResponse> listMyFavoriteStories = [];
 
   /// info post home
   static DataPostsResponse? infoMyPost;

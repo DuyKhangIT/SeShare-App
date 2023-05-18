@@ -459,6 +459,7 @@ class _HomeState extends State<Home> {
                             Global.listPostInfo[index].userInfoResponse!.id;
                         homeController.loadListPhotoAnotherUser();
                         homeController.loadAnotherProfile();
+                        homeController.loadListFavoriteStoriesAnotherUser();
                       } else {
                         Get.offAll(() => NavigationBarView(currentIndex: 4));
                       }

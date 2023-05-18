@@ -53,7 +53,7 @@ class PostArchiveController extends GetxController {
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("http://14.225.204.248:8080/api/photo/get-list-all-posts"),
+          Uri.parse("http://14.225.204.248:8080/api/photo/get-list-my-posts"),
           RequestType.post,
           headers: null,
           body: null);
@@ -80,7 +80,7 @@ class PostArchiveController extends GetxController {
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("http://14.225.204.248:8080/api/photo/get-list-all-posts"),
+          Uri.parse("http://14.225.204.248:8080/api/photo/get-list-my-posts"),
           RequestType.post,
           headers: null,
           body: null);
@@ -94,6 +94,7 @@ class PostArchiveController extends GetxController {
     if (listMyPostResponse.status == true) {
       debugPrint("------------- GET LIST MY POSTS SUCCESSFULLY--------------");
       data = listMyPostResponse.data!;
+      update();
     }
     return listMyPostResponse;
   }

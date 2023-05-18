@@ -1,3 +1,5 @@
+import 'package:instagram_app/models/list_my_post/user_infor_my_post_response.dart';
+
 class DataMyPostResponse {
   String id = "";
   List<String>? photoPath;
@@ -8,7 +10,7 @@ class DataMyPostResponse {
   int? totalCmt;
   bool isAvatar = false;
   String privacy = "";
-  String userId = "";
+  UserInfoMyPostResponse? userInfoResponse;
   String userLocation = "";
   String checkInLocation = "";
   String? updatedAt = "";
@@ -23,7 +25,7 @@ class DataMyPostResponse {
       this.totalCmt,
       this.isAvatar,
       this.privacy,
-      this.userId,
+      this.userInfoResponse,
       this.userLocation,
       this.checkInLocation,
       this.updatedAt);
@@ -53,7 +55,9 @@ class DataMyPostResponse {
         json['total_comment'],
         json['isAvatar'],
         json['privacy'],
-        json['user_id'],
+        (json['user_id'] != null)
+            ? UserInfoMyPostResponse.fromJson(json['user_id'])
+            : null,
         json['user_location'],
         json['checkin_location'],
         json['uploadAt']);

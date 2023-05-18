@@ -514,17 +514,16 @@ class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
         padding: const EdgeInsets.only(bottom: 75),
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: 3,
-        // Global.listFavoriteStories!.stories!.isNotEmpty
-        // ?Global.listFavoriteStories!.stories!.length
-        // :0,
+        itemCount:
+          Global.listFavoriteStoriesAnotherUser.isNotEmpty
+        ? Global.listFavoriteStoriesAnotherUser.length
+        : 0,
         itemBuilder: (context, index) {
-          return contentGridView(index);
-          // if (Global.listFavoriteStories!.stories!.isNotEmpty) {
-          //   return contentGridView(index);
-          // } else {
-          //   return Container();
-          // }
+          if (Global.listFavoriteStoriesAnotherUser.isNotEmpty) {
+            return contentGridView(index);
+          } else {
+            return Container();
+          }
         });
   }
 
@@ -533,11 +532,11 @@ class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
     return Padding(
       padding: const EdgeInsets.all(1),
       child: ClipRect(
-        child: Image.asset(ImageAssets.imgMeo)
-        // getNetworkImage(
-        //     Global.listFavoriteStories!.stories![index].photoPath,
-        //     width: null,
-        //     height: null),
+        child:
+        getNetworkImage(
+            Global.listFavoriteStoriesAnotherUser[index].photoPath,
+            width: null,
+            height: null),
       ),
     );
   }
