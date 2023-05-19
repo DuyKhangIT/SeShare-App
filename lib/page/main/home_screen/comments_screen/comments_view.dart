@@ -10,7 +10,8 @@ import '../../../../util/global.dart';
 
 class CommentScreen extends StatefulWidget {
   bool? isMyPost = false;
-  CommentScreen({Key? key,this.isMyPost}) : super(key: key);
+  bool? isAnotherPost = false;
+  CommentScreen({Key? key,this.isMyPost,this.isAnotherPost}) : super(key: key);
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
@@ -26,7 +27,9 @@ class _CommentScreenState extends State<CommentScreen> {
                 leading: GestureDetector(
                     onTap: () {
                       if (Global.isAvailableToClick()) {
-                        widget.isMyPost == true
+                        widget.isAnotherPost == true
+                        ?commentsController.handleListAnotherPost()
+                        :widget.isMyPost == true
                         ?commentsController.updateListMyPosts()
                         :commentsController.updateListPosts();
                       }

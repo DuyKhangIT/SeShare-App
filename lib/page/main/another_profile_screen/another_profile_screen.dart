@@ -6,6 +6,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../util/global.dart';
 import '../../../util/module.dart';
+import '../profile_screen/posts_archive/post_archive_screen.dart';
 
 class AnOtherProfileScreen extends StatefulWidget {
   const AnOtherProfileScreen({Key? key}) : super(key: key);
@@ -325,7 +326,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           alignment: Alignment.topLeft,
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
+                              anOtherProfileController.getListPosts();
                             },
                             child: Container(
                               width: 30,
@@ -412,7 +413,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           ),
                           child: Image.asset(IconsAssets.icShare)),
                       const SizedBox(height: 5),
-                      Text("Story của ${anOtherProfileController.fullName}",
+                      Text("Tin nổi bật của ${anOtherProfileController.fullName}",
                           style: const TextStyle(
                               fontSize: 12, fontFamily: 'Nunito Sans'))
                     ],
@@ -463,7 +464,7 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
             return shimmerContentGridView();
           } else {
             if (widget.tabController.listPhotos.isNotEmpty) {
-              return contentGridView(index);
+              return contentGridView(widget.tabController,index);
             } else {
               return Container();
             }
@@ -472,12 +473,17 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
   }
 
   /// content gridview
-  Widget contentGridView(index) {
-    return Padding(
-        padding: const EdgeInsets.all(1),
-        child: ClipRect(
-            child: getNetworkImage(widget.tabController.listPhotos[index],
-                width: null, height: null)));
+  Widget contentGridView(AnOtherProfileController anOtherProfileController,index) {
+    return GestureDetector(
+      onTap: (){
+        Get.to(() =>  PostArchiveScreen(isAnotherPost: true));
+      },
+      child: Padding(
+          padding: const EdgeInsets.all(1),
+          child: ClipRect(
+              child: getNetworkImage(widget.tabController.listPhotos[index],
+                  width: null, height: null))),
+    );
   }
 
   Widget shimmerContentGridView() {

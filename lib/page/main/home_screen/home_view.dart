@@ -661,10 +661,10 @@ class _HomeState extends State<Home> {
           /// viewer and commenter and Saver
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+            margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: //
                 Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                Container(
                   width: 80,
@@ -717,29 +717,6 @@ class _HomeState extends State<Home> {
                   ),
                 ),
 
-                Container(
-                  width: 85,
-                  alignment: Alignment.center,
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    text: TextSpan(
-                        style: TextStyle(
-                            color: Theme.of(context).textTheme.headline6?.color,
-                            fontFamily: 'NunitoSans'),
-                        children: const [
-                          TextSpan(
-                              text: "999K",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Nunito Sans')),
-                          TextSpan(
-                              text: "  Lượt Lưu",
-                              style: TextStyle(
-                                  fontSize: 12, fontFamily: 'Nunito Sans')),
-                        ]),
-                  ),
-                ),
               ],
             ),
           ),
@@ -1013,7 +990,7 @@ class _HomeState extends State<Home> {
         ),
         Container(
             width: MediaQuery.of(context).size.width,
-            height: 280,
+            height: 220,
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -1032,25 +1009,6 @@ class _HomeState extends State<Home> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Colors.black.withOpacity(0.6)),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          //Get.to(() => const SettingScreen());
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image.asset(IconsAssets.icStar),
-                            const SizedBox(width: 10),
-                            const Text(
-                              "Thêm vào mục yêu thích",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: 'Nunito Sans',
-                                  color: Colors.black),
-                            ),
-                          ],
-                        ),
                       ),
 
                       /// unfollow
@@ -1143,27 +1101,6 @@ class _HomeState extends State<Home> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Colors.black.withOpacity(0.6)),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          color: Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset(IconsAssets.icWaitingAccept),
-                              const SizedBox(width: 10),
-                              const Text(
-                                "Lưu trữ",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'Nunito Sans',
-                                    color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -1353,7 +1290,7 @@ class _HomeState extends State<Home> {
         ),
         Container(
             width: MediaQuery.of(context).size.width,
-            height: 280,
+            height: 220,
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -1385,7 +1322,7 @@ class _HomeState extends State<Home> {
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: 40,
-                  margin: const EdgeInsets.only(bottom: 40),
+                  margin: const EdgeInsets.only(bottom: 10),
                   child: const Text(
                     "Hệ thống hiển thị bài viết trong bảng feed dựa theo nhiều yếu tố, bao gồm cả hoạt động của bạn trên SeShare.",
                     style: TextStyle(

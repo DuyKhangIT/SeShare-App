@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/page/main/another_profile_screen/another_profile_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_controller.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -11,7 +12,8 @@ import '../../../../util/module.dart';
 import '../../../navigation_bar/navigation_bar_view.dart';
 
 class PostArchiveScreen extends StatefulWidget {
-  const PostArchiveScreen({Key? key}) : super(key: key);
+  bool? isAnotherPost = false;
+  PostArchiveScreen({Key? key, this.isAnotherPost}) : super(key: key);
 
   @override
   State<PostArchiveScreen> createState() => _PostArchiveScreenState();
@@ -27,12 +29,17 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
               appBar: AppBar(
                 leading: GestureDetector(
                   onTap: () {
-                    Get.to(() => NavigationBarView(currentIndex: 4));
+                    widget.isAnotherPost == true
+                        ? Get.to(() => const AnOtherProfileScreen())
+                        : Get.to(() => NavigationBarView(currentIndex: 4));
                   },
                   child: Icon(Icons.arrow_back,
                       color: Theme.of(context).textTheme.headline6?.color),
                 ),
-                title: Text("Bài viết của bạn",
+                title: Text(
+                    widget.isAnotherPost == true
+                        ? "Bài viết ${Global.anOtherUserProfileResponse!.fullName}"
+                        : "Bài viết của bạn",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito Sans',
@@ -48,27 +55,42 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                 child: ListView.builder(
                     padding: const EdgeInsets.only(bottom: 90),
                     itemCount:
-                    postArchiveController.data.isNotEmpty
-                    ?postArchiveController.data.length
-                    :3,
+                    widget.isAnotherPost==true
+                    ?postArchiveController.dataAnotherPost.isNotEmpty
+                        ? postArchiveController.dataAnotherPost.length
+                        : 3
+                    :postArchiveController.data.isNotEmpty
+                        ? postArchiveController.data.length
+                        : 3,
                     itemBuilder: (context, index) {
                       if (postArchiveController.isLoading) {
                         return skeleton();
                       } else {
-                        if (postArchiveController.data.isNotEmpty) {
-                          return contentListViewMyPost(postArchiveController,index);
+                        if (widget.isAnotherPost == true) {
+                          if (postArchiveController
+                              .dataAnotherPost.isNotEmpty) {
+                            return contentListViewMyPost(
+                                postArchiveController, index);
+                          } else {
+                            return skeleton();
+                          }
                         } else {
-                          return skeleton();
+                          if (postArchiveController.data.isNotEmpty) {
+                            return contentListViewMyPost(
+                                postArchiveController, index);
+                          } else {
+                            return skeleton();
+                          }
                         }
                       }
-
                     }),
               )),
             ));
   }
 
   /// content list view post
-  Widget contentListViewMyPost(PostArchiveController postArchiveController,index) {
+  Widget contentListViewMyPost(
+      PostArchiveController postArchiveController, index) {
     return Container(
       padding: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
@@ -90,27 +112,49 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     ///avatar
                     Padding(
                       padding: const EdgeInsets.only(right: 10),
-                      child:
-                      postArchiveController.data[index].userInfoResponse!.avatar.isNotEmpty
-                          ?
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(14),
-                            child: getNetworkImage(
-                                postArchiveController.data[index].userInfoResponse!.avatar,
-                                width: 60,
-                                height: 60)
-                        ),
-                      )
-                          : Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: Colors.white),
-                      ),
+                      child: widget.isAnotherPost == true
+                          ? postArchiveController.dataAnotherPost[index]
+                                  .userInfoResponse!.avatar.isNotEmpty
+                              ? SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(14),
+                                      child: getNetworkImage(
+                                          postArchiveController
+                                              .dataAnotherPost[index]
+                                              .userInfoResponse!
+                                              .avatar,
+                                          width: 60,
+                                          height: 60)),
+                                )
+                              : Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      color: Colors.white),
+                                )
+                          : postArchiveController.data[index].userInfoResponse!
+                                  .avatar.isNotEmpty
+                              ? SizedBox(
+                                  width: 60,
+                                  height: 60,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(14),
+                                      child: getNetworkImage(
+                                          postArchiveController.data[index]
+                                              .userInfoResponse!.avatar,
+                                          width: 60,
+                                          height: 60)),
+                                )
+                              : Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      color: Colors.white),
+                                ),
                     ),
 
                     /// full name of user
@@ -120,7 +164,12 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(postArchiveController.data[index].userInfoResponse!.fullName,
+                          Text(
+                              widget.isAnotherPost == true
+                                  ? postArchiveController.dataAnotherPost[index]
+                                      .userInfoResponse!.fullName
+                                  : postArchiveController
+                                      .data[index].userInfoResponse!.fullName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -133,38 +182,52 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(postArchiveController.data[index].updatedAt!,
+                              Text(
+                                  widget.isAnotherPost == true
+                                      ? postArchiveController
+                                          .dataAnotherPost[index].updatedAt!
+                                      : postArchiveController
+                                          .data[index].updatedAt!,
                                   style: const TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: 'Nunito Sans')),
+                                      fontSize: 13, fontFamily: 'Nunito Sans')),
                               const SizedBox(width: 10),
+
                               /// public
-                              postArchiveController.data[index].privacy == "public"
-                                  ? Image.asset(IconsAssets.icPublicMode,
-                                  width: 12,
-                                  height: 12,
-                                  color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black)
-                                  :  postArchiveController.data[index].privacy ==
-                                  "private"
-                                  ? Image.asset(IconsAssets.icPrivateMode,
-                                  width: 12,
-                                  height: 12,
-                                  color:
-                                  Theme.of(context).brightness ==
-                                      Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black)
-                                  : Image.asset(IconsAssets.icFriendMode,
-                                  width: 12,
-                                  height: 12,
-                                  color:
-                                  Theme.of(context).brightness ==
-                                      Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black),
+                              widget.isAnotherPost == true
+                                  ? postArchiveController.dataAnotherPost[index].privacy ==
+                                          "public"
+                                      ? Image.asset(IconsAssets.icPublicMode,
+                                          width: 12,
+                                          height: 12,
+                                          color: Theme.of(context).brightness == Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black)
+                                      : postArchiveController.dataAnotherPost[index].privacy ==
+                                              "private"
+                                          ? Image.asset(IconsAssets.icPrivateMode,
+                                              width: 12,
+                                              height: 12,
+                                              color: Theme.of(context).brightness == Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black)
+                                          : Image.asset(IconsAssets.icFriendMode,
+                                              width: 12,
+                                              height: 12,
+                                              color: Theme.of(context).brightness == Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black)
+                                  : postArchiveController.data[index].privacy ==
+                                          "public"
+                                      ? Image.asset(IconsAssets.icPublicMode,
+                                          width: 12,
+                                          height: 12,
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black)
+                                      : postArchiveController.data[index].privacy == "private"
+                                          ? Image.asset(IconsAssets.icPrivateMode, width: 12, height: 12, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black)
+                                          : Image.asset(IconsAssets.icFriendMode, width: 12, height: 12, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
                             ],
                           ),
                         ],
@@ -173,8 +236,10 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                   ],
                 ),
 
+                widget.isAnotherPost == true
+                ?Container()
                 /// dot
-                GestureDetector(
+                :GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
                         isScrollControlled: true,
@@ -199,7 +264,8 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
             ),
           ),
 
-          ( postArchiveController.data[index].checkInLocation.isNotEmpty)
+          widget.isAnotherPost == true
+          ? (postArchiveController.dataAnotherPost[index].checkInLocation.isNotEmpty)
               ? Padding(
             padding: const EdgeInsets.fromLTRB(7, 0, 20, 10),
             child: Row(
@@ -218,7 +284,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                   margin: const EdgeInsets.only(left: 5),
                   child: Text(
                       overflow: TextOverflow.ellipsis,
-                      "Địa điểm bạn nhắc tới: ${ postArchiveController.data[index].checkInLocation}",
+                      "Địa điểm bạn nhắc tới: ${postArchiveController.dataAnotherPost[index].checkInLocation}",
                       maxLines: 2,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -228,6 +294,36 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
               ],
             ),
           )
+              : Container()
+          :(postArchiveController.data[index].checkInLocation.isNotEmpty)
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(7, 0, 20, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        IconsAssets.icCheckIn,
+                        width: 40,
+                        height: 40,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 1.4,
+                        constraints: const BoxConstraints(maxHeight: 40),
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(left: 5),
+                        child: Text(
+                            overflow: TextOverflow.ellipsis,
+                            "Địa điểm bạn nhắc tới: ${postArchiveController.data[index].checkInLocation}",
+                            maxLines: 2,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                fontFamily: 'Nunito Sans')),
+                      ),
+                    ],
+                  ),
+                )
               : Container(),
 
           /// caption of post
@@ -235,13 +331,14 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.fromLTRB(25, 0, 25, 20),
               child: Text(
-                postArchiveController.data[index].caption!,
+                widget.isAnotherPost == true
+                ?postArchiveController.dataAnotherPost[index].caption!
+                :postArchiveController.data[index].caption!,
                 style: const TextStyle(
                     fontSize: 14,
                     fontFamily: 'Nunito Sans',
                     fontWeight: FontWeight.w400),
-              )
-          ),
+              )),
 
           /// image post
           SizedBox(
@@ -249,14 +346,20 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
               height: 350,
               child: PhotoViewGallery.builder(
                 scrollPhysics: const BouncingScrollPhysics(),
-                itemCount: postArchiveController.data[index].photoPath!.length,
+                itemCount:
+                widget.isAnotherPost == true
+                ?postArchiveController.dataAnotherPost[index].photoPath!.length
+                :postArchiveController.data[index].photoPath!.length,
                 builder: (BuildContext context, int indexPath) {
                   return PhotoViewGalleryPageOptions(
                       initialScale: PhotoViewComputedScale.covered,
                       minScale: PhotoViewComputedScale.covered * 0.95,
                       imageProvider: NetworkImage(Global.convertMedia(
-                          postArchiveController.data[index].photoPath![indexPath]
-                              .toString(),
+                        widget.isAnotherPost==true
+                          ?postArchiveController
+                            .dataAnotherPost[index].photoPath![indexPath]
+                          :postArchiveController
+                              .data[index].photoPath![indexPath],
                           MediaQuery.of(context).size.width,
                           350)),
                       errorBuilder: (context, event, stackTrace) =>
@@ -277,9 +380,9 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
           /// viewer and commenter and Saver
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(top: 20,bottom: 10),
+            margin: const EdgeInsets.only(top: 20, bottom: 10),
             child: //
-            Row(
+                Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
@@ -293,8 +396,10 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
-                              text: postArchiveController.data[index].totalLikes
-                                  .toString(),
+                              text:
+                                  widget.isAnotherPost == true
+                              ?postArchiveController.dataAnotherPost[index].totalLikes.toString()
+                              :postArchiveController.data[index].totalLikes.toString(),
                               style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -317,40 +422,22 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
-                              text: postArchiveController.data[index].totalCmt == 0
+                              text:
+                              widget.isAnotherPost==true
+                              ?postArchiveController
+                                  .dataAnotherPost[index].totalCmt == 0
                                   ? "0"
-                                  : postArchiveController.data[index].totalCmt
-                                  .toString(),
+                                  : postArchiveController.dataAnotherPost[index].totalCmt.toString()
+                              :postArchiveController
+                                          .data[index].totalCmt == 0
+                                  ? "0"
+                                  : postArchiveController.data[index].totalCmt.toString(),
                               style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Nunito Sans')),
                           const TextSpan(
                               text: "  Bình Luận",
-                              style: TextStyle(
-                                  fontSize: 12, fontFamily: 'Nunito Sans')),
-                        ]),
-                  ),
-                ),
-
-                Container(
-                  width: 85,
-                  alignment: Alignment.center,
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    text: TextSpan(
-                        style: TextStyle(
-                            color: Theme.of(context).textTheme.headline6?.color,
-                            fontFamily: 'NunitoSans'),
-                        children: const [
-                          TextSpan(
-                              text: "999K",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Nunito Sans')),
-                          TextSpan(
-                              text: "  Lượt Lưu",
                               style: TextStyle(
                                   fontSize: 12, fontFamily: 'Nunito Sans')),
                         ]),
@@ -376,17 +463,29 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                 /// ic like
                 GestureDetector(
                   onTap: () {
-                    if (postArchiveController.data[index].id.isNotEmpty) {
-                      postArchiveController.postIdForLikePost = postArchiveController.data[index].id;
-                      postArchiveController.handleLikePost();
+                    if(widget.isAnotherPost==true){
+                      if (postArchiveController.dataAnotherPost[index].id.isNotEmpty) {
+                        postArchiveController.postIdForLikePost =
+                            postArchiveController.dataAnotherPost[index].id;
+                        postArchiveController.handleLikeAnotherPost();
+                      }
                     }
+                    else{
+                      if (postArchiveController.data[index].id.isNotEmpty) {
+                        postArchiveController.postIdForLikePost =
+                            postArchiveController.data[index].id;
+                        postArchiveController.handleLikePost();
+                      }
+                    }
+
                   },
                   child: Container(
                       constraints: const BoxConstraints(maxWidth: 80),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          (postArchiveController.data[index].liked == true)
+                          widget.isAnotherPost == true
+                          ?(postArchiveController.dataAnotherPost[index].liked == true)
                               ? ColorFiltered(
                             colorFilter: ColorFilter.mode(
                               Theme.of(context).brightness ==
@@ -406,7 +505,28 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                               BlendMode.srcIn,
                             ),
                             child: Image.asset(IconsAssets.icLike),
-                          ),
+                          )
+                          :(postArchiveController.data[index].liked == true)
+                              ? ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.red
+                                        : Colors.red,
+                                    BlendMode.srcIn,
+                                  ),
+                                  child: Image.asset(IconsAssets.icLikeRed),
+                                )
+                              : ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                                    BlendMode.srcIn,
+                                  ),
+                                  child: Image.asset(IconsAssets.icLike),
+                                ),
                           const SizedBox(width: 10),
                           Container(
                             constraints: const BoxConstraints(maxWidth: 45),
@@ -415,12 +535,12 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                                     .textTheme
                                     .headline6
                                     ?.copyWith(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline6
-                                        ?.color,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold)),
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            ?.color,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold)),
                           ),
                         ],
                       )),
@@ -429,17 +549,32 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
                         : Colors.black),
+
                 /// ic cmt
                 GestureDetector(
                   onTap: () {
                     if (Global.isAvailableToClick()) {
-                      if (postArchiveController.data[index].id.isNotEmpty) {
-                        /// id using add cmt
-                        Global.idPost = postArchiveController.data[index].id;
-                        ListCommentsPostRequest request =
-                        ListCommentsPostRequest(postArchiveController.data[index].id);
-                        postArchiveController.getListCommentsPost(request);
+                      if(widget.isAnotherPost==true){
+                        if (postArchiveController.dataAnotherPost[index].id.isNotEmpty) {
+                          /// id using add cmt
+                          Global.idPost = postArchiveController.dataAnotherPost[index].id;
+                          ListCommentsPostRequest request =
+                          ListCommentsPostRequest(
+                              postArchiveController.dataAnotherPost[index].id);
+                          postArchiveController.getListCommentsAnotherPost(request);
+                        }
                       }
+                      else{
+                        if (postArchiveController.data[index].id.isNotEmpty) {
+                          /// id using add cmt
+                          Global.idPost = postArchiveController.data[index].id;
+                          ListCommentsPostRequest request =
+                          ListCommentsPostRequest(
+                              postArchiveController.data[index].id);
+                          postArchiveController.getListCommentsPost(request);
+                        }
+                      }
+
                     }
                   },
                   child: Container(
@@ -465,12 +600,12 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                                 .textTheme
                                 .headline6
                                 ?.copyWith(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    ?.color,
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold),
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        ?.color,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -492,7 +627,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                         children: [
                           Image.asset(IconsAssets.icSave,
                               color: Theme.of(context).brightness ==
-                                  Brightness.dark
+                                      Brightness.dark
                                   ? Colors.white
                                   : Colors.black),
                           const SizedBox(width: 10),
@@ -503,12 +638,12 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                                     .textTheme
                                     .headline6
                                     ?.copyWith(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline6
-                                        ?.color,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold)),
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            ?.color,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold)),
                           ),
                         ],
                       )),
@@ -619,17 +754,15 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 350,
-                color: Colors.grey.withOpacity(0.4)
-                ),
+                color: Colors.grey.withOpacity(0.4)),
           ),
-
 
           /// viewer and commenter
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.fromLTRB(20,20,20,10),
+            margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: //
-            Row(
+                Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Shimmer.fromColors(
@@ -676,7 +809,8 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
     );
   }
 
-  Widget detailBottomSheetMenuDot(PostArchiveController postArchiveController, index) {
+  Widget detailBottomSheetMenuDot(
+      PostArchiveController postArchiveController, index) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -729,8 +863,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     color: Colors.transparent,
@@ -751,8 +884,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     color: Colors.transparent,
@@ -772,6 +904,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     ),
                   ),
                 ),
+
                 /// qr code
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -791,6 +924,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     ],
                   ),
                 ),
+
                 /// delete post
                 GestureDetector(
                   onTap: () {
@@ -802,7 +936,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                           title: "Xóa bài viết",
                           barrierDismissible: false,
                           cancel: GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               Navigator.pop(context);
                             },
                             child: Container(
@@ -811,7 +945,9 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.blue,style: BorderStyle.solid)),
+                                  border: Border.all(
+                                      color: Colors.blue,
+                                      style: BorderStyle.solid)),
                               child: const Text("Hủy",
                                   style: TextStyle(
                                       fontSize: 14,
@@ -821,10 +957,11 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                             ),
                           ),
                           confirm: GestureDetector(
-                            onTap: (){
-                              if(Global.isAvailableToClick()){
+                            onTap: () {
+                              if (Global.isAvailableToClick()) {
                                 Navigator.pop(context);
-                                postArchiveController.postIdForDeletePost = postArchiveController.data[index].id;
+                                postArchiveController.postIdForDeletePost =
+                                    postArchiveController.data[index].id;
                                 postArchiveController.handleDeletePost();
                               }
                             },
@@ -834,7 +971,9 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.blue,style: BorderStyle.solid)),
+                                  border: Border.all(
+                                      color: Colors.blue,
+                                      style: BorderStyle.solid)),
                               child: const Text("Xác nhận",
                                   style: TextStyle(
                                       fontSize: 14,
@@ -877,6 +1016,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
       ],
     );
   }
+
   Widget detailBottomSheetReasonSeeingThePost(index) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -940,18 +1080,14 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                       height: 60,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child:
-                          getNetworkImage(
+                          child: getNetworkImage(
                               Global.userProfileResponse!.avatarPath,
                               width: 60,
-                              height: 60)
-                      ),
+                              height: 60)),
                     ),
                     const SizedBox(width: 10),
                     Container(
-                      constraints: const BoxConstraints(
-                          maxWidth: 275
-                      ),
+                      constraints: const BoxConstraints(maxWidth: 275),
                       height: 40,
                       alignment: Alignment.center,
                       child: RichText(
@@ -960,8 +1096,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                                 color: Colors.black, fontFamily: 'Nunito Sans'),
                             children: [
                               TextSpan(
-                                  text:
-                                  Global.userProfileResponse!.fullName,
+                                  text: Global.userProfileResponse!.fullName,
                                   style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold)),

@@ -12,6 +12,8 @@ import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archiv
 import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_screen.dart';
 
 import '../../../../api_http/handle_api.dart';
+import '../../../../models/list_another_post/list_another_post_request.dart';
+import '../../../../models/list_another_post/list_another_post_response.dart';
 import '../../../../models/list_comments_post/list_comments_post_request.dart';
 import '../../../../models/list_comments_post/list_comments_post_response.dart';
 import '../../../../models/list_my_post/list_my_post_response.dart';
@@ -175,7 +177,7 @@ class CommentsController extends GetxController {
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("http://14.225.204.248:8080/api/photo/get-list-all-posts"),
+          Uri.parse("http://14.225.204.248:8080/api/photo/get-list-my-posts"),
           RequestType.post,
           headers: null,
           body: null);
@@ -188,8 +190,44 @@ class CommentsController extends GetxController {
     listMyPostResponse = ListMyPostResponse.fromJson(body);
     if (listMyPostResponse.status == true) {
       debugPrint("------------- GET LIST MY POSTS SUCCESSFULLY--------------");
-      Get.offAll(() => const PostArchiveScreen());
+      Get.offAll(() => PostArchiveScreen());
     }
     return listMyPostResponse;
+  }
+
+
+  void handleListAnotherPost() {
+    ListAnotherPostRequest listAnotherPostRequest =
+    ListAnotherPostRequest(Global.anOtherUserProfileResponse!.id);
+    updateListAnotherPosts(listAnotherPostRequest);
+    update();
+  }
+
+  Future<ListAnotherPostResponse> updateListAnotherPosts(
+      ListAnotherPostRequest listAnotherPostRequest) async {
+    ListAnotherPostResponse listAnotherPostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(
+              "http://14.225.204.248:8080/api/photo/get-list-another-posts"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder()
+              .convert(listAnotherPostRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to get list another posts $error");
+      rethrow;
+    }
+    if (body == null) return ListAnotherPostResponse.buildDefault();
+    //get data from api here
+    listAnotherPostResponse = ListAnotherPostResponse.fromJson(body);
+    if (listAnotherPostResponse.status == true) {
+      debugPrint(
+          "------------- GET LIST ANOTHER POSTS SUCCESSFULLY--------------");
+      Get.offAll(() => PostArchiveScreen(isAnotherPost: true));
+      update();
+    }
+    return listAnotherPostResponse;
   }
 }

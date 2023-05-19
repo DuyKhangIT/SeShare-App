@@ -328,7 +328,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                           child: Image.asset(IconsAssets.icShare)),
                       const SizedBox(height: 5),
-                      const Text("Story của bạn",
+                      const Text("Tin nổi bật của bạn",
                           style: TextStyle(
                               fontSize: 12, fontFamily: 'Nunito Sans'))
                     ],
@@ -489,7 +489,7 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
   Widget contentGridView(index) {
     return GestureDetector(
       onTap: (){
-        Get.to(() => const PostArchiveScreen());
+        Get.to(() =>  PostArchiveScreen());
       },
       child: Padding(
           padding: const EdgeInsets.all(1),

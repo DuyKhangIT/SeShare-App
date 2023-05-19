@@ -312,7 +312,7 @@ class AppRoutes {
 
     GetPage(
       name: postArchiveScreen,
-      page: () => const PostArchiveScreen(),
+      page: () => PostArchiveScreen(),
       binding: PostArchiveBinding(),
     ),
   ];
