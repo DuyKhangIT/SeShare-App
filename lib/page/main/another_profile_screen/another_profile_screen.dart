@@ -125,13 +125,29 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Column(
-                                    children: const [
-                                      Text("54",
-                                          style: TextStyle(
+                                    children: [
+                                      Text(anOtherProfileController.dataAnotherPost.length.toString(),
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,
                                               fontFamily: 'Nunito Sans')),
-                                      Text("Bài đăng",
+                                      const Text("Bài đăng",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 14,
+                                              fontFamily: 'Nunito Sans')),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(Global.listFavoriteStoriesAnotherUser.length.toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                              fontFamily: 'Nunito Sans')),
+                                      const Text("Tin nổi bật",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -148,22 +164,6 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                               fontSize: 14,
                                               fontFamily: 'Nunito Sans')),
                                       Text("Bạn bè",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 14,
-                                              fontFamily: 'Nunito Sans')),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: const [
-                                      Text("200",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                              fontFamily: 'Nunito Sans')),
-                                      Text("Đang theo dõi",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
