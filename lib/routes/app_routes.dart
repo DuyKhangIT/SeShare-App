@@ -29,6 +29,8 @@ import 'package:instagram_app/page/main/profile_screen/update_profile_screen/upd
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_private_info/update_private_infor_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
+import 'package:instagram_app/page/main/search_screen/action_search/action_search_binding.dart';
+import 'package:instagram_app/page/main/search_screen/action_search/action_search_view.dart';
 import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_binding.dart';
 import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_view.dart';
 
@@ -104,6 +106,8 @@ class AppRoutes {
   static const String updatePrivateInfoScreen = "/seShare_updatePrivateInfo_screen";
 
   static const String searchScreen = "/seShare_search_screen";
+  static const String actionSearchScreen = "/seShare_actionSearch_screen";
+
   static const String postScreen = "/seShare_post_screen";
   static const String storyScreen = "/seShare_story_screen";
   static const String commentsScreen = "/seShare_comments_screen";
@@ -314,6 +318,12 @@ class AppRoutes {
       name: postArchiveScreen,
       page: () => PostArchiveScreen(),
       binding: PostArchiveBinding(),
+    ),
+
+    GetPage(
+      name: actionSearchScreen,
+      page: () => const ActionSearchScreen(),
+      binding: ActionSearchBinding(),
     ),
   ];
 }

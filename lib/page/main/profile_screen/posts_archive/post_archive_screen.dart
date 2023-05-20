@@ -380,10 +380,10 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
           /// viewer and commenter and Saver
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.only(top: 20, bottom: 10),
+            margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: //
                 Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   width: 80,
