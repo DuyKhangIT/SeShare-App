@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
+import 'package:instagram_app/page/main/profile_screen/qr_code_screen/qr_code_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/stories_archive/stories_archive_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
@@ -327,7 +328,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 : Colors.black,
                             BlendMode.srcIn,
                           ),
-                          child: Image.asset(IconsAssets.icShare)),
+                          child: Image.asset(IconsAssets.icStories)),
                       const SizedBox(height: 5),
                       const Text("Tin nổi bật của bạn",
                           style: TextStyle(
@@ -423,33 +424,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(IconsAssets.icSave),
-                    const SizedBox(width: 10),
-                    const Text(
-                      "Đã lưu",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Nunito Sans',
-                          color: Colors.black),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(IconsAssets.icQRCode),
-                    const SizedBox(width: 10),
-                    const Text(
-                      "Mã QR",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Nunito Sans',
-                          color: Colors.black),
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: (){
+                    Get.to(() => const QRCodeScreen());
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(IconsAssets.icQRCode),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Mã QR",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Nunito Sans',
+                            color: Colors.black),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             )),

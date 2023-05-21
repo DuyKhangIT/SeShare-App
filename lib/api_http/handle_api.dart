@@ -5,9 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-import '../config/share_preferences.dart';
 import '../util/global.dart';
-import 'authentication_exception.dart';
 
 class HttpHelper {
   static Future<Map<String, dynamic>?> invokeHttp(dynamic url, RequestType type,

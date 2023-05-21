@@ -10,6 +10,7 @@ import 'package:instagram_app/page/main/notification_screen/notification_view.da
 import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../util/global.dart';
@@ -84,8 +85,8 @@ class _HomeState extends State<Home> {
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: homeController.isLoading == true
-                                      ? 5
-                                      :Global.listStoriesData.length,
+                                        ? 5
+                                        : Global.listStoriesData.length,
                                     itemBuilder: (context, index) {
                                       // if (index == 0) {
                                       //   return contentListViewStoryFirstIndex(
@@ -93,12 +94,12 @@ class _HomeState extends State<Home> {
                                       // } else {
                                       //   return contentListViewStory(index);
                                       // }
-                                      if(homeController.isLoading){
+                                      if (homeController.isLoading) {
                                         return skeletonListViewStory(index);
-                                      } else{
-                                        return contentListViewStory(homeController,index);
+                                      } else {
+                                        return contentListViewStory(
+                                            homeController, index);
                                       }
-
                                     },
                                   ),
                                 ),
@@ -143,7 +144,7 @@ class _HomeState extends State<Home> {
             onTap: () {
               // homeController.seeStory = true;
               // homeController.update();
-              if(Global.listStoriesData.isNotEmpty){
+              if (Global.listStoriesData.isNotEmpty) {
                 Get.to(() => StoryPage(index: index));
               }
             },
@@ -153,33 +154,35 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.all(2),
                 margin: const EdgeInsets.only(top: 8, bottom: 5),
                 decoration:
-                // homeController.seeStory == true
-                // ?BoxDecoration(
-                //     color: Colors.transparent,
-                //     borderRadius: BorderRadius.circular(16))
-                // :
-                BoxDecoration(
-                    border: Border.all(
-                        color: Colors.blue.withOpacity(0.6),
-                        width: 3,
-                        style: BorderStyle.solid),
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(16)),
+                    // homeController.seeStory == true
+                    // ?BoxDecoration(
+                    //     color: Colors.transparent,
+                    //     borderRadius: BorderRadius.circular(16))
+                    // :
+                    BoxDecoration(
+                        border: Border.all(
+                            color: Colors.blue.withOpacity(0.6),
+                            width: 3,
+                            style: BorderStyle.solid),
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(16)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(14),
                   child: getNetworkImage(
-                      Global.listStoriesData[index]
-                          .userInfoStoryResponse!.avatar,
+                      Global
+                          .listStoriesData[index].userInfoStoryResponse!.avatar,
                       width: 65,
                       height: 65),
                 )),
           ),
-           Padding(
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Text(Global.listStoriesData[index].userInfoStoryResponse!.fullName,
+            child: Text(
+                Global.listStoriesData[index].userInfoStoryResponse!.fullName,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: const TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
+                style:
+                    const TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
           ),
         ],
       ),
@@ -197,18 +200,18 @@ class _HomeState extends State<Home> {
             baseColor: Colors.grey.withOpacity(0.4),
             highlightColor: Colors.grey.withOpacity(0.8),
             child: Container(
-                width: 65,
-                height: 65,
-                padding: const EdgeInsets.all(2),
-                margin: const EdgeInsets.only(top: 8, bottom: 5),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Colors.blue.withOpacity(0.6),
-                        width: 3,
-                        style: BorderStyle.solid),
-                    color: Colors.grey.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(16)),
-               ),
+              width: 65,
+              height: 65,
+              padding: const EdgeInsets.all(2),
+              margin: const EdgeInsets.only(top: 8, bottom: 5),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      color: Colors.blue.withOpacity(0.6),
+                      width: 3,
+                      style: BorderStyle.solid),
+                  color: Colors.grey.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(16)),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -453,16 +456,16 @@ class _HomeState extends State<Home> {
                 /// avatar + username + location
                 GestureDetector(
                   onTap: () {
-                      if (Global.listPostInfo[index].userInfoResponse!.id !=
-                          Global.userProfileResponse!.id) {
-                        homeController.userIdForLoadListAnotherProfile =
-                            Global.listPostInfo[index].userInfoResponse!.id;
-                        homeController.loadListPhotoAnotherUser();
-                        homeController.loadAnotherProfile();
-                        homeController.loadListFavoriteStoriesAnotherUser();
-                      } else {
-                        Get.offAll(() => NavigationBarView(currentIndex: 4));
-                      }
+                    if (Global.listPostInfo[index].userInfoResponse!.id !=
+                        Global.userProfileResponse!.id) {
+                      homeController.userIdForLoadListAnotherProfile =
+                          Global.listPostInfo[index].userInfoResponse!.id;
+                      homeController.loadListPhotoAnotherUser();
+                      homeController.loadAnotherProfile();
+                      homeController.loadListFavoriteStoriesAnotherUser();
+                    } else {
+                      Get.offAll(() => NavigationBarView(currentIndex: 4));
+                    }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -519,6 +522,7 @@ class _HomeState extends State<Home> {
                                         fontSize: 13,
                                         fontFamily: 'Nunito Sans')),
                                 const SizedBox(width: 10),
+
                                 /// public
                                 Global.listPostInfo[index].privacy == "public"
                                     ? Image.asset(IconsAssets.icPublicMode,
@@ -622,8 +626,7 @@ class _HomeState extends State<Home> {
                     fontSize: 14,
                     fontFamily: 'Nunito Sans',
                     fontWeight: FontWeight.w400),
-              )
-              ),
+              )),
 
           /// image post
           SizedBox(
@@ -666,7 +669,7 @@ class _HomeState extends State<Home> {
                 Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-               Container(
+                Container(
                   width: 80,
                   alignment: Alignment.center,
                   child: RichText(
@@ -716,7 +719,6 @@ class _HomeState extends State<Home> {
                         ]),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -791,6 +793,7 @@ class _HomeState extends State<Home> {
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
                         : Colors.black),
+
                 /// ic cmt
                 GestureDetector(
                   onTap: () {
@@ -805,7 +808,7 @@ class _HomeState extends State<Home> {
                     }
                   },
                   child: Container(
-                    constraints: const BoxConstraints(maxWidth: 105),
+                    constraints: const BoxConstraints(maxWidth: 100),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -848,11 +851,11 @@ class _HomeState extends State<Home> {
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                      constraints: const BoxConstraints(maxWidth: 90),
+                      constraints: const BoxConstraints(maxWidth: 100),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Image.asset(IconsAssets.icSave,
+                          Image.asset(IconsAssets.icShare,
                               color: Theme.of(context).brightness ==
                                       Brightness.dark
                                   ? Colors.white
@@ -860,7 +863,7 @@ class _HomeState extends State<Home> {
                           const SizedBox(width: 10),
                           Container(
                             constraints: const BoxConstraints(maxWidth: 70),
-                            child: Text("Lưu",
+                            child: Text("Chia sẻ",
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6
@@ -1054,19 +1057,114 @@ class _HomeState extends State<Home> {
                           ],
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(IconsAssets.icQRCode),
-                          const SizedBox(width: 10),
-                          const Text(
-                            "Mã QR",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Nunito Sans',
-                                color: Colors.black),
+                      GestureDetector(
+                        onTap: () {
+                          Get.defaultDialog(
+                            backgroundColor: Colors.white,
+                            barrierDismissible: false,
+                            title: "",
+                            confirm: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                children: [
+                                  Divider(color: Colors.black.withOpacity(0.4)),
+                                  /// save QR code
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: 80,
+                                      height: 35,
+                                      alignment: Alignment.center,
+                                      child: const Text("Lưu mã QR",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.lightBlue,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Nunito Sans')),
+                                    ),
+                                  ),
+                                  Divider(color: Colors.black.withOpacity(0.4)),
+                                  /// cancel
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      width: 80,
+                                      height: 35,
+                                      alignment: Alignment.center,
+                                      child: const Text("Xong",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: 'Nunito Sans')),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            radius: 12,
+                            /// QR code
+                            content: Container(
+                              width: 200,
+                              height: 270,
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.black,width: 0.5)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 170,
+                                    height: 180,
+                                    child: QrImage(
+                                      data: Global.listPostInfo[index].id,
+                                      size: 170,
+                                      version: QrVersions.auto,
+                                    ),
+                                  ),
+                                  RichText(
+                                    textAlign: TextAlign.center,
+                                      text: TextSpan(children: [
+                                        const TextSpan(
+                                            text: 'Bài viết được chia sẻ của \n',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito Sans',
+                                                color: Colors.black)),
+                                        TextSpan(
+                                            text: Global.listPostInfo[index].userInfoResponse!.fullName,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito Sans',
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black))
+                                      ]))
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icQRCode),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Mã QR",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.black),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -1103,8 +1201,7 @@ class _HomeState extends State<Home> {
                             color: Colors.black.withOpacity(0.6)),
                       ),
                       GestureDetector(
-                        onTap: () {
-                        },
+                        onTap: () {},
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           color: Colors.transparent,
@@ -1148,9 +1245,10 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+
                       /// update post
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Global.infoMyPost = Global.listPostInfo[index];
                           Get.to(() => const UpdatePostScreen());
                         },
@@ -1173,25 +1271,118 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+
                       /// qr code
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image.asset(IconsAssets.icQRCode),
-                            const SizedBox(width: 10),
-                            const Text(
-                              "Mã QR",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Nunito Sans',
-                                  color: Colors.black),
+                      GestureDetector(
+                        onTap: () {
+                          Get.defaultDialog(
+                            backgroundColor: Colors.white,
+                            barrierDismissible: false,
+                            title: "",
+                            confirm: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                children: [
+                                  Divider(color: Colors.black.withOpacity(0.4)),
+                                  /// save QR code
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: 80,
+                                      height: 35,
+                                      alignment: Alignment.center,
+                                      child: const Text("Lưu mã QR",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.lightBlue,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Nunito Sans')),
+                                    ),
+                                  ),
+                                  Divider(color: Colors.black.withOpacity(0.4)),
+                                  /// cancel
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      width: 80,
+                                      height: 35,
+                                      alignment: Alignment.center,
+                                      child: const Text("Xong",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: 'Nunito Sans')),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                            radius: 12,
+                            /// QR code
+                            content: Container(
+                              width: 200,
+                              height: 250,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.black,width: 0.5)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 170,
+                                    height: 180,
+                                    child: QrImage(
+                                      data: Global.listPostInfo[index].id,
+                                      size: 170,
+                                      version: QrVersions.auto,
+                                    ),
+                                  ),
+                                  RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(children: [
+                                        const TextSpan(
+                                            text: 'Bài viết được chia sẻ của \n',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito Sans',
+                                                color: Colors.black)),
+                                        TextSpan(
+                                            text: Global.listPostInfo[index].userInfoResponse!.fullName,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito Sans',
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black))
+                                      ]))
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icQRCode),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Mã QR",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
+
                       /// delete post
                       GestureDetector(
                         onTap: () {
@@ -1199,11 +1390,12 @@ class _HomeState extends State<Home> {
                             Get.defaultDialog(
                                 backgroundColor: Colors.white,
                                 titleStyle: const TextStyle(
-                                    color: Colors.black, fontFamily: 'Nunito Sans'),
+                                    color: Colors.black,
+                                    fontFamily: 'Nunito Sans'),
                                 title: "Xóa bài viết",
                                 barrierDismissible: false,
                                 cancel: GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     Navigator.pop(context);
                                   },
                                   child: Container(
@@ -1212,7 +1404,9 @@ class _HomeState extends State<Home> {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: Colors.blue,style: BorderStyle.solid)),
+                                        border: Border.all(
+                                            color: Colors.blue,
+                                            style: BorderStyle.solid)),
                                     child: const Text("Hủy",
                                         style: TextStyle(
                                             fontSize: 14,
@@ -1222,9 +1416,10 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                                 confirm: GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     Navigator.pop(context);
-                                    homeController.postIdForDeletePost = Global.listPostInfo[index].id;
+                                    homeController.postIdForDeletePost =
+                                        Global.listPostInfo[index].id;
                                     homeController.handleDeletePost();
                                   },
                                   child: Container(
@@ -1233,7 +1428,9 @@ class _HomeState extends State<Home> {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: Colors.blue,style: BorderStyle.solid)),
+                                        border: Border.all(
+                                            color: Colors.blue,
+                                            style: BorderStyle.solid)),
                                     child: const Text("Xác nhận",
                                         style: TextStyle(
                                             fontSize: 14,
@@ -1348,9 +1545,7 @@ class _HomeState extends State<Home> {
                     ),
                     const SizedBox(width: 10),
                     Container(
-                      constraints: const BoxConstraints(
-                        maxWidth: 275
-                      ),
+                      constraints: const BoxConstraints(maxWidth: 275),
                       height: 40,
                       alignment: Alignment.center,
                       child: RichText(

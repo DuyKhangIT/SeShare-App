@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/page/main/another_profile_screen/another_profile_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
 
 import '../../../../util/global.dart';
@@ -10,7 +11,8 @@ import 'infor_account_controller.dart';
 
 class InForAccountScreen extends StatefulWidget {
   bool? isMyAccount = false;
-  InForAccountScreen({Key? key, required this.isMyAccount}) : super(key: key);
+  bool? isAnotherProfilePage = false;
+  InForAccountScreen({Key? key, required this.isMyAccount,this.isAnotherProfilePage}) : super(key: key);
 
   @override
   State<InForAccountScreen> createState() => _InForAccountScreenState();
@@ -26,7 +28,9 @@ class _InForAccountScreenState extends State<InForAccountScreen> {
               appBar: AppBar(
                 leading: GestureDetector(
                   onTap: () {
-                    widget.isMyAccount == true
+                    widget.isAnotherProfilePage == true
+                    ?Get.to(() => const AnOtherProfileScreen())
+                    :widget.isMyAccount == true
                     ?Get.to(() => const SettingScreen())
                     :Get.to(() => NavigationBarView(
                           currentIndex: 0,

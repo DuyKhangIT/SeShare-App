@@ -578,7 +578,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     }
                   },
                   child: Container(
-                    constraints: const BoxConstraints(maxWidth: 105),
+                    constraints: const BoxConstraints(maxWidth: 100),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -621,11 +621,11 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                      constraints: const BoxConstraints(maxWidth: 90),
+                      constraints: const BoxConstraints(maxWidth: 100),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Image.asset(IconsAssets.icSave,
+                          Image.asset(IconsAssets.icShare,
                               color: Theme.of(context).brightness ==
                                       Brightness.dark
                                   ? Colors.white
@@ -633,7 +633,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                           const SizedBox(width: 10),
                           Container(
                             constraints: const BoxConstraints(maxWidth: 70),
-                            child: Text("Lưu",
+                            child: Text("Chia sẻ",
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline6

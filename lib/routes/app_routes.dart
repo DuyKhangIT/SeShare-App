@@ -20,6 +20,8 @@ import 'package:instagram_app/page/main/post_screen/post_binding.dart';
 import 'package:instagram_app/page/main/post_screen/post_view.dart';
 import 'package:instagram_app/page/main/profile_screen/posts_archive/post_achive_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_screen.dart';
+import 'package:instagram_app/page/main/profile_screen/qr_code_screen/qr_code_binding.dart';
+import 'package:instagram_app/page/main/profile_screen/qr_code_screen/qr_code_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/change_password/change_password_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_screen.dart';
@@ -104,6 +106,8 @@ class AppRoutes {
   static const String profileScreen = "/seShare_profile_screen";
   static const String updateProfileScreen = "/seShare_updateProfile_screen";
   static const String updatePrivateInfoScreen = "/seShare_updatePrivateInfo_screen";
+
+  static const String qrCodeScreen = "/seShare_qrCode_screen";
 
   static const String searchScreen = "/seShare_search_screen";
   static const String actionSearchScreen = "/seShare_actionSearch_screen";
@@ -324,6 +328,12 @@ class AppRoutes {
       name: actionSearchScreen,
       page: () => const ActionSearchScreen(),
       binding: ActionSearchBinding(),
+    ),
+
+    GetPage(
+      name: qrCodeScreen,
+      page: () => const QRCodeScreen(),
+      binding: QRCodeBinding(),
     ),
   ];
 }

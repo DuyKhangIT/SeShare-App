@@ -57,6 +57,8 @@ class IconsAssets {
   static const String icAddText = 'assets/icons/ic_add_text.png';
   static const String icBanText = 'assets/icons/ic_ban_text.png';
   static const String icScaleText = 'assets/icons/ic_scale_text.png';
+  static const String icStories = 'assets/icons/ic_stories.png';
+  static const String icCopyLink = 'assets/icons/ic_copy_link.png';
 
 
 }

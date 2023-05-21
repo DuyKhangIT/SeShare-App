@@ -214,6 +214,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     if (Global.isAvailableToClick()) {
                       AddCommentPostRequest request = AddCommentPostRequest(
                           Global.idPost, commentsController.cmtController.text);
+                      debugPrint(Global.idPost);
                       commentsController.addCommentPost(request);
                     }
                   },
@@ -305,8 +306,9 @@ class _CommentScreenState extends State<CommentScreen> {
                       DeleteCommentPostRequest deleteCmtRequest =
                           DeleteCommentPostRequest(Global.dataListCmt!.postId,
                               Global.dataListCmt!.comments![index].commentId);
-                      commentsController.deleteCommentPost(deleteCmtRequest);
-                      commentsController.update();
+                      debugPrint("ID Post: ${Global.dataListCmt!.postId} + Cmt ID: ${Global.dataListCmt!.comments![index].commentId}");
+                     commentsController.deleteCommentPost(deleteCmtRequest);
+                     commentsController.update();
                     }
                   },
                   child: Container(

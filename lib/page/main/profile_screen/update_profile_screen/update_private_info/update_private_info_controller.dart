@@ -22,7 +22,7 @@ class UpdatePrivateInfoController extends GetxController {
   String place = "";
   @override
   void onReady() {
-    phoneNumberController.text = Global.userProfileResponse!.phone;
+    phoneNumberController.text = "84+  ${Global.userProfileResponse!.phone}";
     genderController.text = Global.userProfileResponse!.gender!;
     birthDayController.text = Global.userProfileResponse!.age;
     placeController.text = Global.userProfileResponse!.place;

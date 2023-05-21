@@ -27,7 +27,7 @@ class PostArchiveController extends GetxController {
   @override
   void onReady() {
     getListMyPosts();
-    if(Global.anOtherUserProfileResponse!.id.isNotEmpty){
+    if(Global.anOtherUserProfileResponse!= null && Global.anOtherUserProfileResponse!.id.isNotEmpty){
       handleListAnotherPost();
     }
     super.onReady();
