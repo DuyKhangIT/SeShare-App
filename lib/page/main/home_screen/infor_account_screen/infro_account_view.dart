@@ -29,7 +29,7 @@ class _InForAccountScreenState extends State<InForAccountScreen> {
                 leading: GestureDetector(
                   onTap: () {
                     widget.isAnotherProfilePage == true
-                    ?Get.to(() => const AnOtherProfileScreen())
+                    ?Get.to(() => AnOtherProfileScreen())
                     :widget.isMyAccount == true
                     ?Get.to(() => const SettingScreen())
                     :Get.to(() => NavigationBarView(

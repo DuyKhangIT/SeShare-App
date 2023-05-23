@@ -2,84 +2,118 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:instagram_app/models/search_user/data_search_user_response.dart';
-import 'package:instagram_app/models/search_user/search_user_response.dart';
+import 'package:instagram_app/models/list_my_friend/list_my_friend_response.dart';
 
-import '../../../../api_http/handle_api.dart';
-import '../../../../models/another_user_profile/another_profile_response.dart';
-import '../../../../models/another_user_profile/another_user_profile_request.dart';
-import '../../../../models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
-import '../../../../models/get_all_photo_another_user/get_all_photo_another_user_response.dart';
-import '../../../../models/list_favorite_stories_another_user/list_favorite_stories_another_user_request.dart';
-import '../../../../models/list_favorite_stories_another_user/list_favorite_stories_another_user_response.dart';
-import '../../../../util/global.dart';
-import '../../another_profile_screen/another_profile_screen.dart';
+import '../../../../../api_http/handle_api.dart';
+import '../../../../../models/another_user_profile/another_profile_response.dart';
+import '../../../../../models/another_user_profile/another_user_profile_request.dart';
+import '../../../../../models/deny_or_unfriend/deny_or_unfriend_request.dart';
+import '../../../../../models/deny_or_unfriend/deny_or_unfriend_response.dart';
+import '../../../../../models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
+import '../../../../../models/get_all_photo_another_user/get_all_photo_another_user_response.dart';
+import '../../../../../models/list_favorite_stories_another_user/list_favorite_stories_another_user_request.dart';
+import '../../../../../models/list_favorite_stories_another_user/list_favorite_stories_another_user_response.dart';
+import '../../../../../models/list_my_friend/data_list_my_friend_response.dart';
+import '../../../../../util/global.dart';
+import '../../../../navigation_bar/navigation_bar_view.dart';
+import '../../../another_profile_screen/another_profile_screen.dart';
 
-class ActionSearchController extends GetxController {
+class ListMyFriendController extends GetxController {
   TextEditingController searchController = TextEditingController();
   String inputSearch = "";
   String userIdForLoadListAnotherProfile = "";
   bool isSearching = false;
   bool isLoading = false;
-  List<DataSearchUserResponse> dataAllUser = [];
-  List<DataSearchUserResponse> result = [];
+  List<DataListMyFriendResponse> data = [];
+  List<DataListMyFriendResponse> result = [];
   @override
   void onReady() {
-    searchUser();
-    result = dataAllUser;
+    getListMyFriend();
     update();
     super.onReady();
   }
+
+
   @override
   void onClose() {
     super.onClose();
   }
+
   void clearTextSearch() {
     inputSearch = "";
     searchController.clear();
     update();
   }
+
   /// searching
   void updateSearch(String value) {
-    result = dataAllUser
-        .where((element) => Global().accentParser(element.fullName)
-        .toLowerCase()
-        .contains(Global().accentParser(value).toLowerCase()))
+    result = data
+        .where((element) => Global()
+            .accentParser(element.recipientObjectResponse!.fullName)
+            .toLowerCase()
+            .contains(Global().accentParser(value).toLowerCase()))
         .toList();
     isSearching = value.isNotEmpty;
     update();
   }
 
-
-  /// call api list post
-  Future<SearchUserResponse> searchUser() async {
-    isSearching = true;
+  /// call api list my friend
+  Future<ListMyFriendResponse> getListMyFriend() async {
+    isLoading = true;
     update();
-    SearchUserResponse searchUserResponse;
+    ListMyFriendResponse listMyFriendResponse;
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse("http://14.225.204.248:8080/api/filter/search"),
+          Uri.parse("http://14.225.204.248:8080/api/friends/list-friends"),
           RequestType.post,
           headers: null,
           body: null);
     } catch (error) {
-      debugPrint("Fail to search user api $error");
+      debugPrint("Fail to get list my friend $error");
       rethrow;
     }
-    if (body == null) return SearchUserResponse.buildDefault();
+    if (body == null) return ListMyFriendResponse.buildDefault();
     //get data from api here
-    searchUserResponse = SearchUserResponse.fromJson(body);
-    if (searchUserResponse.status == true) {
-      debugPrint("------------- SEARCH USER API SUCCESSFULLY--------------");
-      dataAllUser = searchUserResponse.data!;
+    listMyFriendResponse = ListMyFriendResponse.fromJson(body);
+    if (listMyFriendResponse.status == true) {
+      debugPrint("------------- GET LIST MY FRIEND SUCCESSFULLY--------------");
+      data = listMyFriendResponse.data;
+      result = data;
+      Global.dataFriend = listMyFriendResponse.data;
       await Future.delayed(const Duration(seconds: 1), () {});
-      isSearching = false;
+      isLoading = false;
       update();
     }
-    return searchUserResponse;
+    return listMyFriendResponse;
+  }
+
+  /// unfriend
+  Future<DenyOrUnfriendResponse> denyOrUnfriend(
+      DenyOrUnfriendRequest denyOrUnfriendRequest) async {
+    DenyOrUnfriendResponse denyOrUnfriendResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(
+              "http://14.225.204.248:8080/api/friends/deny-or-unfriend"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(denyOrUnfriendRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to deny or unfriend $error");
+      rethrow;
+    }
+    if (body == null) return DenyOrUnfriendResponse.buildDefault();
+    //get data from api here
+    denyOrUnfriendResponse = DenyOrUnfriendResponse.fromJson(body);
+    if (denyOrUnfriendResponse.status == true) {
+      debugPrint(
+          "------------- UNFRIEND SUCCESSFULLY--------------");
+      getListMyFriend();
+      update();
+    }
+    return denyOrUnfriendResponse;
   }
 
   void loadListPhotoAnotherUser() {
@@ -195,7 +229,7 @@ class ActionSearchController extends GetxController {
       debugPrint(
           "------------- GET LIST FAVORITE STORIES ANOTHER USER SUCCESSFULLY -------------");
       Global.listFavoriteStoriesAnotherUser = listFavoriteStoriesAnotherUserResponse.data!.stories!;
-      Get.to(() =>  AnOtherProfileScreen(isActionSearchPage: true));
+      Get.to(() => AnOtherProfileScreen(isMyFriendPage: true));
       update();
     } else {
       debugPrint("------------- ERROR API-------------");

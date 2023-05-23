@@ -125,7 +125,8 @@ class _HomeState extends State<Home> {
                                           return skeleton();
                                         }
                                       }
-                                    }))),
+                                    }
+                                    ))),
                       ],
                     )),
               ),
@@ -460,9 +461,8 @@ class _HomeState extends State<Home> {
                         Global.userProfileResponse!.id) {
                       homeController.userIdForLoadListAnotherProfile =
                           Global.listPostInfo[index].userInfoResponse!.id;
+                      Global.userIdFromIndexPost = Global.listPostInfo[index].userInfoResponse!.id;
                       homeController.loadListPhotoAnotherUser();
-                      homeController.loadAnotherProfile();
-                      homeController.loadListFavoriteStoriesAnotherUser();
                     } else {
                       Get.offAll(() => NavigationBarView(currentIndex: 4));
                     }
@@ -548,10 +548,6 @@ class _HomeState extends State<Home> {
                                                     : Colors.black),
                               ],
                             ),
-                            // Text(Global.listPostInfo[index].userLocation,
-                            //     maxLines: 2,
-                            //     style: const TextStyle(
-                            //         fontSize: 13, fontFamily: 'Nunito Sans')),
                           ],
                         ),
                       ),
@@ -993,7 +989,7 @@ class _HomeState extends State<Home> {
         ),
         Container(
             width: MediaQuery.of(context).size.width,
-            height: 220,
+            height: 200,
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -1012,22 +1008,6 @@ class _HomeState extends State<Home> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Colors.black.withOpacity(0.6)),
-                      ),
-
-                      /// unfollow
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image.asset(IconsAssets.icUnfollow),
-                          const SizedBox(width: 10),
-                          const Text(
-                            "Bỏ theo dõi",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Nunito Sans',
-                                color: Colors.black),
-                          ),
-                        ],
                       ),
 
                       /// the reason seeing the post
@@ -1170,8 +1150,7 @@ class _HomeState extends State<Home> {
                         onTap: () {
                           homeController.userIdForLoadListAnotherProfile =
                               Global.listPostInfo[index].userInfoResponse!.id;
-                          homeController.loadListPhotoAnotherUser();
-                          homeController.loadAnotherProfileForInfoAnotherUser();
+                          homeController.loadListPhotoAnotherForInfoAnotherUser();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,

@@ -19,9 +19,13 @@ import '../../../api_http/handle_api.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
 import '../../../models/another_user_profile/another_user_profile_request.dart';
 import '../../../models/delete_post/delete_post_response.dart';
+import '../../../models/list_another_post/list_another_post_request.dart';
+import '../../../models/list_another_post/list_another_post_response.dart';
 import '../../../models/list_comments_post/list_comments_post_request.dart';
 import '../../../models/list_comments_post/list_comments_post_response.dart';
 import '../../../models/list_favorite_stories_another_user/list_favorite_stories_another_user_request.dart';
+import '../../../models/list_my_friend/list_my_friend_response.dart';
+import '../../../models/list_my_post/list_my_post_response.dart';
 import '../../../models/user_profile/profile_response.dart';
 import '../../../util/global.dart';
 import '../another_profile_screen/another_profile_screen.dart';
@@ -47,6 +51,9 @@ class HomeController extends GetxController {
     getListStories();
     loadUserProfile();
     getListMyFavoriteStories();
+    getListMyFriend();
+    getListMyPosts();
+
     update();
     super.onReady();
   }
@@ -56,11 +63,19 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
+  void handleListAnotherPost() {
+    ListAnotherPostRequest listAnotherPostRequest =
+    ListAnotherPostRequest(Global.anOtherUserProfileResponse!.id);
+    getListAnotherPosts(listAnotherPostRequest);
+    update();
+  }
+
   void loadListPhotoAnotherUser() {
     GetAllPhotoAnotherUserRequest anotherUserRequest =
         GetAllPhotoAnotherUserRequest(userIdForLoadListAnotherProfile);
     getListPhotoAnOtherUser(anotherUserRequest);
     update();
+    loadAnotherProfile();
   }
 
   void loadAnotherProfile() {
@@ -68,6 +83,15 @@ class HomeController extends GetxController {
         AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
     loadAnotherUserProfile(anotherProfileRequest);
     update();
+    loadListFavoriteStoriesAnotherUser();
+  }
+
+  void loadListPhotoAnotherForInfoAnotherUser() {
+    GetAllPhotoAnotherUserRequest anotherUserRequest =
+    GetAllPhotoAnotherUserRequest(userIdForLoadListAnotherProfile);
+    getListPhotoAnOtherUser(anotherUserRequest);
+    update();
+    loadAnotherProfileForInfoAnotherUser();
   }
 
   void loadAnotherProfileForInfoAnotherUser() {
@@ -99,9 +123,31 @@ class HomeController extends GetxController {
         ListFavoriteStoriesAnotherUserRequest(userIdForLoadListAnotherProfile);
     getListFavoriteStoriesAnotherUser(listFavoriteStoriesAnotherUserRequest);
     update();
-    if (Global.listFavoriteStoriesAnotherUser.isNotEmpty) {
-      Get.to(() => const AnOtherProfileScreen());
+  }
+
+  /// call api list my friend
+  Future<ListMyFriendResponse> getListMyFriend() async {
+    ListMyFriendResponse listMyFriendResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/friends/list-friends"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list my friend $error");
+      rethrow;
     }
+    if (body == null) return ListMyFriendResponse.buildDefault();
+    //get data from api here
+    listMyFriendResponse = ListMyFriendResponse.fromJson(body);
+    if (listMyFriendResponse.status == true) {
+      debugPrint("------------- GET LIST MY FRIEND SUCCESSFULLY--------------");
+      Global.dataFriend = listMyFriendResponse.data;
+      update();
+    }
+    return listMyFriendResponse;
   }
 
   /// call api list post
@@ -164,6 +210,8 @@ class HomeController extends GetxController {
     update();
     getListPosts();
     getListStories();
+    getListMyFriend();
+    getListMyPosts();
   }
 
   /// pull to refresh
@@ -171,6 +219,8 @@ class HomeController extends GetxController {
     isNewUpdate = false;
     getListPosts();
     getListStories();
+    getListMyFriend();
+    getListMyPosts();
     update();
     return Future.delayed(const Duration(seconds: 1));
   }
@@ -227,6 +277,7 @@ class HomeController extends GetxController {
           "------------- GET LIST PHOTOS ANOTHER USER SUCCESSFULLY -------------");
       Global.listPhotoAnOtherUser =
           getAllPhotoAnOtherUserResponse.listPhotosUser!;
+
     }
     return getAllPhotoAnOtherUserResponse;
   }
@@ -253,8 +304,7 @@ class HomeController extends GetxController {
     if (anOtherProfileResponse.status == true) {
       Global.anOtherUserProfileResponse =
           anOtherProfileResponse.anOtherUserProfileResponse;
-      debugPrint(
-          "-------------  LOAD ANOTHER USER PROFILE SUCCESSFULLY -------------");
+      debugPrint("-------------  LOAD ANOTHER USER PROFILE SUCCESSFULLY -------------");
       update();
     } else {
       debugPrint("Lỗi api");
@@ -428,10 +478,65 @@ class HomeController extends GetxController {
       debugPrint(
           "------------- GET LIST FAVORITE STORIES ANOTHER USER SUCCESSFULLY -------------");
       Global.listFavoriteStoriesAnotherUser = listFavoriteStoriesAnotherUserResponse.data!.stories!;
+      handleListAnotherPost();
       update();
     } else {
       debugPrint("------------- ERROR API-------------");
     }
     return listFavoriteStoriesAnotherUserResponse;
+  }
+
+  /// call api list post
+  Future<ListMyPostResponse> getListMyPosts() async {
+    ListMyPostResponse listMyPostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/get-list-my-posts"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list my posts $error");
+      rethrow;
+    }
+    if (body == null) return ListMyPostResponse.buildDefault();
+    //get data from api here
+    listMyPostResponse = ListMyPostResponse.fromJson(body);
+    if (listMyPostResponse.status == true) {
+      debugPrint("------------- GET LIST MY POSTS SUCCESSFULLY--------------");
+      Global.listMyPost = listMyPostResponse.data!;
+      update();
+    }
+    return listMyPostResponse;
+  }
+
+  Future<ListAnotherPostResponse> getListAnotherPosts(
+      ListAnotherPostRequest listAnotherPostRequest) async {
+    ListAnotherPostResponse listAnotherPostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(
+              "http://14.225.204.248:8080/api/photo/get-list-another-posts"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder()
+              .convert(listAnotherPostRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to get list another posts $error");
+      rethrow;
+    }
+    if (body == null) return ListAnotherPostResponse.buildDefault();
+    //get data from api here
+    listAnotherPostResponse = ListAnotherPostResponse.fromJson(body);
+    if (listAnotherPostResponse.status == true) {
+      debugPrint(
+          "------------- GET LIST ANOTHER POSTS SUCCESSFULLY--------------");
+      Global.listAnotherPost = listAnotherPostResponse.data!;
+      Get.to(() =>  AnOtherProfileScreen());
+      update();
+    }
+    return listAnotherPostResponse;
   }
 }

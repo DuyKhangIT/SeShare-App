@@ -133,8 +133,6 @@ class _ActionSearchScreenState extends State<ActionSearchScreen> {
           actionSearchController.userIdForLoadListAnotherProfile =
               actionSearchController.result[index].id;
           actionSearchController.loadListPhotoAnotherUser();
-          actionSearchController.loadAnotherProfile();
-          actionSearchController.loadListFavoriteStoriesAnotherUser();
         } else {
           Get.offAll(() => NavigationBarView(currentIndex: 4));
         }

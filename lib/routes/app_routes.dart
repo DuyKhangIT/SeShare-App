@@ -18,6 +18,8 @@ import 'package:instagram_app/page/main/post_screen/changed_address/changed_addr
 import 'package:instagram_app/page/main/post_screen/changed_address/changed_address_view.dart';
 import 'package:instagram_app/page/main/post_screen/post_binding.dart';
 import 'package:instagram_app/page/main/post_screen/post_view.dart';
+import 'package:instagram_app/page/main/profile_screen/list_pending/list_my_friend/list_my_friend_binding.dart';
+import 'package:instagram_app/page/main/profile_screen/list_pending/list_pending_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/posts_archive/post_achive_binding.dart';
 import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/qr_code_screen/qr_code_binding.dart';
@@ -41,6 +43,8 @@ import '../page/main/home_screen/home_view.dart';
 import '../page/main/home_screen/home_binding.dart';
 import '../page/main/notification_screen/notification_binding.dart';
 import '../page/main/notification_screen/notification_view.dart';
+import '../page/main/profile_screen/list_pending/list_my_friend/list_my_friend_view.dart';
+import '../page/main/profile_screen/list_pending/list_peding_view.dart';
 import '../page/main/profile_screen/profile_binding.dart';
 import '../page/main/profile_screen/profile_screen.dart';
 import '../page/main/profile_screen/setting_screen/change_password/change_password_screen.dart';
@@ -106,6 +110,8 @@ class AppRoutes {
   static const String profileScreen = "/seShare_profile_screen";
   static const String updateProfileScreen = "/seShare_updateProfile_screen";
   static const String updatePrivateInfoScreen = "/seShare_updatePrivateInfo_screen";
+  static const String listPendingScreen = "/seShare_listPending_screen";
+  static const String listMyFriendScreen = "/seShare_listMyFriend_screen";
 
   static const String qrCodeScreen = "/seShare_qrCode_screen";
 
@@ -278,7 +284,7 @@ class AppRoutes {
 
     GetPage(
       name: anOtherProfileScreen,
-      page: () => const AnOtherProfileScreen(),
+      page: () =>  AnOtherProfileScreen(),
       binding: AnOtherProfileBinding(),
     ),
 
@@ -334,6 +340,18 @@ class AppRoutes {
       name: qrCodeScreen,
       page: () => const QRCodeScreen(),
       binding: QRCodeBinding(),
+    ),
+
+    GetPage(
+      name: listPendingScreen,
+      page: () => const ListPendingScreen(),
+      binding: ListPendingBinding(),
+    ),
+
+    GetPage(
+      name: listMyFriendScreen,
+      page: () => const ListMyFriendScreen(),
+      binding: ListMyFriendBinding(),
     ),
   ];
 }

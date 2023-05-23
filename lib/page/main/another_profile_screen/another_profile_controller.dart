@@ -2,8 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:instagram_app/models/add_friend/add_friend_request.dart';
+import 'package:instagram_app/models/add_friend/add_friend_response.dart';
+import 'package:instagram_app/models/deny_or_unfriend/deny_or_unfriend_request.dart';
+import 'package:instagram_app/models/deny_or_unfriend/deny_or_unfriend_response.dart';
 import '../../../api_http/handle_api.dart';
+import '../../../models/another_user_profile/another_profile_response.dart';
+import '../../../models/another_user_profile/another_user_profile_request.dart';
 import '../../../models/list_another_post/data_another_post_response.dart';
 import '../../../models/list_another_post/list_another_post_request.dart';
 import '../../../models/list_another_post/list_another_post_response.dart';
@@ -12,20 +17,10 @@ import '../../../util/global.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
 
 class AnOtherProfileController extends GetxController {
-  List<String> listPhotos = [];
-  String background = "";
-  String avatar = "";
-  String fullName = "";
-  String bio = "";
   bool isLoading = false;
   List<DataAnotherPostResponse> dataAnotherPost = [];
   @override
   void onReady() {
-    listPhotos = Global.listPhotoAnOtherUser;
-    background = Global.anOtherUserProfileResponse!.backgroundPath!;
-    avatar = Global.anOtherUserProfileResponse!.avatarPath!;
-    fullName = Global.anOtherUserProfileResponse!.fullName;
-    bio = Global.anOtherUserProfileResponse!.bio!;
     handleListAnotherPost();
     update();
     super.onReady();
@@ -40,6 +35,25 @@ class AnOtherProfileController extends GetxController {
     ListAnotherPostRequest listAnotherPostRequest =
     ListAnotherPostRequest(Global.anOtherUserProfileResponse!.id);
     getListAnotherPosts(listAnotherPostRequest);
+    update();
+  }
+
+  void handleDenyOrUnfriend(){
+    DenyOrUnfriendRequest denyOrUnfriendRequest = DenyOrUnfriendRequest(Global.anOtherUserProfileResponse!.id);
+    denyOrUnfriend(denyOrUnfriendRequest);
+    update();
+  }
+
+  void handleAddFriend(){
+    AddFriendRequest addFriendRequest = AddFriendRequest(Global.anOtherUserProfileResponse!.id);
+    addFriend(addFriendRequest);
+    update();
+  }
+
+  void loadAnotherProfile() {
+    AnotherUserProfileRequest anotherProfileRequest =
+    AnotherUserProfileRequest(Global.userIdFromIndexPost);
+    loadAnotherUserProfile(anotherProfileRequest);
     update();
   }
 
@@ -95,5 +109,90 @@ class AnOtherProfileController extends GetxController {
       update();
     }
     return listAnotherPostResponse;
+  }
+
+  Future<DenyOrUnfriendResponse> denyOrUnfriend(
+      DenyOrUnfriendRequest denyOrUnfriendRequest) async {
+    DenyOrUnfriendResponse denyOrUnfriendResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(
+              "http://14.225.204.248:8080/api/friends/deny-or-unfriend"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(denyOrUnfriendRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to deny or unfriend $error");
+      rethrow;
+    }
+    if (body == null) return DenyOrUnfriendResponse.buildDefault();
+    //get data from api here
+    denyOrUnfriendResponse = DenyOrUnfriendResponse.fromJson(body);
+    if (denyOrUnfriendResponse.status == true) {
+      debugPrint(
+          "------------- UNFRIEND SUCCESSFULLY--------------");
+      loadAnotherProfile();
+      update();
+    }
+    return denyOrUnfriendResponse;
+  }
+
+  Future<AddFriendResponse> addFriend(
+      AddFriendRequest addFriendRequest) async {
+    AddFriendResponse addFriendResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(
+              "http://14.225.204.248:8080/api/friends/send-request"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(addFriendRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to deny or unfriend $error");
+      rethrow;
+    }
+    if (body == null) return AddFriendResponse.buildDefault();
+    //get data from api here
+    addFriendResponse = AddFriendResponse.fromJson(body);
+    if (addFriendResponse.status == true) {
+      debugPrint(
+          "------------- ADD FRIEND SUCCESSFULLY--------------");
+      loadAnotherProfile();
+      update();
+    }
+    return addFriendResponse;
+  }
+
+
+  /// load another user profile
+  Future<AnOtherProfileResponse> loadAnotherUserProfile(
+      AnotherUserProfileRequest anotherUserProfileRequest) async {
+    AnOtherProfileResponse anOtherProfileResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/user/another-profile"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder()
+              .convert(anotherUserProfileRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to user profile $error");
+      rethrow;
+    }
+    if (body == null) return AnOtherProfileResponse.buildDefault();
+    //get data from api here
+    anOtherProfileResponse = AnOtherProfileResponse.fromJson(body);
+    if (anOtherProfileResponse.status == true) {
+      Global.anOtherUserProfileResponse =
+          anOtherProfileResponse.anOtherUserProfileResponse;
+      debugPrint("-------------  LOAD ANOTHER USER PROFILE SUCCESSFULLY -------------");
+      update();
+    } else {
+      debugPrint("Lỗi api");
+    }
+    return anOtherProfileResponse;
   }
 }

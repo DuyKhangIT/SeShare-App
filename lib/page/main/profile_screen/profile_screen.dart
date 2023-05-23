@@ -10,6 +10,7 @@ import 'package:instagram_app/page/main/profile_screen/update_profile_screen/upd
 
 import '../../../util/global.dart';
 import '../../../util/module.dart';
+import 'list_pending/list_peding_view.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -127,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 children: [
                                   Column(
                                     children: [
-                                      Text(profileController.data.length.toString(),
+                                      Text( Global.listMyPost.length.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,
@@ -157,21 +158,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               fontFamily: 'Nunito Sans')),
                                     ],
                                   ),
-                                  Column(
-                                    children: const [
-                                      Text("100",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                              fontFamily: 'Nunito Sans')),
-                                      Text("Bạn bè",
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 14,
-                                              fontFamily: 'Nunito Sans')),
-                                    ],
+
+                                  GestureDetector(
+                                    onTap: (){
+                                      Get.to(() => const ListPendingScreen());
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Text( Global.dataFriend.length.toString(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito Sans')),
+                                        const Text("Bạn bè",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito Sans')),
+                                      ],
+                                    ),
                                   ),
 
                                 ],
@@ -186,8 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Get.to(
-                                            () => const UpdateProfileScreen());
+                                        Get.to(() => const UpdateProfileScreen());
                                       },
                                       child: Container(
                                         height: 30,
@@ -206,20 +212,25 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         ),
                                       ),
                                     ),
-                                    Container(
-                                      height: 30,
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10, 6, 10, 6),
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.4),
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: const Text(
-                                        "Chia sẻ trang cá nhân",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: 'Nunito Sans',
-                                            fontWeight: FontWeight.bold),
+                                    GestureDetector(
+                                      onTap: (){
+                                        Get.to(() => const QRCodeScreen());
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 6, 10, 6),
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.4),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: const Text(
+                                          "Chia sẻ trang cá nhân",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: 'Nunito Sans',
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ),
                                   ],

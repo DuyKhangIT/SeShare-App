@@ -4,8 +4,11 @@ import 'package:instagram_app/models/list_my_favorite_stories/story_object_my_fa
 import 'package:instagram_app/models/list_story/data_story_response.dart';
 
 import '../models/another_user_profile/another_user_profile_response.dart';
+import '../models/list_another_post/data_another_post_response.dart';
 import '../models/list_comments_post/data_list_comments_post_response.dart';
 import '../models/list_favorite_stories_another_user/story_object_favorite_stories_another_user_response.dart';
+import '../models/list_my_friend/data_list_my_friend_response.dart';
+import '../models/list_my_post/data_my_post_response.dart';
 import '../models/list_my_stories/data_list_my_stories_response.dart';
 import '../models/list_posts_home/data_posts_response.dart';
 import '../models/user_profile/user_profile_response.dart';
@@ -46,6 +49,9 @@ class Global {
   /// data list post
   static List<DataPostsResponse> listPostInfo = [];
   static List<DataStoryResponse> listStoriesData = [];
+  /// list my post
+  static  List<DataMyPostResponse> listMyPost = [];
+  static    List<DataAnotherPostResponse> listAnotherPost = [];
 
   /// list my stories
   static List<DataListMyStoriesResponse> listMyStories = [];
@@ -55,6 +61,8 @@ class Global {
 
   /// list my favorite stories
   static List<StoryObjectMyFavoriteStoriesResponse> listMyFavoriteStories = [];
+  /// list my friend
+  static  List<DataListMyFriendResponse> dataFriend = [];
 
   /// info post home
   static DataPostsResponse? infoMyPost;
@@ -67,6 +75,9 @@ class Global {
 
   /// id post for cmt post
   static String idPost = "";
+
+  /// id user from index post
+  static String userIdFromIndexPost = "";
 
   /// block auto click or many time click
   static int mTimeClick = 0;

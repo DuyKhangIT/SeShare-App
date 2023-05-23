@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/another_profile_screen/another_profile_controller.dart';
+import 'package:instagram_app/page/main/profile_screen/list_pending/list_my_friend/list_my_friend_view.dart';
+import 'package:instagram_app/page/main/search_screen/action_search/action_search_view.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -11,7 +13,9 @@ import '../home_screen/infor_account_screen/infro_account_view.dart';
 import '../profile_screen/posts_archive/post_archive_screen.dart';
 
 class AnOtherProfileScreen extends StatefulWidget {
-  const AnOtherProfileScreen({Key? key}) : super(key: key);
+    bool? isMyFriendPage = false;
+    bool? isActionSearchPage = false;
+   AnOtherProfileScreen({Key? key,this.isMyFriendPage,this.isActionSearchPage}) : super(key: key);
 
   @override
   State<AnOtherProfileScreen> createState() => _AnOtherProfileScreenState();
@@ -49,12 +53,12 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                     child: Stack(
                       children: [
                         /// ảnh bìa
-                        anOtherProfileController.background.isNotEmpty
+                        Global.anOtherUserProfileResponse!.backgroundPath!.isNotEmpty
                             ? SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 height: 180,
                                 child: getNetworkImage(
-                                    anOtherProfileController.background,
+                                    Global.anOtherUserProfileResponse!.backgroundPath!,
                                     width: 400,
                                     height: 180))
                             : Container(
@@ -80,10 +84,9 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                     ),
                                     child: ClipRRect(
                                         borderRadius: BorderRadius.circular(20),
-                                        child: anOtherProfileController
-                                                .avatar.isNotEmpty
+                                        child: Global.anOtherUserProfileResponse!.avatarPath!.isNotEmpty
                                             ? getNetworkImage(
-                                                anOtherProfileController.avatar,
+                                            Global.anOtherUserProfileResponse!.avatarPath!,
                                                 width: 80,
                                                 height: 80)
                                             : Container())),
@@ -98,9 +101,9 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    anOtherProfileController.fullName.isNotEmpty
+                                    Global.anOtherUserProfileResponse!.fullName.isNotEmpty
                                         ? Text(
-                                            anOtherProfileController.fullName,
+                                        Global.anOtherUserProfileResponse!.fullName,
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18,
@@ -109,8 +112,8 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    anOtherProfileController.bio.isNotEmpty
-                                        ? Text(anOtherProfileController.bio,
+                                    Global.anOtherUserProfileResponse!.bio!.isNotEmpty
+                                        ? Text(Global.anOtherUserProfileResponse!.bio!,
                                             maxLines: 2,
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.w400,
@@ -128,7 +131,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                 children: [
                                   Column(
                                     children: [
-                                      Text(anOtherProfileController.dataAnotherPost.length.toString(),
+                                      Text(Global.listAnotherPost.length.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,
@@ -183,16 +186,20 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {},
+                                    /// not friend
+                                    Global.anOtherUserProfileResponse!.friendStatus == 0
+                                    ?GestureDetector(
+                                      onTap: () {
+                                        anOtherProfileController.handleAddFriend();
+                                      },
                                       child: Container(
                                         height: 30,
                                         padding: const EdgeInsets.fromLTRB(
-                                            10, 6, 10, 6),
+                                            10, 7, 10, 7),
                                         margin:
                                             const EdgeInsets.only(right: 20),
                                         decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.4),
+                                            color: Colors.grey.withOpacity(0.25),
                                             borderRadius:
                                                 BorderRadius.circular(8)),
                                         child: Row(
@@ -216,67 +223,83 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                           ],
                                         ),
                                       ),
+                                    )
+                                    /// waiting friend
+                                    :Global.anOtherUserProfileResponse!.friendStatus == 1 || Global.anOtherUserProfileResponse!.friendStatus == 2
+                                        ?GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (context) {
+                                              return detailBottomSheetUnSendRequest(anOtherProfileController);
+                                            });
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        padding: const EdgeInsets.fromLTRB(10, 7, 10, 7),
+                                        margin: const EdgeInsets.only(right: 20),
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.25),
+                                            borderRadius: BorderRadius.circular(8)),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Image.asset(IconsAssets.icWaitingAccept),
+                                            const SizedBox(width: 6),
+                                            const Text(
+                                              "Đã gửi lời mời",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Nunito Sans',
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                    /// friend
+                                        : GestureDetector(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (context) {
+                                              return detailBottomSheetUnfriend(anOtherProfileController);
+                                            });
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        padding: const EdgeInsets.fromLTRB(10, 7, 10, 7),
+                                        margin: const EdgeInsets.only(right: 20),
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.25),
+                                            borderRadius: BorderRadius.circular(8)),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Image.asset(IconsAssets.icFriend),
+                                            const SizedBox(width: 6),
+                                            const Text(
+                                              "Bạn bè",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Nunito Sans',
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                    // GestureDetector(
-                                    //   onTap: () {
-                                    //
-                                    //   },
-                                    //   child: Container(
-                                    //     height: 30,
-                                    //     padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
-                                    //     margin: const EdgeInsets.only(right: 20),
-                                    //     decoration: BoxDecoration(
-                                    //         color: Colors.grey.withOpacity(0.4),
-                                    //         borderRadius: BorderRadius.circular(8)),
-                                    //     child: Row(
-                                    //       mainAxisAlignment: MainAxisAlignment.start,
-                                    //       children: [
-                                    //         Image.asset(IconsAssets.icAcceptFriend),
-                                    //         const SizedBox(width: 6),
-                                    //         const Text(
-                                    //           "Bạn bè",
-                                    //           style: TextStyle(
-                                    //               fontSize: 14,
-                                    //               fontFamily: 'Nunito Sans',
-                                    //               fontWeight: FontWeight.bold),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // GestureDetector(
-                                    //   onTap: () {
-                                    //
-                                    //   },
-                                    //   child: Container(
-                                    //     height: 30,
-                                    //     padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
-                                    //     margin: const EdgeInsets.only(right: 20),
-                                    //     decoration: BoxDecoration(
-                                    //         color: Colors.grey.withOpacity(0.4),
-                                    //         borderRadius: BorderRadius.circular(8)),
-                                    //     child: Row(
-                                    //       mainAxisAlignment: MainAxisAlignment.start,
-                                    //       children: [
-                                    //         Image.asset(IconsAssets.icWaitingAccept),
-                                    //         const SizedBox(width: 6),
-                                    //         const Text(
-                                    //           "Đang theo dõi",
-                                    //           style: TextStyle(
-                                    //               fontSize: 14,
-                                    //               fontFamily: 'Nunito Sans',
-                                    //               fontWeight: FontWeight.bold),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // ),
+
                                     Container(
                                       height: 30,
                                       padding: const EdgeInsets.fromLTRB(
-                                          10, 6, 10, 6),
+                                          10, 7, 10, 7),
                                       decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.4),
+                                          color: Colors.grey.withOpacity(0.25),
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                       child: Row(
@@ -337,7 +360,11 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           alignment: Alignment.topLeft,
                           child: GestureDetector(
                             onTap: () {
-                              anOtherProfileController.getListPosts();
+                              widget.isMyFriendPage == true
+                              ? Get.to(() => const ListMyFriendScreen())
+                              : widget.isActionSearchPage == true
+                                ?Get.to(() => const ActionSearchScreen())
+                                :anOtherProfileController.getListPosts();
                             },
                             child: Container(
                               width: 30,
@@ -372,7 +399,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
               child: TabBar(
                 controller: _tabController,
                 isScrollable: true,
-                labelPadding: const EdgeInsets.symmetric(horizontal: (50)),
+                labelPadding: const EdgeInsets.symmetric(horizontal: (35)),
                 labelColor: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white
                     : Colors.black,
@@ -407,7 +434,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           ),
                           child: Image.asset(IconsAssets.icGridView)),
                       const SizedBox(height: 5),
-                      Text("Ảnh của ${anOtherProfileController.fullName}",
+                      Text("Ảnh của ${ Global.anOtherUserProfileResponse!.fullName}",
                           style: const TextStyle(
                               fontSize: 12, fontFamily: 'Nunito Sans'))
                     ],
@@ -424,7 +451,7 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                           ),
                           child: Image.asset(IconsAssets.icStories)),
                       const SizedBox(height: 5),
-                      Text("Tin nổi bật của ${anOtherProfileController.fullName}",
+                      Text("Tin nổi bật của ${Global.anOtherUserProfileResponse!.fullName}",
                           style: const TextStyle(
                               fontSize: 12, fontFamily: 'Nunito Sans'))
                     ],
@@ -617,6 +644,162 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
       ],
     );
   }
+  Widget detailBottomSheetUnfriend(AnOtherProfileController anOtherProfileController) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: 120,
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: 40,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black.withOpacity(0.6)),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    anOtherProfileController.handleDenyOrUnfriend();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(IconsAssets.icDeleteFriend),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Hủy kết bạn",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Nunito Sans',
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
+
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(IconsAssets.icCancel),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Bỏ qua",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Nunito Sans',
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )),
+      ],
+    );
+  }
+  Widget detailBottomSheetUnSendRequest(AnOtherProfileController anOtherProfileController) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: 120,
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: 40,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black.withOpacity(0.6)),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    anOtherProfileController.handleDenyOrUnfriend();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(IconsAssets.icDeleteFriend),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Hủy yêu cầu",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Nunito Sans',
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(IconsAssets.icCancel),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Bỏ qua",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Nunito Sans',
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )),
+      ],
+    );
+  }
 }
 
 class Tab1 extends StatefulWidget {
@@ -637,14 +820,14 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
     return GridView.builder(
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: widget.tabController.listPhotos.isNotEmpty
-            ? widget.tabController.listPhotos.length
+        itemCount: Global.listPhotoAnOtherUser.isNotEmpty
+            ? Global.listPhotoAnOtherUser.length
             : 6,
         itemBuilder: (context, index) {
           if (widget.tabController.isLoading == true) {
             return shimmerContentGridView();
           } else {
-            if (widget.tabController.listPhotos.isNotEmpty) {
+            if (Global.listPhotoAnOtherUser.isNotEmpty) {
               return contentGridView(widget.tabController,index);
             } else {
               return Container();
@@ -662,7 +845,7 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
       child: Padding(
           padding: const EdgeInsets.all(1),
           child: ClipRect(
-              child: getNetworkImage(widget.tabController.listPhotos[index],
+              child: getNetworkImage(Global.listPhotoAnOtherUser[index],
                   width: null, height: null))),
     );
   }

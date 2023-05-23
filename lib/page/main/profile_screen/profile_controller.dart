@@ -10,6 +10,7 @@ import '../../../models/list_my_post/list_my_post_response.dart';
 class ProfileController extends GetxController {
   List<String>listPhotos = [];
   List<DataMyPostResponse> data = [];
+
   @override
   void onReady() {
     getListPhotoUser();
@@ -17,6 +18,7 @@ class ProfileController extends GetxController {
     update();
     super.onReady();
   }
+
 
   @override
   void onClose() {
@@ -73,4 +75,6 @@ class ProfileController extends GetxController {
     }
     return listMyPostResponse;
   }
+
+
 }

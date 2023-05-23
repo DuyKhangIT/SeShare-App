@@ -59,6 +59,9 @@ class IconsAssets {
   static const String icScaleText = 'assets/icons/ic_scale_text.png';
   static const String icStories = 'assets/icons/ic_stories.png';
   static const String icCopyLink = 'assets/icons/ic_copy_link.png';
+  static const String icFriend = 'assets/icons/ic_friend.png';
+  static const String icDeleteFriend = 'assets/icons/ic_delete_friend.png';
+  static const String icCancel = 'assets/icons/ic_cancel.png';
 
 
 }

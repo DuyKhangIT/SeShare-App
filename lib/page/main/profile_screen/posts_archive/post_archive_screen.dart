@@ -30,7 +30,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                 leading: GestureDetector(
                   onTap: () {
                     widget.isAnotherPost == true
-                        ? Get.to(() => const AnOtherProfileScreen())
+                        ? Get.to(() =>  AnOtherProfileScreen())
                         : Get.to(() => NavigationBarView(currentIndex: 4));
                   },
                   child: Icon(Icons.arrow_back,
