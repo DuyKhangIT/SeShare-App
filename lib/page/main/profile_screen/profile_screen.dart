@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
 import 'package:instagram_app/page/main/profile_screen/posts_archive/post_archive_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/profile_controller.dart';
 import 'package:instagram_app/page/main/profile_screen/qr_code_screen/qr_code_screen.dart';
@@ -258,10 +259,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                               width: 30,
                               height: 30,
                               margin: const EdgeInsets.only(top: 20, right: 20),
-                              child: Image.asset(
-                                IconsAssets.icDot,
-                                color: Colors.white,
-                              ),
+                              child:
+                              const Icon(Icons.menu,
+                                  color: Colors.white,shadows: [Shadow(color: Colors.black,offset: Offset.zero,blurRadius: 5)]),
+                              // Image.asset(
+                              //   IconsAssets.icDot,
+                              //   color: Colors.white,
+                              // ),
                             ),
                           ),
                         ),
@@ -539,13 +543,18 @@ class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
 
   /// content gridview
   Widget contentGridView(index) {
-    return Padding(
-      padding: const EdgeInsets.all(1),
-      child: ClipRect(
-        child: getNetworkImage(
-            Global.listMyFavoriteStories[index].photoPath,
-            width: null,
-            height: null),
+    return GestureDetector(
+      onTap: (){
+        Get.to(() =>  StoryPage(isMyFavoriteStoryPage: true,index: index));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(1),
+        child: ClipRect(
+          child: getNetworkImage(
+              Global.listMyFavoriteStories[index].photoPath,
+              width: null,
+              height: null),
+        ),
       ),
     );
   }

@@ -12,7 +12,9 @@ import '../../../../util/module.dart';
 class StoryPage extends StatefulWidget {
   int? index = 0;
   bool? isStoriesArchive = false;
-  StoryPage({Key? key, this.index, this.isStoriesArchive}) : super(key: key);
+  bool? isMyFavoriteStoryPage = false;
+  bool? isAnotherUserFavoriteStoryPage = false;
+  StoryPage({Key? key, this.index, this.isStoriesArchive,this.isMyFavoriteStoryPage,this.isAnotherUserFavoriteStoryPage}) : super(key: key);
 
   @override
   State<StoryPage> createState() => _StoryPageState();
@@ -29,9 +31,13 @@ class _StoryPageState extends State<StoryPage> {
               gestureItemBuilder: (context, pageIndex, storyIndex) {
                 return widget.isStoriesArchive == true
                     ? menuStory(pageIndex, storyIndex, storyController)
-                    : Global.listStoriesData[pageIndex].isMyStory == true
+                    : widget.isMyFavoriteStoryPage == true
+                      ? menuStory(pageIndex, storyIndex, storyController)
+                      :  widget.isAnotherUserFavoriteStoryPage == true
                         ? menuStory(pageIndex, storyIndex, storyController)
-                        : Container();
+                        :Global.listStoriesData[pageIndex].isMyStory == true
+                          ? menuStory(pageIndex, storyIndex, storyController)
+                          : Container();
               },
               indicatorDuration: const Duration(seconds: 15),
               indicatorPadding:
@@ -47,13 +53,21 @@ class _StoryPageState extends State<StoryPage> {
               storyLength: (pageIndex) {
                 return widget.isStoriesArchive == true
                     ? Global.listMyStories.length
-                    : Global.listStoriesData[pageIndex].stories!.length;
+                    : widget.isMyFavoriteStoryPage == true
+                      ? Global.listMyFavoriteStories.length
+                      : widget.isAnotherUserFavoriteStoryPage == true
+                        ? Global.listFavoriteStoriesAnotherUser.length
+                        : Global.listStoriesData[pageIndex].stories!.length;
               },
 
               /// number of page
               pageLength: widget.isStoriesArchive == true
                   ? 1
-                  : Global.listStoriesData.length,
+                  : widget.isMyFavoriteStoryPage == true
+                      ? 1
+                      : widget.isAnotherUserFavoriteStoryPage == true
+                        ? 1
+                        : Global.listStoriesData.length,
             ))));
   }
 
@@ -72,7 +86,21 @@ class _StoryPageState extends State<StoryPage> {
                       MediaQuery.of(context).size.width,
                       MediaQuery.of(context).size.height / 1.5),
                   fit: BoxFit.contain)
-              : Image.network(
+              : widget.isMyFavoriteStoryPage == true
+              ? Image.network(
+              Global.convertMedia(
+                  Global.listMyFavoriteStories[storyIndex].photoPath,
+                  MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height / 1.5),
+              fit: BoxFit.contain)
+              :  widget.isAnotherUserFavoriteStoryPage == true
+                ? Image.network(
+              Global.convertMedia(
+                  Global.listFavoriteStoriesAnotherUser[storyIndex].photoPath,
+                  MediaQuery.of(context).size.width,
+                  MediaQuery.of(context).size.height / 1.5),
+              fit: BoxFit.contain)
+                : Image.network(
                   Global.convertMedia(
                       Global.listStoriesData[pageIndex].stories![storyIndex]
                           .photoPath,
@@ -99,7 +127,17 @@ class _StoryPageState extends State<StoryPage> {
                       Global.listMyStories[storyIndex].userInfoResponse!.avatar,
                       width: 65,
                       height: 65)
-                      : getNetworkImage(
+                      : widget.isMyFavoriteStoryPage == true
+                        ? getNetworkImage(
+                      Global.listMyFavoriteStories[storyIndex].userInfoResponse!.avatar,
+                      width: 65,
+                      height: 65)
+                        : widget.isAnotherUserFavoriteStoryPage == true
+                          ?getNetworkImage(
+                      Global.listFavoriteStoriesAnotherUser[storyIndex].userInfoResponse!.avatar,
+                      width: 65,
+                      height: 65)
+                          :getNetworkImage(
                           Global.listStoriesData[pageIndex]
                               .userInfoStoryResponse!.avatar,
                           width: 65,
@@ -116,8 +154,11 @@ class _StoryPageState extends State<StoryPage> {
                   maxLines: 1,
                   widget.isStoriesArchive == true
                       ? Global.listMyStories[storyIndex].userInfoResponse!.fullName
-                      : Global.listStoriesData[pageIndex].userInfoStoryResponse!
-                          .fullName,
+                      : widget.isMyFavoriteStoryPage == true
+                        ? Global.listMyFavoriteStories[storyIndex].userInfoResponse!.fullName
+                        : widget.isAnotherUserFavoriteStoryPage == true
+                          ? Global.listFavoriteStoriesAnotherUser[storyIndex].userInfoResponse!.fullName
+                          : Global.listStoriesData[pageIndex].userInfoStoryResponse!.fullName,
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -128,8 +169,11 @@ class _StoryPageState extends State<StoryPage> {
               Text(
                 widget.isStoriesArchive == true
                     ? Global.listMyStories[storyIndex].createTime
-                    : Global.listStoriesData[pageIndex].stories![storyIndex]
-                        .createTime,
+                    : widget.isMyFavoriteStoryPage == true
+                      ?Global.listMyFavoriteStories[storyIndex].createTime
+                      : widget.isAnotherUserFavoriteStoryPage == true
+                        ? Global.listFavoriteStoriesAnotherUser[storyIndex].createTime
+                        :Global.listStoriesData[pageIndex].stories![storyIndex].createTime,
                 style: const TextStyle(
                     color: Colors.white,
                     fontSize: 10,
@@ -146,7 +190,25 @@ class _StoryPageState extends State<StoryPage> {
                               width: 11, height: 11, color: Colors.white)
                           : Image.asset(IconsAssets.icFriendMode,
                               width: 11, height: 11, color: Colors.white)
-                  : Global.listStoriesData[pageIndex].stories![storyIndex]
+                  : widget.isMyFavoriteStoryPage == true
+                    ? Global.listMyFavoriteStories[storyIndex].privacy == "public"
+                  ? Image.asset(IconsAssets.icPublicMode,
+                  width: 11, height: 11, color: Colors.white)
+                  : Global.listMyFavoriteStories[storyIndex].privacy == "private"
+                  ? Image.asset(IconsAssets.icPrivateMode,
+                  width: 11, height: 11, color: Colors.white)
+                  : Image.asset(IconsAssets.icFriendMode,
+                  width: 11, height: 11, color: Colors.white)
+                    : widget.isAnotherUserFavoriteStoryPage == true
+                      ? Global.listFavoriteStoriesAnotherUser[storyIndex].privacy == "public"
+                  ? Image.asset(IconsAssets.icPublicMode,
+                  width: 11, height: 11, color: Colors.white)
+                  : Global.listFavoriteStoriesAnotherUser[storyIndex].privacy == "private"
+                  ? Image.asset(IconsAssets.icPrivateMode,
+                  width: 11, height: 11, color: Colors.white)
+                  : Image.asset(IconsAssets.icFriendMode,
+                  width: 11, height: 11, color: Colors.white)
+                      :Global.listStoriesData[pageIndex].stories![storyIndex]
                               .privacy == "public"
                       ? Image.asset(IconsAssets.icPublicMode,
                           width: 11, height: 11, color: Colors.white)
@@ -177,9 +239,24 @@ class _StoryPageState extends State<StoryPage> {
                     FavoriteStoryRequest(Global.listMyStories[storyIndex].id);
                 storyController.favoriteStory(favoriteRequest);
               } else {
-                FavoriteStoryRequest favoriteRequest = FavoriteStoryRequest(
-                    Global.listStoriesData[pageIndex].stories![storyIndex].id);
-                storyController.favoriteStory(favoriteRequest);
+                if(widget.isMyFavoriteStoryPage == true){
+                  FavoriteStoryRequest favoriteRequest =
+                  FavoriteStoryRequest(Global.listMyFavoriteStories[storyIndex].id);
+                  storyController.favoriteStory(favoriteRequest);
+                }else{
+                  if(widget.isAnotherUserFavoriteStoryPage == true){
+                    FavoriteStoryRequest favoriteRequest =
+                    FavoriteStoryRequest(Global.listFavoriteStoriesAnotherUser[storyIndex].id);
+                    storyController.favoriteStory(favoriteRequest);
+                  }
+                  else{
+                    FavoriteStoryRequest favoriteRequest = FavoriteStoryRequest(
+                        Global.listStoriesData[pageIndex].stories![storyIndex].id);
+                    storyController.favoriteStory(favoriteRequest);
+                  }
+
+                }
+
               }
             }
           },
@@ -200,7 +277,37 @@ class _StoryPageState extends State<StoryPage> {
                         : Image.asset(IconsAssets.icLike,
                             width: 11, height: 11, color: Colors.black),
                   )
-                : Container(
+                : widget.isMyFavoriteStoryPage == true
+                    ?Container(
+              width: 40,
+              height: 25,
+              margin: const EdgeInsets.only(bottom: 20, right: 20),
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white),
+              child: Global.listMyFavoriteStories[storyIndex].isFavorite == true
+                  ? Image.asset(IconsAssets.icLikeRed,
+                  width: 11, height: 11)
+                  : Image.asset(IconsAssets.icLike,
+                  width: 11, height: 11, color: Colors.black),
+            )
+                    : widget.isAnotherUserFavoriteStoryPage == true
+                      ? Container(
+              width: 40,
+              height: 25,
+              margin: const EdgeInsets.only(bottom: 20, right: 20),
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white),
+              child: Global.listFavoriteStoriesAnotherUser[storyIndex].isFavorite == true
+                  ? Image.asset(IconsAssets.icLikeRed,
+                  width: 11, height: 11)
+                  : Image.asset(IconsAssets.icLike,
+                  width: 11, height: 11, color: Colors.black),
+            )
+                      :Container(
                     width: 40,
                     height: 25,
                     margin: const EdgeInsets.only(bottom: 20, right: 20),
@@ -226,9 +333,24 @@ class _StoryPageState extends State<StoryPage> {
                     DeleteStoryRequest(Global.listMyStories[storyIndex].id);
                 storyController.deleteStory(deleteStoryRequest);
               } else {
-                DeleteStoryRequest deleteStoryRequest = DeleteStoryRequest(
-                    Global.listStoriesData[pageIndex].stories![storyIndex].id);
-                storyController.deleteStory(deleteStoryRequest);
+                if (widget.isMyFavoriteStoryPage == true) {
+                  DeleteStoryRequest deleteStoryRequest =
+                  DeleteStoryRequest(Global.listMyFavoriteStories[storyIndex].id);
+                  storyController.deleteStory(deleteStoryRequest);
+                }else{
+                  if(widget.isAnotherUserFavoriteStoryPage == true){
+                    DeleteStoryRequest deleteStoryRequest =
+                    DeleteStoryRequest(Global.listFavoriteStoriesAnotherUser[storyIndex].id);
+                    storyController.deleteStory(deleteStoryRequest);
+                  }
+                  else{
+                    DeleteStoryRequest deleteStoryRequest = DeleteStoryRequest(
+                        Global.listStoriesData[pageIndex].stories![storyIndex].id);
+                    storyController.deleteStory(deleteStoryRequest);
+                  }
+
+                }
+
               }
             }
           },

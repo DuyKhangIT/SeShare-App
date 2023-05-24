@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,9 +12,11 @@ import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.d
 import 'package:instagram_app/page/main/home_screen/update_post_screen/update_post_view.dart';
 import 'package:instagram_app/page/main/notification_screen/notification_view.dart';
 import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../util/global.dart';
@@ -1050,7 +1056,44 @@ class _HomeState extends State<Home> {
                                   Divider(color: Colors.black.withOpacity(0.4)),
                                   /// save QR code
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      homeController.screenShotController.capture().then((Uint8List? image) async {
+
+                                        //Capture Done
+                                        homeController.imageFile = image;
+
+                                        Directory tempDir = await getTemporaryDirectory();
+
+                                        File tempFile = await File('${tempDir.path}/QR.png').create();
+
+                                        await tempFile.writeAsBytes(homeController.imageFile!);
+
+                                        homeController.qrFilePath = tempFile.path;
+
+                                        await homeController.saveImage(homeController.qrFilePath);
+
+                                        final snackBar = SnackBar(
+                                          elevation: 0,
+                                          behavior: SnackBarBehavior.fixed,
+                                          backgroundColor: Colors.transparent,
+                                          content: AwesomeSnackbarContent(
+                                            title: 'Thành công!',
+                                            message: "Đã lưu mã QR",
+                                            contentType: ContentType.success,
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(Get.context!)
+                                          ..hideCurrentSnackBar()
+                                          ..showSnackBar(snackBar);
+
+                                        homeController.update();
+                                        debugPrint(homeController.qrFilePath);
+
+                                      }).catchError((onError) {
+                                        debugPrint(onError);
+                                      });
+                                    },
                                     child: Container(
                                       width: 80,
                                       height: 35,
@@ -1086,43 +1129,46 @@ class _HomeState extends State<Home> {
                             ),
                             radius: 12,
                             /// QR code
-                            content: Container(
-                              width: 200,
-                              height: 270,
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Colors.black,width: 0.5)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 170,
-                                    height: 180,
-                                    child: QrImage(
-                                      data: Global.listPostInfo[index].id,
-                                      size: 170,
-                                      version: QrVersions.auto,
+                            content: Screenshot(
+                              controller: homeController.screenShotController,
+                              child: Container(
+                                width: 200,
+                                height: 270,
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: Colors.black,width: 0.5)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 170,
+                                      height: 180,
+                                      child: QrImage(
+                                        data: Global.listPostInfo[index].id,
+                                        size: 170,
+                                        version: QrVersions.auto,
+                                      ),
                                     ),
-                                  ),
-                                  RichText(
-                                    textAlign: TextAlign.center,
-                                      text: TextSpan(children: [
-                                        const TextSpan(
-                                            text: 'Bài viết được chia sẻ của \n',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Nunito Sans',
-                                                color: Colors.black)),
-                                        TextSpan(
-                                            text: Global.listPostInfo[index].userInfoResponse!.fullName,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Nunito Sans',
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black))
-                                      ]))
-                                ],
+                                    RichText(
+                                      textAlign: TextAlign.center,
+                                        text: TextSpan(children: [
+                                          const TextSpan(
+                                              text: 'Bài viết được chia sẻ của \n',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Nunito Sans',
+                                                  color: Colors.black)),
+                                          TextSpan(
+                                              text: Global.listPostInfo[index].userInfoResponse!.fullName,
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Nunito Sans',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black))
+                                        ]))
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -1150,7 +1196,7 @@ class _HomeState extends State<Home> {
                         onTap: () {
                           homeController.userIdForLoadListAnotherProfile =
                               Global.listPostInfo[index].userInfoResponse!.id;
-                          homeController.loadListPhotoAnotherForInfoAnotherUser();
+                          homeController.loadAnotherProfileForInfoAnotherUser();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -1265,7 +1311,44 @@ class _HomeState extends State<Home> {
                                   Divider(color: Colors.black.withOpacity(0.4)),
                                   /// save QR code
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      homeController.screenShotController.capture().then((Uint8List? image) async {
+
+                                        //Capture Done
+                                        homeController.imageFile = image;
+
+                                        Directory tempDir = await getTemporaryDirectory();
+
+                                        File tempFile = await File('${tempDir.path}/QR.png').create();
+
+                                        await tempFile.writeAsBytes(homeController.imageFile!);
+
+                                        homeController.qrFilePath = tempFile.path;
+
+                                        await homeController.saveImage(homeController.qrFilePath);
+
+                                        final snackBar = SnackBar(
+                                          elevation: 0,
+                                          behavior: SnackBarBehavior.fixed,
+                                          backgroundColor: Colors.transparent,
+                                          content: AwesomeSnackbarContent(
+                                            title: 'Thành công!',
+                                            message: "Đã lưu mã QR",
+                                            contentType: ContentType.success,
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(Get.context!)
+                                          ..hideCurrentSnackBar()
+                                          ..showSnackBar(snackBar);
+
+                                        homeController.update();
+                                        debugPrint(homeController.qrFilePath);
+
+                                      }).catchError((onError) {
+                                        debugPrint(onError);
+                                      });
+                                    },
                                     child: Container(
                                       width: 80,
                                       height: 35,
@@ -1301,43 +1384,46 @@ class _HomeState extends State<Home> {
                             ),
                             radius: 12,
                             /// QR code
-                            content: Container(
-                              width: 200,
-                              height: 250,
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Colors.black,width: 0.5)),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 170,
-                                    height: 180,
-                                    child: QrImage(
-                                      data: Global.listPostInfo[index].id,
-                                      size: 170,
-                                      version: QrVersions.auto,
+                            content: Screenshot(
+                              controller: homeController.screenShotController,
+                              child: Container(
+                                width: 200,
+                                height: 250,
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: Colors.black,width: 0.5)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 170,
+                                      height: 180,
+                                      child: QrImage(
+                                        data: Global.listPostInfo[index].id,
+                                        size: 170,
+                                        version: QrVersions.auto,
+                                      ),
                                     ),
-                                  ),
-                                  RichText(
-                                      textAlign: TextAlign.center,
-                                      text: TextSpan(children: [
-                                        const TextSpan(
-                                            text: 'Bài viết được chia sẻ của \n',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Nunito Sans',
-                                                color: Colors.black)),
-                                        TextSpan(
-                                            text: Global.listPostInfo[index].userInfoResponse!.fullName,
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Nunito Sans',
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black))
-                                      ]))
-                                ],
+                                    RichText(
+                                        textAlign: TextAlign.center,
+                                        text: TextSpan(children: [
+                                          const TextSpan(
+                                              text: 'Bài viết được chia sẻ của \n',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Nunito Sans',
+                                                  color: Colors.black)),
+                                          TextSpan(
+                                              text: Global.listPostInfo[index].userInfoResponse!.fullName,
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Nunito Sans',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black))
+                                        ]))
+                                  ],
+                                ),
                               ),
                             ),
                           );

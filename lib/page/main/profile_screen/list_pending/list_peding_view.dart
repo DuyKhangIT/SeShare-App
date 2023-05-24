@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
-import 'package:instagram_app/page/main/profile_screen/list_pending/list_my_friend/list_my_friend_view.dart';
+import 'package:instagram_app/models/accept_friend/accept_friend_request.dart';
+import 'package:instagram_app/models/deny_or_unfriend/deny_or_unfriend_request.dart';
 import 'package:instagram_app/util/module.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../util/global.dart';
-import '../../../navigation_bar/navigation_bar_view.dart';
 import 'list_pending_controller.dart';
 
 class ListPendingScreen extends StatefulWidget {
@@ -57,7 +57,7 @@ class _ListPendingScreenState extends State<ListPendingScreen> {
                         child: Container(
                           width: 80,
                           height: 40,
-                          margin: const EdgeInsets.only(bottom: 20,left: 20),
+                          margin: const EdgeInsets.only(left: 20),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.blueGrey.withOpacity(0.2),
@@ -73,16 +73,30 @@ class _ListPendingScreenState extends State<ListPendingScreen> {
 
                         ),
                       ),
+
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 40,
+                        margin: const EdgeInsets.only(bottom: 10),
+                        alignment: Alignment.center,
+                        child:  const Text("Lời mời kết bạn",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Nunito Sans',
+                                fontWeight: FontWeight.bold)),
+
+                      ),
+
                       Expanded(
                         child: ListView.builder(
                             itemCount: listPendingController.isLoading == true
                                 ? 5
-                                : listPendingController.result.length,
+                                : listPendingController.result.isNotEmpty ? listPendingController.result.length:1,
                             itemBuilder: (context, index) {
                               if (listPendingController.isLoading) {
                                 return skeletonContentListView();
                               } else {
-                                return contentListView(listPendingController, index);
+                                  return contentListView(listPendingController, index);
                               }
                             }),
                       ),
@@ -155,76 +169,123 @@ class _ListPendingScreenState extends State<ListPendingScreen> {
   }
 
   Widget contentListView(ListPendingController listPendingController, index) {
-    return GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(left: 20, bottom: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// avatar user
-                  Container(
-                    width: 50,
-                    height: 50,
-                    margin: const EdgeInsets.only(right: 15),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: getNetworkImage(listPendingController
-                            .result[index].recipientObjectResponse!.avatar)),
-                  ),
-
-                  /// full name + bio
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2,
-                    height: 45,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// full name
-                        Text(
-                            listPendingController.result[index]
-                                .recipientObjectResponse!.fullName,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: const TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Nunito Sans',
-                                fontWeight: FontWeight.bold)),
-
-                        /// bio
-                        Text(
-                            listPendingController
-                                .result[index].recipientObjectResponse!.bio,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontSize: 12, fontFamily: 'Nunito Sans'))
-                      ],
-                    ),
-                  ),
-                  Container(
-                      width: 80,
-                      height: 30,
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.only(top: 5, left: 10),
-                      decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(7)),
-                      child: const Text(
-                        "Hủy bạn bè",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            fontFamily: 'Nunito Sans'),
-                        textAlign: TextAlign.center,
-                      ))
-                ],
+    return listPendingController.result.isNotEmpty
+        ? Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.only(left: 20, bottom: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /// avatar user
+              GestureDetector(
+                onTap: (){
+                  if(Global.isAvailableToClick()){
+                    listPendingController.userIdForLoadListAnotherProfile =
+                        listPendingController.result[index].recipientObjectMyPendingResponse!.id;
+                    listPendingController.loadListPhotoAnotherUser();
+                  }
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  margin: const EdgeInsets.only(right: 15),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: getNetworkImage(listPendingController
+                          .result[index].recipientObjectMyPendingResponse!.avatar)),
+                ),
               ),
-            ),
-          );
+
+              /// full name + bio
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 2.7,
+                height: 45,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// full name
+                    Text(
+                        listPendingController.result[index]
+                            .recipientObjectMyPendingResponse!.fullName,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Nunito Sans',
+                            fontWeight: FontWeight.bold)),
+
+                    /// bio
+                    Text(
+                        listPendingController
+                            .result[index].recipientObjectMyPendingResponse!.bio,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 12, fontFamily: 'Nunito Sans'))
+                  ],
+                ),
+              ),
+
+              GestureDetector(
+                onTap: (){
+                  AcceptFriendRequest acceptFriendRequest = AcceptFriendRequest(listPendingController.result[index].recipientObjectMyPendingResponse!.id);
+                  listPendingController.acceptFriend(acceptFriendRequest);
+                },
+                child: Container(
+                    width: 65,
+                    height: 30,
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(top: 5, left: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(7)),
+                    child: const Text(
+                      "Đồng ý",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          fontFamily: 'Nunito Sans'),
+                      textAlign: TextAlign.center,
+                    )),
+              ),
+              GestureDetector(
+                onTap: (){
+                  DenyOrUnfriendRequest denyOrUnfriendRequest = DenyOrUnfriendRequest(listPendingController.result[index].recipientObjectMyPendingResponse!.id);
+                  listPendingController.denyOrUnfriend(denyOrUnfriendRequest);
+                },
+                child: Container(
+                    width: 65,
+                    height: 30,
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.only(top: 5, left: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(7)),
+                    child: const Text(
+                      "Xóa",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
+                          fontFamily: 'Nunito Sans'),
+                      textAlign: TextAlign.center,
+                    )),
+              )
+            ],
+          ),
+        )
+        : Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(top: 250),
+      alignment: Alignment.center,
+      child: const Text(
+          "Không có lời mời nào trong danh sách",
+          style: TextStyle(
+              fontSize: 12,
+              fontFamily: 'Nunito Sans',
+              fontWeight: FontWeight.w500)),
+    );
   }
 
   Widget skeletonContentListView() {

@@ -8,6 +8,7 @@ import '../models/list_another_post/data_another_post_response.dart';
 import '../models/list_comments_post/data_list_comments_post_response.dart';
 import '../models/list_favorite_stories_another_user/story_object_favorite_stories_another_user_response.dart';
 import '../models/list_my_friend/data_list_my_friend_response.dart';
+import '../models/list_my_pending/data_list_my_pending_response.dart';
 import '../models/list_my_post/data_my_post_response.dart';
 import '../models/list_my_stories/data_list_my_stories_response.dart';
 import '../models/list_posts_home/data_posts_response.dart';

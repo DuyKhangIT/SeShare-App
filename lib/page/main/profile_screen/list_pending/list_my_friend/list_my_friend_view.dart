@@ -7,7 +7,6 @@ import 'package:instagram_app/util/module.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../../models/deny_or_unfriend/deny_or_unfriend_request.dart';
 import '../../../../../util/global.dart';
-import '../../../../navigation_bar/navigation_bar_view.dart';
 
 class ListMyFriendScreen extends StatefulWidget {
   const ListMyFriendScreen({Key? key}) : super(key: key);
@@ -159,13 +158,10 @@ class _ListMyFriendScreenState extends State<ListMyFriendScreen> {
                 /// avatar user
                 GestureDetector(
                   onTap: (){
-                    if (listMyFriendController.result[index].recipientObjectResponse!.id !=
-                        Global.userProfileResponse!.id) {
+                    if (Global.isAvailableToClick()) {
                       listMyFriendController.userIdForLoadListAnotherProfile =
                           listMyFriendController.result[index].recipientObjectResponse!.id;
                       listMyFriendController.loadListPhotoAnotherUser();
-                    } else {
-                      Get.offAll(() => NavigationBarView(currentIndex: 4));
                     }
                   },
                   child: Container(

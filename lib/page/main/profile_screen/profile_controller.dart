@@ -4,8 +4,11 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:instagram_app/models/get_all_photo_user/get_all_photo_user_response.dart';
 
 import '../../../api_http/handle_api.dart';
+import '../../../models/list_my_pending/list_my_pending_response.dart';
 import '../../../models/list_my_post/data_my_post_response.dart';
 import '../../../models/list_my_post/list_my_post_response.dart';
+import '../../../util/global.dart';
+import 'list_pending/list_peding_view.dart';
 
 class ProfileController extends GetxController {
   List<String>listPhotos = [];
@@ -75,6 +78,4 @@ class ProfileController extends GetxController {
     }
     return listMyPostResponse;
   }
-
-
 }

@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:instagram_app/models/delete_post/delete_post_request.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_response.dart';
@@ -14,6 +16,8 @@ import 'package:instagram_app/models/list_my_favorite_stories/list_my_favorite_s
 
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
 import 'package:instagram_app/models/list_story/list_story_response.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../../../api_http/handle_api.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
@@ -33,6 +37,9 @@ import 'comments_screen/comments_view.dart';
 import 'infor_account_screen/infro_account_view.dart';
 
 class HomeController extends GetxController {
+  ScreenshotController  screenShotController = ScreenshotController();
+  Uint8List? imageFile;
+  String qrFilePath = "";
   File? avatar;
   bool isNewUpdate = false;
   String userId = "";
@@ -63,11 +70,17 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
+  Future<void> saveImage(String file) async{
+    await [Permission.storage].request();
+    await ImageGallerySaver.saveFile(file);
+  }
+
   void handleListAnotherPost() {
     ListAnotherPostRequest listAnotherPostRequest =
     ListAnotherPostRequest(Global.anOtherUserProfileResponse!.id);
     getListAnotherPosts(listAnotherPostRequest);
     update();
+    loadListFavoriteStoriesAnotherUser();
   }
 
   void loadListPhotoAnotherUser() {
@@ -83,15 +96,7 @@ class HomeController extends GetxController {
         AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
     loadAnotherUserProfile(anotherProfileRequest);
     update();
-    loadListFavoriteStoriesAnotherUser();
-  }
-
-  void loadListPhotoAnotherForInfoAnotherUser() {
-    GetAllPhotoAnotherUserRequest anotherUserRequest =
-    GetAllPhotoAnotherUserRequest(userIdForLoadListAnotherProfile);
-    getListPhotoAnOtherUser(anotherUserRequest);
-    update();
-    loadAnotherProfileForInfoAnotherUser();
+    handleListAnotherPost();
   }
 
   void loadAnotherProfileForInfoAnotherUser() {
@@ -302,9 +307,8 @@ class HomeController extends GetxController {
     //get data from api here
     anOtherProfileResponse = AnOtherProfileResponse.fromJson(body);
     if (anOtherProfileResponse.status == true) {
-      Global.anOtherUserProfileResponse =
-          anOtherProfileResponse.anOtherUserProfileResponse;
       debugPrint("-------------  LOAD ANOTHER USER PROFILE SUCCESSFULLY -------------");
+      Global.anOtherUserProfileResponse = anOtherProfileResponse.anOtherUserProfileResponse;
       update();
     } else {
       debugPrint("Lỗi api");
@@ -478,8 +482,8 @@ class HomeController extends GetxController {
       debugPrint(
           "------------- GET LIST FAVORITE STORIES ANOTHER USER SUCCESSFULLY -------------");
       Global.listFavoriteStoriesAnotherUser = listFavoriteStoriesAnotherUserResponse.data!.stories!;
-      handleListAnotherPost();
       update();
+      Get.to(() =>  AnOtherProfileScreen());
     } else {
       debugPrint("------------- ERROR API-------------");
     }
@@ -534,7 +538,6 @@ class HomeController extends GetxController {
       debugPrint(
           "------------- GET LIST ANOTHER POSTS SUCCESSFULLY--------------");
       Global.listAnotherPost = listAnotherPostResponse.data!;
-      Get.to(() =>  AnOtherProfileScreen());
       update();
     }
     return listAnotherPostResponse;

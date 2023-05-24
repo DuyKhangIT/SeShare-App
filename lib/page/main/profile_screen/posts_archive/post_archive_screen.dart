@@ -38,7 +38,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                 ),
                 title: Text(
                     widget.isAnotherPost == true
-                        ? "Bài viết ${Global.anOtherUserProfileResponse!.fullName}"
+                        ? "Bài viết của ${Global.anOtherUserProfileResponse!.fullName}"
                         : "Bài viết của bạn",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,

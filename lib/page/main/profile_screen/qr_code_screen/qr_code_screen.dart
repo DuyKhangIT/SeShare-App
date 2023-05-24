@@ -123,95 +123,60 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                             BoxShadow(color: Colors.black,offset: Offset.zero)
                           ]
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          /// share
-                          GestureDetector(
-                            onTap: (){
-                              if(Global.isAvailableToClick()){
-                                qrCodeController.screenShotController.capture().then((Uint8List? image) async {
+                      child: GestureDetector(
+                        onTap: (){
+                          if(Global.isAvailableToClick()){
+                            qrCodeController.screenShotController.capture().then((Uint8List? image) async {
 
-                                  //Capture Done
-                                  qrCodeController.imageFile = image;
+                              //Capture Done
+                              qrCodeController.imageFile = image;
 
-                                  Directory tempDir = await getTemporaryDirectory();
+                              Directory tempDir = await getTemporaryDirectory();
 
-                                  File tempFile = await File('${tempDir.path}/qrFile.png').create();
+                              File tempFile = await File('${tempDir.path}/QR.png').create();
 
-                                  await tempFile.writeAsBytes(qrCodeController.imageFile!);
+                              await tempFile.writeAsBytes(qrCodeController.imageFile!);
 
-                                  qrCodeController.qrFilePath = tempFile.path;
+                              qrCodeController.qrFilePath = tempFile.path;
 
-                                  debugPrint(qrCodeController.qrFilePath);
+                              debugPrint(qrCodeController.qrFilePath);
 
-                                }).catchError((onError) {
-                                  debugPrint(onError);
-                                });
-                              }
-                              if(qrCodeController.qrFilePath.isNotEmpty){
-                                Share.shareFiles([(qrCodeController.qrFilePath)]);
-                              }
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  padding: const EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.black.withOpacity(0.2))
-                                  ),
-                                  child: Image.asset(IconsAssets.icShare),
-                                ),
-                                const SizedBox(
-                                  width: 100,
-                                  height: 50,
-                                  child: Text("Chia sẻ trang cá nhân",style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: 'Nunito Sans',
-                                      color: Colors.black,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                margin: const EdgeInsets.only(bottom: 10),
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.black.withOpacity(0.2))
-                                ),
-                                child: Image.asset(IconsAssets.icCopyLink),
+                            }).catchError((onError) {
+                              debugPrint(onError);
+                            });
+                          }
+                          if(qrCodeController.qrFilePath.isNotEmpty){
+                            Share.shareFiles([(qrCodeController.qrFilePath)]);
+                          }
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              margin: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.black.withOpacity(0.2))
                               ),
-                              const SizedBox(
-                                width: 100,
-                                height: 50,
-                                child: Text("Sao chép liên kết",style: TextStyle(
+                              child: Image.asset(IconsAssets.icShare),
+                            ),
+                            const SizedBox(
+                              width: 200,
+                              height: 50,
+                              child: Text("Chia sẻ trang cá nhân",style: TextStyle(
                                   fontSize: 13,
                                   fontFamily: 'Nunito Sans',
                                   color: Colors.black,
-                                ),
-                                  textAlign: TextAlign.center,
-                                ),
                               ),
-                            ],
-                          )
-                        ],
+                              textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                 ],),

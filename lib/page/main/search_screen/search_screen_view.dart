@@ -19,14 +19,13 @@ class SearchScreen extends StatelessWidget {
         builder: (controller) => SafeArea(
               child: Scaffold(
                 backgroundColor: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.black54
-                  : Colors.white,
+                    ? Colors.black54
+                    : Colors.white,
                 body: Padding(
                   padding: const EdgeInsets.only(bottom: 75),
                   child: Column(
                     children: [
                       _searchBox(context),
-                      
                       Expanded(
                         child: StaggeredGridView.countBuilder(
                           staggeredTileBuilder: (index) => index % 7 == 0
@@ -36,7 +35,8 @@ class SearchScreen extends StatelessWidget {
                           crossAxisSpacing: 5,
                           crossAxisCount: 3,
                           itemCount: Global.listPostInfo.length,
-                          itemBuilder: (context, index) => contentGridView(context,index),
+                          itemBuilder: (context, index) =>
+                              contentGridView(context, index),
                         ),
                       )
                     ],
@@ -49,32 +49,36 @@ class SearchScreen extends StatelessWidget {
   /// search box
   Widget _searchBox(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Get.to(() => const ActionSearchScreen());
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 45,
-        margin: const EdgeInsets.fromLTRB(10,30,10,20),
+        margin: const EdgeInsets.fromLTRB(10, 30, 10, 20),
         padding: const EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Colors.white
-                : Colors.blueGrey.withOpacity(0.15),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.blueGrey.withOpacity(0.15),
         ),
         child: Row(
-          children: const [
-            Icon(Icons.search),
-            SizedBox(width: 10),
-            Text("Tìm kiếm...",style: TextStyle(fontSize: 12, fontFamily: 'Nunito Sans'))
+          children:const [
+             Icon(Icons.search,color: Colors.black,),
+             SizedBox(width: 10),
+            Text("Tìm kiếm...",
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Nunito Sans',
+                    color: Colors.black))
           ],
         ),
       ),
     );
   }
 
-  Widget contentGridView(context,index) {
+  Widget contentGridView(context, index) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
