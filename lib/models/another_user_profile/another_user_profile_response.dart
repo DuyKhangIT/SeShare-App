@@ -10,9 +10,10 @@ class AnOtherUserProfileResponse {
   String? createdAt = "";
   String? backgroundPath = "";
   String age = "";
+  int totalFriend = 0;
   int friendStatus = 0;
   AnOtherUserProfileResponse(this.id, this.phone, this.gender,
-      this.fullName,this.place, this.avatarPath, this.bio, this.friend, this.createdAt,this.backgroundPath,this.age,this.friendStatus);
+      this.fullName,this.place, this.avatarPath, this.bio, this.friend, this.createdAt,this.backgroundPath,this.age,this.totalFriend,this.friendStatus);
   AnOtherUserProfileResponse.buildDefault();
   factory AnOtherUserProfileResponse.fromJson(Map<String, dynamic> json) {
     List<String> friendResponse = [];
@@ -35,6 +36,7 @@ class AnOtherUserProfileResponse {
       json['createdAt'],
       json['background_path'],
       json['age'],
+      json['total_friends'],
       json['friendStatus'],
     );
   }

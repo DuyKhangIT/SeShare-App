@@ -78,4 +78,30 @@ class ProfileController extends GetxController {
     }
     return listMyPostResponse;
   }
+
+  /// call api list my pending
+  Future<ListMyPendingResponse> getListMyPending() async {
+    ListMyPendingResponse listMyPendingResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/friends/pending"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list my pending $error");
+      rethrow;
+    }
+    if (body == null) return ListMyPendingResponse.buildDefault();
+    //get data from api here
+    listMyPendingResponse = ListMyPendingResponse.fromJson(body);
+    if (listMyPendingResponse.status == true) {
+      debugPrint("------------- GET LIST MY PENDING SUCCESSFULLY--------------");
+      Global.dataMyPending = listMyPendingResponse.data;
+      Get.to(() => const ListPendingScreen());
+      update();
+    }
+    return listMyPendingResponse;
+  }
 }

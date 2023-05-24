@@ -10,6 +10,7 @@ class UserProfileResponse {
   String? createdAt = "";
   String? backgroundPath = "";
   String age = "";
+  int totalFriend = 0;
   UserProfileResponse(
       this.id,
       this.phone,
@@ -21,7 +22,8 @@ class UserProfileResponse {
       this.friend,
       this.createdAt,
       this.backgroundPath,
-      this.age);
+      this.age,
+      this.totalFriend);
   UserProfileResponse.buildDefault();
   factory UserProfileResponse.fromJson(Map<String, dynamic> json) {
     List<String> friendResponse = [];
@@ -44,6 +46,7 @@ class UserProfileResponse {
       json['createdAt'],
       json['background_path'],
       json['age'],
+      json['total_friends'],
     );
   }
 }

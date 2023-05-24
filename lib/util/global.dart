@@ -52,7 +52,8 @@ class Global {
   static List<DataStoryResponse> listStoriesData = [];
   /// list my post
   static  List<DataMyPostResponse> listMyPost = [];
-  static    List<DataAnotherPostResponse> listAnotherPost = [];
+
+  static   List<DataAnotherPostResponse> listAnotherPost = [];
 
   /// list my stories
   static List<DataListMyStoriesResponse> listMyStories = [];
@@ -64,6 +65,8 @@ class Global {
   static List<StoryObjectMyFavoriteStoriesResponse> listMyFavoriteStories = [];
   /// list my friend
   static  List<DataListMyFriendResponse> dataFriend = [];
+  /// list my pending
+  static  List<DataListMyPendingResponse> dataMyPending = [];
 
   /// info post home
   static DataPostsResponse? infoMyPost;

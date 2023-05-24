@@ -8,7 +8,6 @@ import 'package:instagram_app/models/accept_friend/accept_friend_response.dart';
 import 'package:instagram_app/models/list_my_friend/list_my_friend_response.dart';
 import 'package:instagram_app/models/list_my_pending/data_list_my_pending_response.dart';
 import 'package:instagram_app/models/list_my_pending/list_my_pending_response.dart';
-import 'package:screenshot/screenshot.dart';
 
 import '../../../../api_http/handle_api.dart';
 import '../../../../models/another_user_profile/another_profile_response.dart';
@@ -21,7 +20,6 @@ import '../../../../models/list_another_post/list_another_post_request.dart';
 import '../../../../models/list_another_post/list_another_post_response.dart';
 import '../../../../models/list_favorite_stories_another_user/list_favorite_stories_another_user_request.dart';
 import '../../../../models/list_favorite_stories_another_user/list_favorite_stories_another_user_response.dart';
-import '../../../../models/list_my_friend/data_list_my_friend_response.dart';
 import '../../../../util/global.dart';
 import '../../../navigation_bar/navigation_bar_view.dart';
 import '../../another_profile_screen/another_profile_screen.dart';
@@ -43,8 +41,11 @@ class ListPendingController extends GetxController {
     super.onReady();
   }
 
+
   @override
   void onClose() {
+    getListMyPending();
+    update();
     super.onClose();
   }
   void clearTextSearch() {
@@ -54,6 +55,7 @@ class ListPendingController extends GetxController {
   }
   /// searching
   void updateSearch(String value) {
+    data = Global.dataMyPending;
     result = data
         .where((element) => Global().accentParser(element.recipientObjectMyPendingResponse!.fullName)
         .toLowerCase()
@@ -121,6 +123,7 @@ class ListPendingController extends GetxController {
       debugPrint("------------- GET LIST MY PENDING SUCCESSFULLY--------------");
       data = listMyPendingResponse.data;
       result = data;
+      Global.dataMyPending = listMyPendingResponse.data;
       await Future.delayed(const Duration(seconds: 1), () {});
       isLoading = false;
       update();

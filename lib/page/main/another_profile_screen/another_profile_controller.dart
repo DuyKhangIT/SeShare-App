@@ -11,12 +11,15 @@ import 'package:instagram_app/models/deny_or_unfriend/deny_or_unfriend_response.
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 import '../../../api_http/handle_api.dart';
+import '../../../models/accept_friend/accept_friend_request.dart';
+import '../../../models/accept_friend/accept_friend_response.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
 import '../../../models/another_user_profile/another_user_profile_request.dart';
 import '../../../models/list_another_post/data_another_post_response.dart';
 import '../../../models/list_another_post/list_another_post_request.dart';
 import '../../../models/list_another_post/list_another_post_response.dart';
 import '../../../models/list_my_friend/list_my_friend_response.dart';
+import '../../../models/list_my_pending/list_my_pending_response.dart';
 import '../../../models/list_posts_home/list_posts_home_response.dart';
 import '../../../util/global.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
@@ -53,6 +56,13 @@ class AnOtherProfileController extends GetxController {
     AddFriendRequest addFriendRequest =
         AddFriendRequest(Global.anOtherUserProfileResponse!.id);
     addFriend(addFriendRequest);
+    update();
+  }
+
+  void handleAcceptFriend() {
+    AcceptFriendRequest acceptFriendRequest =
+    AcceptFriendRequest(Global.anOtherUserProfileResponse!.id);
+    acceptFriend(acceptFriendRequest);
     update();
   }
 
@@ -138,6 +148,7 @@ class AnOtherProfileController extends GetxController {
     if (denyOrUnfriendResponse.status == true) {
       debugPrint("------------- UNFRIEND SUCCESSFULLY--------------");
       loadAnotherProfile();
+      getListMyPending();
       getListMyFriend();
       update();
     }
@@ -166,6 +177,35 @@ class AnOtherProfileController extends GetxController {
       update();
     }
     return addFriendResponse;
+  }
+
+  /// accept friend
+  Future<AcceptFriendResponse> acceptFriend(AcceptFriendRequest acceptFriendRequest) async {
+    AcceptFriendResponse acceptFriendResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse(
+              "http://14.225.204.248:8080/api/friends/accept-friend"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(acceptFriendRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to accept friend $error");
+      rethrow;
+    }
+    if (body == null) return AcceptFriendResponse.buildDefault();
+    //get data from api here
+    acceptFriendResponse = AcceptFriendResponse.fromJson(body);
+    if (acceptFriendResponse.status == true) {
+      debugPrint(
+          "------------- ACCEPT FRIEND SUCCESSFULLY--------------");
+      loadAnotherProfile();
+      getListMyPending();
+      getListMyFriend();
+      update();
+    }
+    return acceptFriendResponse;
   }
 
   /// load another user profile
@@ -222,5 +262,30 @@ class AnOtherProfileController extends GetxController {
       update();
     }
     return listMyFriendResponse;
+  }
+
+  /// call api list my pending
+  Future<ListMyPendingResponse> getListMyPending() async {
+    ListMyPendingResponse listMyPendingResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/friends/pending"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list my pending $error");
+      rethrow;
+    }
+    if (body == null) return ListMyPendingResponse.buildDefault();
+    //get data from api here
+    listMyPendingResponse = ListMyPendingResponse.fromJson(body);
+    if (listMyPendingResponse.status == true) {
+      debugPrint("------------- GET LIST MY PENDING SUCCESSFULLY--------------");
+     Global.dataMyPending = listMyPendingResponse.data;
+      update();
+    }
+    return listMyPendingResponse;
   }
 }

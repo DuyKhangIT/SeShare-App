@@ -193,13 +193,13 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                     ],
                                   ),
                                   Column(
-                                    children: const [
-                                      Text("100",
-                                          style: TextStyle(
+                                    children: [
+                                      Text(Global.anOtherUserProfileResponse!.totalFriend.toString(),
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,
                                               fontFamily: 'Nunito Sans')),
-                                      Text("Bạn bè",
+                                      const Text("Bạn bè",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
@@ -266,11 +266,8 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
 
                                         /// waiting friend
                                         : Global.anOtherUserProfileResponse!
-                                                        .friendStatus ==
-                                                    1 ||
-                                                Global.anOtherUserProfileResponse!
-                                                        .friendStatus ==
-                                                    2
+                                                    .friendStatus ==
+                                                1
                                             ? GestureDetector(
                                                 onTap: () {
                                                   showModalBottomSheet(
@@ -318,53 +315,116 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                                 ),
                                               )
 
-                                            /// friend
-                                            : GestureDetector(
-                                                onTap: () {
-                                                  showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return detailBottomSheetUnfriend(
-                                                            anOtherProfileController);
-                                                      });
-                                                },
-                                                child: Container(
-                                                  height: 30,
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
+                                            /// response for requester
+                                            : Global.anOtherUserProfileResponse!
+                                                        .friendStatus ==
+                                                    2
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                           return detailBottomSheetResponseForRequester(anOtherProfileController);
+                                                          });
+                                                    },
+                                                    child: Container(
+                                                      height: 30,
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
                                                           10, 7, 10, 7),
-                                                  margin: const EdgeInsets.only(
-                                                      right: 20),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.25),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8)),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Image.asset(
-                                                          IconsAssets.icFriend),
-                                                      const SizedBox(width: 6),
-                                                      const Text(
-                                                        "Bạn bè",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontFamily:
-                                                                'Nunito Sans',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              right: 20),
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.grey
+                                                              .withOpacity(
+                                                                  0.25),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Image.asset(IconsAssets
+                                                              .icWaitingAccept),
+                                                          const SizedBox(
+                                                              width: 6),
+                                                          const Text(
+                                                            "Phản hồi",
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontFamily:
+                                                                    'Nunito Sans',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
+                                                    ),
+                                                  )
+
+                                                /// friend
+                                                : GestureDetector(
+                                                    onTap: () {
+                                                      showModalBottomSheet(
+                                                          isScrollControlled:
+                                                              true,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return detailBottomSheetUnfriend(
+                                                                anOtherProfileController);
+                                                          });
+                                                    },
+                                                    child: Container(
+                                                      height: 30,
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          10, 7, 10, 7),
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              right: 20),
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.grey
+                                                              .withOpacity(
+                                                                  0.25),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8)),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Image.asset(
+                                                              IconsAssets
+                                                                  .icFriend),
+                                                          const SizedBox(
+                                                              width: 6),
+                                                          const Text(
+                                                            "Bạn bè",
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontFamily:
+                                                                    'Nunito Sans',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
 
                                     Container(
                                       height: 30,
@@ -937,6 +997,86 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                       const SizedBox(width: 10),
                       const Text(
                         "Bỏ qua",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Nunito Sans',
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )),
+      ],
+    );
+  }
+
+  Widget detailBottomSheetResponseForRequester(
+      AnOtherProfileController anOtherProfileController) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                color: Colors.transparent,
+              )),
+        ),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: 120,
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12.0),
+                  topLeft: Radius.circular(12.0)),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: 40,
+                  height: 5,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.black.withOpacity(0.6)),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    anOtherProfileController.handleAcceptFriend();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(IconsAssets.icFriend),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Chấp nhận lời mời",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Nunito Sans',
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    anOtherProfileController.handleDenyOrUnfriend();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(IconsAssets.icCancel),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Xóa lời mời",
                         style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Nunito Sans',

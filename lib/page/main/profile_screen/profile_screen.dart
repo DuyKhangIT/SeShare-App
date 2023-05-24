@@ -162,11 +162,11 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                                   GestureDetector(
                                     onTap: (){
-                                      Get.to(() => const ListPendingScreen());
+                                      profileController.getListMyPending();
                                     },
                                     child: Column(
                                       children: [
-                                        Text( Global.dataFriend.length.toString(),
+                                        Text(Global.userProfileResponse!.totalFriend.toString(),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14,
