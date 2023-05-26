@@ -9,6 +9,10 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:instagram_app/models/delete_post/delete_post_request.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_request.dart';
 import 'package:instagram_app/models/get_all_photo_another_user/get_all_photo_another_user_response.dart';
+import 'package:instagram_app/models/hide_comment_post/hide_comment_post_request.dart';
+import 'package:instagram_app/models/hide_comment_post/hide_comment_post_response.dart';
+import 'package:instagram_app/models/hide_like_post/hide_like_post_request.dart';
+import 'package:instagram_app/models/hide_like_post/hide_like_post_response.dart';
 import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/like_post/like_post_response.dart';
 import 'package:instagram_app/models/list_favorite_stories_another_user/list_favorite_stories_another_user_response.dart';
@@ -96,7 +100,9 @@ class HomeController extends GetxController {
         AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
     loadAnotherUserProfile(anotherProfileRequest);
     update();
-    handleListAnotherPost();
+    if(Global.anOtherUserProfileResponse!=null){
+      handleListAnotherPost();
+    }
   }
 
   void loadAnotherProfileForInfoAnotherUser() {
@@ -541,5 +547,56 @@ class HomeController extends GetxController {
       update();
     }
     return listAnotherPostResponse;
+  }
+
+
+  /// handle hide like post api
+  Future<HideLikePostResponse> hideLikePost(HideLikePostRequest hideLikePostRequest) async {
+    HideLikePostResponse hideLikePostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/hidden-like"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(hideLikePostRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to hide like post $error");
+      rethrow;
+    }
+    if (body == null) return HideLikePostResponse.buildDefault();
+    //get data from api here
+    hideLikePostResponse = HideLikePostResponse.fromJson(body);
+    if (hideLikePostResponse.status == true) {
+      getListPostsWhenLiked();
+      debugPrint("----------HIDE LIKE POST SUCCESSFULLY----------");
+      update();
+    }
+    return hideLikePostResponse;
+  }
+
+  /// handle hide cmt post api
+  Future<HideCommentPostResponse> hideCmtPost(HideCommentPostRequest hideCommentPostRequest) async {
+    HideCommentPostResponse hideCommentPostResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/photo/hidden-comment"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(hideCommentPostRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to hide comment post $error");
+      rethrow;
+    }
+    if (body == null) return HideCommentPostResponse.buildDefault();
+    //get data from api here
+    hideCommentPostResponse = HideCommentPostResponse.fromJson(body);
+    if (hideCommentPostResponse.status == true) {
+      getListPostsWhenLiked();
+      debugPrint("----------HIDE COMMENT POST SUCCESSFULLY----------");
+      update();
+    }
+    return hideCommentPostResponse;
   }
 }

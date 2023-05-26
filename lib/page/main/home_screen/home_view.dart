@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
+import 'package:instagram_app/models/hide_comment_post/hide_comment_post_request.dart';
+import 'package:instagram_app/models/hide_like_post/hide_like_post_request.dart';
 import 'package:instagram_app/models/list_comments_post/list_comments_post_request.dart';
 import 'package:instagram_app/page/main/home_screen/create_story/create_story_view.dart';
 import 'package:instagram_app/page/main/home_screen/story_page/story_page_view.dart';
@@ -541,12 +543,16 @@ class _HomeState extends State<Home> {
                                     : Global.listPostInfo[index].privacy ==
                                             "private"
                                         ? Image.asset(IconsAssets.icPrivateMode,
+                                            width: 13,
+                                            height: 13,
                                             color:
                                                 Theme.of(context).brightness ==
                                                         Brightness.dark
                                                     ? Colors.white
-                                                    : Colors.black)
+                                                    : Colors.black,)
                                         : Image.asset(IconsAssets.icFriendMode,
+                                            width: 13,
+                                            height: 13,
                                             color:
                                                 Theme.of(context).brightness ==
                                                         Brightness.dark
@@ -682,8 +688,9 @@ class _HomeState extends State<Home> {
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
-                              text: Global.listPostInfo[index].totalLikes
-                                  .toString(),
+                              text: Global.listPostInfo[index].hideLike == true
+                              ?''
+                              :Global.listPostInfo[index].totalLikes.toString(),
                               style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -795,22 +802,38 @@ class _HomeState extends State<Home> {
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
                         : Colors.black),
-
-                /// ic cmt
-                GestureDetector(
+                  /// ic cmt
+                  GestureDetector(
                   onTap: () {
                     if (Global.isAvailableToClick()) {
-                      if (Global.listPostInfo[index].id.isNotEmpty) {
-                        Global.idPost = Global.listPostInfo[index].id;
-                        ListCommentsPostRequest request =
-                            ListCommentsPostRequest(
-                                Global.listPostInfo[index].id);
-                        homeController.getListCommentsPost(request);
+                      if(Global.listPostInfo[index].hideCmt == true){
+                        final snackBar = SnackBar(
+                          elevation: 0,
+                          behavior: SnackBarBehavior.fixed,
+                          backgroundColor: Colors.transparent,
+                          content: AwesomeSnackbarContent(
+                            title: 'Cảnh báo!',
+                            message: "Chức năng bình luận đã bị chủ bài viết ẩn",
+                            contentType: ContentType.warning,
+                          ),
+                        );
+                        ScaffoldMessenger.of(Get.context!)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(snackBar);
+                      }else{
+                        if (Global.listPostInfo[index].id.isNotEmpty) {
+                          Global.idPost = Global.listPostInfo[index].id;
+                          ListCommentsPostRequest request =
+                          ListCommentsPostRequest(
+                              Global.listPostInfo[index].id);
+                          homeController.getListCommentsPost(request);
+                        }
                       }
+
                     }
                   },
                   child: Container(
-                    constraints: const BoxConstraints(maxWidth: 100),
+                    constraints: const BoxConstraints(maxWidth: 110),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -821,13 +844,17 @@ class _HomeState extends State<Home> {
                                 : Colors.black,
                             BlendMode.srcIn,
                           ),
-                          child: Image.asset(IconsAssets.icComment),
+                          child:
+                          Global.listPostInfo[index].hideCmt == true
+                          ?Image.asset(IconsAssets.icHideCmt)
+                          :Image.asset(IconsAssets.icComment),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 10),
-                          constraints: const BoxConstraints(maxWidth: 60),
+                          constraints: BoxConstraints(maxWidth: Global.listPostInfo[index].hideCmt == true ?75:60),
                           child: Text(
-                            "Bình Luận",
+                            Global.listPostInfo[index].hideCmt == true
+                            ?"Ẩn bình luận":"Bình Luận",
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6
@@ -844,6 +871,8 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
+
+
                 VerticalDivider(
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
@@ -1225,8 +1254,40 @@ class _HomeState extends State<Home> {
                             borderRadius: BorderRadius.circular(8),
                             color: Colors.black.withOpacity(0.6)),
                       ),
-                      GestureDetector(
-                        onTap: () {},
+                      Global.listPostInfo[index].hideLike == true
+                      ?GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          HideLikePostRequest hideLikePostRequest = HideLikePostRequest(Global.listPostInfo[index].id);
+                          homeController.hideLikePost(hideLikePostRequest);
+                          homeController.update();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icLike),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Hiện lượt thích",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      :GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          HideLikePostRequest hideLikePostRequest = HideLikePostRequest(Global.listPostInfo[index].id);
+                          homeController.hideLikePost(hideLikePostRequest);
+                          homeController.update();
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           color: Colors.transparent,
@@ -1246,9 +1307,38 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-                      GestureDetector(
+                      Global.listPostInfo[index].hideCmt == true
+                      ?GestureDetector(
                         onTap: () {
-                          homeController.hideCmt = !homeController.hideCmt;
+                          Navigator.pop(context);
+                          HideCommentPostRequest hideCommentRequest = HideCommentPostRequest(Global.listPostInfo[index].id);
+                          homeController.hideCmtPost(hideCommentRequest);
+                          homeController.update();
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.transparent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(IconsAssets.icComment),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Mở tính năng bình luận",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Nunito Sans',
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      :GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          HideCommentPostRequest hideCommentRequest = HideCommentPostRequest(Global.listPostInfo[index].id);
+                          homeController.hideCmtPost(hideCommentRequest);
                           homeController.update();
                         },
                         child: Container(

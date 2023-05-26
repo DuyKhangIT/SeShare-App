@@ -14,6 +14,9 @@ class DataPostsResponse {
   String userLocation = "";
   String checkInLocation = "";
   String? updatedAt = "";
+  bool hideCmt = false;
+  bool hideLike = false;
+  bool isFriend = false;
 
   DataPostsResponse(
       this.id,
@@ -28,7 +31,10 @@ class DataPostsResponse {
       this.userInfoResponse,
       this.userLocation,
       this.checkInLocation,
-      this.updatedAt);
+      this.updatedAt,
+      this.hideCmt,
+      this.hideLike,
+      this.isFriend);
   DataPostsResponse.buildDefault();
   factory DataPostsResponse.fromJson(Map<String, dynamic> json) {
     List<String>? photoPath = [];
@@ -60,6 +66,10 @@ class DataPostsResponse {
             : null,
         json['user_location'],
         json['checkin_location'],
-        json['uploadAt']);
+        json['uploadAt'],
+        json['hidden_cmt'],
+        json['hidden_like'],
+        json['isFriend']
+    );
   }
 }

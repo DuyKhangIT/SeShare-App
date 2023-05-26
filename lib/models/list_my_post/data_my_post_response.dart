@@ -13,6 +13,8 @@ class DataMyPostResponse {
   UserInfoMyPostResponse? userInfoResponse;
   String userLocation = "";
   String checkInLocation = "";
+  bool hideCmt = false;
+  bool hideLike = false;
   String? updatedAt = "";
 
   DataMyPostResponse(
@@ -28,6 +30,8 @@ class DataMyPostResponse {
       this.userInfoResponse,
       this.userLocation,
       this.checkInLocation,
+      this.hideCmt,
+      this.hideLike,
       this.updatedAt);
   DataMyPostResponse.buildDefault();
   factory DataMyPostResponse.fromJson(Map<String, dynamic> json) {
@@ -60,6 +64,8 @@ class DataMyPostResponse {
             : null,
         json['user_location'],
         json['checkin_location'],
+        json['hidden_cmt'],
+        json['hidden_like'],
         json['uploadAt']);
   }
 }

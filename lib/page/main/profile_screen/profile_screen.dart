@@ -129,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 children: [
                                   Column(
                                     children: [
-                                      Text( Global.listMyPost.length.toString(),
+                                      Text(Global.listMyPost.length.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,
@@ -483,9 +483,9 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
     return GridView.builder(
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount: widget.tabController.listPhotos.length,
+        itemCount: Global.listMyPhotos.length,
         itemBuilder: (context, index) {
-          if (widget.tabController.listPhotos.isNotEmpty) {
+          if (Global.listMyPhotos.isNotEmpty) {
             return contentGridView(index);
           } else {
             return Container();
@@ -502,7 +502,7 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
       child: Padding(
           padding: const EdgeInsets.all(1),
           child: ClipRect(
-              child: getNetworkImage(widget.tabController.listPhotos[index],
+              child: getNetworkImage(Global.listMyPhotos[index],
                   width: null, height: null))),
     );
   }

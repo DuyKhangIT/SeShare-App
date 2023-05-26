@@ -11,7 +11,6 @@ import '../../../util/global.dart';
 import 'list_pending/list_peding_view.dart';
 
 class ProfileController extends GetxController {
-  List<String>listPhotos = [];
   List<DataMyPostResponse> data = [];
 
   @override
@@ -47,7 +46,7 @@ class ProfileController extends GetxController {
     //get data from api here
     getAllPhotoUserResponse = GetAllPhotoUserResponse.fromJson(body);
     if (getAllPhotoUserResponse.status == true) {
-      listPhotos = getAllPhotoUserResponse.listPhotosUser!;
+      Global.listMyPhotos = getAllPhotoUserResponse.listPhotosUser!;
       update();
     }
     return getAllPhotoUserResponse;

@@ -83,6 +83,9 @@ class Global {
   /// id user from index post
   static String userIdFromIndexPost = "";
 
+  /// list my photo
+  static List<String>listMyPhotos = [];
+
   /// block auto click or many time click
   static int mTimeClick = 0;
 
