@@ -86,32 +86,22 @@ class _HomeState extends State<Home> {
                                 Theme.of(context).brightness == Brightness.dark
                                     ? Colors.black54
                                     : Colors.white,
-                            child: Row(
-                              children: [
-                                contentListViewStoryFirstIndex(homeController),
-                                Expanded(
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: homeController.isLoading == true
-                                        ? 5
-                                        : Global.listStoriesData.length,
-                                    itemBuilder: (context, index) {
-                                      // if (index == 0) {
-                                      //   return contentListViewStoryFirstIndex(
-                                      //       homeController);
-                                      // } else {
-                                      //   return contentListViewStory(index);
-                                      // }
-                                      if (homeController.isLoading) {
-                                        return skeletonListViewStory(index);
-                                      } else {
-                                        return contentListViewStory(
-                                            homeController, index);
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ],
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: homeController.isLoading == true
+                                  ? 5
+                                  : Global.listStoriesData.length + 1,
+                              itemBuilder: (context, index) {
+                                if (homeController.isLoading) {
+                                  return skeletonListViewStory(index);
+                                } else {
+                                  if (index == 0) {
+                                    return contentListViewStoryFirstIndex();
+                                  } else {
+                                    return contentListViewStory(homeController,index - 1);
+                                  }
+                                }
+                              },
                             )),
                         Expanded(
                             child: RefreshIndicator(
@@ -242,7 +232,7 @@ class _HomeState extends State<Home> {
   }
 
   /// content list view story index == 0
-  Widget contentListViewStoryFirstIndex(homeController) {
+  Widget contentListViewStoryFirstIndex() {
     return GestureDetector(
       onTap: () {
         Get.to(() => const CreateStoryScreen());
@@ -637,7 +627,9 @@ class _HomeState extends State<Home> {
               )),
 
           /// image post
-          SizedBox(
+          Global.listPostInfo[index].photoPath!.isEmpty
+          ? Container()
+          : SizedBox(
               width: MediaQuery.of(context).size.width / 1.25,
               height: 350,
               child: ClipRRect(

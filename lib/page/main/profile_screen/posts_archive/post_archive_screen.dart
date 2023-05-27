@@ -346,26 +346,53 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     fontFamily: 'Nunito Sans',
                     fontWeight: FontWeight.w400),
               )),
-
           /// image post
-          SizedBox(
+          widget.isAnotherPost == true
+          ?postArchiveController.dataAnotherPost[index].photoPath!.isEmpty
+            ? Container()
+            : SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 350,
               child: PhotoViewGallery.builder(
                 scrollPhysics: const BouncingScrollPhysics(),
                 itemCount:
-                widget.isAnotherPost == true
-                ?postArchiveController.dataAnotherPost[index].photoPath!.length
-                :Global.listMyPost[index].photoPath!.length,
+                    postArchiveController.dataAnotherPost[index].photoPath!.length,
                 builder: (BuildContext context, int indexPath) {
                   return PhotoViewGalleryPageOptions(
                       initialScale: PhotoViewComputedScale.covered,
                       minScale: PhotoViewComputedScale.covered * 0.95,
                       imageProvider: NetworkImage(Global.convertMedia(
-                        widget.isAnotherPost==true
-                          ?postArchiveController
-                            .dataAnotherPost[index].photoPath![indexPath]
-                          :Global.listMyPost[index].photoPath![indexPath],
+                          postArchiveController.dataAnotherPost[index].photoPath![indexPath],
+                          MediaQuery.of(context).size.width,
+                          350)),
+                      errorBuilder: (context, event, stackTrace) =>
+                          Container(color: Colors.grey));
+                },
+                loadingBuilder: (context, event) => Shimmer.fromColors(
+                  baseColor: Colors.grey.withOpacity(0.4),
+                  highlightColor: Colors.grey,
+                  child: Container(
+                      width: MediaQuery.of(context).size.width / 1.25,
+                      height: 350,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.grey.withOpacity(0.4))),
+                ),
+              ))
+          :Global.listMyPost[index].photoPath!.isEmpty
+              ? Container()
+              : SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 350,
+              child: PhotoViewGallery.builder(
+                scrollPhysics: const BouncingScrollPhysics(),
+                itemCount: Global.listMyPost[index].photoPath!.length,
+                builder: (BuildContext context, int indexPath) {
+                  return PhotoViewGalleryPageOptions(
+                      initialScale: PhotoViewComputedScale.covered,
+                      minScale: PhotoViewComputedScale.covered * 0.95,
+                      imageProvider: NetworkImage(Global.convertMedia(
+                          Global.listMyPost[index].photoPath![indexPath],
                           MediaQuery.of(context).size.width,
                           350)),
                       errorBuilder: (context, event, stackTrace) =>

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/search_screen/action_search/action_search_view.dart';
 import 'package:instagram_app/page/main/search_screen/search_controller.dart';
 
-import '../../../assets/icons_assets.dart';
 import '../../../util/global.dart';
 import '../../../util/module.dart';
 
@@ -34,7 +32,7 @@ class SearchScreen extends StatelessWidget {
                           mainAxisSpacing: 5,
                           crossAxisSpacing: 5,
                           crossAxisCount: 3,
-                          itemCount: Global.listPostInfo.length,
+                          itemCount:  Global.listPhotosSearch.length,
                           itemBuilder: (context, index) =>
                               contentGridView(context, index),
                         ),
@@ -83,8 +81,8 @@ class SearchScreen extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: ClipRect(
-        child: getNetworkImage(
-          Global.listPostInfo[index].photoPath![0],
+        child:getNetworkImage(
+          Global.listPhotosSearch[index],
         ),
       ),
     );

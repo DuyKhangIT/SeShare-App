@@ -59,7 +59,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
                           height: (60),
                           child: BottomNavigationBar(
                             type: BottomNavigationBarType.fixed,
-                            currentIndex: widget.currentIndex!,
+                            currentIndex: widget.currentIndex,
                             onTap: _onItemTapped,
                             showUnselectedLabels: false,
                             showSelectedLabels: false,

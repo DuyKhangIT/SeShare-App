@@ -17,6 +17,7 @@ import 'package:instagram_app/models/like_post/like_post_request.dart';
 import 'package:instagram_app/models/like_post/like_post_response.dart';
 import 'package:instagram_app/models/list_favorite_stories_another_user/list_favorite_stories_another_user_response.dart';
 import 'package:instagram_app/models/list_my_favorite_stories/list_my_favorite_stories_response.dart';
+import 'package:instagram_app/models/list_photos_search/list_photos_search_response.dart';
 
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
 import 'package:instagram_app/models/list_story/list_story_response.dart';
@@ -52,6 +53,8 @@ class HomeController extends GetxController {
   bool isLike = false;
   bool hideLike = false;
   bool hideCmt = false;
+  bool loadingAnotherPost = false;
+  bool loadingAnotherProfileInForAccountScreen = false;
   String userIdForLoadListAnotherProfile = "";
   String postIdForLikePost = "";
   String postIdForDeletePost = "";
@@ -61,6 +64,7 @@ class HomeController extends GetxController {
     getListPosts();
     getListStories();
     loadUserProfile();
+    getListPhotoSearch();
     getListMyFavoriteStories();
     getListMyFriend();
     getListMyPosts();
@@ -84,7 +88,7 @@ class HomeController extends GetxController {
     ListAnotherPostRequest(Global.anOtherUserProfileResponse!.id);
     getListAnotherPosts(listAnotherPostRequest);
     update();
-    loadListFavoriteStoriesAnotherUser();
+    //loadListFavoriteStoriesAnotherUser();
   }
 
   void loadListPhotoAnotherUser() {
@@ -99,20 +103,16 @@ class HomeController extends GetxController {
     AnotherUserProfileRequest anotherProfileRequest =
         AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
     loadAnotherUserProfile(anotherProfileRequest);
+    loadingAnotherPost = true;
     update();
-    if(Global.anOtherUserProfileResponse!=null){
-      handleListAnotherPost();
-    }
   }
 
   void loadAnotherProfileForInfoAnotherUser() {
     AnotherUserProfileRequest anotherProfileRequest =
         AnotherUserProfileRequest(userIdForLoadListAnotherProfile);
     loadAnotherUserProfile(anotherProfileRequest);
+    loadingAnotherProfileInForAccountScreen = true;
     update();
-    if (Global.anOtherUserProfileResponse != null) {
-      Get.to(() => InForAccountScreen(isMyAccount: false));
-    }
   }
 
   void handleLikePost() {
@@ -221,6 +221,7 @@ class HomeController extends GetxController {
     update();
     getListPosts();
     getListStories();
+    getListPhotoSearch();
     getListMyFriend();
     getListMyPosts();
   }
@@ -230,6 +231,7 @@ class HomeController extends GetxController {
     isNewUpdate = false;
     getListPosts();
     getListStories();
+    getListPhotoSearch();
     getListMyFriend();
     getListMyPosts();
     update();
@@ -316,6 +318,15 @@ class HomeController extends GetxController {
       debugPrint("-------------  LOAD ANOTHER USER PROFILE SUCCESSFULLY -------------");
       Global.anOtherUserProfileResponse = anOtherProfileResponse.anOtherUserProfileResponse;
       update();
+      if(loadingAnotherPost == true){
+        handleListAnotherPost();
+        loadingAnotherPost = false;
+        update();
+      }else if(loadingAnotherProfileInForAccountScreen == true){
+        Get.to(() => InForAccountScreen(isMyAccount: false));
+        loadingAnotherProfileInForAccountScreen = false;
+        update();
+      }
     } else {
       debugPrint("Lỗi api");
     }
@@ -544,6 +555,7 @@ class HomeController extends GetxController {
       debugPrint(
           "------------- GET LIST ANOTHER POSTS SUCCESSFULLY--------------");
       Global.listAnotherPost = listAnotherPostResponse.data!;
+      loadListFavoriteStoriesAnotherUser();
       update();
     }
     return listAnotherPostResponse;
@@ -598,5 +610,30 @@ class HomeController extends GetxController {
       update();
     }
     return hideCommentPostResponse;
+  }
+
+  /// call api list photo search
+  Future<ListPhotosSearchResponse> getListPhotoSearch() async {
+    ListPhotosSearchResponse listPhotosSearchResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/filter/populate"),
+          RequestType.post,
+          headers: null,
+          body: null);
+    } catch (error) {
+      debugPrint("Fail to get list photos search $error");
+      rethrow;
+    }
+    if (body == null) return ListPhotosSearchResponse.buildDefault();
+    //get data from api here
+    listPhotosSearchResponse = ListPhotosSearchResponse.fromJson(body);
+    if (listPhotosSearchResponse.status == true) {
+      debugPrint("------------- GET LIST PHOTOS SEARCH SUCCESSFULLY -------------");
+      Global.listPhotosSearch = listPhotosSearchResponse.data;
+      update();
+    }
+    return listPhotosSearchResponse;
   }
 }

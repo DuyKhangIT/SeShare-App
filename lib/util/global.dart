@@ -53,7 +53,10 @@ class Global {
   /// list my post
   static  List<DataMyPostResponse> listMyPost = [];
 
-  static   List<DataAnotherPostResponse> listAnotherPost = [];
+  /// list photos search
+  static  List<String> listPhotosSearch = [];
+
+  static  List<DataAnotherPostResponse> listAnotherPost = [];
 
   /// list my stories
   static List<DataListMyStoriesResponse> listMyStories = [];
