@@ -87,7 +87,7 @@ class HomeController extends GetxController {
   }
 
   void handleTokenOneSignal(){
-    TokenOneSignalRequest tokenOneSignalRequest = TokenOneSignalRequest(Global.mToken);
+    TokenOneSignalRequest tokenOneSignalRequest = TokenOneSignalRequest(Global.tokenOneSignal);
     tokenOneSignal(tokenOneSignalRequest);
   }
 

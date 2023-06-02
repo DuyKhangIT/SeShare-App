@@ -18,6 +18,7 @@ class ChatListController extends GetxController {
   bool isLoading = false;
   bool isNewUpdate = false;
   List<DataListChatResponse> dataListChat = [];
+  List<DataListChatResponse> result = [];
   @override
   void onReady() {
     getListChat();
@@ -31,6 +32,17 @@ class ChatListController extends GetxController {
   void clearTextSearch() {
     inputSearch = "";
     searchController.clear();
+    update();
+  }
+
+  /// searching
+  void updateSearch(String value) {
+    result = dataListChat
+        .where((element) => Global().accentParser(element.userInfoListChatResponse!.fullName)
+        .toLowerCase()
+        .contains(Global().accentParser(value).toLowerCase()))
+        .toList();
+    isSearching = value.isNotEmpty;
     update();
   }
 
@@ -71,6 +83,7 @@ class ChatListController extends GetxController {
     if (listChatResponse.status == true) {
       debugPrint("------------- GET LIST CHAT SUCCESSFULLY--------------");
       dataListChat = listChatResponse.data!;
+      result = dataListChat;
       await Future.delayed(const Duration(seconds: 2), () {});
       isLoading = false;
       update();

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_app/page/navigation_bar/navigation_bar_view.dart';
 import 'package:instagram_app/util/module.dart';
 
 import '../../../../util/global.dart';
 import '../../../../widget/dashed_line.dart';
+import '../chat_list/chat_list_view.dart';
 import 'chat_controller.dart';
 
 class ChatView extends StatefulWidget {
@@ -54,7 +56,8 @@ class _ChatViewState extends State<ChatView> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(context);
+                  chatController.listMessage=[];
+                  Get.to(() => NavigationBarView(currentIndex: 1));
                 },
                 child: SizedBox(
                     width: 20,
@@ -75,10 +78,10 @@ class _ChatViewState extends State<ChatView> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: getNetworkImage(Global.userProfileResponse!.avatarPath)
+                    child: getNetworkImage(Global.userInfoListChatResponse!.avatar)
                   )),
                Text(
-                 Global.userProfileResponse!.fullName,
+                 Global.userInfoListChatResponse!.fullName,
                 style: const TextStyle(fontSize: (16), fontWeight: FontWeight.bold),
               ),
             ],
@@ -92,7 +95,9 @@ class _ChatViewState extends State<ChatView> {
               dashLenght: 6,
               dashSpace: 4,
               strokeWidth: 1,
-              color: Colors.black,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
               isHorizontal: true,
             ),
           ),
@@ -144,7 +149,9 @@ class _ChatViewState extends State<ChatView> {
                   )),
               child: Text(
                 chatController.listMessage[index].content,
-                style: const TextStyle(color: Colors.white),
+                style:  TextStyle(color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black
+                    : Colors.white),
               ),
             ),
             Container(
@@ -172,10 +179,10 @@ class _ChatViewState extends State<ChatView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: 45,
-              height: 45,
+              width: 40,
+              height: 40,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(8),
                 child: getNetworkImage(Global.userInfoListChatResponse!.avatar)
               ),
             ),
@@ -191,13 +198,13 @@ class _ChatViewState extends State<ChatView> {
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: Colors.grey.withOpacity(0.4)),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.grey.withOpacity(0.3),),
                     child: Text(
                       chatController.listMessage[index].content,
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black,
+                      style: const TextStyle(
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -223,52 +230,63 @@ class _ChatViewState extends State<ChatView> {
       width: double.infinity,
       color: Colors.white,
       child: SafeArea(
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxHeight: 200,
-                  ),
-                  child: TextField(
-                    controller: chatController.messageController,
-                    maxLines: null,
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: const InputDecoration(
-                      hintText: 'Nhập tin nhắn',
-                      border: InputBorder.none,
+        child: Column(
+          children: [
+            Divider(color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxHeight: 200,
+                      ),
+                      child: TextField(
+                        style: const TextStyle(color: Colors.black),
+                        controller: chatController.messageController,
+                        maxLines: null,
+                        textAlignVertical: TextAlignVertical.center,
+                        decoration: const InputDecoration(
+                          hintText: 'Nhập tin nhắn',
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                            color: Colors.black,
+                          )
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                width: 18,
-                height: 48,
-                child: GestureDetector(
-                  onTap: () {
-                    if (chatController.messageController.text.isNotEmpty && Global.roomId.isNotEmpty) {
-                      chatController.sendMessage(
-                          Global.userProfileResponse!.fullName,
-                          chatController.messageController.text,
-                          Global.roomId);
-                    }
-                  },
-                  child: Icon(
-                    Icons.send_rounded,
-                    color: chatController.isTyping
-                        ? Colors.blue[700]
-                        : Colors.black,
+                  SizedBox(
+                    width: 18,
+                    height: 48,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (chatController.messageController.text.isNotEmpty && Global.roomId.isNotEmpty) {
+                          chatController.sendMessage(
+                              Global.userProfileResponse!.fullName,
+                              chatController.messageController.text,
+                              Global.roomId);
+                        }
+                      },
+                      child: Icon(
+                        Icons.send_rounded,
+                        color: chatController.isTyping
+                            ? Colors.blue[700]
+                            : Colors.black,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

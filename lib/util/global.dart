@@ -90,6 +90,8 @@ class Global {
 
   static String roomId = "";
 
+  static String tokenOneSignal = "";
+
   /// user info from chat
   static UserInfoListChatResponse? userInfoListChatResponse;
 

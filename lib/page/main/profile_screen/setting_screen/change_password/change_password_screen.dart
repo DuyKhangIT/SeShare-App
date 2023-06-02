@@ -43,9 +43,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       if (Global.isAvailableToClick()) {
                         /// check empty
                         if (changePasswordController.oldPassword.isNotEmpty &&
-                            changePasswordController
-                                .confirmNewPassword.isNotEmpty &&
-                            changePasswordController.newPassword.isNotEmpty) {
+                            changePasswordController.confirmNewPassword.isNotEmpty &&
+                            changePasswordController.newPassword.isNotEmpty)
+                        {
                           /// check length > 6 kí tự
                           if (changePasswordController
                                       .oldPasswordController.length >=
@@ -63,8 +63,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               ChangePasswordRequest request =
                                   ChangePasswordRequest(
                                       changePasswordController.oldPassword,
-                                      changePasswordController
-                                          .confirmNewPassword);
+                                      changePasswordController.confirmNewPassword);
                               changePasswordController.changePassword(request);
                             } else {
                               final snackBar = SnackBar(
@@ -158,7 +157,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         height: 50,
         margin: const EdgeInsets.only(bottom: 25),
         child: TextField(
-          //obscureText: !changePasswordController.isShowOldPassword.value,
           controller: changePasswordController.oldPasswordController,
           keyboardType: TextInputType.text,
           cursorColor: Colors.grey,
@@ -176,6 +174,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey)),
           ),
+          onChanged: (value) {
+            setState(() {
+              changePasswordController.oldPassword = value;
+              changePasswordController.update();
+            });
+          },
         ));
   }
 

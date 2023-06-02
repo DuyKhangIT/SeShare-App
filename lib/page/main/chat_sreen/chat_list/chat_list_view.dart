@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_list/chat_list_controller.dart';
-import 'package:instagram_app/page/main/chat_sreen/chat_view/chat_view.dart';
 import 'package:instagram_app/util/module.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../assets/icons_assets.dart';
-import '../../../../config/theme_service.dart';
 import '../../../../models/create_chat/create_chat_request.dart';
 import '../../../../util/global.dart';
 
@@ -44,12 +40,12 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           scrollDirection: Axis.vertical,
                           itemCount: chatListController.isLoading == true
                               ? 5
-                              : chatListController.dataListChat.length,
+                              : chatListController.result.length,
                           itemBuilder: (context, index) {
                             if (chatListController.isLoading == true) {
                               return skeletonContentListChat();
                             } else {
-                              if (chatListController.dataListChat.isEmpty) {
+                              if (chatListController.result.isEmpty) {
                                 return Container();
                               } else {
                                 return contentListChat(
@@ -70,9 +66,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
     return GestureDetector(
       onTap: () {
         if (Global.isAvailableToClick()) {
-          Global.userInfoListChatResponse = chatListController.dataListChat[index].userInfoListChatResponse;
+          Global.userInfoListChatResponse = chatListController.result[index].userInfoListChatResponse;
           CreateChatRequest createChatRequest = CreateChatRequest(
-              chatListController.dataListChat[index].userInfoListChatResponse!.id);
+              chatListController.result[index].userInfoListChatResponse!.id);
           chatListController.createChat(createChatRequest);
         }
       },
@@ -91,8 +87,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: getNetworkImage(chatListController
-                        .dataListChat[index]
-                        .userInfoListChatResponse!.avatar))),
+                        .result[index]
+                        .userInfoListChatResponse!.avatar,width: 45,height: 45))),
             Container(
               width: MediaQuery.of(context).size.width / 1.35,
               height: 35,
@@ -104,7 +100,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   Container(
                     constraints: const BoxConstraints(maxWidth: 200),
                     child: Text(
-                        chatListController.dataListChat[index]
+                        chatListController.result[index]
                             .userInfoListChatResponse!.fullName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -115,10 +111,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   ),
                   Container(
                     constraints: const BoxConstraints(maxWidth: 200),
-                    child: Text(chatListController.dataListChat[index].content,
+                    child: const Text("Tin nhắn",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 14, fontFamily: 'Nunito Sans')),
                   ),
                 ],
@@ -204,10 +200,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
             fontWeight: FontWeight.w400,
             fontSize: 14),
         onChanged: (value) {
-          chatListController.inputSearch = value;
-          chatListController.update();
-
-          //controller.updateSearch(value);
+          setState(() {
+            chatListController.updateSearch(value);
+            chatListController.update();
+          });
         },
         decoration: InputDecoration(
             isDense: true,

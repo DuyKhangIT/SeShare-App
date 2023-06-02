@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:instagram_app/routes/app_routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:instagram_app/util/global.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 
@@ -17,7 +18,7 @@ Future<void> main() async {
 
   FirebaseMessaging.instance
       .getToken()
-      .then((value) => {debugPrint("get token: $value")});
+      .then((value) => {debugPrint("get token: $value"),});
 
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
         (RemoteMessage message) async {
@@ -35,9 +36,10 @@ Future<void> main() async {
 
   await OneSignal.shared.setAppId("95e65145-2b37-4da7-aa7d-d3a540a418b9");
 
-  await OneSignal.shared
-      .getDeviceState()
-      .then((value) => {debugPrint(value!.userId)});
+  await OneSignal.shared.getDeviceState().then((value) => {
+    debugPrint(value!.userId),
+    Global.tokenOneSignal = value.userId!
+  });
 
   OneSignal.shared.setNotificationWillShowInForegroundHandler(
           (OSNotificationReceivedEvent event) {

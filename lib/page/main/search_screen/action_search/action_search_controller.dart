@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:instagram_app/models/search_user/data_search_user_response.dart';
 import 'package:instagram_app/models/search_user/search_user_response.dart';
 
@@ -28,7 +26,6 @@ class ActionSearchController extends GetxController {
   @override
   void onReady() {
     searchUser();
-    result = dataAllUser;
     update();
     super.onReady();
   }
@@ -75,6 +72,7 @@ class ActionSearchController extends GetxController {
     if (searchUserResponse.status == true) {
       debugPrint("------------- SEARCH USER API SUCCESSFULLY--------------");
       dataAllUser = searchUserResponse.data!;
+      result = dataAllUser;
       await Future.delayed(const Duration(seconds: 1), () {});
       isLoading = false;
       update();
