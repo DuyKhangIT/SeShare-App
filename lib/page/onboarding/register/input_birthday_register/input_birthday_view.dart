@@ -49,7 +49,7 @@ class _InputBirthdayState extends State<InputBirthday> {
                 body: Container(
                   width: MediaQuery.of(context).size.width,
                   padding:
-                      const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
+                      const EdgeInsets.symmetric(vertical: 70, horizontal: 20),
                   child: Column(
                     children: [
                       const Text('Sinh nhật của bạn ngày nào',

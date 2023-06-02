@@ -11,7 +11,6 @@ import 'package:instagram_app/page/main/profile_screen/update_profile_screen/upd
 
 import '../../../util/global.dart';
 import '../../../util/module.dart';
-import 'list_pending/list_peding_view.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -262,10 +261,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                               child:
                               const Icon(Icons.menu,
                                   color: Colors.white,shadows: [Shadow(color: Colors.black,offset: Offset.zero,blurRadius: 5)]),
-                              // Image.asset(
-                              //   IconsAssets.icDot,
-                              //   color: Colors.white,
-                              // ),
                             ),
                           ),
                         ),

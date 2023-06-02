@@ -15,6 +15,8 @@ import '../../../models/accept_friend/accept_friend_request.dart';
 import '../../../models/accept_friend/accept_friend_response.dart';
 import '../../../models/another_user_profile/another_profile_response.dart';
 import '../../../models/another_user_profile/another_user_profile_request.dart';
+import '../../../models/create_chat/create_chat_request.dart';
+import '../../../models/create_chat/create_chat_response.dart';
 import '../../../models/list_another_post/data_another_post_response.dart';
 import '../../../models/list_another_post/list_another_post_request.dart';
 import '../../../models/list_another_post/list_another_post_response.dart';
@@ -23,6 +25,7 @@ import '../../../models/list_my_pending/list_my_pending_response.dart';
 import '../../../models/list_posts_home/list_posts_home_response.dart';
 import '../../../util/global.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
+import '../chat_sreen/chat_view/chat_view.dart';
 
 class AnOtherProfileController extends GetxController {
   bool isLoading = false;
@@ -287,5 +290,33 @@ class AnOtherProfileController extends GetxController {
       update();
     }
     return listMyPendingResponse;
+  }
+
+
+  /// call api create chat
+  Future<CreateChatResponse> createChat(CreateChatRequest createChatRequest) async {
+    CreateChatResponse createChatResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/chat"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(createChatRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to create chat $error");
+      rethrow;
+    }
+    if (body == null) return CreateChatResponse.buildDefault();
+    //get data from api here
+    createChatResponse = CreateChatResponse.fromJson(body);
+    if (createChatResponse.roomId.isNotEmpty) {
+      debugPrint("------------- CREATE CHAT SUCCESSFULLY--------------");
+      Global.roomId = createChatResponse.roomId;
+      debugPrint("RoomID: ${Global.roomId}");
+      Get.to(() => const ChatView());
+      update();
+    }
+    return createChatResponse;
   }
 }

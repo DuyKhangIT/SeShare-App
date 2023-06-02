@@ -55,7 +55,7 @@ class ActionSearchController extends GetxController {
 
   /// call api list post
   Future<SearchUserResponse> searchUser() async {
-    isSearching = true;
+    isLoading = true;
     update();
     SearchUserResponse searchUserResponse;
     Map<String, dynamic>? body;
@@ -76,7 +76,7 @@ class ActionSearchController extends GetxController {
       debugPrint("------------- SEARCH USER API SUCCESSFULLY--------------");
       dataAllUser = searchUserResponse.data!;
       await Future.delayed(const Duration(seconds: 1), () {});
-      isSearching = false;
+      isLoading = false;
       update();
     }
     return searchUserResponse;

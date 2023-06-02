@@ -113,8 +113,6 @@ class PostController extends GetxController {
   }
 
   void posts(){
-    if(avatar!=null){
-      uploadMedia();
       CreatePostRequest createPostRequest =
       CreatePostRequest(
           captionPost,
@@ -124,17 +122,6 @@ class PostController extends GetxController {
           privacy,
           photoPath);
       createPost(createPostRequest);
-    }else{
-      CreatePostRequest createPostRequest =
-      CreatePostRequest(
-          captionPost,
-          false,
-          Global.currentLocation,
-          checkInPost,
-          privacy,
-          photoPath);
-      createPost(createPostRequest);
-    }
   }
 
   /// upload image api

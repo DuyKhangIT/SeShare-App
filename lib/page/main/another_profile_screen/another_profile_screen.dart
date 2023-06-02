@@ -15,6 +15,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../models/create_chat/create_chat_request.dart';
 import '../../../util/global.dart';
 import '../../../util/module.dart';
 import '../home_screen/infor_account_screen/infro_account_view.dart';
@@ -426,31 +427,39 @@ class _AnOtherProfileScreenState extends State<AnOtherProfileScreen>
                                                     ),
                                                   ),
 
-                                    Container(
-                                      height: 30,
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10, 7, 10, 7),
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.25),
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(IconsAssets.icChatProfile,
-                                              color: Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.dark
-                                                  ? Colors.white
-                                                  : Colors.black),
-                                          const SizedBox(width: 6),
-                                          const Text(
-                                            "Nhắn tin",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'Nunito Sans',
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
+                                    GestureDetector(
+                                      onTap: (){
+                                        if(Global.isAvailableToClick()){
+                                          CreateChatRequest createChatRequest = CreateChatRequest(Global.anOtherUserProfileResponse!.id);
+                                          anOtherProfileController.createChat(createChatRequest);
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10, 7, 10, 7),
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.25),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(IconsAssets.icChatProfile,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                            const SizedBox(width: 6),
+                                            const Text(
+                                              "Nhắn tin",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: 'Nunito Sans',
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],

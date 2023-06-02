@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
-import 'package:instagram_app/page/main/search_screen/search_screen_view.dart';
+import 'package:instagram_app/util/module.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../util/global.dart';
 import '../../../navigation_bar/navigation_bar_view.dart';
@@ -50,10 +50,12 @@ class _ActionSearchScreenState extends State<ActionSearchScreen> {
                           )),
                       Expanded(
                         child: ListView.builder(
-                            itemCount: actionSearchController.result.length,
+                            itemCount: actionSearchController.isLoading == true ? 4 :actionSearchController.result.length,
                             itemBuilder: (context, index) {
-                              return contentListView(
-                                  actionSearchController, index);
+                              return
+                                actionSearchController.isLoading == true
+                                ?skeletonContentListView()
+                                :contentListView(actionSearchController, index);
                               //return skeletonContentListView();
                             }),
                       ),
@@ -151,8 +153,7 @@ class _ActionSearchScreenState extends State<ActionSearchScreen> {
               margin: const EdgeInsets.only(right: 15),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(Global.convertMedia(
-                      actionSearchController.result[index].avatar, null, null),fit: BoxFit.cover)),
+                  child: getNetworkImage(actionSearchController.result[index].avatar,width: 100,height: 100)),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width / 1.4,

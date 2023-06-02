@@ -43,7 +43,6 @@ class ChangedAddressController extends GetxController {
         centerPosition.latitude, centerPosition.longitude)
         .then((List<Placemark> placemarks) {
       Placemark place = placemarks[0];
-     //String address = '${place.street}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}.';
      String address = getAddressFromPlaceCheckIn(place);
       // Lưu dữ liệu address vào state để sử dụng khi back về trang trước đó
       Global.checkIn = address;

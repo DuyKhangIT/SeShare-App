@@ -21,6 +21,8 @@ import 'package:instagram_app/models/list_photos_search/list_photos_search_respo
 
 import 'package:instagram_app/models/list_posts_home/list_posts_home_response.dart';
 import 'package:instagram_app/models/list_story/list_story_response.dart';
+import 'package:instagram_app/models/token_one_signal/token_one_signal_request.dart';
+import 'package:instagram_app/models/token_one_signal/token_one_signal_response.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -61,6 +63,7 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {
+    handleTokenOneSignal();
     getListPosts();
     getListStories();
     loadUserProfile();
@@ -81,6 +84,11 @@ class HomeController extends GetxController {
   Future<void> saveImage(String file) async{
     await [Permission.storage].request();
     await ImageGallerySaver.saveFile(file);
+  }
+
+  void handleTokenOneSignal(){
+    TokenOneSignalRequest tokenOneSignalRequest = TokenOneSignalRequest(Global.mToken);
+    tokenOneSignal(tokenOneSignalRequest);
   }
 
   void handleListAnotherPost() {
@@ -532,8 +540,7 @@ class HomeController extends GetxController {
     return listMyPostResponse;
   }
 
-  Future<ListAnotherPostResponse> getListAnotherPosts(
-      ListAnotherPostRequest listAnotherPostRequest) async {
+  Future<ListAnotherPostResponse> getListAnotherPosts(ListAnotherPostRequest listAnotherPostRequest) async {
     ListAnotherPostResponse listAnotherPostResponse;
     Map<String, dynamic>? body;
     try {
@@ -635,5 +642,29 @@ class HomeController extends GetxController {
       update();
     }
     return listPhotosSearchResponse;
+  }
+
+  /// token one signal
+  Future<TokenOneSignalResponse> tokenOneSignal(TokenOneSignalRequest tokenOneSignalRequest) async {
+    TokenOneSignalResponse tokenOneSignalResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+          Uri.parse("http://14.225.204.248:8080/api/token-signal"),
+          RequestType.post,
+          headers: null,
+          body: const JsonEncoder().convert(tokenOneSignalRequest.toBodyRequest()));
+    } catch (error) {
+      debugPrint("Fail to token one signal $error");
+      rethrow;
+    }
+    if (body == null) return TokenOneSignalResponse.buildDefault();
+    //get data from api here
+    tokenOneSignalResponse = TokenOneSignalResponse.fromJson(body);
+    if (tokenOneSignalResponse.status == true) {
+      debugPrint("----------TOKEN ONE SIGNAL SUCCESSFULLY----------");
+      update();
+    }
+    return tokenOneSignalResponse;
   }
 }

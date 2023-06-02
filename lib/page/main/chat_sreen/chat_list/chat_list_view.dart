@@ -5,9 +5,13 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_list/chat_list_controller.dart';
 import 'package:instagram_app/page/main/chat_sreen/chat_view/chat_view.dart';
+import 'package:instagram_app/util/module.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../assets/icons_assets.dart';
 import '../../../../config/theme_service.dart';
+import '../../../../models/create_chat/create_chat_request.dart';
+import '../../../../util/global.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({Key? key}) : super(key: key);
@@ -31,13 +35,29 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   children: [
                     searchBox(chatListController, context),
                     Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 100),
-                        scrollDirection: Axis.vertical,
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return contentListChat();
-                        },
+                      child: RefreshIndicator(
+                        edgeOffset: 0,
+                        displacement: 10,
+                        onRefresh: chatListController.pullToRefreshData,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 100),
+                          scrollDirection: Axis.vertical,
+                          itemCount: chatListController.isLoading == true
+                              ? 5
+                              : chatListController.dataListChat.length,
+                          itemBuilder: (context, index) {
+                            if (chatListController.isLoading == true) {
+                              return skeletonContentListChat();
+                            } else {
+                              if (chatListController.dataListChat.isEmpty) {
+                                return Container();
+                              } else {
+                                return contentListChat(
+                                    chatListController, index);
+                              }
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -46,10 +66,15 @@ class _ChatListScreenState extends State<ChatListScreen> {
             ));
   }
 
-  Widget contentListChat() {
+  Widget contentListChat(ChatListController chatListController, index) {
     return GestureDetector(
-      onTap: (){
-        Get.to(() => const ChatView());
+      onTap: () {
+        if (Global.isAvailableToClick()) {
+          Global.userInfoListChatResponse = chatListController.dataListChat[index].userInfoListChatResponse;
+          CreateChatRequest createChatRequest = CreateChatRequest(
+              chatListController.dataListChat[index].userInfoListChatResponse!.id);
+          chatListController.createChat(createChatRequest);
+        }
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -64,12 +89,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   color: Colors.transparent,
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    ImageAssets.imgTet,
-                    fit: BoxFit.cover,
-                  ),
-                )),
+                    borderRadius: BorderRadius.circular(12),
+                    child: getNetworkImage(chatListController
+                        .dataListChat[index]
+                        .userInfoListChatResponse!.avatar))),
             Container(
               width: MediaQuery.of(context).size.width / 1.35,
               height: 35,
@@ -78,37 +101,84 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        constraints: const BoxConstraints(maxWidth: 200),
-                        child: const Text("Khang Nguyễn",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Nunito Sans',
-                                fontWeight: FontWeight.bold)),
-                      ),
-                      const Text("12:00",
-                          style:
-                              TextStyle(fontSize: 12, fontFamily: 'Nunito Sans')),
-                    ],
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 200),
+                    child: Text(
+                        chatListController.dataListChat[index]
+                            .userInfoListChatResponse!.fullName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Nunito Sans',
+                            fontWeight: FontWeight.bold)),
                   ),
                   Container(
                     constraints: const BoxConstraints(maxWidth: 200),
-                    child: const Text("Hôm nay thế nào?",
+                    child: Text(chatListController.dataListChat[index].content,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style:
-                            TextStyle(fontSize: 14, fontFamily: 'Nunito Sans')),
+                        style: const TextStyle(
+                            fontSize: 14, fontFamily: 'Nunito Sans')),
                   ),
                 ],
               ),
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget skeletonContentListChat() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Shimmer.fromColors(
+            baseColor: Colors.grey.withOpacity(0.4),
+            highlightColor: Colors.grey.withOpacity(0.8),
+            child: Container(
+                width: 45,
+                height: 45,
+                decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(12))),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width / 1.35,
+            height: 35,
+            margin: const EdgeInsets.only(left: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.withOpacity(0.4),
+                  highlightColor: Colors.grey.withOpacity(0.8),
+                  child: Container(
+                      width: 100,
+                      height: 10,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(5))),
+                ),
+                Shimmer.fromColors(
+                  baseColor: Colors.grey.withOpacity(0.4),
+                  highlightColor: Colors.grey.withOpacity(0.8),
+                  child: Container(
+                      width: 150,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(8))),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

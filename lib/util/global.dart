@@ -5,6 +5,8 @@ import 'package:instagram_app/models/list_story/data_story_response.dart';
 
 import '../models/another_user_profile/another_user_profile_response.dart';
 import '../models/list_another_post/data_another_post_response.dart';
+import '../models/list_chat/data_list_chat_response.dart';
+import '../models/list_chat/user_infor_list_chat_response.dart';
 import '../models/list_comments_post/data_list_comments_post_response.dart';
 import '../models/list_favorite_stories_another_user/story_object_favorite_stories_another_user_response.dart';
 import '../models/list_my_friend/data_list_my_friend_response.dart';
@@ -85,6 +87,11 @@ class Global {
 
   /// id user from index post
   static String userIdFromIndexPost = "";
+
+  static String roomId = "";
+
+  /// user info from chat
+  static UserInfoListChatResponse? userInfoListChatResponse;
 
   /// list my photo
   static List<String>listMyPhotos = [];

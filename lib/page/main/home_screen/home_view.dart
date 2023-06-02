@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:instagram_app/assets/assets.dart';
@@ -31,8 +30,6 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
-
-const moonIcon = CupertinoIcons.moon_stars;
 
 class _HomeState extends State<Home> {
   @override
@@ -141,8 +138,6 @@ class _HomeState extends State<Home> {
         children: [
           GestureDetector(
             onTap: () {
-              // homeController.seeStory = true;
-              // homeController.update();
               if (Global.listStoriesData.isNotEmpty) {
                 Get.to(() => StoryPage(index: index));
               }
@@ -153,11 +148,6 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.all(2),
                 margin: const EdgeInsets.only(top: 8, bottom: 5),
                 decoration:
-                    // homeController.seeStory == true
-                    // ?BoxDecoration(
-                    //     color: Colors.transparent,
-                    //     borderRadius: BorderRadius.circular(16))
-                    // :
                     BoxDecoration(
                         border: Border.all(
                             color: Colors.blue.withOpacity(0.6),
@@ -448,9 +438,9 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 14, right: 25, bottom: 16),
+            padding: const EdgeInsets.only(left: 14, right: 30, bottom: 16),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 /// avatar + username + location
                 GestureDetector(
@@ -741,8 +731,7 @@ class _HomeState extends State<Home> {
                 GestureDetector(
                   onTap: () {
                     if (Global.listPostInfo[index].id.isNotEmpty) {
-                      homeController.postIdForLikePost =
-                          Global.listPostInfo[index].id;
+                      homeController.postIdForLikePost = Global.listPostInfo[index].id;
                       homeController.handleLikePost();
                     }
                   },
@@ -821,7 +810,6 @@ class _HomeState extends State<Home> {
                           homeController.getListCommentsPost(request);
                         }
                       }
-
                     }
                   },
                   child: Container(
@@ -906,100 +894,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget detailBottomSheetAddImage(homeController) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Expanded(
-          child: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: Container(
-                color: Colors.transparent,
-              )),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          margin: const EdgeInsets.only(left: 31, right: 31, bottom: 26),
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(12.0)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              GestureDetector(
-                  onTap: () {
-                    homeController.getImageFromCamera();
-                  },
-                  child: SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text("Chụp ảnh".toUpperCase(),
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'NunitoSans',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14)),
-                    ),
-                  )),
-              Divider(
-                thickness: 0.5,
-                height: 0,
-                color: Colors.black.withOpacity(0.1),
-              ),
-              GestureDetector(
-                  onTap: () {
-                    homeController.getImageFromGallery();
-                  },
-                  child: SizedBox(
-                    height: 50,
-                    child: Center(
-                      child: Text("Chọn ảnh từ thư viện".toUpperCase(),
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'NunitoSans',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14)),
-                    ),
-                  )),
-            ],
-          ),
-        ),
-
-        /// BUTTON CANCEL
-        Padding(
-            padding: const EdgeInsets.only(bottom: 34, left: 34, right: 34),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  elevation: 4,
-                  shadowColor: Colors.black,
-                  side: const BorderSide(color: Colors.white, width: 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  "Hủy chọn".toUpperCase(),
-                  style: const TextStyle(
-                      fontFamily: 'NunitoSans',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 2),
-                ),
-              ),
-            ))
-      ],
     );
   }
 
