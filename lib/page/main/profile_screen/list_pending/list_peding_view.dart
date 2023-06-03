@@ -88,17 +88,22 @@ class _ListPendingScreenState extends State<ListPendingScreen> {
                       ),
 
                       Expanded(
-                        child: ListView.builder(
-                            itemCount: listPendingController.isLoading == true
-                                ? 5
-                                : listPendingController.result.isNotEmpty ? listPendingController.result.length:1,
-                            itemBuilder: (context, index) {
-                              if (listPendingController.isLoading) {
-                                return skeletonContentListView();
-                              } else {
-                                  return contentListView(listPendingController, index);
-                              }
-                            }),
+                        child: RefreshIndicator(
+                          edgeOffset: 0,
+                          displacement: 10,
+                          onRefresh: listPendingController.pullToRefreshData,
+                          child: ListView.builder(
+                              itemCount: listPendingController.isLoading == true
+                                  ? 5
+                                  : listPendingController.result.isNotEmpty ? listPendingController.result.length:1,
+                              itemBuilder: (context, index) {
+                                if (listPendingController.isLoading) {
+                                  return skeletonContentListView();
+                                } else {
+                                    return contentListView(listPendingController, index);
+                                }
+                              }),
+                        ),
                       ),
                     ],
                   ),

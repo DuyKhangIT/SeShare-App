@@ -25,6 +25,7 @@ class ListMyFriendController extends GetxController {
   String userIdForLoadListAnotherProfile = "";
   bool isSearching = false;
   bool isLoading = false;
+  bool isNewUpdate = false;
   List<DataListMyFriendResponse> data = [];
   List<DataListMyFriendResponse> result = [];
   @override
@@ -44,6 +45,21 @@ class ListMyFriendController extends GetxController {
     inputSearch = "";
     searchController.clear();
     update();
+  }
+
+  // /// refresh
+  Future<void> refreshData() async {
+    isNewUpdate = false;
+    update();
+    getListMyFriend();
+  }
+
+  /// pull to refresh
+  Future<void> pullToRefreshData({bool isRefreshIndicator = true}) async {
+    isNewUpdate = false;
+    getListMyFriend();
+    update();
+    return Future.delayed(const Duration(seconds: 1));
   }
 
   /// searching

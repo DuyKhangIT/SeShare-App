@@ -52,19 +52,24 @@ class _ListMyFriendScreenState extends State<ListMyFriendScreen> {
                           )),
 
                             Expanded(
-                              child: ListView.builder(
-                                  itemCount: listMyFriendController.isLoading ==
-                                          true
-                                      ? 5
-                                      :  listMyFriendController.result.isEmpty ? 1 : listMyFriendController.result.length,
-                                  itemBuilder: (context, index) {
-                                    if (listMyFriendController.isLoading) {
-                                      return skeletonContentListView();
-                                    } else {
-                                      return contentListView(
-                                          listMyFriendController, index);
-                                    }
-                                  }),
+                              child: RefreshIndicator(
+                                edgeOffset: 0,
+                                displacement: 10,
+                                onRefresh: listMyFriendController.pullToRefreshData,
+                                child: ListView.builder(
+                                    itemCount: listMyFriendController.isLoading ==
+                                            true
+                                        ? 5
+                                        :  listMyFriendController.result.isEmpty ? 1 : listMyFriendController.result.length,
+                                    itemBuilder: (context, index) {
+                                      if (listMyFriendController.isLoading) {
+                                        return skeletonContentListView();
+                                      } else {
+                                        return contentListView(
+                                            listMyFriendController, index);
+                                      }
+                                    }),
+                              ),
                             ),
                     ],
                   ),

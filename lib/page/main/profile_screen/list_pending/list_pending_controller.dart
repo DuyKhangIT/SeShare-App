@@ -32,6 +32,7 @@ class ListPendingController extends GetxController {
   String userIdForLoadListAnotherProfile = "";
   bool isSearching = false;
   bool isLoading = false;
+  bool isNewUpdate = false;
   List<DataListMyPendingResponse> data = [];
   List<DataListMyPendingResponse> result = [];
   @override
@@ -74,6 +75,22 @@ class ListPendingController extends GetxController {
     getListMyFriend();
     Get.to(() => const ListMyFriendScreen());
   }
+
+  // /// refresh
+  Future<void> refreshData() async {
+    isNewUpdate = false;
+    update();
+    getListMyPending();
+  }
+
+  /// pull to refresh
+  Future<void> pullToRefreshData({bool isRefreshIndicator = true}) async {
+    isNewUpdate = false;
+    getListMyPending();
+    update();
+    return Future.delayed(const Duration(seconds: 1));
+  }
+
 
   /// call api list my friend
   Future<ListMyFriendResponse> getListMyFriend() async {
