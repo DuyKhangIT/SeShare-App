@@ -37,8 +37,8 @@ Future<void> main() async {
   await OneSignal.shared.setAppId("95e65145-2b37-4da7-aa7d-d3a540a418b9");
 
   await OneSignal.shared.getDeviceState().then((value) => {
-    debugPrint(value!.userId),
-    Global.tokenOneSignal = value.userId!
+    debugPrint(value?.userId),
+    Global.tokenOneSignal = value?.userId ?? ""
   });
 
   OneSignal.shared.setNotificationWillShowInForegroundHandler(
