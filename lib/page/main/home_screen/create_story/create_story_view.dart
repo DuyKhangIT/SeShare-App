@@ -320,7 +320,7 @@ class _CreateStoryScreenState extends State<CreateStoryScreen> {
                                     margin: const EdgeInsets.only(top: 20),
                                     child: Image.file(
                                       createStoryController.avatar!,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.contain,
                                     ))
                                 : const SizedBox(),
 
