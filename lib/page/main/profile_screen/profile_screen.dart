@@ -50,7 +50,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                     child: Stack(
                       children: [
                         /// ảnh bìa
-                        Global.userProfileResponse!.backgroundPath!.isNotEmpty
+                        Global.userProfileResponse != null &&
+                                Global.userProfileResponse!.backgroundPath!
+                                    .isNotEmpty
                             ? SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 height: 180,
@@ -81,14 +83,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
-                                      child: Global.userProfileResponse!
-                                              .avatarPath!.isNotEmpty
-                                          ? getNetworkImage(
-                                              Global.userProfileResponse!
-                                                  .avatarPath,
-                                              width: 80,
-                                              height: 80)
-                                          : Container(),
+                                      child:
+                                          Global.userProfileResponse != null &&
+                                                  Global.userProfileResponse!
+                                                      .avatarPath!.isNotEmpty
+                                              ? getNetworkImage(
+                                                  Global.userProfileResponse!
+                                                      .avatarPath,
+                                                  width: 80,
+                                                  height: 80)
+                                              : Container(),
                                     )),
                               ),
 
@@ -101,7 +105,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(Global.userProfileResponse!.fullName,
+                                    Text(
+                                        Global.userProfileResponse?.fullName ??
+                                            '',
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
@@ -109,7 +115,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Global.userProfileResponse!.bio!.isNotEmpty
+                                    Global.userProfileResponse != null &&
+                                            Global.userProfileResponse!.bio!
+                                                .isNotEmpty
                                         ? Text(Global.userProfileResponse!.bio!,
                                             maxLines: 2,
                                             style: const TextStyle(
@@ -144,7 +152,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ),
                                   Column(
                                     children: [
-                                      Text(Global.listMyFavoriteStories.length.toString(),
+                                      Text(
+                                          Global.listMyFavoriteStories.length
+                                              .toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 14,
@@ -158,14 +168,18 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               fontFamily: 'Nunito Sans')),
                                     ],
                                   ),
-
                                   GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       profileController.getListMyPending();
                                     },
                                     child: Column(
                                       children: [
-                                        Text(Global.userProfileResponse!.totalFriend.toString(),
+                                        Text(
+                                            Global.userProfileResponse != null
+                                                ? Global.userProfileResponse!
+                                                    .totalFriend
+                                                    .toString()
+                                                : '',
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14,
@@ -180,7 +194,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       ],
                                     ),
                                   ),
-
                                 ],
                               ),
 
@@ -193,7 +206,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        Get.to(() => const UpdateProfileScreen());
+                                        Get.to(
+                                            () => const UpdateProfileScreen());
                                       },
                                       child: Container(
                                         height: 30,
@@ -213,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       ),
                                     ),
                                     GestureDetector(
-                                      onTap: (){
+                                      onTap: () {
                                         Get.to(() => const QRCodeScreen());
                                       },
                                       child: Container(
@@ -258,9 +272,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                               width: 30,
                               height: 30,
                               margin: const EdgeInsets.only(top: 20, right: 20),
-                              child:
-                              const Icon(Icons.menu,
-                                  color: Colors.white,shadows: [Shadow(color: Colors.black,offset: Offset.zero,blurRadius: 5)]),
+                              child: const Icon(Icons.menu,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.black,
+                                        offset: Offset.zero,
+                                        blurRadius: 5)
+                                  ]),
                             ),
                           ),
                         ),
@@ -414,9 +433,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ],
                   ),
                 ),
-
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Get.to(() => const StoriesArchiveScreen());
                   },
                   child: Row(
@@ -435,7 +453,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Get.to(() => const QRCodeScreen());
                   },
                   child: Row(
@@ -491,8 +509,8 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
   /// content gridview
   Widget contentGridView(index) {
     return GestureDetector(
-      onTap: (){
-        Get.to(() =>  PostArchiveScreen());
+      onTap: () {
+        Get.to(() => PostArchiveScreen());
       },
       child: Padding(
           padding: const EdgeInsets.all(1),
@@ -501,7 +519,6 @@ class _Tab1 extends State<Tab1> with AutomaticKeepAliveClientMixin<Tab1> {
                   width: null, height: null))),
     );
   }
-
 }
 
 class Tab2 extends StatefulWidget {
@@ -523,10 +540,9 @@ class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
         padding: const EdgeInsets.only(bottom: 75),
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemCount:
-        Global.listMyFavoriteStories.isNotEmpty
-            ?Global.listMyFavoriteStories.length
-            :0,
+        itemCount: Global.listMyFavoriteStories.isNotEmpty
+            ? Global.listMyFavoriteStories.length
+            : 0,
         itemBuilder: (context, index) {
           if (Global.listMyFavoriteStories.isNotEmpty) {
             return contentGridView(index);
@@ -539,16 +555,14 @@ class _Tab2 extends State<Tab2> with AutomaticKeepAliveClientMixin<Tab2> {
   /// content gridview
   Widget contentGridView(index) {
     return GestureDetector(
-      onTap: (){
-        Get.to(() =>  StoryPage(isMyFavoriteStoryPage: true,index: index));
+      onTap: () {
+        Get.to(() => StoryPage(isMyFavoriteStoryPage: true, index: index));
       },
       child: Padding(
         padding: const EdgeInsets.all(1),
         child: ClipRect(
-          child: getNetworkImage(
-              Global.listMyFavoriteStories[index].photoPath,
-              width: null,
-              height: null),
+          child: getNetworkImage(Global.listMyFavoriteStories[index].photoPath,
+              width: null, height: null),
         ),
       ),
     );

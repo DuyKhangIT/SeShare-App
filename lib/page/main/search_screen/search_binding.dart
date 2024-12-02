@@ -6,6 +6,6 @@ import 'package:instagram_app/page/main/search_screen/search_controller.dart';
 class SearchBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SearchController());
+    Get.lazyPut(() => SearchingController());
   }
 }

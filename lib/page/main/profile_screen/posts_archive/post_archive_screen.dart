@@ -43,7 +43,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                         : postArchiveController.updatePhotoAndPost();
                   },
                   child: Icon(Icons.arrow_back,
-                      color: Theme.of(context).textTheme.headline6?.color),
+                      color: Theme.of(context).textTheme.headlineMedium?.color),
                 ),
                 title: Text(
                     widget.isAnotherPost == true
@@ -53,7 +53,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito Sans',
                       fontSize: 20,
-                      color: Theme.of(context).textTheme.headline6?.color,
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
                     )),
                 elevation: 0,
               ),
@@ -425,7 +425,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
                         style: TextStyle(
-                            color: Theme.of(context).textTheme.headline6?.color,
+                            color: Theme.of(context).textTheme.headlineMedium?.color,
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
@@ -453,7 +453,7 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
                         style: TextStyle(
-                            color: Theme.of(context).textTheme.headline6?.color,
+                            color: Theme.of(context).textTheme.headlineMedium?.color,
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
@@ -567,11 +567,11 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                             child: Text("Thích",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
+                                    .headlineMedium
                                     ?.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .headline6
+                                            .headlineMedium
                                             ?.color,
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold)),
@@ -653,11 +653,11 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                                 ?"Ẩn bình luận":"Bình Luận",
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
+                                .headlineMedium
                                 ?.copyWith(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .headline6
+                                    .headlineMedium
                                     ?.color,
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold),
@@ -691,11 +691,11 @@ class _PostArchiveScreenState extends State<PostArchiveScreen> {
                             child: Text("Chia sẻ",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
+                                    .headlineMedium
                                     ?.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .headline6
+                                            .headlineMedium
                                             ?.color,
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold)),

@@ -73,6 +73,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       children: [
                         Column(
                           children: [
+                            Global.userProfileResponse!= null &&
                             Global.userProfileResponse!.backgroundPath!
                                     .isNotEmpty
                                 ? Container(
@@ -162,6 +163,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Global.userProfileResponse!= null &&
                             Global.userProfileResponse!.avatarPath!.isNotEmpty
                                 ? Container(
                                     width: 80,

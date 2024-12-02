@@ -31,10 +31,10 @@ class UpdateProfileController extends GetxController {
   String backgroundPath = "";
   @override
   void onReady() {
-    userNameController.text = Global.userProfileResponse!.fullName;
-    bioController.text = Global.userProfileResponse!.bio!;
-    avatarPath = Global.userProfileResponse!.avatarPath!;
-    backgroundPath = Global.userProfileResponse!.backgroundPath!;
+    userNameController.text = Global.userProfileResponse?.fullName ?? '';
+    bioController.text = Global.userProfileResponse?.bio ?? '';
+    avatarPath = Global.userProfileResponse?.avatarPath ?? '';
+    backgroundPath = Global.userProfileResponse?.backgroundPath ?? '';
     update();
     super.onReady();
   }

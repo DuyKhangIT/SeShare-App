@@ -28,14 +28,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     Navigator.pop(context);
                   },
                   child: Icon(Icons.close,
-                      color: Theme.of(context).textTheme.headline6?.color),
+                      color: Theme.of(context).textTheme.headlineMedium?.color),
                 ),
                 title: Text("Đổi mật khẩu",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito Sans',
                       fontSize: 20,
-                      color: Theme.of(context).textTheme.headline6?.color,
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
                     )),
                 actions: [
                   GestureDetector(
@@ -116,7 +116,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: Icon(Icons.check,
-                          color: Theme.of(context).textTheme.headline6?.color),
+                          color: Theme.of(context).textTheme.headlineMedium?.color),
                     ),
                   )
                 ],

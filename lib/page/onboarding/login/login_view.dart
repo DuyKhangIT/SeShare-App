@@ -48,17 +48,18 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 40),
                     ButtonNext(
                         onTap: () {
-                          if(Global.isAvailableToClick()){
-                            if (loginController.phoneLogin.isNotEmpty &&
-                                loginController.passwordLogin.isNotEmpty) {
-                              UserRequest? userRequest = UserRequest(
-                                  removeZeroAtFirstDigitPhoneNumber(
-                                      loginController.phoneLogin),
-                                  removeZeroAtFirstDigitPhoneNumber(
-                                      loginController.passwordLogin));
-                              loginController.authenticate(userRequest);
-                            }
-                          }
+                          Get.offAll(() =>  NavigationBarView(currentIndex: 0));
+                          // if(Global.isAvailableToClick()){
+                          //   if (loginController.phoneLogin.isNotEmpty &&
+                          //       loginController.passwordLogin.isNotEmpty) {
+                          //     UserRequest? userRequest = UserRequest(
+                          //         removeZeroAtFirstDigitPhoneNumber(
+                          //             loginController.phoneLogin),
+                          //         removeZeroAtFirstDigitPhoneNumber(
+                          //             loginController.passwordLogin));
+                          //     loginController.authenticate(userRequest);
+                          //   }
+                          // }
                         },
                         textInside: "Đăng nhập"),
                     const SizedBox(height: 50),

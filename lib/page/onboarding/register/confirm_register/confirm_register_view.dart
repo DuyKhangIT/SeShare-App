@@ -39,8 +39,8 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
               appBar: AppBar(
                 title: Text(
                   'Đăng ký',
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
-                      color: Theme.of(context).textTheme.headline6?.color,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
                       fontSize: 20),
                 ),
                 centerTitle: true,
@@ -69,11 +69,11 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
                         child: Text('Hủy',
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
+                                .headlineMedium
                                 ?.copyWith(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .headline6
+                                        .headlineMedium
                                         ?.color,
                                     fontSize: 16)),
                       ),

@@ -31,14 +31,14 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                     Navigator.pop(context);
                   },
                   child: Icon(Icons.close,
-                      color: Theme.of(context).textTheme.headline6?.color),
+                      color: Theme.of(context).textTheme.headlineMedium?.color),
                 ),
                 title: Text(
                   "Mã QR của bạn",
                     style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Nunito Sans',
-                        color: Theme.of(context).textTheme.headline6?.color)
+                        color: Theme.of(context).textTheme.headlineMedium?.color)
                 ),
                 centerTitle: true,
                 elevation: 0,

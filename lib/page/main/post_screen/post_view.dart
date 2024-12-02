@@ -128,7 +128,8 @@ class _PostScreenState extends State<PostScreen> {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: Global.userProfileResponse!.avatarPath!
+                                  child: Global.userProfileResponse!= null &&
+                                      Global.userProfileResponse!.avatarPath!
                                           .isNotEmpty
                                       ? getNetworkImage(
                                           Global
@@ -148,7 +149,7 @@ class _PostScreenState extends State<PostScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Global.userProfileResponse!.fullName,
+                                    Global.userProfileResponse?.fullName ?? '',
                                     style: const TextStyle(
                                       fontFamily: 'Nunito Sans',
                                       fontSize: 18,

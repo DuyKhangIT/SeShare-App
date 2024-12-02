@@ -28,8 +28,8 @@ class _InputPasswordState extends State<InputPassword> {
           appBar: AppBar(
             title: Text(
               'Đăng ký',
-              style: Theme.of(context).textTheme.headline6?.copyWith(
-                  color: Theme.of(context).textTheme.headline6?.color,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: Theme.of(context).textTheme.headlineMedium?.color,
                   fontSize: 20),
             ),
             centerTitle: true,
@@ -44,7 +44,7 @@ class _InputPasswordState extends State<InputPassword> {
                   margin: const EdgeInsets.only(right: 25),
                   child: Text("Hủy",
                       style: TextStyle(
-                          color: Theme.of(context).textTheme.headline6?.color,
+                          color: Theme.of(context).textTheme.headlineMedium?.color,
                           fontSize: 18,
                           fontWeight: FontWeight.bold)),
                 ),

@@ -44,8 +44,8 @@ class _HomeState extends State<Home> {
                 automaticallyImplyLeading: false,
                 title: Text(
                   'SeShare',
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
-                      color: Theme.of(context).textTheme.headline6?.color,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
                       fontFamily: 'Nunito Sans',
                       fontSize: 22,
                       fontWeight: FontWeight.bold),
@@ -666,7 +666,7 @@ class _HomeState extends State<Home> {
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
                         style: TextStyle(
-                            color: Theme.of(context).textTheme.headline6?.color,
+                            color: Theme.of(context).textTheme.headlineMedium?.color,
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
@@ -691,7 +691,7 @@ class _HomeState extends State<Home> {
                     overflow: TextOverflow.ellipsis,
                     text: TextSpan(
                         style: TextStyle(
-                            color: Theme.of(context).textTheme.headline6?.color,
+                            color: Theme.of(context).textTheme.headlineMedium?.color,
                             fontFamily: 'NunitoSans'),
                         children: [
                           TextSpan(
@@ -767,11 +767,11 @@ class _HomeState extends State<Home> {
                             child: Text("Thích",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
+                                    .headlineMedium
                                     ?.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .headline6
+                                            .headlineMedium
                                             ?.color,
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold)),
@@ -837,11 +837,11 @@ class _HomeState extends State<Home> {
                             ?"Ẩn bình luận":"Bình Luận",
                             style: Theme.of(context)
                                 .textTheme
-                                .headline6
+                                .headlineMedium
                                 ?.copyWith(
                                     color: Theme.of(context)
                                         .textTheme
-                                        .headline6
+                                        .headlineMedium
                                         ?.color,
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold),
@@ -877,11 +877,11 @@ class _HomeState extends State<Home> {
                             child: Text("Chia sẻ",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline6
+                                    .headlineMedium
                                     ?.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .headline6
+                                            .headlineMedium
                                             ?.color,
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold)),

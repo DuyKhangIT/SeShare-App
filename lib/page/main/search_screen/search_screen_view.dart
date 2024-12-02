@@ -12,8 +12,8 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SearchController searchController = Get.put(SearchController());
-    return GetBuilder<SearchController>(
+    SearchingController searchController = Get.put(SearchingController());
+    return GetBuilder<SearchingController>(
         builder: (controller) => SafeArea(
               child: Scaffold(
                 backgroundColor: Theme.of(context).brightness == Brightness.dark
@@ -62,7 +62,7 @@ class SearchScreen extends StatelessWidget {
               : Colors.blueGrey.withOpacity(0.15),
         ),
         child: Row(
-          children:const [
+          children: const [
              Icon(Icons.search,color: Colors.black,),
              SizedBox(width: 10),
             Text("Tìm kiếm...",

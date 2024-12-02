@@ -26,8 +26,8 @@ class _InputFullNameState extends State<InputFullName> {
                 appBar: AppBar(
                   title: Text(
                     'Đăng ký',
-                    style: Theme.of(context).textTheme.headline6?.copyWith(
-                        color: Theme.of(context).textTheme.headline6?.color,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Theme.of(context).textTheme.headlineMedium?.color,
                         fontSize: 20),
                   ),
                   centerTitle: true,

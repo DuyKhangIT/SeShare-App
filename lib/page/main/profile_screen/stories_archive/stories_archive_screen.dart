@@ -26,14 +26,14 @@ class _StoriesArchiveScreenState extends State<StoriesArchiveScreen> {
                     Get.to(() => NavigationBarView(currentIndex: 4));
                   },
                   child: Icon(Icons.arrow_back,
-                      color: Theme.of(context).textTheme.headline6?.color),
+                      color: Theme.of(context).textTheme.headlineMedium?.color),
                 ),
                 title: Text("Kho lưu trữ",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito Sans',
                       fontSize: 20,
-                      color: Theme.of(context).textTheme.headline6?.color,
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
                     )),
                 elevation: 0,
               ),

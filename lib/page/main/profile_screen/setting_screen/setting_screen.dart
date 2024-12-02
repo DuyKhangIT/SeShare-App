@@ -32,14 +32,14 @@ class _SettingScreenState extends State<SettingScreen> {
                     Get.to(() => NavigationBarView(currentIndex: 4));
                   },
                   child: Icon(Icons.arrow_back,
-                      color: Theme.of(context).textTheme.headline6?.color),
+                      color: Theme.of(context).textTheme.headlineMedium?.color),
                 ),
                 title: Text("Cài đặt",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito Sans',
                       fontSize: 20,
-                      color: Theme.of(context).textTheme.headline6?.color,
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
                     )),
                 elevation: 0,
               ),
@@ -61,7 +61,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         children: [
                           Image.asset(
                             IconsAssets.icSecurity,
-                            color: Theme.of(context).textTheme.headline6?.color,
+                            color: Theme.of(context).textTheme.headlineMedium?.color,
                           ),
                           const SizedBox(width: 10),
                           const Text(
@@ -80,7 +80,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       children: [
                         Image.asset(
                           IconsAssets.icInfoApp,
-                          color: Theme.of(context).textTheme.headline6?.color,
+                          color: Theme.of(context).textTheme.headlineMedium?.color,
                         ),
                         const SizedBox(width: 10),
                         const Text(
@@ -203,7 +203,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           style: TextStyle(
                             fontFamily: 'Nunito Sans',
                             fontSize: 16,
-                            color: Theme.of(context).textTheme.headline6?.color,
+                            color: Theme.of(context).textTheme.headlineMedium?.color,
                           )),
                     ),
                     const SizedBox(height: 30),
@@ -270,7 +270,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           style: TextStyle(
                             fontFamily: 'Nunito Sans',
                             fontSize: 16,
-                            color: Theme.of(context).textTheme.headline6?.color,
+                            color: Theme.of(context).textTheme.headlineMedium?.color,
                           )),
                     ),
                   ],

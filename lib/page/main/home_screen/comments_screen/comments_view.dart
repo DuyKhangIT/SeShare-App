@@ -36,11 +36,11 @@ class _CommentScreenState extends State<CommentScreen> {
                     },
                     child: Icon(
                       Icons.arrow_back,
-                      color: Theme.of(context).textTheme.headline6?.color,
+                      color: Theme.of(context).textTheme.headlineMedium?.color,
                     )),
                 title: Text("Bình luận",
-                    style: Theme.of(context).textTheme.headline6?.copyWith(
-                        color: Theme.of(context).textTheme.headline6?.color,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        color: Theme.of(context).textTheme.headlineMedium?.color,
                         fontFamily: 'Nunito Sans',
                         fontSize: 20,
                         fontWeight: FontWeight.bold)),
@@ -56,7 +56,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   style: TextStyle(
                                       color: Theme.of(context)
                                           .textTheme
-                                          .headline6
+                                          .headlineMedium
                                           ?.color,
                                       fontFamily: 'Nunito Sans',
                                       fontSize: 13)),
