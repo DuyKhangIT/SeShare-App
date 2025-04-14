@@ -37,12 +37,11 @@ class PostController extends GetxController {
     avatar = null;
     update();
     super.onReady();
-
   }
 
   Future<void> captureData() async {
     var result = await Get.to(() => const ChangedAddressView());
-    if(result != null){
+    if (result != null) {
       checkInPost = result;
       update();
     }
@@ -50,6 +49,9 @@ class PostController extends GetxController {
 
   @override
   void onClose() {
+    inputStatusController.clear();
+    checkInPost = "";
+    avatar = null;
     super.onClose();
   }
 
@@ -69,13 +71,13 @@ class PostController extends GetxController {
       return;
     }
     avatar = picture;
-    Navigator.pop(Get.context!);
+    Get.back();
 
     String filePaths;
     filePaths = picture.path;
     filePath = filePaths;
     update();
-    if(avatar != null){
+    if (avatar != null) {
       uploadMedia();
     }
   }
@@ -93,13 +95,13 @@ class PostController extends GetxController {
       return;
     }
     avatar = imgFrame;
-    Navigator.pop(Get.context!);
+    Get.back();
 
     String filePaths;
     filePaths = imgFrame.path;
     filePath = filePaths;
     update();
-    if(avatar != null){
+    if (avatar != null) {
       uploadMedia();
     }
   }
@@ -112,16 +114,10 @@ class PostController extends GetxController {
     return File(cropperImage.path);
   }
 
-  void posts(){
-      CreatePostRequest createPostRequest =
-      CreatePostRequest(
-          captionPost,
-          false,
-          Global.currentLocation,
-          checkInPost,
-          privacy,
-          photoPath);
-      createPost(createPostRequest);
+  void posts() {
+    CreatePostRequest createPostRequest = CreatePostRequest(captionPost, false,
+        Global.currentLocation, checkInPost, privacy, photoPath);
+    createPost(createPostRequest);
   }
 
   /// upload image api
@@ -141,21 +137,23 @@ class PostController extends GetxController {
     }
     if (body == null) return UploadMediaResponse.buildDefault();
     uploadMediaResponse = UploadMediaResponse.fromJson(body);
-    if(uploadMediaResponse.status == true){
+    if (uploadMediaResponse.status == true) {
       photo = uploadMediaResponse.data!;
-      if(photo!=null && photo.isNotEmpty){
+      if (photo != null && photo.isNotEmpty) {
         photoPath.add(photo);
         update();
       }
     }
     return uploadMediaResponse;
   }
-  
+
   /// create post
-  Future<CreatePostResponse> createPost(CreatePostRequest createPostRequest) async {
+  Future<CreatePostResponse> createPost(
+      CreatePostRequest createPostRequest) async {
     isLoading = true;
     if (isLoading) {
-      Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
+      Get.dialog(const Center(child: CircularProgressIndicator()),
+          barrierDismissible: false);
     } else {
       Get.back(); // Đóng hộp thoại loading nếu isLoading = false
     }
@@ -163,8 +161,7 @@ class PostController extends GetxController {
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-          Uri.parse(
-              "http://14.225.204.248:8080/api/photo/upload-post"),
+          Uri.parse("http://14.225.204.248:8080/api/photo/upload-post"),
           RequestType.post,
           headers: null,
           body: const JsonEncoder().convert(createPostRequest.toBodyRequest()));
@@ -175,10 +172,11 @@ class PostController extends GetxController {
     if (body == null) return CreatePostResponse.buildDefault();
     //get data from api here
     createPostResponse = CreatePostResponse.fromJson(body);
-    if(createPostResponse.status == true){
+    if (createPostResponse.status == true) {
       isLoading = false;
       if (isLoading) {
-        Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
+        Get.dialog(const Center(child: CircularProgressIndicator()),
+            barrierDismissible: false);
       } else {
         Get.back(); // Đóng hộp thoại loading nếu isLoading = false
       }
@@ -195,10 +193,10 @@ class PostController extends GetxController {
       ScaffoldMessenger.of(Get.context!)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
-      Get.offAll(() =>  NavigationBarView(currentIndex: 0,));
+      Get.offAll(() => NavigationBarView(
+            currentIndex: 0,
+          ));
     }
     return createPostResponse;
   }
-
-
 }
