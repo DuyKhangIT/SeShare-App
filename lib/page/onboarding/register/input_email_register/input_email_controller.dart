@@ -16,15 +16,21 @@ import '../../../../util/global.dart';
 import '../../../../util/module.dart';
 import '../input_otp_register/input_otp_view.dart';
 
-class InputPhoneNumberController extends GetxController {
-  TextEditingController phoneRegisterController = TextEditingController();
-  RxString phoneRegister = RxString("");
+class InputEmailController extends GetxController {
+  TextEditingController emailRegisterController = TextEditingController();
+  RxString emailRegister = RxString("");
   final FirebaseAuth auth = FirebaseAuth.instance;
   String countryCode = "";
   bool isLoading = false;
   void clearTextInputPhoneNumber() {
-    phoneRegister.value = "";
-    phoneRegisterController.clear();
+    emailRegister.value = "";
+    emailRegisterController.clear();
+    update();
+  }
+
+  void updateEmailInput(String email) {
+    emailRegister.value = email;
+    update();
   }
 
   @override
@@ -65,7 +71,7 @@ class InputPhoneNumberController extends GetxController {
         Get.back(); // Đóng hộp thoại loading nếu isLoading = false
       }
       await auth.verifyPhoneNumber(
-        phoneNumber: countryCode + removeZeroAtFirstDigitPhoneNumber(phoneRegister.value),
+        phoneNumber: countryCode + removeZeroAtFirstDigitPhoneNumber(emailRegister.value),
         timeout: const Duration(seconds: 60),
         verificationCompleted:
             (PhoneAuthCredential credential) {},
@@ -86,7 +92,7 @@ class InputPhoneNumberController extends GetxController {
         },
         codeSent: (String verificationId, int? resendToken) {
           Global.verifyFireBase = verificationId;
-          Get.to(() => const InputOTP());
+         // Get.to(() => const InputOTP());
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           final snackBar = SnackBar(

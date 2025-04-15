@@ -35,8 +35,8 @@ import 'package:instagram_app/page/main/profile_screen/update_profile_screen/upd
 import 'package:instagram_app/page/main/profile_screen/update_profile_screen/update_profile_screen_view.dart';
 import 'package:instagram_app/page/main/search_screen/action_search/action_search_binding.dart';
 import 'package:instagram_app/page/main/search_screen/action_search/action_search_view.dart';
-import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_binding.dart';
-import 'package:instagram_app/page/onboarding/register/input_birthday_register/input_birthday_view.dart';
+import 'package:instagram_app/page/onboarding/register/register_binding.dart';
+import 'package:instagram_app/page/onboarding/register/register_view.dart';
 
 import '../page/main/chat_sreen/chat_list/chat_list_binding.dart';
 import '../page/main/home_screen/home_view.dart';
@@ -62,19 +62,12 @@ import '../page/onboarding/login/login_binding.dart';
 import '../page/onboarding/login/login_view.dart';
 import '../page/onboarding/register/confirm_register/confirm_register_binding.dart';
 import '../page/onboarding/register/confirm_register/confirm_register_view.dart';
-import '../page/onboarding/register/input_full_name_register/input_full_name_binding.dart';
-import '../page/onboarding/register/input_full_name_register/input_full_name_view.dart';
+import '../page/onboarding/register/input_email_register/input_email_binding.dart';
+import '../page/onboarding/register/input_email_register/input_email_view.dart';
 import '../page/onboarding/register/input_otp_register/input_otp_binding.dart';
 import '../page/onboarding/register/input_otp_register/input_otp_view.dart';
-import '../page/onboarding/register/input_password_register/input_password_binding.dart';
-import '../page/onboarding/register/input_password_register/input_password_view.dart';
-import '../page/onboarding/register/input_phone_number_register/input_phone_number_binding.dart';
-import '../page/onboarding/register/input_phone_number_register/input_phone_number_view.dart';
-import '../page/onboarding/register/upload_avatar_register/upload_avatar_binding.dart';
-import '../page/onboarding/register/upload_avatar_register/upload_avatar_view.dart';
 import '../page/onboarding/start_up/star_up_binding.dart';
 import '../page/onboarding/start_up/start_up_view.dart';
-
 
 class AppRoutes {
   static const String startUpScreen = "/seShare_startUp_screen";
@@ -89,27 +82,24 @@ class AppRoutes {
       "/seShare_inputNewPasswordForgotPassword_screen";
 
   /// register
-  static const String inputPhoneNumberRegisterScreen =
-      "/seShare_inputPhoneNumberRegister_screen";
+  static const String inputEmailRegisterScreen =
+      "/seShare_inputEmailRegister_screen";
   static const String inputOtpRegisterScreen =
       "/seShare_inputOtpRegister_screen";
-  static const String inputPasswordRegisterScreen =
-      "/seShare_inputPasswordRegister_screen";
-  static const String inputFullNameRegisterScreen =
-      "/seShare_inputFullNameRegister_screen";
-  static const String inputBirthdayRegisterScreen = "/seShare_inputBirthdayRegister_screen";
-  static const String uploadAvatarRegisterScreen =
-      "/seShare_uploadAvatarRegister_screen";
+  static const String inputBirthdayRegisterScreen =
+      "/seShare_inputBirthdayRegister_screen";
   static const String confirmRegisterScreen = "/seShare_confirmRegister_screen";
-
+  static const String registerScreen = "/seShare_register_screen";
 
   /// home
   static const String homeScreen = "/seShare_home_screen";
   static const String notificationScreen = "/seShare_Notification_screen";
+
   /// profile
   static const String profileScreen = "/seShare_profile_screen";
   static const String updateProfileScreen = "/seShare_updateProfile_screen";
-  static const String updatePrivateInfoScreen = "/seShare_updatePrivateInfo_screen";
+  static const String updatePrivateInfoScreen =
+      "/seShare_updatePrivateInfo_screen";
   static const String listPendingScreen = "/seShare_listPending_screen";
   static const String listMyFriendScreen = "/seShare_listMyFriend_screen";
 
@@ -122,6 +112,7 @@ class AppRoutes {
   static const String storyScreen = "/seShare_story_screen";
   static const String commentsScreen = "/seShare_comments_screen";
   static const String createStoryScreen = "/seShare_createStory_screen";
+
   /// infor account screen
   static const String inForAccountScreen = "/seShare_InForAccount_screen";
 
@@ -133,10 +124,13 @@ class AppRoutes {
 
   /// setting screen
   static const String settingScreen = "/seShare_setting_screen";
+
   /// change password
   static const String changePasswordScreen = "/seShare_changePassword_screen";
+
   /// stories archive
   static const String storiesArchiveScreen = "/seShare_storiesArchive_screen";
+
   /// post archive
   static const String postArchiveScreen = "/seShare_postArchive_screen";
 
@@ -173,78 +167,75 @@ class AppRoutes {
 
     /// register
     GetPage(
-        name: inputPhoneNumberRegisterScreen,
-        page: () => InputPhoneNumber(),
-        binding: InputPhoneNumberBinding()),
+      name: registerScreen,
+      page: () => const RegisterView(),
+      binding: RegisterBinding(),
+    ),
+    GetPage(
+        name: inputEmailRegisterScreen,
+        page: () => const InputEmail(),
+        binding: InputEmailBinding()),
     GetPage(
         name: inputOtpRegisterScreen,
-        page: () => InputOTP(),
+        page: () => const InputOTP(emailRegister: ""),
         binding: InputOTPBinding()),
-    GetPage(
-        name: inputPasswordRegisterScreen,
-        page: () => InputPassword(),
-        binding: InputPasswordBinding()),
-    GetPage(
-        name: inputFullNameRegisterScreen,
-        page: () => InputFullName(),
-        binding: InputFullNameBinding()),
 
-    GetPage(
-      name: inputBirthdayRegisterScreen,
-      page: () => const InputBirthday(),
-      binding: InputBirthdayBinding(),
-    ),
-
-    GetPage(
-        name: uploadAvatarRegisterScreen,
-        page: () => UploadAvatarForRegister(),
-        binding: UploadAvatarBinding()),
     GetPage(
         name: confirmRegisterScreen,
         page: () => ConfirmRegister(),
         binding: ConfirmRegisterBinding()),
+
     /// navigation bar
     GetPage(
       name: appNavigationScreen,
-      page: () => NavigationBarView(currentIndex: 0,),
+      page: () => NavigationBarView(
+        currentIndex: 0,
+      ),
       binding: NavigationBarBinding(),
     ),
+
     /// home
     GetPage(
       name: homeScreen,
       page: () => Home(),
       binding: HomeBinding(),
     ),
+
     /// notification
     GetPage(
       name: notificationScreen,
       page: () => NotificationScreen(),
       binding: NotificationBinding(),
     ),
+
     /// profile
     GetPage(
       name: profileScreen,
       page: () => ProfileScreen(),
       binding: ProfileBinding(),
     ),
+
     /// search
     GetPage(
       name: searchScreen,
       page: () => SearchScreen(),
       binding: SearchBinding(),
     ),
+
     /// post
     GetPage(
       name: postScreen,
       page: () => PostScreen(),
       binding: PostBinding(),
     ),
+
     /// story
     GetPage(
       name: storyScreen,
       page: () => StoryPage(),
       binding: StoryBinding(),
     ),
+
     /// chat list
     GetPage(
       name: chatListScreen,
@@ -266,7 +257,7 @@ class AppRoutes {
 
     GetPage(
       name: commentsScreen,
-      page: () =>  CommentScreen(),
+      page: () => CommentScreen(),
       binding: CommentsBinding(),
     ),
 
@@ -284,7 +275,7 @@ class AppRoutes {
 
     GetPage(
       name: anOtherProfileScreen,
-      page: () =>  AnOtherProfileScreen(),
+      page: () => AnOtherProfileScreen(),
       binding: AnOtherProfileBinding(),
     ),
 

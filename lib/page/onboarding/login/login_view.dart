@@ -11,7 +11,7 @@ import '../../../config/share_preferences.dart';
 import '../../../util/global.dart';
 import '../../navigation_bar/navigation_bar_view.dart';
 import '../forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_view.dart';
-import '../register/input_phone_number_register/input_phone_number_view.dart';
+import '../register/input_email_register/input_email_view.dart';
 import 'login_controller.dart';
 
 class Login extends StatefulWidget {
@@ -84,7 +84,7 @@ class _LoginState extends State<Login> {
                       TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Get.to(() => const InputPhoneNumber());
+                              Get.to(() => const InputEmail());
                             },
                           text: 'Đăng ký.',
                           style: const TextStyle(

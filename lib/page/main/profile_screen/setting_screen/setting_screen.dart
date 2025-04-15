@@ -4,7 +4,6 @@ import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/main/home_screen/infor_account_screen/infro_account_view.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/change_password/change_password_screen.dart';
 import 'package:instagram_app/page/main/profile_screen/setting_screen/setting_controller.dart';
-import 'package:instagram_app/page/onboarding/register/input_phone_number_register/input_phone_number_view.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../../assets/icons_assets.dart';
@@ -323,20 +322,20 @@ class _SettingScreenState extends State<SettingScreen> {
                   },
                   textInside: "Đăng nhập với tài khoản hiện có",
                 ),
-                GestureDetector(
-                  onTap: () {
-                    ConfigSharedPreferences()
-                        .setStringValue(SharedData.TOKEN.toString(), "");
-                    Get.offAll(() => const InputPhoneNumber());
-                  },
-                  child: const Text(
-                    "Tạo tài khoản mới",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Nunito Sans',
-                        color: Colors.black),
-                  ),
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     ConfigSharedPreferences()
+                //         .setStringValue(SharedData.TOKEN.toString(), "");
+                //     Get.offAll(() => const InputPhoneNumber());
+                //   },
+                //   child: const Text(
+                //     "Tạo tài khoản mới",
+                //     style: TextStyle(
+                //         fontSize: 16,
+                //         fontFamily: 'Nunito Sans',
+                //         color: Colors.black),
+                //   ),
+                // ),
               ],
             )),
       ],
