@@ -34,108 +34,95 @@ class _ConfirmRegisterState extends State<ConfirmRegister>
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ConfirmRegisterController>(
-        builder: (controller) => SafeArea(
-                child: Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  'Đăng ký',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      color: Theme.of(context).textTheme.headlineMedium?.color,
-                      fontSize: 20),
-                ),
-                centerTitle: true,
-                backgroundColor: Colors.transparent,
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_rounded,
-                      color: Theme.of(context).brightness ==
-                          Brightness.dark
-                          ? Colors.white
-                          : Colors.black
+      builder: (controller) => SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Đăng ký',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: Theme.of(context).textTheme.headlineMedium?.color,
+                    fontSize: 20,
                   ),
-                ),
-                actions: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.offAll(() => Login());
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text('Hủy',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium
-                                        ?.color,
-                                    fontSize: 16)),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
+              child: Column(
+                children: [
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontFamily: 'Nunito Sans',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
                       ),
+                      children: [
+                        TextSpan(
+                          text: "Xác nhận đăng ký ",
+                        ),
+                        TextSpan(
+                          text: "Thành Công",
+                          style: TextStyle(
+                            fontFamily: 'Nunito Sans',
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "!",
+                        ),
+                      ],
                     ),
                   ),
-                ],
-                elevation: 0,
-              ),
-              body: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
-                  child: Column(
-                    children: [
-                      const Text('Xác nhận đăng ký',
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontFamily: 'Nunito Sans',
-                            fontWeight: FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.center),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                          'Chào mừng bạn đến với SeShare\n Vui lòng bấm xác nhận để hoàn thành việc đăng ký.',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: 'Nunito Sans',
-                            fontWeight: FontWeight.normal,
-                          ),
-                          textAlign: TextAlign.center),
-                      const SizedBox(
-                        height: 80,
-                      ),
-                      Lottie.asset(
-                        AnimationAssets.icConfirm,
-                        controller: animationController,
-                        reverse: true,
-                        repeat: true,
-                        onLoaded: (composition) {
-                          animationController
-                            ..duration = composition.duration
-                            ..forward();
-                        },
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-              ),
-              bottomNavigationBar: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  child: ButtonNext(
-                    onTap: () {
-                      confirmRegisterController.signUp();
+                  const Text(
+                      'Chào mừng bạn đến với SeShare\n Vui lòng bấm "Ok" để hoàn thành việc đăng ký.',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: 'Nunito Sans',
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.center),
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  Lottie.asset(
+                    AnimationAssets.icConfirm,
+                    controller: animationController,
+                    repeat: true,
+                    onLoaded: (composition) {
+                      animationController
+                        ..duration = composition.duration
+                        ..repeat();
                     },
-                    textInside: 'xác nhận'.toUpperCase(),
-                  )),
-            )));
+                  ),
+                ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+            child: ButtonNext(
+              onTap: () {
+                Get.to(Login());
+              },
+              textInside: 'Ok'.toUpperCase(),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

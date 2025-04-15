@@ -10,6 +10,7 @@ import '../../../assets/icons_assets.dart';
 import '../../../util/module.dart';
 import '../../../widget/button_next.dart';
 import '../../../widget/custom_text_field.dart';
+import '../login/login_view.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -34,15 +35,29 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back_ios_rounded,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black),
-          ),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                Get.offAll(() => Login());
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text('Hủy',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
+                          ?.copyWith(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.color,
+                              fontSize: 16)),
+                ),
+              ),
+            ),
+          ],
           elevation: 0,
         ),
         body: SingleChildScrollView(
@@ -162,6 +177,7 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
                 // password
                 CustomTextFiled(
+                  obscureText: !registerController.isShowPassword.value,
                   title: 'Mật khẩu (6 - 12 kí tự)',
                   hintText: 'Nhập mật khẩu của bạn',
                   textEditingController: registerController.passwordController,
@@ -238,6 +254,7 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
                 // confirm password
                 CustomTextFiled(
+                  obscureText: !registerController.isConfirmShowPassword.value,
                   title: 'Xác nhận mật khẩu (6 - 12 kí tự)',
                   hintText: 'Nhập lại mật khẩu của bạn',
                   textEditingController:
@@ -333,9 +350,9 @@ class _RegisterViewState extends State<RegisterView> {
           child: ButtonNext(
             onTap: () {
               // confirmRegisterController.signUp();
-              Get.to(ConfirmRegister());
+              Get.to(const ConfirmRegister());
             },
-            textInside: 'xác nhận'.toUpperCase(),
+            textInside: 'đăng ký'.toUpperCase(),
           ),
         ),
       ),

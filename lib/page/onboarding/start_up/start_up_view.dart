@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:instagram_app/assets/assets.dart';
 import 'package:instagram_app/page/onboarding/start_up/start_up_controller.dart';
 import 'package:instagram_app/widget/button_next.dart';
 import 'package:lottie/lottie.dart';
-import '../../navigation_bar/navigation_bar_view.dart';
 import '../login/login_view.dart';
 
 class StartUpScreen extends StatefulWidget {
@@ -64,7 +62,7 @@ class _StartUpScreenState extends State<StartUpScreen>
                       // Lottie file and start the animation.
                       animationController
                         ..duration = composition.duration
-                        ..forward();
+                        ..repeat();
                     },
                   ),
                 ],
@@ -73,18 +71,21 @@ class _StartUpScreenState extends State<StartUpScreen>
           ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-            child: Obx(() => startUpController.isNewUser.value == true
-                ? ButtonNext(
-                    onTap: () {
-                      Get.to(() => Login());
-                    },
-                    textInside: "Bắt đầu",
-                  )
-                : Container(
-                    alignment: Alignment.center,
-                    width: 80,
-                    height: 80,
-                    child: const CircularProgressIndicator())),
+            child: Obx(
+              () => startUpController.isNewUser.value == true
+                  ? ButtonNext(
+                      onTap: () {
+                        Get.to(() => Login());
+                      },
+                      textInside: "Bắt đầu",
+                    )
+                  : Container(
+                      alignment: Alignment.center,
+                      width: 80,
+                      height: 80,
+                      child: const CircularProgressIndicator(),
+                    ),
+            ),
           ),
         ),
       ),
@@ -113,13 +114,15 @@ class _StartUpScreenState extends State<StartUpScreen>
               width: 250,
               margin: const EdgeInsets.only(top: 10),
               child: const Text(
-                  'Nơi bạn có thể chia sẻ và kết bạn với nhau thông qua những bức ảnh tuyệt vời của mình',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontFamily: 'Nunito Sans',
-                      overflow: TextOverflow.ellipsis,
-                      letterSpacing: 1),
-                  maxLines: 3),
+                'Nơi bạn có thể chia sẻ và kết bạn với nhau thông qua những bức ảnh tuyệt vời của mình',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'Nunito Sans',
+                  overflow: TextOverflow.ellipsis,
+                  letterSpacing: 1,
+                ),
+                maxLines: 3,
+              ),
             ),
           ],
         ),

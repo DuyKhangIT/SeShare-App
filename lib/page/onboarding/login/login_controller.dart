@@ -12,9 +12,9 @@ import '../../navigation_bar/navigation_bar_view.dart';
 
 class LoginController extends GetxController {
   UserRequest? userRequest;
-  TextEditingController phoneLoginController = TextEditingController();
+  TextEditingController emailLoginController = TextEditingController();
   TextEditingController passwordLoginController = TextEditingController();
-  String phoneLogin = "";
+  String emailLogin = "";
   String passwordLogin = "";
   RxBool isLoading = false.obs;
   RxBool isShowPassword = false.obs;
@@ -84,8 +84,8 @@ class LoginController extends GetxController {
   }
 
   void clearTextPhoneLogin() {
-    phoneLogin = "";
-    phoneLoginController.clear();
+    emailLogin = "";
+    emailLoginController.clear();
     update();
   }
 

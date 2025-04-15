@@ -9,6 +9,8 @@ class CustomTextFiled extends StatefulWidget {
   final Function(String)? onChanged;
   final TextInputType textInputType;
   final List<TextInputFormatter>? inputFormatters;
+  final bool isRequired;
+  final bool obscureText;
   const CustomTextFiled({
     super.key,
     this.textEditingController,
@@ -18,6 +20,8 @@ class CustomTextFiled extends StatefulWidget {
     this.onChanged,
     this.textInputType = TextInputType.text,
     this.inputFormatters,
+    this.isRequired = true,
+    this.obscureText = false,
   });
 
   @override
@@ -45,6 +49,7 @@ class _CustomTextFiledState extends State<CustomTextFiled> {
                 TextSpan(
                   text: widget.title,
                 ),
+                if (widget.isRequired)
                 const TextSpan(
                   text: " * ",
                   style: TextStyle(
@@ -59,6 +64,7 @@ class _CustomTextFiledState extends State<CustomTextFiled> {
           ),
           const SizedBox(height: 5),
           TextField(
+            obscureText: widget.obscureText,
             controller: widget.textEditingController,
             keyboardType: widget.textInputType,
             cursorColor: Colors.grey,

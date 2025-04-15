@@ -30,15 +30,17 @@ class _InputEmailState extends State<InputEmail> {
                 ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_ios_rounded,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black),
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
           ),
           elevation: 0,
         ),

@@ -12,7 +12,7 @@ class InputOTPController extends GetxController{
   /// Đếm ngược
   late Timer timer;
   var start = 59.obs;
-  String countryCode = "";
+
   void startTimer() {
     start.value = 59;
     const oneSec = Duration(seconds: 1);
@@ -31,12 +31,13 @@ class InputOTPController extends GetxController{
   @override
   void onReady() {
     startTimer();
-    countryCode = "+84";
     super.onReady();
   }
 
   @override
   void onClose() {
+    timer.cancel();
+    start.close();
     super.onClose();
   }
 

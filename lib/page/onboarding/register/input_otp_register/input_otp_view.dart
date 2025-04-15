@@ -62,7 +62,7 @@ class _InputOTPState extends State<InputOTP> {
                 fontSize: 20),
           ),
           centerTitle: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           actions: [
             GestureDetector(
               onTap: () {
@@ -142,55 +142,29 @@ class _InputOTPState extends State<InputOTP> {
                   height: 20,
                 ),
                 Center(
-                  child: Obx(() {
-                    // Truy xuất HandleOtp bằng Get.find()
-                    return (inputOTPController.start.value == 0)
-                        ? TextButton(
-                            onPressed: () async {
-                              await FirebaseAuth.instance.verifyPhoneNumber(
-                                phoneNumber: inputOTPController.countryCode +
-                                    Global.phoneNumber,
-                                timeout: const Duration(seconds: 60),
-                                verificationCompleted:
-                                    (PhoneAuthCredential credential) async {
-                                  inputOTPController.timer.cancel();
-                                },
-                                verificationFailed:
-                                    (FirebaseAuthException e) {},
-                                codeSent:
-                                    (String verificationId, int? resendToken) {
-                                  Global.verifyFireBase = verificationId;
-                                  inputOTPController.startTimer();
-                                },
-                                codeAutoRetrievalTimeout:
-                                    (String verificationId) {
-                                  final snackBar = SnackBar(
-                                    elevation: 0,
-                                    behavior: SnackBarBehavior.fixed,
-                                    backgroundColor: Colors.transparent,
-                                    content: AwesomeSnackbarContent(
-                                      title: 'Cảnh báo!',
-                                      message: 'OTP đã hết hạn!',
-                                      contentType: ContentType.help,
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                    ..hideCurrentSnackBar()
-                                    ..showSnackBar(snackBar);
-                                },
-                                forceResendingToken: null,
-                              );
-                            },
-                            child: const Text('Gửi lại mã',
+                  child: Obx(
+                    () {
+                      // Truy xuất HandleOtp bằng Get.find()
+                      return (inputOTPController.start.value == 0)
+                          ? TextButton(
+                              onPressed: () async {},
+                              child: const Text(
+                                'Gửi lại mã',
                                 style: TextStyle(
-                                    fontFamily: 'Nunito Sans', fontSize: 16)),
-                          )
-                        : TextButton(
-                            onPressed: () {},
-                            child: Text('${inputOTPController.start.value}' 's',
-                                style: const TextStyle(
-                                    fontFamily: 'Nunito Sans', fontSize: 16)));
-                  }),
+                                  fontFamily: 'Nunito Sans',
+                                  fontSize: 16,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              '${inputOTPController.start.value}' 's',
+                              style: const TextStyle(
+                                fontFamily: 'Nunito Sans',
+                                fontSize: 16,
+                              ),
+                            );
+                    },
+                  ),
                 )
               ],
             ),
@@ -200,7 +174,7 @@ class _InputOTPState extends State<InputOTP> {
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: ButtonNext(
             onTap: () async {
-              Get.to(() => const RegisterView());
+              Get.off(() => const RegisterView());
 
               // if (inputOTPController.otp.value.isEmpty) {
               //   final snackBar = SnackBar(
