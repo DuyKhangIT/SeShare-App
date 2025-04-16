@@ -8,15 +8,13 @@ import 'package:get/get.dart';
 import 'package:instagram_app/page/onboarding/forgot_password/input_otp_forgot_password/input_otp_forgot_password_view.dart';
 
 import '../../../../api_http/handle_api.dart';
-import '../../../../util/global.dart';
-import '../../../../util/module.dart';
+import '../../../../models/register/send_otp/send_otp_request.dart';
+import '../../../../models/register/send_otp/send_otp_response.dart';
 
 class InputEmailForgotPasswordController extends GetxController {
   TextEditingController emailForgotPasswordController = TextEditingController();
   RxString emailForgotPassword = RxString("");
   final FirebaseAuth auth = FirebaseAuth.instance;
-  String countryCode = "";
-  bool isLoading = false;
   void clearTextInputEmail() {
     emailForgotPassword.value = "";
     emailForgotPasswordController.clear();
@@ -24,92 +22,74 @@ class InputEmailForgotPasswordController extends GetxController {
 
   @override
   void onReady() {
-    countryCode = "+84";
     super.onReady();
   }
 
-  // // /// CHECK PHONE EXISTING
-  // Future<CheckPhoneNumberResponse> checkPhoneExistingForgotPassword(CheckPhoneNumberRequest checkPhoneNumberRequest) async {
-  //   isLoading = true;
-  //   if (isLoading) {
-  //     Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
-  //   } else {
-  //     Get.back(); // Đóng hộp thoại loading nếu isLoading = false
-  //   }
-  //   CheckPhoneNumberResponse checkPhoneNumberResponse;
-  //   Map<String, dynamic>? body;
-  //   try {
-  //     body = await HttpHelper.invokeHttp(
-  //         Uri.parse("http://14.225.204.248:8080/api/check-phone"),
-  //         RequestType.post,
-  //         headers: null,
-  //         body: const JsonEncoder().convert(checkPhoneNumberRequest.toBodyRequest()));
-  //   } catch (error) {
-  //     debugPrint("Fail to check phone existing $error");
-  //     rethrow;
-  //   }
-  //   if (body == null) return CheckPhoneNumberResponse.buildDefault();
-  //   //get data from api here
-  //   checkPhoneNumberResponse = CheckPhoneNumberResponse.fromJson(body);
-  //   if(checkPhoneNumberResponse.status == false)
-  //   {
-  //     isLoading = false;
-  //     if (isLoading) {
-  //       Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
-  //     } else {
-  //       Get.back(); // Đóng hộp thoại loading nếu isLoading = false
-  //     }
-  //     await auth.verifyPhoneNumber(
-  //       phoneNumber: countryCode + removeZeroAtFirstDigitPhoneNumber(emailForgotPassword.value),
-  //       timeout: const Duration(seconds: 60),
-  //       verificationCompleted:
-  //           (PhoneAuthCredential credential) {},
-  //       verificationFailed: (FirebaseAuthException e) {},
-  //       codeSent: (String verificationId, int? resendToken) {
-  //         Global.verifyFireBase = verificationId;
-  //         // Get.to(() => const InputOTPForgotPassword());
-  //       },
-  //       codeAutoRetrievalTimeout: (String verificationId) {
-  //         final snackBar = SnackBar(
-  //           elevation: 0,
-  //           behavior: SnackBarBehavior.fixed,
-  //           backgroundColor: Colors.transparent,
-  //           content: AwesomeSnackbarContent(
-  //             title: 'Cảnh báo!',
-  //             message: 'OTP đã hết hạn!',
-  //             contentType: ContentType.help,
-  //           ),
-  //         );
-  //         ScaffoldMessenger.of(Get.context!)
-  //           ..hideCurrentSnackBar()
-  //           ..showSnackBar(snackBar);
-  //       },
-  //     );
-  //   }
-  //   else{
-  //     isLoading = false;
-  //     if (isLoading) {
-  //       Get.dialog(const Center(child: CircularProgressIndicator()), barrierDismissible: false);
-  //     } else {
-  //       Get.back(); // Đóng hộp thoại loading nếu isLoading = false
-  //     }
-  //     final snackBar = SnackBar(
-  //       elevation: 0,
-  //       behavior: SnackBarBehavior.fixed,
-  //       backgroundColor: Colors.transparent,
-  //       content: AwesomeSnackbarContent(
-  //         title: 'Cảnh báo!',
-  //         message: 'Số điện thoại chưa đăng kí',
-  //         contentType: ContentType.help,
-  //       ),
-  //     );
-  //     ScaffoldMessenger.of(Get.context!)
-  //       ..hideCurrentSnackBar()
-  //       ..showSnackBar(snackBar);
-  //   }
-  //
-  //   return checkPhoneNumberResponse;
-  // }
+  // /// SEND OTP
+  Future<void> sendOTPForForgotPassword(
+    SendOtpRequest sendOtpRequest,
+  ) async {
+    Get.dialog(const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false);
+    SendOtpResponse sendOtpResponse;
+    Map<String, dynamic>? body;
+    try {
+      body = await HttpHelper.invokeHttp(
+        Uri.parse("http://10.0.2.2:5000/api/auth/forgot-password/send-otp"),
+        RequestType.post,
+        headers: null,
+        body: const JsonEncoder().convert(
+          sendOtpRequest.toBodyRequest(),
+        ),
+      );
+
+      if (body == null) return;
+      //get data from api here
+      sendOtpResponse = SendOtpResponse.fromJson(body);
+      if (sendOtpResponse.mStatusCode == 200) {
+        Get.back();
+        Get.to(
+          () => InputOTPForgotPassword(
+            emailForgot: emailForgotPassword.value,
+          ),
+        );
+      } else {
+        Get.back();
+        final snackBar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'Lỗi!',
+            message: sendOtpResponse.message,
+            contentType: ContentType.failure,
+          ),
+        );
+        ScaffoldMessenger.of(Get.context!)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
+    } catch (error) {
+      Get.back();
+      debugPrint("Fail to send otp forgotPassword: $error");
+      final snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Lỗi từ server!',
+          message: error.toString(),
+          contentType: ContentType.failure,
+        ),
+      );
+      ScaffoldMessenger.of(Get.context!)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+      rethrow;
+    }
+
+    return;
+  }
 
   @override
   void onClose() {

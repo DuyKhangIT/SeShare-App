@@ -1,7 +1,7 @@
 class SendOtpResponse {
   int mStatusCode = 0;
   String message = "";
-  bool isLimited = false;
+  bool? isLimited = false;
   double? timeLeft = 0.0;
 
   SendOtpResponse(

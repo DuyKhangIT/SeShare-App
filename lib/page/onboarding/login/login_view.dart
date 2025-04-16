@@ -1,16 +1,15 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:instagram_app/models/login/user_request.dart';
+import 'package:instagram_app/models/login/login_request.dart';
 import 'package:instagram_app/util/module.dart';
 import 'package:instagram_app/widget/button_next.dart';
 import 'package:instagram_app/widget/custom_text_field.dart';
 
 import '../../../assets/icons_assets.dart';
-import '../../../config/share_preferences.dart';
 import '../../../util/global.dart';
-import '../../navigation_bar/navigation_bar_view.dart';
 import '../forgot_password/input_email_forgot_password/input_email_forgot_password_view.dart';
 import '../register/input_email_register/input_email_view.dart';
 import 'login_controller.dart';
@@ -50,21 +49,36 @@ class _LoginState extends State<Login> {
                   formLogin(loginController),
                   const SizedBox(height: 40),
                   ButtonNext(
-                      onTap: () {
-                        Get.offAll(() => NavigationBarView(currentIndex: 0));
-                        // if(Global.isAvailableToClick()){
-                        //   if (loginController.phoneLogin.isNotEmpty &&
-                        //       loginController.passwordLogin.isNotEmpty) {
-                        //     UserRequest? userRequest = UserRequest(
-                        //         removeZeroAtFirstDigitPhoneNumber(
-                        //             loginController.phoneLogin),
-                        //         removeZeroAtFirstDigitPhoneNumber(
-                        //             loginController.passwordLogin));
-                        //     loginController.authenticate(userRequest);
-                        //   }
-                        // }
-                      },
-                      textInside: "Đăng nhập"),
+                    onTap: () {
+                      if (Global.isAvailableToClick()) {
+                        if (loginController.emailLogin.isNotEmpty &&
+                            loginController.passwordLogin.isNotEmpty) {
+                          if (checkEmailAddress(loginController.emailLogin)) {
+                            LoginRequest? request = LoginRequest(
+                              loginController.emailLogin,
+                              loginController.passwordLogin,
+                            );
+                            loginController.login(request);
+                          } else {
+                            final snackBar = SnackBar(
+                              elevation: 0,
+                              behavior: SnackBarBehavior.fixed,
+                              backgroundColor: Colors.transparent,
+                              content: AwesomeSnackbarContent(
+                                title: 'Lỗi!',
+                                message: 'Email không hợp lệ',
+                                contentType: ContentType.failure,
+                              ),
+                            );
+                            ScaffoldMessenger.of(Get.context!)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(snackBar);
+                          }
+                        }
+                      }
+                    },
+                    textInside: "Đăng nhập",
+                  ),
                   const SizedBox(height: 50),
 
                   /// divider
@@ -125,9 +139,6 @@ class _LoginState extends State<Login> {
             hintText: 'Nhập email của bạn',
             isRequired: false,
             textInputType: TextInputType.emailAddress,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(12),
-            ],
             onChanged: (value) {
               setState(() {
                 loginController.emailLogin = value;
@@ -143,11 +154,15 @@ class _LoginState extends State<Login> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: Image.asset(IconsAssets.icClearText,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black),
+                          child: Image.asset(
+                            IconsAssets.icClearText,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                            width: 18,
+                            height: 18,
+                          ),
                         ),
                       )
                     : Padding(
@@ -157,6 +172,8 @@ class _LoginState extends State<Login> {
                           color: Theme.of(context).brightness == Brightness.dark
                               ? Colors.greenAccent
                               : null,
+                          width: 18,
+                          height: 18,
                         ),
                       ),
           ),

@@ -6,7 +6,6 @@ import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../../assets/icons_assets.dart';
 import '../../../../util/module.dart';
-import '../input_otp_register/input_otp_view.dart';
 import 'input_email_controller.dart';
 
 class InputEmail extends StatefulWidget {
@@ -27,12 +26,16 @@ class _InputEmailState extends State<InputEmail> {
           title: Text(
             'Đăng ký',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: Theme.of(context).textTheme.headlineMedium?.color,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
                   fontSize: 20,
                 ),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.white,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);

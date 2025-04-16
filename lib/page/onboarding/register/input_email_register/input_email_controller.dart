@@ -12,7 +12,6 @@ import '../input_otp_register/input_otp_view.dart';
 class InputEmailController extends GetxController {
   TextEditingController emailRegisterController = TextEditingController();
   RxString emailRegister = RxString("");
-  bool isLoading = false;
   void clearTextInputPhoneNumber() {
     emailRegister.value = "";
     emailRegisterController.clear();
@@ -30,21 +29,16 @@ class InputEmailController extends GetxController {
   }
 
   // /// SEND OTP
-  Future<SendOtpResponse> sendOTPForRegister(
+  Future<void> sendOTPForRegister(
     SendOtpRequest sendOtpRequest,
   ) async {
-    isLoading = true;
-    if (isLoading) {
-      Get.dialog(const Center(child: CircularProgressIndicator()),
-          barrierDismissible: false);
-    } else {
-      Get.back(); // Đóng hộp thoại loading nếu isLoading = false
-    }
+    Get.dialog(const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false);
     SendOtpResponse sendOtpResponse;
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-        Uri.parse("http://localhost:5000/api/auth/send-otp"),
+        Uri.parse("http://10.0.2.2:5000/api/auth/send-otp"),
         RequestType.post,
         headers: null,
         body: const JsonEncoder().convert(
@@ -52,16 +46,18 @@ class InputEmailController extends GetxController {
         ),
       );
 
-      if (body == null) return SendOtpResponse.buildDefault();
+      if (body == null) return;
       //get data from api here
       sendOtpResponse = SendOtpResponse.fromJson(body);
       if (sendOtpResponse.mStatusCode == 200) {
+        Get.back();
         Get.to(
           () => InputOTP(
             emailRegister: emailRegister.value,
           ),
         );
       } else {
+        Get.back();
         final snackBar = SnackBar(
           elevation: 0,
           behavior: SnackBarBehavior.fixed,
@@ -77,19 +73,25 @@ class InputEmailController extends GetxController {
           ..showSnackBar(snackBar);
       }
     } catch (error) {
+      Get.back();
       debugPrint("Fail to send otp: $error");
+      final snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Lỗi!',
+          message: error.toString(),
+          contentType: ContentType.help,
+        ),
+      );
+      ScaffoldMessenger.of(Get.context!)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
       rethrow;
-    } finally {
-      isLoading = false;
-      if (isLoading) {
-        Get.dialog(const Center(child: CircularProgressIndicator()),
-            barrierDismissible: false);
-      } else {
-        Get.back(); // Đóng hộp thoại loading nếu isLoading = false
-      }
     }
 
-    return sendOtpResponse;
+    return;
   }
 
   @override

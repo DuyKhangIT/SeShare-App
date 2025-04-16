@@ -1,11 +1,11 @@
 class ForgotPasswordRequest {
-  String mPhone;
+  String mEmail;
   String mNewPassword;
 
-  ForgotPasswordRequest(this.mPhone, this.mNewPassword);
+  ForgotPasswordRequest(this.mEmail, this.mNewPassword);
 
   Map<String, dynamic> toBodyRequest() => {
-    'phone': mPhone,
+    'email': mEmail,
     'newPassword': mNewPassword,
   };
 }

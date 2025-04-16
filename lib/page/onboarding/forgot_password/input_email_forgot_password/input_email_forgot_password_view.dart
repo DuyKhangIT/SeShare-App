@@ -1,19 +1,16 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:instagram_app/page/onboarding/forgot_password/input_otp_forgot_password/input_otp_forgot_password_view.dart';
+import 'package:instagram_app/models/register/send_otp/send_otp_request.dart';
 import 'package:instagram_app/util/module.dart';
 import 'package:instagram_app/widget/button_next.dart';
 import 'package:instagram_app/widget/custom_text_field.dart';
 
 import '../../../../assets/icons_assets.dart';
-import '../../../../util/global.dart';
 import 'input_email_forgot_password_controller.dart';
 
 class InputEmailForgotPassword extends StatefulWidget {
   const InputEmailForgotPassword({Key? key}) : super(key: key);
-  static String verify = "";
   @override
   State<InputEmailForgotPassword> createState() =>
       _InputEmailForgotPasswordState();
@@ -128,18 +125,19 @@ class _InputEmailForgotPasswordState extends State<InputEmailForgotPassword> {
                       behavior: SnackBarBehavior.fixed,
                       backgroundColor: Colors.transparent,
                       content: AwesomeSnackbarContent(
-                        title: 'Lỗi!',
+                        title: 'Cảnh báo!',
                         message: 'Bạn chưa nhập email!',
-                        contentType: ContentType.failure,
+                        contentType: ContentType.warning,
                       ),
                     );
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(snackBar);
                   } else {
-                    Get.to(InputOTPForgotPassword(
-                      emailForgot: controller.emailForgotPassword.value,
-                    ));
+                    SendOtpRequest request = SendOtpRequest(
+                      controller.emailForgotPassword.value,
+                    );
+                    controller.sendOTPForForgotPassword(request);
                   }
                 },
                 textInside: "Gửi mã",

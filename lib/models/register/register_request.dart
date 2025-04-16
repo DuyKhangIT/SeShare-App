@@ -1,9 +1,11 @@
+import 'dart:io';
+
 class RegisterRequest {
   String mEmail;
   String mFullName;
   String mPassword;
-  String mBirthDay;
-  String? mAvatar;
+  String? mBirthDay;
+  File? mAvatar;
 
   RegisterRequest(
     this.mEmail,

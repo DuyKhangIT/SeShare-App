@@ -40,10 +40,12 @@ class _CustomTextFiledState extends State<CustomTextFiled> {
           if (widget.title != null)
             RichText(
               text: TextSpan(
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Nunito Sans',
                   fontSize: 14,
-                  color: Colors.black,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
                   fontWeight: FontWeight.w500,
                 ),
                 children: [

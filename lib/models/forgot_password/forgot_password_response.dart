@@ -1,20 +1,16 @@
-import 'forgot_password_user_response.dart';
-
 class ForgotPasswordResponse {
-  bool status = false;
-  ForgotPasswordUserResponse? forgotPasswordUserResponse;
+  int statusCode = 0;
+  String message = "";
 
   ForgotPasswordResponse(
-    this.status,
-    this.forgotPasswordUserResponse,
+    this.statusCode,
+    this.message,
   );
   ForgotPasswordResponse.buildDefault();
   factory ForgotPasswordResponse.fromJson(Map<String, dynamic> json) {
     return ForgotPasswordResponse(
-      json['status'],
-      (json['user'] != null)
-          ? ForgotPasswordUserResponse.fromJson(json['user'])
-          : null,
+      json['statusCode'],
+      json['message'],
     );
   }
 }

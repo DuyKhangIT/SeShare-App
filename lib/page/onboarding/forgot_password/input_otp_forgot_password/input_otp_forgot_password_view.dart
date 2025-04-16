@@ -2,13 +2,11 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_app/models/register/verify_otp/verify_otp_request.dart';
 
 import 'package:instagram_app/widget/button_next.dart';
 import 'package:pinput/pinput.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../config/share_preferences.dart';
 import '../../../../util/global.dart';
-import '../input_password_forgot_password/input_password_forgot_password_view.dart';
 import 'input_otp_forgot_password_controller.dart';
 
 class InputOTPForgotPassword extends StatefulWidget {
@@ -148,34 +146,12 @@ class _InputOTPForgotPasswordState extends State<InputOTPForgotPassword> {
                               ..hideCurrentSnackBar()
                               ..showSnackBar(snackBar);
                           } else {
-                            Get.offAll(InputPasswordForgotPassword());
-                            // try {
-                            //   // Create a PhoneAuthCredential with the code
-                            //   PhoneAuthCredential credential =
-                            //       PhoneAuthProvider.credential(
-                            //           verificationId: Global.verifyFireBase,
-                            //           smsCode: otpForgotPasswordController
-                            //               .otp.value);
-                            //   // Sign the user in (or link) with the credential
-                            //   await otpForgotPasswordController.auth
-                            //       .signInWithCredential(credential);
-                            //   Get.to(() => const InputPasswordForgotPassword());
-                            // } catch (e) {
-                            //   final snackBar = SnackBar(
-                            //     elevation: 0,
-                            //     behavior: SnackBarBehavior.fixed,
-                            //     backgroundColor: Colors.transparent,
-                            //     content: AwesomeSnackbarContent(
-                            //       title: 'Lỗi!',
-                            //       message:
-                            //           'Bạn nhập sai mã otp! Vui lòng nhập lại',
-                            //       contentType: ContentType.failure,
-                            //     ),
-                            //   );
-                            //   ScaffoldMessenger.of(context)
-                            //     ..hideCurrentSnackBar()
-                            //     ..showSnackBar(snackBar);
-                            // }
+                            VerifyOtpRequest request = VerifyOtpRequest(
+                              widget.emailForgot,
+                              otpForgotPasswordController.otp.value,
+                            );
+                            otpForgotPasswordController
+                                .verifyOTPForgotPassword(request);
                           }
                         },
                         textInside: "Xác nhận OTP",

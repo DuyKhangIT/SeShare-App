@@ -161,14 +161,18 @@ class AppRoutes {
     ),
     GetPage(
       name: inputNewPasswordForgotPasswordScreen,
-      page: () => InputPasswordForgotPassword(),
+      page: () => const InputPasswordForgotPassword(
+        emil: "",
+      ),
       binding: InputPasswordForgotPasswordBinding(),
     ),
 
     /// register
     GetPage(
       name: registerScreen,
-      page: () => const RegisterView(),
+      page: () => const RegisterView(
+        email: "",
+      ),
       binding: RegisterBinding(),
     ),
     GetPage(

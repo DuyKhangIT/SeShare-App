@@ -14,10 +14,8 @@ import '../../../../models/register/verify_otp/verify_otp_response.dart';
 class InputOTPController extends GetxController {
   TextEditingController otpController = TextEditingController();
   RxString otp = RxString("");
-  bool isLoading = false;
 
   /// Đếm ngược
-  late Timer timer;
   var start = 59.obs;
 
   void startTimer() {
@@ -42,21 +40,16 @@ class InputOTPController extends GetxController {
   }
 
   // /// VERIFY OTP
-  Future<VerifyOtpResponse> verifyOTPForRegister(
+  Future<void> verifyOTPForRegister(
     VerifyOtpRequest verifyOtpRequest,
   ) async {
-    isLoading = true;
-    if (isLoading) {
-      Get.dialog(const Center(child: CircularProgressIndicator()),
-          barrierDismissible: false);
-    } else {
-      Get.back(); // Đóng hộp thoại loading nếu isLoading = false
-    }
+    Get.dialog(const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false);
     VerifyOtpResponse verifyOtpResponse;
     Map<String, dynamic>? body;
     try {
       body = await HttpHelper.invokeHttp(
-        Uri.parse("http://localhost:5000/api/auth/verify-otp"),
+        Uri.parse("http://10.0.2.2:5000/api/auth/verify-otp"),
         RequestType.post,
         headers: null,
         body: const JsonEncoder().convert(
@@ -64,14 +57,18 @@ class InputOTPController extends GetxController {
         ),
       );
 
-      if (body == null) return VerifyOtpResponse.buildDefault();
+      if (body == null) return;
       //get data from api here
       verifyOtpResponse = VerifyOtpResponse.fromJson(body);
       if (verifyOtpResponse.mStatusCode == 200) {
+        Get.back();
         Get.to(
-          () => const RegisterView(),
+          () => RegisterView(
+            email: verifyOtpRequest.mEmail,
+          ),
         );
       } else {
+        Get.back();
         final snackBar = SnackBar(
           elevation: 0,
           behavior: SnackBarBehavior.fixed,
@@ -87,24 +84,29 @@ class InputOTPController extends GetxController {
           ..showSnackBar(snackBar);
       }
     } catch (error) {
+      Get.back();
       debugPrint("Fail to send otp: $error");
+      final snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Cảnh báo!',
+          message: error.toString(),
+          contentType: ContentType.help,
+        ),
+      );
+      ScaffoldMessenger.of(Get.context!)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
       rethrow;
-    } finally {
-      isLoading = false;
-      if (isLoading) {
-        Get.dialog(const Center(child: CircularProgressIndicator()),
-            barrierDismissible: false);
-      } else {
-        Get.back(); // Đóng hộp thoại loading nếu isLoading = false
-      }
     }
 
-    return verifyOtpResponse;
+    return;
   }
 
   @override
   void onClose() {
-    timer.cancel();
     start.close();
     super.onClose();
   }

@@ -1,11 +1,17 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_app/models/register/register_request.dart';
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
 
+import 'package:http/http.dart' as http;
 import '../../../util/global.dart';
+import '../login/login_view.dart';
 
 class RegisterController extends GetxController {
   bool isLoading = false;
@@ -21,7 +27,6 @@ class RegisterController extends GetxController {
   RxBool isConfirmShowPassword = false.obs;
 
   File? avatar;
-
 
   TextEditingController dayController = TextEditingController();
   TextEditingController monthController = TextEditingController();
@@ -113,5 +118,64 @@ class RegisterController extends GetxController {
         await ImageCropper().cropImage(sourcePath: imgFile.path);
     if (cropperImage == null) return null;
     return File(cropperImage.path);
+  }
+
+  // /// REGISTER
+  Future<void> register(
+    RegisterRequest registerRequest,
+  ) async {
+    Get.dialog(const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false);
+    try {
+      final uri = Uri.parse("http://10.0.2.2:5000/api/auth/register");
+      final request = http.MultipartRequest('POST', uri);
+
+      // Thêm các fields của bạn (không phải file)
+      request.fields['email'] = registerRequest.mEmail;
+      request.fields['password'] = registerRequest.mPassword;
+      request.fields['fullName'] = registerRequest.mFullName;
+
+      if (avatar != null) {
+        // Đọc file + đuôi đúng
+        final mimeType = lookupMimeType(avatar!.path) ?? 'image/jpeg';
+        final fileStream = http.MultipartFile.fromBytes(
+          'avatar',
+          await avatar!.readAsBytes(),
+          filename: avatar!.path.split('/').last, // ví dụ: avatar.jpg
+          contentType: MediaType.parse(mimeType),
+        );
+
+        request.files.add(fileStream);
+      }
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        Get.offAll(Login());
+      } else {
+        // xử lý lỗi
+        throw Exception("Đăng ký thất bại: ${response.body}");
+      }
+    } catch (error) {
+      Get.back();
+      debugPrint("Fail to send otp: $error");
+      final snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.fixed,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Cảnh báo!',
+          message: error.toString(),
+          contentType: ContentType.help,
+        ),
+      );
+      ScaffoldMessenger.of(Get.context!)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+      rethrow;
+    }
+
+    return;
   }
 }

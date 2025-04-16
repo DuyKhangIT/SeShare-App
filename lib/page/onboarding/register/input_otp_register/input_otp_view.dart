@@ -1,12 +1,10 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:instagram_app/page/onboarding/register/register_view.dart';
+import 'package:instagram_app/models/register/verify_otp/verify_otp_request.dart';
 
 import 'package:instagram_app/widget/button_next.dart';
 import 'package:pinput/pinput.dart';
-import '../../../../util/global.dart';
 import '../../login/login_view.dart';
 import 'input_otp_controller.dart';
 
@@ -23,8 +21,6 @@ class InputOTP extends StatefulWidget {
 }
 
 class _InputOTPState extends State<InputOTP> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
@@ -62,7 +58,9 @@ class _InputOTPState extends State<InputOTP> {
                 fontSize: 20),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.white,
           actions: [
             GestureDetector(
               onTap: () {
@@ -132,7 +130,9 @@ class _InputOTPState extends State<InputOTP> {
                   length: 6,
                   showCursor: true,
                   onChanged: (value) {
-                    inputOTPController.otp.value = value;
+                    setState(() {
+                      inputOTPController.otp.value = value;
+                    });
                   },
                 ),
                 const SizedBox(
@@ -171,51 +171,30 @@ class _InputOTPState extends State<InputOTP> {
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: ButtonNext(
             onTap: () async {
-              Get.off(() => const RegisterView());
-
-              // if (inputOTPController.otp.value.isEmpty) {
-              //   final snackBar = SnackBar(
-              //     /// need to set following properties for best effect of awesome_snackbar_content
-              //     elevation: 0,
-              //     behavior: SnackBarBehavior.fixed,
-              //     backgroundColor: Colors.transparent,
-              //     content: AwesomeSnackbarContent(
-              //       title: 'Cánh báo!',
-              //       message:
-              //           'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
-              //       contentType: ContentType.help,
-              //     ),
-              //   );
-              //   ScaffoldMessenger.of(context)
-              //     ..hideCurrentSnackBar()
-              //     ..showSnackBar(snackBar);
-              // } else {
-              //   try {
-              //     // Create a PhoneAuthCredential with the code
-              //     PhoneAuthCredential credential =
-              //         PhoneAuthProvider.credential(
-              //             verificationId: Global.verifyFireBase,
-              //             smsCode: inputOTPController.otp.value);
-              //     // Sign the user in (or link) with the credential
-              //     await auth.signInWithCredential(credential);
-              //     Get.to(() => const InputPassword());
-              //   } catch (e) {
-              //     final snackBar = SnackBar(
-              //       elevation: 0,
-              //       behavior: SnackBarBehavior.fixed,
-              //       backgroundColor: Colors.transparent,
-              //       content: AwesomeSnackbarContent(
-              //         title: 'Lỗi!',
-              //         message:
-              //             'Bạn nhập sai mã otp! Vui lòng nhập lại',
-              //         contentType: ContentType.failure,
-              //       ),
-              //     );
-              //     ScaffoldMessenger.of(context)
-              //       ..hideCurrentSnackBar()
-              //       ..showSnackBar(snackBar);
-              //   }
-              // }
+              if (inputOTPController.otp.value.isEmpty) {
+                final snackBar = SnackBar(
+                  /// need to set following properties for best effect of awesome_snackbar_content
+                  elevation: 0,
+                  behavior: SnackBarBehavior.fixed,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: 'Cánh báo!',
+                    message: 'Bạn chưa nhập mã otp! Vui lòng nhập mã otp',
+                    contentType: ContentType.help,
+                  ),
+                );
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(snackBar);
+              } else {
+                VerifyOtpRequest request = VerifyOtpRequest(
+                  widget.emailRegister,
+                  inputOTPController.otp.value,
+                );
+                inputOTPController.verifyOTPForRegister(
+                  request,
+                );
+              }
             },
             textInside: "Xác nhận OTP",
           ),

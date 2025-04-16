@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:instagram_app/page/onboarding/register/confirm_register/confirm_register_view.dart';
+import 'package:instagram_app/models/register/register_request.dart';
 import 'package:instagram_app/page/onboarding/register/register_controller.dart';
 
 import '../../../assets/icons_assets.dart';
@@ -13,7 +13,8 @@ import '../../../widget/custom_text_field.dart';
 import '../login/login_view.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+  final String email;
+  const RegisterView({super.key, required this.email});
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -34,7 +35,9 @@ class _RegisterViewState extends State<RegisterView> {
                 fontSize: 20),
           ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.black
+              : Colors.white,
           actions: [
             GestureDetector(
               onTap: () {
@@ -98,7 +101,10 @@ class _RegisterViewState extends State<RegisterView> {
                                 height: 28,
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: Colors.black,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
                                     width: 0.5,
                                   ),
                                   shape: BoxShape.circle,
@@ -123,19 +129,31 @@ class _RegisterViewState extends State<RegisterView> {
                               });
                         },
                         child: Container(
-                            width: 160,
-                            height: 160,
-                            margin: const EdgeInsets.only(top: 100),
-                            decoration:
-                                const BoxDecoration(shape: BoxShape.circle),
-                            child: DottedBorder(
-                                color: Colors.black.withOpacity(0.5),
-                                strokeWidth: 1,
-                                borderType: BorderType.Circle,
-                                dashPattern: const [6, 5],
-                                radius: const Radius.circular(60),
-                                child: Center(
-                                    child: Image.asset(IconsAssets.icUpload)))),
+                          width: 160,
+                          height: 160,
+                          margin: const EdgeInsets.only(top: 100),
+                          decoration:
+                              const BoxDecoration(shape: BoxShape.circle),
+                          child: DottedBorder(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                            strokeWidth: 1,
+                            borderType: BorderType.Circle,
+                            dashPattern: const [6, 5],
+                            radius: const Radius.circular(60),
+                            child: Center(
+                              child: Image.asset(
+                                IconsAssets.icUpload,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                 const SizedBox(height: 12),
                 const Text(
@@ -349,8 +367,14 @@ class _RegisterViewState extends State<RegisterView> {
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: ButtonNext(
             onTap: () {
-              // confirmRegisterController.signUp();
-              Get.to(const ConfirmRegister());
+              RegisterRequest request = RegisterRequest(
+                widget.email,
+                registerController.fullName.value,
+                registerController.password.value,
+                registerController.birthDay,
+                registerController.avatar,
+              );
+              registerController.register(request);
             },
             textInside: 'đăng ký'.toUpperCase(),
           ),
@@ -467,13 +491,15 @@ class _RegisterViewState extends State<RegisterView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Chọn ngày sinh của bạn',
             style: TextStyle(
               fontSize: 14,
               fontFamily: 'Nunito Sans',
               fontWeight: FontWeight.w500,
-              color: Colors.black,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
             ),
             textAlign: TextAlign.start,
           ),
