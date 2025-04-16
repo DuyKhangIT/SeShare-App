@@ -12,7 +12,11 @@ import '../input_password_forgot_password/input_password_forgot_password_view.da
 import 'input_otp_forgot_password_controller.dart';
 
 class InputOTPForgotPassword extends StatefulWidget {
-  const InputOTPForgotPassword({Key? key}) : super(key: key);
+  final String emailForgot;
+  const InputOTPForgotPassword({
+    Key? key,
+    required this.emailForgot,
+  }) : super(key: key);
 
   @override
   State<InputOTPForgotPassword> createState() => _InputOTPForgotPasswordState();
@@ -62,13 +66,10 @@ class _InputOTPForgotPasswordState extends State<InputOTPForgotPassword> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
-                    Icons.arrow_back_ios_rounded,
-                      color: Theme.of(context).brightness ==
-                          Brightness.dark
+                  icon: Icon(Icons.arrow_back_ios_rounded,
+                      color: Theme.of(context).brightness == Brightness.dark
                           ? Colors.white
-                          : Colors.black
-                  ),
+                          : Colors.black),
                 ),
                 elevation: 0,
               ),
@@ -80,14 +81,6 @@ class _InputOTPForgotPasswordState extends State<InputOTPForgotPassword> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'SeShare',
-                        style: TextStyle(
-                            fontSize: 49,
-                            fontFamily: 'Nunito Sans',
-                            fontStyle: FontStyle.italic),
-                      ),
-                      const SizedBox(height: 30),
-                      const Text(
                         "Nhập mã OTP",
                         style: TextStyle(
                             fontFamily: 'Nunito Sans',
@@ -97,13 +90,27 @@ class _InputOTPForgotPasswordState extends State<InputOTPForgotPassword> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text(
-                        "Chúng tôi đã gửi tới bạn mã OTP",
-                        style: TextStyle(
-                          fontFamily: 'Nunito Sans',
-                          fontSize: 12,
+                      RichText(
+                        text: TextSpan(
+                          style: const TextStyle(
+                            fontFamily: 'Nunito Sans',
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          children: [
+                            const TextSpan(
+                              text: "Chúng tôi đã gửi mã OTP tới ",
+                            ),
+                            TextSpan(
+                              text: widget.emailForgot,
+                              style: const TextStyle(
+                                fontFamily: 'Nunito Sans',
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(
                         height: 30,
@@ -141,33 +148,34 @@ class _InputOTPForgotPasswordState extends State<InputOTPForgotPassword> {
                               ..hideCurrentSnackBar()
                               ..showSnackBar(snackBar);
                           } else {
-                            try {
-                              // Create a PhoneAuthCredential with the code
-                              PhoneAuthCredential credential =
-                                  PhoneAuthProvider.credential(
-                                      verificationId: Global.verifyFireBase,
-                                      smsCode: otpForgotPasswordController
-                                          .otp.value);
-                              // Sign the user in (or link) with the credential
-                              await otpForgotPasswordController.auth
-                                  .signInWithCredential(credential);
-                              Get.to(() => const InputPasswordForgotPassword());
-                            } catch (e) {
-                              final snackBar = SnackBar(
-                                elevation: 0,
-                                behavior: SnackBarBehavior.fixed,
-                                backgroundColor: Colors.transparent,
-                                content: AwesomeSnackbarContent(
-                                  title: 'Lỗi!',
-                                  message:
-                                      'Bạn nhập sai mã otp! Vui lòng nhập lại',
-                                  contentType: ContentType.failure,
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            }
+                            Get.offAll(InputPasswordForgotPassword());
+                            // try {
+                            //   // Create a PhoneAuthCredential with the code
+                            //   PhoneAuthCredential credential =
+                            //       PhoneAuthProvider.credential(
+                            //           verificationId: Global.verifyFireBase,
+                            //           smsCode: otpForgotPasswordController
+                            //               .otp.value);
+                            //   // Sign the user in (or link) with the credential
+                            //   await otpForgotPasswordController.auth
+                            //       .signInWithCredential(credential);
+                            //   Get.to(() => const InputPasswordForgotPassword());
+                            // } catch (e) {
+                            //   final snackBar = SnackBar(
+                            //     elevation: 0,
+                            //     behavior: SnackBarBehavior.fixed,
+                            //     backgroundColor: Colors.transparent,
+                            //     content: AwesomeSnackbarContent(
+                            //       title: 'Lỗi!',
+                            //       message:
+                            //           'Bạn nhập sai mã otp! Vui lòng nhập lại',
+                            //       contentType: ContentType.failure,
+                            //     ),
+                            //   );
+                            //   ScaffoldMessenger.of(context)
+                            //     ..hideCurrentSnackBar()
+                            //     ..showSnackBar(snackBar);
+                            // }
                           }
                         },
                         textInside: "Xác nhận OTP",
@@ -186,9 +194,9 @@ class _InputOTPForgotPasswordState extends State<InputOTPForgotPassword> {
                                       verificationCompleted:
                                           (PhoneAuthCredential
                                               credential) async {
-                                            otpForgotPasswordController
-                                                .timer.cancel();
-                                          },
+                                        otpForgotPasswordController.timer
+                                            .cancel();
+                                      },
                                       verificationFailed:
                                           (FirebaseAuthException e) {},
                                       codeSent: (String verificationId,

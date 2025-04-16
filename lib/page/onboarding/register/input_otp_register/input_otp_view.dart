@@ -110,7 +110,7 @@ class _InputOTPState extends State<InputOTP> {
                     ),
                     children: [
                       const TextSpan(
-                        text: "Chúng tôi đã gửi tới ",
+                        text: "Chúng tôi đã gửi mã OTP tới ",
                       ),
                       TextSpan(
                         text: widget.emailRegister,
@@ -119,9 +119,6 @@ class _InputOTPState extends State<InputOTP> {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      const TextSpan(
-                        text: " mã OTP",
                       ),
                     ],
                   ),

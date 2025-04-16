@@ -52,12 +52,12 @@ import '../page/main/search_screen/search_binding.dart';
 import '../page/main/search_screen/search_screen_view.dart';
 import '../page/navigation_bar/navigation_bar_view.dart';
 import '../page/navigation_bar/navigation_bar_binding.dart';
+import '../page/onboarding/forgot_password/input_email_forgot_password/input_email_forgot_password_binding.dart';
+import '../page/onboarding/forgot_password/input_email_forgot_password/input_email_forgot_password_view.dart';
 import '../page/onboarding/forgot_password/input_otp_forgot_password/input_otp_forgot_password_binding.dart';
 import '../page/onboarding/forgot_password/input_otp_forgot_password/input_otp_forgot_password_view.dart';
 import '../page/onboarding/forgot_password/input_password_forgot_password/input_password_forgot_password_binding.dart';
 import '../page/onboarding/forgot_password/input_password_forgot_password/input_password_forgot_password_view.dart';
-import '../page/onboarding/forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_binding.dart';
-import '../page/onboarding/forgot_password/input_phone_number_forgot_password/input_phone_number_forgot_password_view.dart';
 import '../page/onboarding/login/login_binding.dart';
 import '../page/onboarding/login/login_view.dart';
 import '../page/onboarding/register/confirm_register/confirm_register_binding.dart';
@@ -74,7 +74,7 @@ class AppRoutes {
   static const String loginScreen = "/seShare_login_screen";
 
   /// forgot password
-  static const String inputPhoneNumberForgotPasswordScreen =
+  static const String inputEmailForgotPasswordScreen =
       "/seShare_inputPhoneNumberForgotPassword_screen";
   static const String inputOtpForgotPasswordScreen =
       "/seShare_inputOtpForgotPassword_screen";
@@ -151,12 +151,12 @@ class AppRoutes {
 
     /// forgot password
     GetPage(
-        name: inputPhoneNumberForgotPasswordScreen,
-        page: () => InputPhoneNumberForgotPassword(),
-        binding: InputPhoneNumberForgotPasswordBinding()),
+        name: inputEmailForgotPasswordScreen,
+        page: () => InputEmailForgotPassword(),
+        binding: InputEmailForgotPasswordBinding()),
     GetPage(
       name: inputOtpForgotPasswordScreen,
-      page: () => InputOTPForgotPassword(),
+      page: () => const InputOTPForgotPassword(emailForgot: ""),
       binding: InputOTPForgotPasswordBinding(),
     ),
     GetPage(

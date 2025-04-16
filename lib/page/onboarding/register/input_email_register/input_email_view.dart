@@ -1,5 +1,7 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:instagram_app/models/register/send_otp/send_otp_request.dart';
 import 'package:instagram_app/widget/button_next.dart';
 
 import '../../../../assets/icons_assets.dart';
@@ -143,32 +145,26 @@ class _InputEmailState extends State<InputEmail> {
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: ButtonNext(
             onTap: () async {
-              Get.to(() => InputOTP(
-                    emailRegister: inputEmailController.emailRegister.value,
-                  ));
-              // if (inputPhoneNumberController.phoneRegister.value.isEmpty) {
-              //   final snackBar = SnackBar(
-              //     elevation: 0,
-              //     behavior: SnackBarBehavior.fixed,
-              //     backgroundColor: Colors.transparent,
-              //     content: AwesomeSnackbarContent(
-              //       title: 'Lỗi!',
-              //       message: 'Bạn chưa nhập số điện thoại!',
-              //       contentType: ContentType.failure,
-              //     ),
-              //   );
-              //   ScaffoldMessenger.of(context)
-              //     ..hideCurrentSnackBar()
-              //     ..showSnackBar(snackBar);
-              // } else {
-              //   CheckPhoneNumberRequest? checkPhoneNumberRequest =
-              //       CheckPhoneNumberRequest(
-              //           removeZeroAtFirstDigitPhoneNumber(inputPhoneNumberController.phoneRegister.value));
-              //   inputPhoneNumberController
-              //       .checkPhoneExistingForRegister(checkPhoneNumberRequest);
-              //   // save phone number to Global
-              //   Global.phoneNumber = removeZeroAtFirstDigitPhoneNumber(inputPhoneNumberController.phoneRegister.value);
-              // }
+              if (inputEmailController.emailRegister.value.isEmpty) {
+                final snackBar = SnackBar(
+                  elevation: 0,
+                  behavior: SnackBarBehavior.fixed,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: 'Lỗi!',
+                    message: 'Bạn chưa nhập email!',
+                    contentType: ContentType.failure,
+                  ),
+                );
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(snackBar);
+              } else {
+                SendOtpRequest? request = SendOtpRequest(
+                  inputEmailController.emailRegister.value,
+                );
+                inputEmailController.sendOTPForRegister(request);
+              }
             },
             textInside: "Gửi mã",
           ),

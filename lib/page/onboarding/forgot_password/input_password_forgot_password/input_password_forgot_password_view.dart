@@ -89,30 +89,31 @@ class _InputPasswordForgotPasswordState
                   padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 20),
                   child: ButtonNext(
                     onTap: () {
-                      if (Global.phoneNumberForgotPassword.isNotEmpty &&
-                          inputPasswordForgotPasswordController
-                              .newPassword.value.isNotEmpty) {
-                        ForgotPasswordRequest request =
-                        ForgotPasswordRequest(
-                            removeZeroAtFirstDigitPhoneNumber(Global.phoneNumberForgotPassword),
-                            inputPasswordForgotPasswordController
-                                .newPasswordController.text);
-                        inputPasswordForgotPasswordController.forgotPassword(request);
-                      }else{
-                        final snackBar = SnackBar(
-                          elevation: 0,
-                          behavior: SnackBarBehavior.fixed,
-                          backgroundColor: Colors.transparent,
-                          content: AwesomeSnackbarContent(
-                            title: 'Cảnh báo!',
-                            message: "Vui lòng nhập đủ thông tin",
-                            contentType: ContentType.warning,
-                          ),
-                        );
-                        ScaffoldMessenger.of(Get.context!)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(snackBar);
-                      }
+                      // if (Global.phoneNumberForgotPassword.isNotEmpty &&
+                      //     inputPasswordForgotPasswordController
+                      //         .newPassword.value.isNotEmpty) {
+                      //   ForgotPasswordRequest request =
+                      //   ForgotPasswordRequest(
+                      //       removeZeroAtFirstDigitPhoneNumber(Global.phoneNumberForgotPassword),
+                      //       inputPasswordForgotPasswordController
+                      //           .newPasswordController.text);
+                      //   inputPasswordForgotPasswordController.forgotPassword(request);
+                      // }else{
+                      //   final snackBar = SnackBar(
+                      //     elevation: 0,
+                      //     behavior: SnackBarBehavior.fixed,
+                      //     backgroundColor: Colors.transparent,
+                      //     content: AwesomeSnackbarContent(
+                      //       title: 'Cảnh báo!',
+                      //       message: "Vui lòng nhập đủ thông tin",
+                      //       contentType: ContentType.warning,
+                      //     ),
+                      //   );
+                      //   ScaffoldMessenger.of(Get.context!)
+                      //     ..hideCurrentSnackBar()
+                      //     ..showSnackBar(snackBar);
+                      // }
+                      Get.offAll(Login());
                     },
                     textInside: "Tiếp tục",
                   ),

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 class CustomTextFiled extends StatefulWidget {
   final TextEditingController? textEditingController;
-  final String title;
+  final String? title;
   final String hintText;
   final Widget? suffixIcon;
   final Function(String)? onChanged;
@@ -14,7 +14,7 @@ class CustomTextFiled extends StatefulWidget {
   const CustomTextFiled({
     super.key,
     this.textEditingController,
-    required this.title,
+    this.title,
     required this.hintText,
     this.suffixIcon,
     this.onChanged,
@@ -37,31 +37,32 @@ class _CustomTextFiledState extends State<CustomTextFiled> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(
-                fontFamily: 'Nunito Sans',
-                fontSize: 14,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
-              children: [
-                TextSpan(
-                  text: widget.title,
+          if (widget.title != null)
+            RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  fontFamily: 'Nunito Sans',
+                  fontSize: 14,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
                 ),
-                if (widget.isRequired)
-                const TextSpan(
-                  text: " * ",
-                  style: TextStyle(
-                    fontFamily: 'Nunito Sans',
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
+                children: [
+                  TextSpan(
+                    text: widget.title,
                   ),
-                ),
-              ],
+                  if (widget.isRequired)
+                    const TextSpan(
+                      text: " * ",
+                      style: TextStyle(
+                        fontFamily: 'Nunito Sans',
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
           const SizedBox(height: 5),
           TextField(
             obscureText: widget.obscureText,
